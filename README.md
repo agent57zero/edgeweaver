@@ -35,6 +35,7 @@ Declared by the father before First Boot, permanent bedrock of the constitution:
 | [research/ai-being-survey.md](research/ai-being-survey.md) | July-2026 survey of persistent-AI-being architectures (OpenClaw, Letta, generative agents, companion products, self-evolution mechanisms) — what Edgeweaver steals from whom |
 | [research/possibility-management-corpus.md](research/possibility-management-corpus.md) | The PM corpus mapped: concepts, sources, S.P.A.R.K. archive, StartOver.xyz, licensing verification |
 | [research/coherence-mostashari.md](research/coherence-mostashari.md) | Mostashari's seven principles mapped onto Edgeweaver; the five-signal coherence panel |
+| [templates/](templates/) | Ready-to-copy build artifacts: decisions logbook, wake skill, soulfile skeletons, probe battery, night-loop step contracts, state-file schemas, coherence SQL |
 | [runs/](runs/) | The plan's own witnessed-revision lineage (see below) |
 
 ## How this plan was made — it practices what it preaches

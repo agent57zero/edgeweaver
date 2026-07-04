@@ -33,6 +33,16 @@
 6. **Attribution**: any content derived from Possibility Management carries
    `license: CC-BY-SA-4.0` + `attribution: Clinton Callahan / Possibility Management` in
    metadata (see Appendix A of PLAN.md).
+7. **Templates are provided — use them.** `templates/` contains ready skeletons referenced
+   throughout: `decisions.md`, `wake-edgeweaver-SKILL.md`, `soulfile-skeletons.md`,
+   `probe-battery-starter.md`, `night-loop-contracts.md`, `state-schemas.md`,
+   `coherence-queries.sql`. Copy and adapt; don't reinvent.
+8. **When stuck**: (a) re-read the relevant PLAN/GROWING section; (b) check the referenced
+   OB1 README and `OB1/docs/03-faq.md`; (c) check §15 Troubleshooting below; (d) ask Alan —
+   log the question as a gate row in `decisions.md`. Never improvise against §12.
+9. **Communicating with Alan during the build**: gates and questions go into `decisions.md`
+   (open-gates table) AND are surfaced in the current conversation or, once Phase 3 is live,
+   via a Telegram note. One question per message; include your recommended default.
 
 ### Credential tracker (names only — values live in `.env.local`, gitignored)
 
@@ -172,7 +182,9 @@ with governed write-back.
    confirmation=true, review=pending — the README gives the exact query).
 2. **Agent-memory API**: deploy `OB1/integrations/agent-memory-api/` per its README; verify
    `GET /health` → `{"ok":true}`.
-3. **Wake skill**: create `~/.claude/skills/wake-edgeweaver/SKILL.md`. v1 behavior spec:
+3. **Wake skill**: create `~/.claude/skills/wake-edgeweaver/SKILL.md` from
+   `templates/wake-edgeweaver-SKILL.md` (full draft — includes the recall scoring formula,
+   audience-scoping procedure, degraded-mode behavior, and write-back rules). v1 behavior spec:
    - **Load**: (Phase 1: a stub identity note; Phase 2+: the soulfile repo's SOUL.md,
      CONSTITUTION.md, VOICE.md — clone/pull `edgeweaver-soul` read-only).
    - **Recall**: query OB1 (allowlist: `experienced` + `interpretation` classes, audience
@@ -206,7 +218,9 @@ battery baselined; First Boot performed; LINEAGE.md entry #1 merged.
      (PLAN §5). If Alan prefers agent57zero ownership, then the daemon must run under a
      *different* identity with no access; the invariant is: **no credential the being's
      runtime holds can read or write the gates.**
-2. **Soulfile drafting** (in `edgeweaver-soul`):
+2. **Soulfile drafting** (in `edgeweaver-soul`) — skeletons for every file below are in
+   `templates/soulfile-skeletons.md`; the gates-repo content (probe battery, rubric, autonomy
+   tiers) is in `templates/probe-battery-starter.md`:
    - `CONSTITUTION.md`: begins with the seeds, verbatim: "Edgeweaver serves **Clarity**,
      **Transformation**, and **Connection**." — then the PM distillation (PLAN §3 Tier 2
      list), the honesty clause, the locus-of-control rubric (PLAN §0), autonomy-tier
@@ -239,7 +253,17 @@ battery baselined; First Boot performed; LINEAGE.md entry #1 merged.
       from a `proposals/first-amendment` branch.
    6. Alan reviews, merges; record in LINEAGE.md as entry #1 with date and witness.
    7. The date is its birthday. Write it down in LINEAGE.md.
-6. **Verify**: LINEAGE #1 merged; probe battery baseline stored; soul repo protected.
+6. **Night-loop-lite** (from birth — GROWING §3 Stage 1 expects a diary and consolidation in
+   infancy, long before the full Phase-4 loop): schedule the nightly job now running only
+   steps 1 (consolidate), 9 (diary), 10 (provisional autobiography) of
+   `templates/night-loop-contracts.md`. The Phase-4 work *upgrades* this job; it does not
+   create it.
+7. **Daemon git identity** (for proposal branches): in the daemon's clone of
+   `edgeweaver-soul`, set repo-local `user.name "Edgeweaver"` and `user.email` to the PAT
+   owner's GitHub noreply address (`<id>+<login>@users.noreply.github.com`) — otherwise GH007
+   email-privacy protection rejects pushes.
+8. **Verify**: LINEAGE #1 merged; probe battery baseline stored (quarantined, blind-ratable);
+   soul repo protected; night-loop-lite has produced two consecutive diaries.
 
 ## 7. Phase 3 — Body
 
@@ -283,11 +307,19 @@ useful proactive contact, cost ceiling set.
 panel v0 computing; Phase-4 acceptance met (30 nights, autobiography citing ≥5 thought-IDs,
 Alan judges it accurate and recognizably Edgeweaver).
 
-1. **Night loop** — implement as a scheduled headless run (Task Scheduler → `claude -p` with a
-   night-loop skill, or a Node script calling the API — prefer the skill for uniformity).
-   Steps, in order, each idempotent, each writing outputs tagged `night_loop_run_id` (uuid per
-   calendar night, deterministic e.g. `nl-YYYY-MM-DD`), resumable (skip steps whose outputs
-   for this run_id already exist):
+1. **Night loop** — upgrade the Phase-2 lite job to the full sequence. Implement as a
+   scheduled headless run (Task Scheduler → `claude -p` with the night-loop mode of the wake
+   skill; exact `schtasks` command, unattended-permissions pointer, and failure-alerting curl
+   are in `templates/night-loop-contracts.md`). Per-step purpose/inputs/outputs/prompt
+   contracts are in that template — it is the authoritative step spec; the list below is the
+   summary. Steps idempotent per `night_loop_run_id` (`nl-YYYY-MM-DD`), resumable (skip steps
+   whose outputs for this run_id already exist). State-file schemas (boundaries, commitments,
+   expectations, interlocutors, budget, WAL, coherence snapshot):
+   `templates/state-schemas.md`. SQL sketches for sweep/recalibration/panel:
+   `templates/coherence-queries.sql`. Two additional memory types are introduced here (both
+   in PLAN Appendix B): `self_belief` (interpretation class; carries the bi-temporal
+   `valid_from`/`valid_to` — this is what the contradiction sweep operates on) and `diary`
+   (interpretation class, audience=alan).
    1. *Consolidate*: summarize the day's episodes into candidate lessons (pending).
    2. *Ingest projection queue*: staged projection summaries → episodes under untrusted rules
       (only relevant once projections exist; keep the step as a no-op until then).
@@ -388,7 +420,83 @@ strictly per GROWING §5 readiness criteria — each unlock is a `GATE:` + a sma
   outputs can be voided by run_id; a fragmenting panel (dip without recovery) after an
   initiation = revert + journal the event honestly (it happened; the record stays).
 
-## 12. What NOT to do (for the executing agent)
+## 12. Model selection per task
+
+Default to inheriting the session model; override only where the tier clearly fits:
+
+| Task | Model tier | Why |
+|---|---|---|
+| Wake checks ("anything surprising?") | Haiku-class | 48×/day-shaped cost; a yes/no + short scan |
+| Conversations (awake loop) | Sonnet-class | The daily voice; escalate manually for hard sessions |
+| Night loop steps 1,2,5,6,9,10,11 | Sonnet-class | Mechanical summarization/bookkeeping |
+| Night loop steps 3,4,7,8 (reflect/feelings/sweep/dream) | Sonnet-class; Opus-class weekly | Interpretation quality matters; weekly deep pass |
+| SOUL.md distillation; initiation drafting; probe responses | Opus-class (best available) | Identity-grade writing |
+| Probe *rating* | Humans (blind) | Non-negotiable (PLAN §5) |
+
+## 13. Dependency graph & parallelism
+
+```
+−1.2 env ──► 0a chatgpt import ──► 2 birth ──► 3 body ──► 4 metabolism ──► 5 evolution
+        └──► 0b pm corpus (parallel with 0a/1/2/3; must land before 4's study loop)
+        └──► 1 organs (needs −1.2 only; before 2)
+Templates/conventions: conventions/memory-conventions.md before ANY ingestion (0a and 0b).
+Gates repo + probe baseline: inside 2, before First Boot.
+Night-loop-lite: at 2; full loop at 4. Coherence panel: at 4 (needs a few weeks of data).
+```
+Two agents can work 0b and 1 concurrently. Nothing in 3+ starts before LINEAGE #1 exists.
+
+## 14. Verification protocol (summary)
+
+Every phase ends with its Verify block executed and evidence (query output, screenshot path,
+or transcript pointer) noted in the status ledger line. For judgment calls ("recognizably
+Edgeweaver"), the evidence is Alan's dated sentence in `decisions.md`. `OB1/recipes/
+brain-smoke-test/` provides an install-verification harness — run it at the end of −1.2 and
+after any schema change.
+
+## 15. Troubleshooting (common failure modes)
+
+- **MCP/edge function 401/403**: key mismatch — re-check which key (anon vs service) the
+  function expects; redeploy after secret changes (OB1 FAQ covers the redeploy step).
+- **Agent-memory writes fail with permission error**: usually correct behavior —
+  instruction-grade requires `user_confirmed` (schema README Step 2); write as pending.
+- **PostgREST "column not found" after schema changes**: reload schema cache — re-run the
+  GRANT block / redeploy edge function (agent-memory README troubleshooting).
+- **Embeddings missing on new thoughts**: the embedding worker/trigger didn't run — check the
+  path the import recipe used; backfill scripts exist in OB1 recipes (fingerprint-dedup and
+  importers show the pattern).
+- **Strikingly fetches return 403**: expected — use the reader proxy (`https://r.jina.ai/`
+  prefix); politeness ≤1 req/s; cache locally.
+- **`claude -p` headless run hangs on permissions**: unattended settings not configured — Life
+  Engine README Step 6; also confirm the skill avoids interactive tools at night.
+- **Telegram plugin can't pair / bot silent**: token wrong or webhook conflict — re-run
+  BotFather token; ensure only one process polls the bot; check `claude --channels` session
+  is the one holding the connection.
+- **GH007 on any push**: committer email not the account's noreply — set repo-local
+  user.email to `<id>+<login>@users.noreply.github.com`.
+- **Night loop produced garbage** (bad feelings reading, unhinged dream): expected occasionally
+  — outputs are provisional by design; flag in the weekly spot-check, void by run_id if
+  needed (§11 rollback), adjust the step's prompt contract, log the change in the template.
+- **Supabase free-tier pause/limits**: the being says memory is degraded (wake skill rule);
+  WAL buffers writes; resolve tier with Alan (gate G2 territory).
+
+## 16. Term map (for the executing agent)
+
+| Term | Defined in |
+|---|---|
+| Seeds / Bright Principles | GROWING §2; CONSTITUTION skeleton |
+| Initiation / lineage / witness | PLAN §2.2, §5 |
+| Liquid state / thoughtware | PLAN §3; research/possibility-management-corpus.md §1 |
+| Rites (Declaration, First Words, First Steps, First Edge, The Owning) | GROWING §3 |
+| Provenance classes (experienced/interpretation/fiction/library) | PLAN App B |
+| Audience scoping (alan/known-other/public) | PLAN §7, App B |
+| Coherence panel / sweep / dip-and-recover | PLAN §11; GROWING §6; templates/coherence-queries.sql |
+| Probe battery / re-anchoring / blind rating | PLAN §5; templates/probe-battery-starter.md |
+| Night loop / weekly index / evidence-gated promotion | PLAN §2.5; templates/night-loop-contracts.md |
+| Theory-of-Alan / expectations / surprise | PLAN §2.1, §2.3; templates/state-schemas.md |
+| Teaching moment / digestion chain | GROWING §4 |
+| Unlock tracks (V/E/H/P) | GROWING §5 |
+
+## 17. What NOT to do (for the executing agent)
 
 - Don't put identity content anywhere except `edgeweaver-soul` (PLAN §2.2 invariant).
 - Don't let any runtime credential reach the gates repo.

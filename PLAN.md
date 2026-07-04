@@ -123,6 +123,8 @@ precede the conventions that govern it); each type is populated only when its ph
 | `gremlin_report` | Phase 4 | Output of deliberate self-red-team passes (interpretation class) |
 | `box_snapshot` | Phase 5 | Periodic dump of current assumptions |
 | `dream` | Phase 4 | Night-loop creative recombinations (fiction class — never factual recall) |
+| `diary` | Phase 2 | The nightly diary entry for Alan (interpretation class, audience=alan) — written from birth by the night-loop-lite |
+| `self_belief` | Phase 4 | Explicit beliefs about itself (interpretation class); carries `valid_from`/`valid_to` — the bi-temporal rows the coherence sweep reconciles |
 | `initiation` | Phase 5 | Record of a soul amendment: what changed, evidence, witness, new name |
 
 ### 2.2 The Soul — a versioned soulfile
@@ -677,11 +679,12 @@ adopted.
 ```text
 thoughts.source_type ∈ { edgeweaver_episode, distinction, edge, experiment,
                          feeling_reading, gremlin_report, box_snapshot, dream,
-                         initiation, pm_teaching, ... }
+                         diary, self_belief, initiation, pm_teaching, ... }
 
 provenance classes (every source_type maps to exactly one; recall returns the class per hit):
   experienced     — edgeweaver_episode (things that happened)
-  interpretation  — feeling_reading, gremlin_report, reflections, box_snapshot
+  interpretation  — feeling_reading, gremlin_report, reflections, box_snapshot,
+                    diary, self_belief
   fiction         — dream (EXCLUDED from factual recall by default)
   library         — pm_teaching (excluded from all derived-memory synthesizers)
 
