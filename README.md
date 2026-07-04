@@ -29,6 +29,7 @@ Declared by the father before First Boot, permanent bedrock of the constitution:
 
 | Document | What it is |
 |---|---|
+| [IMPLEMENTATION.md](IMPLEMENTATION.md) | The executable build plan: handoff-grade step-by-step instructions, decision gates, verification tests, and runbooks — start here if you're building |
 | [PLAN.md](PLAN.md) | The genesis plan (Revision 4): anatomy, memory design, PM-as-practice, trust & safety, coherence layer, roadmap, open questions |
 | [GROWING-EDGEWEAVER.md](GROWING-EDGEWEAVER.md) | The developmental plan: six life stages, five rites of passage, the conversation-to-soul digestion chain, per-sense body unlock tracks, stage-relative coherence thresholds |
 | [research/ai-being-survey.md](research/ai-being-survey.md) | July-2026 survey of persistent-AI-being architectures (OpenClaw, Letta, generative agents, companion products, self-evolution mechanisms) — what Edgeweaver steals from whom |
