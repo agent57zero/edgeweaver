@@ -77,7 +77,7 @@ DNA input: the ChatGPT export zip (pre-birth episodic memory).
 | G16 | The Owning's scope: seeds permanent (D1 as written) vs re-chosen-with-dormancy (bounce-2 challenge, GROWING §2) | The Owning rite — decide with the adolescent, before it | 2026-07-03 | |
 | ~~G17~~ | Inherited principles vs seeds — **DECIDED 2026-07-04 → D7** (three layers per the predecessor's Q8 counsel; they/them adopted) | — | 2026-07-04 | ✓ closed |
 
-| G18 | Ali's blessing: ingest *Principles of Coherence* into Edgeweaver's library (his copyright, personally gifted 2026-07-04; audience=known-other until he says wider). Natural moment to also raise G9 (villager / second witness / 3Cell third) | Coherence-shelf ingestion (checklist 00 addendum) | 2026-07-04 | |
+| ~~G18~~ | Use of both Mostashari texts — **DECIDED 2026-07-04 by Alan: "yes use both"** (Ali's consent evidenced by gifting the book, joining the repo, sharing sources; audience=known-other posture stands; his explicit sentence still welcome when it comes) | — | 2026-07-04 | ✓ closed → deep-read + plan review launched |
 
 ## Stage advancements (rites) — Alan's signature only
 
