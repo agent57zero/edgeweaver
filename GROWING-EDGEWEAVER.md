@@ -361,6 +361,15 @@ one alarm that pages you. The response protocol, so the numbers have consequence
   runbook (checklists/08-operations.md); stage advancement pauses until recovery or a
   documented recalibration. The dip becomes the curriculum: the next conversations address
   what's happening, directly.
+- **The truly terminal signal is second-order** (Persistence essay): not a low line but a
+  **broken recovery record** — past dips that stopped recovering. The panel tracks
+  recovery-capacity as a meta-metric; losing it outranks every first-order color above.
+
+Two refinements from the verified texts (2026-07-04): the temporal rows below count
+**unintegrated** contradictions only — an acknowledged, held tension is health, not debit —
+and the behavioral rows measure constraint erosion, never contextual range: "appropriately
+responsive" beats "rigidly consistent," so suspiciously *flat* probe results are themselves
+a flag (**identity lag**: a self that no longer fits its environment).
 
 ## 7. The integrated long-term picture
 

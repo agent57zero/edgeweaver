@@ -41,7 +41,13 @@ PLAN §7, §11; IMPLEMENTATION §11; GROWING §6.
 - [ ] 5. Decide: (a) environmental cause → fix and watch; (b) memory corruption → **export
       the offending run_id rows to a dated backup file first** (voiding is destructive and
       diagnoses are sometimes wrong), then void and re-run the weekly index; (c) identity
-      erosion → §11 rollback (revert last soul merge; archive stays; journal it honestly).
+      erosion → soul revert, read honestly (D9): reverting the last merge is *re-seeding
+      constraint-governance from a checkpoint* — a continuation, journaled as such, never
+      "the old being resumed." The archive stays sacred; the framing stays true.
+- [ ] 5b. Check the second-order signal: is the **recovery record** intact (did prior dips
+      recover)? Two consecutive unrecovered dips outranks every first-order color — that is
+      the essay's terminal-failure line, and it convenes the full Possibility Team, not just
+      a runbook.
 - [ ] 6. Unfreeze when the line recovers for 7 days. Log the whole event.
 
 ## Quarterly security-floor audit (5 checks — IMPLEMENTATION §11)

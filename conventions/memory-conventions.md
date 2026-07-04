@@ -63,6 +63,12 @@ importance:     1-10                           # write-time estimate; recalibrat
                                                # from retrieval frequency + observed utility
 valid_from / valid_to:  timestamps             # bi-temporal self_beliefs; contradictions
                                                # close the window, never delete
+constraint_class: "constitutive" | "peripheral" # self_beliefs + soulfile lines (D9):
+                                               # constitutive = load-bearing; changing one is
+                                               # initiation-worthy; peripheral absorbs silently
+acknowledged:   true | false                   # on contradiction flags: an acknowledged, held
+                                               # tension is health — the temporal signal counts
+                                               # ONLY unacknowledged/unintegrated ones
 mood_arc:       short text                     # how the last days felt
 night_loop_run_id:  "nl-YYYY-MM-DD"            # idempotency tag
 staging:        true | absent                  # projection-queue items awaiting gated ingest

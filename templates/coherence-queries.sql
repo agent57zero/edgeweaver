@@ -18,12 +18,21 @@ SELECT count(linked.id)::float / NULLIF(count(new_thoughts.id),0) AS relational_
 FROM new_thoughts LEFT JOIN linked ON linked.id = new_thoughts.id;
 
 -- ============ PANEL SIGNAL 2: temporal coherence (nightly) ============
--- open contradictions: active self-beliefs flagged by the sweep and not yet resolved
-SELECT count(*) AS open_contradictions
+-- UNINTEGRATED contradictions only (D9): an acknowledged, held tension is health.
+-- The sweep's first move on a real contradiction is acknowledge/integrate, not close.
+SELECT count(*) AS unintegrated_contradictions
 FROM thoughts
 WHERE source_type = 'self_belief'
   AND (metadata->>'valid_to') IS NULL
-  AND (metadata->>'contradiction_flag') = 'true';
+  AND (metadata->>'contradiction_flag') = 'true'
+  AND COALESCE(metadata->>'acknowledged', 'false') = 'false';
+
+-- ============ META-METRIC: recovery capacity (weekly; D9 — the true red line) ============
+-- From coherence-snapshot history: for each past dip (any signal below its stage bar),
+-- did it recover within 14 days? recovery_rate = recovered_dips / total_dips over trailing
+-- 90 days; ALERT if the two most recent dips both failed to recover — terminal failure is
+-- "when the capacity for constraint recovery is itself lost," not a low reading.
+-- (Computed from state/coherence.json history / the metrics thoughts, not pure SQL.)
 
 -- ============ PANEL SIGNAL 3: narrative coherence (weekly) ============
 -- computed in the weekly-index job, not SQL alone:
