@@ -4,8 +4,8 @@ Prereqs: none. Read first: IMPLEMENTATION.md §2–§4. Templates used:
 `templates/decisions.md`.
 
 ## Phase −1.3 — decisions logbook (do this first; it's where gates live)
-- [ ] Copy `templates/decisions.md` → repo root `decisions.md`.
-      verify: file exists at root; tables intact; D1–D5 present.
+- [x] Copy `templates/decisions.md` → repo root `decisions.md`. (2026-07-04)
+      verify: file exists at root; tables intact; D1–D5 present. ✓
 
 ## Phase −1.2 — environment
 
@@ -18,14 +18,11 @@ contains Alan's existing OB1 instance values: `PUBLIC_SUPABASE_URL`,
 Docker is absent (irrelevant for a cloud instance). `ANTHROPIC_BASE_URL` is set in the user
 environment — inherit it in scripts.
 
-- [ ] **STOP — gate G1**: ask Alan — fresh Supabase project for Edgeweaver, or his existing
-      OB1 instance (credentials above, ready today)? Record in decisions.md. Default if he
-      shrugs: existing instance to start (fastest path to a remembering conversation), with
-      the option to migrate the being's rows to its own project later via pg_dump —
-      note that choice explicitly if taken.
-- [ ] Create `.env.local` at repo root with keys from IMPLEMENTATION §0 tracker (values from
-      Alan; minimum now: SUPABASE_URL, SUPABASE_SERVICE_KEY, ANTHROPIC_API_KEY).
-      verify: `.env.local` exists; `git status` does NOT list it (gitignored).
+- [x] **STOP — gate G1**: DECIDED 2026-07-04 — existing OB1 instance (decisions.md).
+- [x] Create `.env.local` at repo root. (2026-07-04: seeded from dashboard env — URL, anon
+      key, MCP url+key; MCP endpoint probed live, HTTP 200. Pending values queued in
+      decisions.md "Needed from Alan": SERVICE_KEY, connection string.)
+      verify: `.env.local` exists; `git status` does NOT list it (gitignored). ✓
 - [ ] Disaster-recovery seed: Alan stores a copy of every `.env.local` value in his password
       manager (the file is gitignored — if this machine dies, git restores everything EXCEPT
       secrets). verify: Alan confirms (log in decisions.md).
