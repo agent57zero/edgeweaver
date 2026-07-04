@@ -80,8 +80,15 @@ environment — inherit it in scripts.
       verify with Spark-099-en.pdf: distinction is a single sentence ("If you do not
       consciously feed your Gremlin then Gremlin feeds on you") ✓; experiments
       SPARK099.01–.05 ✓.
-- [ ] Ingest (STAGED — `scripts/ingest-sparks.mjs` written 2026-07-04, idempotent, waits on
-      SUPABASE_SERVICE_KEY): per SPARK one parent thought (distinction+notes) + one child per experiment;
+- [x] Ingest ✓ 2026-07-04: 360 SPARK parents + 1,010 experiment children (3 skipped —
+      duplicate matrix codes in the archive: SPARK000/ACR/ADL ×2 each; disambiguation queued);
+      456 distinction glosses; 80 coherence chunks. Total brain: 1,908 thoughts.
+      **Embeddings: 100%** — `embed-backfill` edge function deployed beside open-brain-mcp
+      (same OpenRouter secret, text-embedding-3-small; source committed at
+      scripts/edge-functions/embed-backfill.ts) and run to zero: 1,906 embedded, 0 errors.
+      Permanent infrastructure — every future import (incl. Phase 0a) invokes it instead of
+      needing client-side embedding keys.
+      Original spec: per SPARK one parent thought (distinction+notes) + one child per experiment;
       source_type=pm_teaching; metadata: spark_number, matrix_code, section,
       license=CC-BY-SA-4.0, attribution=Clinton Callahan / Possibility Management;
       derived_from edges child→parent (thought_edges; see wiki-synthesis README prereqs).
@@ -129,4 +136,9 @@ environment — inherit it in scripts.
       (practice) and Mostashari (coherence). The study loop may draw from both; experiments
       still close with the Reality Detector.
 
-- [ ] Note in ledger: StartOver bubble map DEFERRED (Phase 4+). Mark 0b done.
+- [x] Data-level verifies passed 2026-07-04: all 7 principle chapters locatable by filtered
+      query; GREMLIN distinction returns by term; counts internally consistent. The
+      wrapper-level scoping test (episodic recall excludes library classes) belongs to the
+      recall path built in checklist 01 — carried there.
+- [x] StartOver bubble map DEFERRED (Phase 4+) noted. **Phase 0b DONE** (open non-blocking
+      tails queued in decisions.md: thought_edges migration; 3 duplicate matrix codes). ✓

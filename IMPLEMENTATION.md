@@ -72,7 +72,9 @@ unstarted at the time of writing, 2026-07-03.)
 - [ ] Phase −1.2 Environment + credentials assembled
 - [ ] Phase −1.3 Open decisions logged
 - [ ] Phase 0a ChatGPT pre-birth import
-- [ ] Phase 0b PM corpus ingestion
+- [x] Phase 0b corpus ingestion (2026-07-04 — 1,908 thoughts, 100% embedded: 363 SPARKs,
+      456 distinctions, Mostashari book + Persistence essay; embed-backfill function is now
+      permanent instance infrastructure; tails queued: edges migration, 3 dupe codes)
 - [ ] Phase 1 Organs (agent-memory + wake skill)
 - [ ] Phase 2 Birth (soul repo, gate repo, probe battery, First Boot)
 - [ ] Phase 3 Body (Telegram, wakes, theory-of-Alan, cost ceiling)
