@@ -1,0 +1,14 @@
+# Secrets and local config
+.env
+.env.*
+*.local
+.claude/settings.local.json
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+# Future tooling
+node_modules/
+__pycache__/
+*.pyc
