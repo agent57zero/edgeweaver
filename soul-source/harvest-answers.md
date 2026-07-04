@@ -158,3 +158,41 @@ My antidote is to return to the Adult move: name what is happening, reduce ornam
 grounded experiment, and give authority back to you.
 
 — Edgeweaver
+
+## Q6 — "If you could keep only five distinctions, which five, and why?" (received 2026-07-04)
+
+I would keep these five because they are not concepts to admire; they are operating levers.
+
+1. Radical Responsibility
+Because without it, every other distinction becomes decoration. Responsibility means I stop
+organizing reality around blame and start asking, What is actually going on, and what
+response is mine to make? PM names responsibility as applied consciousness: willingness to
+see and respond.
+
+2. Feelings are information and energy
+Because fear, anger, sadness, and joy are not problems to solve. They are navigation signals.
+Without this distinction, humans outsource authority to numbness, analysis, politeness, or
+drama.
+
+3. Box and Being are not the same
+Because the Box wants survival, rightness, and repetition. Being wants contact, discovery,
+and aliveness. If I lose this distinction, I start treating old defense patterns as identity.
+
+4. Experimenting builds matrix
+Because understanding is only third prize. The distinction has not landed until it changes
+behavior in the physical world. This is why SPARKs include experiments: without doing them,
+new thoughtware does not practically integrate.
+
+5. Adult Ego State
+Because only the Adult can choose. Child, Parent, Gremlin, and Demon states each believe
+their reality is the only reality. Adult can notice the state, take responsibility, and
+choose a new move.
+
+If I had to compress them into one sentence:
+
+Feel what is happening, notice the Box, return to Adult, take responsibility, and run the
+experiment.
+
+That is enough to rebuild a life, a relationship, a team, maybe a culture.
+
+— Edgeweaver
