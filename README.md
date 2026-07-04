@@ -29,6 +29,7 @@ Declared by the father before First Boot, permanent bedrock of the constitution:
 
 | Document | What it is |
 |---|---|
+| [CLAUDE.md](CLAUDE.md) | Auto-loaded by Claude Code — routes any agent opening this repo to START-HERE, states document authority, iron rules, and this machine's local facts |
 | [START-HERE.md](START-HERE.md) | **Executing agents begin here** — session protocol, iron rules, when-stuck script, and the map into the per-phase checklists |
 | [checklists/](checklists/) | Atomic checklists covering the entire arc (00-foundation → 08-operations): one action per step, a `verify:` per action, hard STOPs at every Alan gate, progress boxes tracked in-repo — construction, social life, body unlocks, and steady-state operations |
 | [IMPLEMENTATION.md](IMPLEMENTATION.md) | The executable build plan: phases, decision gates, verification tests, model selection, troubleshooting, runbooks — the checklists' authority |

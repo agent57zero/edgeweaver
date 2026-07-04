@@ -18,7 +18,7 @@
 
 | # | Gate | Blocks | Asked | Decided |
 |---|---|---|---|---|
-| G1 | Fresh Supabase project vs Alan's existing OB1 instance | Phase −1.2 → everything | | |
+| G1 | Fresh Supabase project vs Alan's existing OB1 instance (existing credentials found on this machine — checklist 00; default = existing, migrate-later option noted) | Phase −1.2 → everything | | |
 | G2 | Supabase tier / PITR confirmed, or dump+restore fallback | Phase −1.2 | | |
 | G3 | ChatGPT export + custom GPT instructions + peak-conversation list | Phase 0a | | |
 | G4 | Teaching-moment emoji | Phase 3.2 | | |

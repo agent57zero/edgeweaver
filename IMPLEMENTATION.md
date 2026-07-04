@@ -51,6 +51,8 @@ this file wins and the checklist gets fixed. Ground rules:
 ### Credential tracker (names only — values live in `.env.local`, gitignored)
 
 ```text
+# NOTE: URL, anon key, MCP endpoint + key for Alan's existing instance are already on this
+# machine — see checklist 00 Phase −1.2 "Found on this machine" before asking for values.
 SUPABASE_URL=            # Alan's OB1 Supabase project URL (https://<ref>.supabase.co)
 SUPABASE_SERVICE_KEY=    # service role key (full DB access — handle accordingly)
 SUPABASE_ANON_KEY=       # anon key if the MCP edge function uses it

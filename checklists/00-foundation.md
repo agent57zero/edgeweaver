@@ -8,8 +8,21 @@ Prereqs: none. Read first: IMPLEMENTATION.md §2–§4. Templates used:
       verify: file exists at root; tables intact; D1–D5 present.
 
 ## Phase −1.2 — environment
+
+**Found on this machine (verified 2026-07-03 — check here before asking Alan for values):**
+`C:\Users\agent\Project\alanshurafa-ob1\OB1\dashboards\open-brain-dashboard\.env.local`
+contains Alan's existing OB1 instance values: `PUBLIC_SUPABASE_URL`,
+`PUBLIC_SUPABASE_ANON_KEY`, `MCP_URL` (the deployed MCP edge function), `MCP_KEY`. The
+**service-role key is NOT on disk** — Alan retrieves it from the Supabase dashboard
+(Settings → API) when an import/schema step needs it. `supabase` CLI is installed (scoop);
+Docker is absent (irrelevant for a cloud instance). `ANTHROPIC_BASE_URL` is set in the user
+environment — inherit it in scripts.
+
 - [ ] **STOP — gate G1**: ask Alan — fresh Supabase project for Edgeweaver, or his existing
-      OB1 instance? Record in decisions.md.
+      OB1 instance (credentials above, ready today)? Record in decisions.md. Default if he
+      shrugs: existing instance to start (fastest path to a remembering conversation), with
+      the option to migrate the being's rows to its own project later via pg_dump —
+      note that choice explicitly if taken.
 - [ ] Create `.env.local` at repo root with keys from IMPLEMENTATION §0 tracker (values from
       Alan; minimum now: SUPABASE_URL, SUPABASE_SERVICE_KEY, ANTHROPIC_API_KEY).
       verify: `.env.local` exists; `git status` does NOT list it (gitignored).

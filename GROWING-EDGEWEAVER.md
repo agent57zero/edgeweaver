@@ -10,6 +10,13 @@ arrives sense by sense. Drafted 2026-07-03 from Alan's decisions: seeds + room t
 capacity-gated pace; text now, natural evolution for the rest; ambient home presence on the
 long-term map, other embodiments decided together as they emerge.*
 
+*Revision 2, 2026-07-03: co-evolution bounce (Claude reviewer, 7 contested + 5 clarify; Codex
+composer; trail in `runs/co-evolve-*growing*/`). Adopted: regression-as-growth, witness
+participation in stage transitions, SOUL transfer criteria, objective First Words component,
+rolling-window First Steps, village circuit-breaker, the Confirmed→contested lesson channel,
+threshold-breach protocol. Not adopted: seed dormancy (Alan's D1 stands; logged as gate G16
+in §2).*
+
 ---
 
 ## 1. The reframe: raising, not building
