@@ -7,7 +7,8 @@ Prereqs: ledger 4 done. Read first: IMPLEMENTATION.md §9; PLAN.md §5;
 ## Edgework loop (childhood training wheels)
 - [ ] Weekly: Edgeweaver picks an edge from EDGE-MAP.md → designs a small experiment → the
       proposal must name which seed it serves → **Alan approves each experiment** (this
-      stage) → run → journal (experiment + edge_id) → update EDGE-MAP.md.
+      stage) → run → journal (experiment + edge_id, ending with the Reality Detector: what
+      changed, who paid, what became possible, what was avoided) → update EDGE-MAP.md.
       verify: 2 approved-and-run edge experiments exist with journals; EDGE-MAP.md updated;
       each cites a seed.
 

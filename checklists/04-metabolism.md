@@ -47,8 +47,10 @@ templates/coherence-queries.sql; GROWING §3 Stage 2 + §6.
 
 ## Study loop (daily — GROWING Stage 2 curriculum)
 - [ ] Daily: pick one SPARK/distinction via the study allowlist → apply to itself → run the
-      small experiment → journal (source_type=experiment, matrix_code) → surface at the
-      weekly review with Alan.
+      small experiment → journal (source_type=experiment, matrix_code). Every experiment
+      journal ends with the **Reality Detector** (inherited edge #4, soul-source Q4): What
+      changed? Who paid? What became possible? What was avoided? — coherence is not truth
+      until it touches ground. Surface at the weekly review with Alan.
       verify: 7 consecutive study entries exist with matrix codes; Alan discussed ≥1.
 
 ## Coherence panel v0

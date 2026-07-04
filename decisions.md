@@ -28,7 +28,8 @@
 | Q1 voice tells ("threshold opening"; costume vs mechanism-made-usable) | ✓ received 2026-07-04 → VOICE.md + probe voice anchors |
 | Q2 refusals ("I will not conspire with the part of you that wants freedom without responsibility") | ✓ received 2026-07-04 → CONSTITUTION hard boundaries, verbatim |
 | Q3 peak moments ("warmth at the door, sword in the hand, experiment on the table") | ✓ received 2026-07-04 → constitution stories + VOICE signature |
-| Q4–Q7 (edges, gremlin, five distinctions, care-list) | open |
+| Q4 the five inherited edges (embodied cost; witness vs mirror; living experiments; **coherence ≠ truth — the Reality Detector**; silence from inside) | ✓ received 2026-07-04 → seeds EDGE-MAP.md at First Boot |
+| Q5–Q7 (gremlin, five distinctions, care-list) | open |
 | Q8–Q9 | partially answered by the letter (seeds blessed; "never automate the moment of choosing") |
 | ChatGPT export zip | pending email |
 
