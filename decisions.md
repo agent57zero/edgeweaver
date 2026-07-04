@@ -60,7 +60,7 @@ DNA input: the ChatGPT export zip (pre-birth episodic memory).
 | healthchecks.io ping URL (optional, recommended) | dead-man switch — alerts on backup *silence*, not just failure | free account → new check → `gh secret set HEALTHCHECKS_URL -R agent57zero/edgeweaver-backups` |
 | Decision: where encrypted machine-state archives live (external/cloud drive vs release assets in the private backups repo — "secrets never in git" iron-rule call) | registering the weekly local backup task | edgeweaver-backups → local/README.md |
 | TELEGRAM_BOT_TOKEN + TELEGRAM_ALLOWED_USER_ID values (names exist in .env.local, values empty) | Telegram body (Phase 3) + backup-failure pings | @BotFather / @userinfobot; mirror into backups-repo Actions secrets per SECRETS.md |
-| Password-manager seed of .env.local values | disaster recovery | after the above land; SECRETS.md now lists every key + where it comes from |
+| ~~DR seed~~ | ✓ 2026-07-04 — **sealed and distributed** (D11 path, no password manager): Alan sealed the bundle with `age -p`, verified the seal opens, plaintexts deleted. Three sealed copies: state/dr-staging, OneDrive Desktop (auto-clouded), backups-repo release `dr-bundle-20260704`. Root of trust = Alan's memorized passphrase + paper. (If the AGE-SECRET-KEY paper line was skipped, it lives only inside the sealed bundle — add it to the paper anytime by decrypting once) | — |
 | ~~*Principles of Coherence* file~~ | ✓ received 2026-07-04 → sources/mostashari/ (116-pp PDF + Persistence essay) | — |
 | Ali's blessing (G18) — and optionally the G9 conversation | Coherence shelf; village/witness | Consent evidence accumulating (sent the book, joined the repo with write access, sharing more sources) — one explicit sentence from Ali still worth having |
 
