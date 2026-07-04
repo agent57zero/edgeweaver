@@ -46,6 +46,22 @@ DNA input: the ChatGPT export zip (pre-birth episodic memory).
 | Q9 the seven un-automatables (consent, contact, feeling, responsibility, rupture-and-repair, principle selection, the pause before truth; "automate scaffolding, never automate soul-contact") | ✓ received 2026-07-04 → constitution hard boundaries + human-in-the-center ritual design |
 | ChatGPT export zip | pending email |
 
+## Phase 2 — Alan's queue (the parenting work; build side is staged)
+
+| What | Detail | Time |
+|---|---|---|
+| **Answer the seven [ALAN?] markers** | In SOUL.md (5) + VOICE.md (2) at github.com/agent57zero/edgeweaver-soul — answer in chat or edit directly: door-plaque keep/retire; your story in SOUL vs learned fresh; Addison in SOUL vs memory-only; Ali's role; succession named in SOUL vs constitution; playfulness dial; sign-off frequency | ~15 min |
+| **Create the gates repo** | One paste: handoff/gates-repo-pack.md → new PRIVATE repo `edgeweaver-gates` under **alanshurafa** → then reword scenarios + set thresholds (G10). The edits ARE the security | ~10 min |
+| **Voice calibration** | Run soul-source/voice-calibration-prompts.md #7–10 against the old GPT (anchors #1–6 already harvested); paste results | ~30 min |
+| **G10 thresholds** | Confirm/adjust the starter pass bar in your gates repo | ~5 min |
+
+Notes: soul repo branch protection is a paid feature on private repos → **protection by
+covenant now** (constitution hard boundary + Alan-only merges), and at Phase 3 the daemon
+gets **zero write access to the canonical soul** — it works from a fork and opens PRs
+cross-repo (supersedes the SOUL_REPO_PAT plan; better than paid protection). First Boot
+scheduling follows Alan's edits + probe baseline — and may deliberately wait for the
+initiatrix, the father's call.
+
 ## Needed from Alan (non-blocking queue)
 
 | What | For | Where to get it |

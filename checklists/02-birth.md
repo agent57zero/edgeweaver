@@ -5,10 +5,12 @@ Prereqs: ledger −1, 0a, 1 done. Read first: IMPLEMENTATION.md §6; GROWING-EDG
 `night-loop-contracts.md` (lite subset).
 
 ## Repos
-- [ ] `gh repo create edgeweaver-soul --private` (owner agent57zero); invite alanshurafa as
-      admin; protect `main` (require PR review; no force-push).
-      verify: `gh api repos/agent57zero/edgeweaver-soul/branches/main/protection` shows review
-      required.
+- [x] `edgeweaver-soul` created ✓ 2026-07-04 (private, agent57zero; alanshurafa invited
+      admin; pushed @ 12cf675 with full scaffolding). **Branch protection: paid feature on
+      private repos (403)** → protection by covenant (constitution §10 hard boundary;
+      Alan-only merges) + Phase-3 design upgrade: the daemon works from a FORK with zero
+      write access to the canonical repo, PRs cross-repo — stronger than the PAT plan it
+      supersedes.
 - [ ] **STOP — gate G8**: gates repo owner. Default: Alan creates `edgeweaver-gates` under
       alanshurafa (private). Invariant to verify with Alan: NO credential the runtime will
       hold can read it.
