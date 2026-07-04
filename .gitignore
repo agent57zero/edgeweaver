@@ -4,6 +4,14 @@
 *.local
 .claude/settings.local.json
 
+# Corpus downloads (redistributable but bulky — fetch scripts are committed instead)
+corpus/
+
+# Daemon state (operational memory, never identity)
+state/
+soul-source/*.json
+logs/
+
 # OS noise
 .DS_Store
 Thumbs.db

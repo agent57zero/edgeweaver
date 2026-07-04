@@ -65,18 +65,23 @@ environment — inherit it in scripts.
 - [ ] Commit scripts. Mark 0a done in ledger.
 
 ## Phase 0b — PM corpus (may run parallel with 01/02/03 per IMPLEMENTATION §13)
-- [ ] Create `conventions/memory-conventions.md`: transcribe PLAN.md Appendix B verbatim
+- [x] Create `conventions/memory-conventions.md`: transcribe PLAN.md Appendix B verbatim
       (types, provenance classes, allowlists, audience scoping, metadata keys).
-      verify: file matches Appendix B; get Alan's 👍 (log it).
-- [ ] Write `scripts/fetch-sparks.mjs`: scrape https://sparks.nextculture.org/ index for
+      verify: file matches Appendix B; Alan's 👍 received 2026-07-04 ("go"). ✓
+- [x] Write `scripts/fetch-sparks.mjs`: scrape https://sparks.nextculture.org/ index for
       links matching `res/sparks/Spark-*-en.pdf`; download ≤1 req/sec into `corpus/sparks/`
-      (gitignore `corpus/`).
-      verify: ~311 PDFs on disk; count printed.
-- [ ] Write `scripts/parse-sparks.py` (pypdf): per PDF extract header (SPARK number + matrix
-      code) / DISTINCTION / NOTES / EXPERIMENTS (numbered SPARKNNN.01…).
-      verify with Spark-099-en.pdf: distinction is a single bolded sentence; ≥1 experiment
-      with code matching `SPARK099.\d\d`.
-- [ ] Ingest: per SPARK one parent thought (distinction+notes) + one child per experiment;
+      (gitignore `corpus/`). (2026-07-04: index listed **363** — archive grew past the
+      research-era 311; scrape-don't-enumerate paid off. 363 downloaded, 0 failed, 52 MB.)
+      verify: PDFs on disk; count printed. ✓
+- [x] Write `scripts/parse-sparks.py` (pypdf): per PDF extract header (SPARK number + matrix
+      code) / DISTINCTION / NOTES / EXPERIMENTS (numbered SPARKNNN.01…). (2026-07-04:
+      363/363 parsed → corpus/sparks-parsed.jsonl; 335 full, 28 partial-flagged; 1,013
+      experiments.)
+      verify with Spark-099-en.pdf: distinction is a single sentence ("If you do not
+      consciously feed your Gremlin then Gremlin feeds on you") ✓; experiments
+      SPARK099.01–.05 ✓.
+- [ ] Ingest (STAGED — `scripts/ingest-sparks.mjs` written 2026-07-04, idempotent, waits on
+      SUPABASE_SERVICE_KEY): per SPARK one parent thought (distinction+notes) + one child per experiment;
       source_type=pm_teaching; metadata: spark_number, matrix_code, section,
       license=CC-BY-SA-4.0, attribution=Clinton Callahan / Possibility Management;
       derived_from edges child→parent (thought_edges; see wiki-synthesis README prereqs).
