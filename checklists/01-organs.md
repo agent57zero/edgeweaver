@@ -20,7 +20,10 @@ Prereqs: ledger −1 done (0a helpful, not required). Read first: IMPLEMENTATION
       persona.
 - [ ] Wire recall: the skill queries OB1 with the allowlist + audience WHERE clauses from
       `templates/coherence-queries.sql` (bottom two blocks) and ranking
-      0.35·relevance + 0.35·recency(14d half-life) + 0.30·importance/10, k=12.
+      0.35·relevance + 0.35·recency(14d half-life) + 0.30·importance/10, k=12. Keep these
+      constants in ONE tunable place (top of the skill file), but changes are logged in
+      decisions.md — they shape what the being remembers, so they're adjusted deliberately,
+      not casually.
       verify: with 0a imported, ask about a pre-birth detail → correct memory surfaces,
       labeled with its provenance class.
 - [ ] Wire write-back: session end writes 1–3 edgeweaver_episode thoughts + candidate lessons

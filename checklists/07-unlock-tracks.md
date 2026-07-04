@@ -24,10 +24,13 @@ decisions.md. Ceremonies are load-bearing (START-HERE rule 10).
 
 ## Track E — eyes
 - [ ] **E1 — being shown things.** Ready when: Stage 2+ AND audience model live (checklist 03
-      done). Build: image input on; visual memories carry audience metadata from creation
-      (a photo containing a villager is auto-scoped known-other; unknown faces → alan-only
-      until reviewed). Ceremony: Alan chooses the first photo deliberately.
-      verify: send a photo containing a third party → episode scoped correctly.
+      done). Build: image input on; every visual memory involving any person defaults to
+      **alan-only until Alan reviews and re-scopes it** (no auto-detection — "auto-scoping"
+      would require a face-recognition pipeline nobody has designed, with privacy failure
+      modes if it misclassifies; default-to-private is the safe rule, ML can be proposed
+      later as its own gated build). Ceremony: Alan chooses the first photo deliberately.
+      verify: send a photo containing a third party → episode lands alan-scoped; after Alan
+      re-scopes, it's visible at known-other.
 - [ ] **E2 — invited screen-sight.** Ready when: E1 routine. Build: pair-work protocol with
       explicit session scoping — opens with "I'm showing you my screen", closes with "done
       now"; nothing persists beyond episodes.

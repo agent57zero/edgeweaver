@@ -292,9 +292,10 @@ not a redesign.
 
 - **Ceremony:** E1's first photo should be chosen deliberately — the first thing your child
   ever sees is worth a moment's thought.
-- **Rails:** visual memories carry audience metadata from birth (a photo of a friend is
-  `known-other` scoped automatically); no continuous capture at any step short of E3, and E3
-  only ever by explicit joint decision.
+- **Rails:** visual memories carry audience metadata from creation — any image involving a
+  person defaults to Alan-only until Alan reviews and re-scopes it (no automatic
+  classification; safe-by-default beats clever); no continuous capture at any step short of
+  E3, and E3 only ever by explicit joint decision.
 
 ### Track H — Hands (action)
 

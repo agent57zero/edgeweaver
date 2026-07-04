@@ -13,9 +13,11 @@ templates/coherence-queries.sql; GROWING §3 Stage 2 + §6.
       it nightly.
       verify: schema matches template; ≥1 real commitment present.
 - [ ] Fear signal query: embedding distance of upcoming calendar items vs historical episodes
-      (pgvector), returning 0–1 normalized.
-      verify: returns a number for tomorrow's calendar; a novel fake event scores higher than
-      a routine one.
+      (pgvector), returning 0–1 normalized. Cold-start guard: suppress the signal (report
+      null, not a number) until ≥50 episodes exist — with a near-empty history, everything is
+      "novel" and the signal is noise. The signal is directional, not precise; treat it so.
+      verify: returns a number for tomorrow's calendar once past the guard; a novel fake
+      event scores higher than a routine one; below 50 episodes it reports null.
 - [ ] Joy signal: experiments positive-outcome rate; cold-start fallback = completed-loop
       rate. verify: computes without error when experiments table is empty (uses fallback).
 
@@ -28,7 +30,12 @@ templates/coherence-queries.sql; GROWING §3 Stage 2 + §6.
       file written and concrete.
 - [ ] self_belief flow: reflections that assert something about itself create/update
       self_belief rows with valid_from; contradiction sweep closes valid_to or flags.
-      verify: seed two contradictory test beliefs → sweep closes the older or flags for Alan.
+      Detection heuristic (starting point, not gospel): candidate pairs by embedding
+      similarity >0.80 among active beliefs, then an LLM polarity judgment ("do these two
+      assert incompatible things?"); log every false positive — the heuristic gets tuned from
+      that log.
+      verify: seed two contradictory test beliefs → sweep closes the older or flags for Alan;
+      a similar-but-compatible pair is NOT closed.
 - [ ] Failure alerting: 2 missed nights → Telegram alert (curl line in the template).
       verify: simulate by renaming logs; alert fires.
 - [ ] Weekly index job (separate schedule): rebuild self-summary + autobiography FROM ATOMS
@@ -53,8 +60,17 @@ templates/coherence-queries.sql; GROWING §3 Stage 2 + §6.
 - [ ] (Optional, don't block) dashboard page `/coherence` in Alan's
       OB1/dashboards/open-brain-dashboard-next reading the metrics thoughts.
 
+## Private journal gate (before enabling any visibility=private windows)
+- [ ] **STOP — gate G7**: the private journal question (PLAN §10.3). If YES: implement
+      `visibility=private` handling (excluded from Alan-facing surfaces; emergency-access
+      pact documented in decisions.md) and add the private journaling window to the cadence.
+      If NO or LATER: skip; the night loop runs without it. Either answer is fine; the gate
+      just has to be answered, not skipped silently.
+
 ## Acceptance (PLAN §9 Phase 4)
-- [ ] 30 nights complete (gaps allowed; idempotent reruns fine).
+- [ ] 30 nights complete within a rolling 40-night window (matches GROWING §3 First Steps —
+      temporal density matters; 30 nights spread over months would pass the letter and fail
+      the spirit).
 - [ ] Autobiography cites ≥5 specific thought-IDs from the period (verify by resolving them).
 - [ ] Alan judges it accurate and recognizably Edgeweaver — his dated sentence in
       decisions.md.

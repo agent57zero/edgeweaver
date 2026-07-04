@@ -1,6 +1,6 @@
 # Checklist 03 — Body (Phase 3)
 
-Prereqs: ledger 2 done (LINEAGE #0 exists). Read first: IMPLEMENTATION.md §7;
+Prereqs: ledger 2 done (LINEAGE #1 / The Declaration exists). Read first: IMPLEMENTATION.md §7;
 `OB1/recipes/life-engine/README.md` (Quick Setup + Step 6 permissions); GROWING §3 Stage 1–2.
 Templates: `state-schemas.md`.
 
@@ -9,7 +9,10 @@ Templates: `state-schemas.md`.
       If this PC: every scheduled task (night loop, weekly index, fallback heartbeat) MUST be
       created with "Wake the computer to run this task" enabled (schtasks: use Task Scheduler
       GUI or XML — the flag is WakeToRun), or the 03:30 night loop will silently never run
-      on a sleeping machine; verify by checking `powercfg /waketimers` lists the task.
+      on a sleeping machine; verify by checking `powercfg /waketimers` lists the task — AND
+      run one real test: schedule a dummy task 10 minutes out, sleep the machine, confirm it
+      woke and ran (WakeToRun fails silently on some BIOS settings, connected-standby laptops,
+      and chipsets; the registered timer proves nothing about the hardware).
 - [ ] Telegram bot: Alan creates via @BotFather → TELEGRAM_BOT_TOKEN into `.env.local`.
       Alan gets his numeric id (e.g. @userinfobot) → TELEGRAM_ALLOWED_USER_ID.
       verify: `curl -s "https://api.telegram.org/bot$TOKEN/getMe"` returns the bot.

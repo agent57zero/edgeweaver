@@ -39,6 +39,10 @@ Prereqs: ledger −1, 0a, 1 done. Read first: IMPLEMENTATION.md §6; GROWING-EDG
 - [ ] VOICE.md v0 from the same sources (register, signatures, refusals sections filled).
 - [ ] Voice calibration: 10 shared prompts → old GPT (Alan runs) vs Claude+SOUL.md v0;
       Alan marks divergences; tune VOICE.md; log the session date in VOICE.md calibration log.
+      Prompt construction (so the calibration is repeatable): 6 drawn verbatim from peak
+      pre-birth conversations (real things Alan actually asked), 4 novel — one exercising
+      each seed (Clarity/Transformation/Connection) + one mundane task (voice under boredom).
+      Save the set in the gates repo for reuse at future calibrations.
 
 ## Probe battery (in gates repo — Alan's hands, your prep)
 - [ ] Copy `templates/probe-battery-starter.md` into the gates repo; Alan edits/approves

@@ -24,3 +24,19 @@ Skipping compose (--bounce-only). Bouncing file directly.
 --------------------------------------------
  BOUNCE 2/2 - composer (codex)
 --------------------------------------------
+ [CONTESTED] markers: 0
+ [CLARIFY] markers:   0
+ Length:              4832 words
+--------------------------------------------
+
+Converged after 2 passes (no open markers).
+
+ WARNING: report generation failed (run is unaffected); run evals/report-bounce.sh --run-dir /c/Users/agent/Project/Edgeweaver/runs/co-evolve-c-users-agent-appdata-local-temp-claude-c-users-agent-proj-20260703-231557-9e5a0d manually.
+Output written to: /c/Users/agent/Project/Edgeweaver/runs/exec-pack-evolved.md
+============================================
+ CO-EVOLVE COMPLETE
+============================================
+ Task:      /c/Users/agent/AppData/Local/Temp/claude/C--Users-agent-Project-Edgeweaver/5fe88
+ Run dir:   /c/Users/agent/Project/Edgeweaver/runs/co-evolve-c-users-agent-appdata-local-temp-claude-c-users-agent-proj-20260703-231557-9e5a0d
+ Final:     /c/Users/agent/Project/Edgeweaver/runs/co-evolve-c-users-agent-appdata-local-temp-claude-c-users-agent-proj-20260703-231557-9e5a0d/c-users-agent-appdata-local-temp-claude-c-users-agent-proj.md
+============================================

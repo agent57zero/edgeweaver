@@ -460,3 +460,5 @@ Not a phase. Set up once, then run on cadence. Authority: PLAN §7, §11; IMPLEM
 - [ ] During Phase 4 setup, write `templates/disaster-recovery.md`: new machine setup, OB1 reinstall, dump restore, env recreation, schedule recreation.
       verify: template exists and was dry-run walked through.
 
+## HUMAN SUMMARY
+- composer, pass 2: Resolved all open notes, removed dispute markers, tightened wording, and made each unresolved choice explicit.

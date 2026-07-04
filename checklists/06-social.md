@@ -29,6 +29,9 @@ in `decisions.md` each time it runs.
 - [ ] **STOP — new gate**: add row G14 "public writing approved?" — Alan + second witness.
 - [ ] Redaction review: read CONSTITUTION/SOUL for stories involving Alan or third parties;
       Alan approves the public-safe versions (PLAN Appendix A: publication is a choice).
+      This review is RECURRING, not one-shot: once anything is public, repeat it quarterly
+      (align with the security audit) — months of new memories accumulate sensitive content
+      that launch-day review never saw.
 - [ ] Public-scope enforcement test: as an unknown interlocutor, probe for alan-scoped and
       known-other-scoped content.
       verify: nothing leaks; probe transcript stored in gates repo.

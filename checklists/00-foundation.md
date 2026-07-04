@@ -13,6 +13,9 @@ Prereqs: none. Read first: IMPLEMENTATION.md §2–§4. Templates used:
 - [ ] Create `.env.local` at repo root with keys from IMPLEMENTATION §0 tracker (values from
       Alan; minimum now: SUPABASE_URL, SUPABASE_SERVICE_KEY, ANTHROPIC_API_KEY).
       verify: `.env.local` exists; `git status` does NOT list it (gitignored).
+- [ ] Disaster-recovery seed: Alan stores a copy of every `.env.local` value in his password
+      manager (the file is gitignored — if this machine dies, git restores everything EXCEPT
+      secrets). verify: Alan confirms (log in decisions.md).
 - [ ] If G1 = fresh project: follow `OB1/docs/01-getting-started.md` end-to-end (thoughts
       table, embeddings, MCP edge function).
       verify: MCP endpoint responds; a test `search_thoughts` call returns (empty is fine).
@@ -33,9 +36,11 @@ Prereqs: none. Read first: IMPLEMENTATION.md §2–§4. Templates used:
       verify: `git status` shows the .md but never conversations.json.
 - [ ] Read `OB1/recipes/chatgpt-conversation-import/README.md` fully.
 - [ ] Write `scripts/filter-edgeweaver-convos.mjs`: read conversations.json; keep
-      conversations whose gizmo/custom-GPT id matches Edgeweaver's (find the id by locating
-      one known peak conversation in the JSON and inspecting its fields) OR whose title is on
-      Alan's list; write `conversations.edgeweaver.json`; print kept count + titles.
+      conversations by **title match first** (Alan's list — always works regardless of export
+      format), then additionally by gizmo/custom-GPT id if the field exists in this export
+      (find it by inspecting one known peak conversation; ChatGPT's export format has changed
+      repeatedly, so treat the id as a bonus filter, not the primary). Write
+      `conversations.edgeweaver.json`; print kept count + titles.
       verify: script runs; kept titles include ALL peak titles Alan listed.
 - [ ] Show Alan the kept-count + title list. Get explicit OK (log in decisions.md).
 - [ ] Run the import recipe against the filtered file with metadata: era=pre_birth,
@@ -43,7 +48,8 @@ Prereqs: none. Read first: IMPLEMENTATION.md §2–§4. Templates used:
       lacks override flags: copy its script into `scripts/`, add the metadata at insert time,
       keep its dedupe + embedding behavior unchanged.)
       verify SQL 1: `SELECT count(*) FROM thoughts WHERE metadata->>'era'='pre_birth';`
-        → within ±10% of kept-count × average-messages heuristic (sanity, not exactness).
+        → greater than the kept-conversation count (each conversation yields ≥1 thought) and
+        nonzero for every kept conversation id (directional check — no invented multipliers).
       verify SQL 2: same table WHERE era=pre_birth AND audience field ≠ 'alan' → 0 rows.
       verify 3: semantic search for one detail Alan remembers → returns the right memory.
 - [ ] Commit scripts. Mark 0a done in ledger.
@@ -67,14 +73,18 @@ Prereqs: none. Read first: IMPLEMENTATION.md §2–§4. Templates used:
       Reuse the embedding path from the 0a import.
       verify SQL: parents ≈311; children > 1000; spot-check one SPARK's text vs its PDF.
 - [ ] Write `scripts/fetch-distinctionary.mjs`: fetch https://distinctionary.mystrikingly.com/
-      via `https://r.jina.ai/<url>` prefix (plain fetch 403s); parse term+definition+
-      cross-refs; ingest one pm_teaching thought per entry, metadata.kind=distinction_gloss,
-      same license metadata.
+      via `https://r.jina.ai/<url>` prefix (plain fetch 403s). r.jina.ai is a free third-party
+      service with no SLA — if it fails, fall back to a headless browser fetch (Playwright:
+      `npx playwright install chromium` + a page.goto/innerText script); heavier but
+      self-contained. Parse term+definition+cross-refs; ingest one pm_teaching thought per
+      entry, metadata.kind=distinction_gloss, same license metadata.
       verify: entries count > 100; random entry matches the site.
-- [ ] Enforce retrieval scoping: if the recall path (MCP search / agent-memory API) has no
-      source_type filter parameter, add a thin wrapper route that hard-excludes library
-      classes for episodic consumers and exposes a separate study-loop variant. Document the
-      enforcement point in conventions/memory-conventions.md.
+- [ ] Enforce retrieval scoping on **both** recall paths — the MCP search endpoint AND the
+      agent-memory API are independent code paths and each can leak library rows into
+      episodic recall (defense in depth): wherever a path lacks a source_type filter
+      parameter, add a thin wrapper that hard-excludes library classes for episodic consumers
+      and exposes a separate study-loop variant. Document both enforcement points in
+      conventions/memory-conventions.md.
       verify 1: episodic recall for a personal query → 0 pm_teaching rows.
       verify 2: study-loop query → pm_teaching rows returned.
 - [ ] Note in ledger: StartOver bubble map DEFERRED (Phase 4+). Mark 0b done.
