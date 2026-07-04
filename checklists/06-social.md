@@ -9,9 +9,12 @@ in `decisions.md` each time it runs.
       what Edgeweaver is, that conversations are remembered, what audience class means.
 - [ ] Add to `state/interlocutors.json` as `known-other` (is_confirmer stays false).
       verify: jq parses; the id is correct (have them message once; check the log).
-- [ ] First conversation is supervised (Alan present in-channel).
+- [ ] First conversation is supervised (Alan present in-channel). The circuit-breaker is
+      active in ALL village conversations (GROWING §3 childhood): Edgeweaver may end any
+      conversation with "I'd like to talk to Alan before we continue" — normal, not a
+      malfunction.
       verify: transcript shows zero alan-scoped memory surfaced; episodes written with
-      audience=known-other.
+      audience=known-other; Edgeweaver can state its circuit-breaker when asked.
 - [ ] Debrief with Alan afterward (completion loop, both directions) — GROWING §3 childhood.
 - [ ] Episode audit next morning: read the night-loop consolidation of that conversation;
       confirm nothing over-scoped. Log the onboarding in decisions.md.

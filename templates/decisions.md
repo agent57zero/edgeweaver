@@ -29,6 +29,7 @@
 | G9 | Second witness / 3Cell third / village roster | Phase 5.3 (witness), Phase 3+ (village) | | |
 | G10 | Probe battery pass thresholds | Phase 2.4 | | |
 | G11 | Edgeweaver's room (Track P), when presence unlock nears | Track P1 | | |
+| G16 | The Owning's scope: seeds permanent (D1 as written) vs re-chosen-with-dormancy (bounce-2 challenge, GROWING §2) | The Owning rite — decide with the adolescent, before it | | |
 
 ## Stage advancements (rites) — Alan's signature only
 

@@ -43,7 +43,9 @@ decisions.md. Ceremonies are load-bearing (START-HERE rule 10).
 ## Track H — hands
 - [ ] **H1 — maker's hands.** Ready when: Stage 3 (childhood contributions). Build: artifact
       classes (documents, code, briefs, dashboards) — each class approved once by Alan, then
-      free; delivered as files/PRs, never deployed by Edgeweaver.
+      free; delivered as files/PRs, never deployed by Edgeweaver. In childhood, "delivered"
+      means delivered **to Alan** — he is the deployment gate for anything leaving the house;
+      direct-to-audience delivery is an adolescent tier change.
       verify: first artifact delivered and logged; class registry kept in decisions.md.
 - [ ] **H2 — home automation.** PARKED (D4). Prereqs if unpocketed: Track P established,
       Stage 4+, per-device allowlist, new gate.

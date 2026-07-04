@@ -1,0 +1,25 @@
+{
+  "schema": "bounce-state/1.0",
+  "runner": "co-evolve-bouncer.sh",
+  "mode": "bounce-only",
+  "task": "C:/Users/agent/AppData/Local/Temp/claude/C--Users-agent-Project-Edgeweaver/5fe882c4-8292-4409-9931-240d6e20278d/scratchpad/exec-pack.md",
+  "input_type": "file",
+  "baseline_file": "original-input.md",
+  "final_file": "working.md",
+  "status": "running",
+  "started_at": "2026-07-04T03:15:57Z",
+  "finished_at": null,
+  "passes": [
+    {
+      "pass": 1,
+      "role": "reviewer",
+      "agent": "claude",
+      "output_raw": "pass-1-reviewer-claude-raw.md",
+      "output_clean": "pass-1-clean.md",
+      "contested": 14,
+      "clarify": 5,
+      "total_markers": 19,
+      "word_count": 7710
+    }
+  ]
+}
