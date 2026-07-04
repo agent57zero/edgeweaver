@@ -51,7 +51,9 @@ DNA input: the ChatGPT export zip (pre-birth episodic memory).
 | What | For | Where to get it |
 |---|---|---|
 | ChatGPT export zip + 3–10 peak-conversation titles | Phase 0a import | chatgpt.com → Settings → Data controls → Export data (email link) |
-| SUPABASE_SERVICE_KEY | schema/imports (Phase 0a/1) | Supabase dashboard → Settings → API → service_role |
+| ~~SUPABASE_SERVICE_KEY~~ | ✓ 2026-07-04 — fetched via `supabase` CLI after Alan's one-command login; written straight to .env.local, never displayed. (The Supabase project is literally named "Edgeweaver".) Brain baseline before ingestion: 2 thoughts, both embedded | — |
+| Apply the OB1 knowledge-graph migration (`thought_edges` table) to the instance | derived_from edges for SPARKs/provenance chains (PLAN §2.1) — ingester skipped edges gracefully | OB1 upstream PR #5 lineage / wiki-synthesis README prereqs; then re-run ingest (idempotent — only edges will add) |
+| Embedding backfill check for ingested library rows | direct REST inserts likely bypass the capture-time embedding path | verify after ingestion; if NULL, backfill via the instance's embed path (OB1 recipes show the pattern) |
 | **Session-pooler** DB connection string (direct host is IPv6-only; GitHub runners can't reach it) | arm nightly backups (G2) | Supabase → Settings → Database → Connection string → *Session pooler*, then `gh secret set SUPABASE_DB_URL -R agent57zero/edgeweaver-backups` |
 | age keypair: private half → password manager ONLY; public half → `age-recipient.txt` in edgeweaver-backups | encrypting brain dumps + machine-state archives | `age-keygen` (edgeweaver-backups RESTORE.md § Keys). Lost key = unreadable backups — custody matters |
 | healthchecks.io ping URL (optional, recommended) | dead-man switch — alerts on backup *silence*, not just failure | free account → new check → `gh secret set HEALTHCHECKS_URL -R agent57zero/edgeweaver-backups` |
