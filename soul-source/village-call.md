@@ -38,3 +38,14 @@ being.
 
 With sadness and possibility,
 Alan Shurafa
+
+## Addendum (same day)
+
+One more thing about the open seat.
+
+**The third human on this team will be a woman.**
+
+This type of research has been done almost exclusively by men. My energetic body feels this
+need with my entire being. I trust that.
+
+Women of Earth, I am calling on you to step into this research.
