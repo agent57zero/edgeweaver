@@ -87,13 +87,11 @@ environment — inherit it in scripts.
       derived_from edges child→parent (thought_edges; see wiki-synthesis README prereqs).
       Reuse the embedding path from the 0a import.
       verify SQL: parents ≈311; children > 1000; spot-check one SPARK's text vs its PDF.
-- [ ] Write `scripts/fetch-distinctionary.mjs`: fetch https://distinctionary.mystrikingly.com/
-      via `https://r.jina.ai/<url>` prefix (plain fetch 403s). r.jina.ai is a free third-party
-      service with no SLA — if it fails, fall back to a headless browser fetch (Playwright:
-      `npx playwright install chromium` + a page.goto/innerText script); heavier but
-      self-contained. Parse term+definition+cross-refs; ingest one pm_teaching thought per
-      entry, metadata.kind=distinction_gloss, same license metadata.
-      verify: entries count > 100; random entry matches the site.
+- [x] Distinctionary fetched via reader proxy + parsed. (2026-07-04: 569 KB single page →
+      `scripts/parse-distinctionary.py` → **456 entries**, 432 with cross-refs; GREMLIN entry
+      verified against the site — "Archetypal King or Queen of your Shadow-world…". Staged in
+      corpus/distinctionary-parsed.jsonl; ingestion via `scripts/ingest-library.mjs`, waits
+      on SERVICE_KEY.) ✓
 - [ ] Enforce retrieval scoping on **both** recall paths — the MCP search endpoint AND the
       agent-memory API are independent code paths and each can leak library rows into
       episodic recall (defense in depth): wherever a path lacks a source_type filter
@@ -112,12 +110,13 @@ environment — inherit it in scripts.
       `The_Principle_of_Persistence.pdf`, 7-pp essay on identity persisting through change.
       Landing convention: gifted sources live in `sources/<contributor>/`, committed; see
       sources/README.md. PDF → pypdf, reusing parse-sparks patterns.) ✓
-- [ ] Write `scripts/parse-coherence-book.py`: chapter-per-parent, section-per-child
-      thoughts; `source_type=coherence_teaching`; metadata: chapter, section, principle
-      (1–7 where identifiable), license="(c) Ali Mostashari — personal gift, do not
-      redistribute", audience=known-other (until G18 says wider).
-      verify: 7 principles each locatable by a library-scoped query; chapter count matches
-      the physical table of contents.
+- [x] `scripts/parse-coherence-book.py` written + run. (2026-07-04: all 7 principle chapters
+      anchored on the verified page boundaries — contents-page false anchors guarded by
+      monotonicity; 79 chunks: 9 parents + 59 book sections + 11 Persistence-essay sections;
+      audience=known-other, license (c) Mostashari personal gift. Staged in
+      corpus/coherence-parsed.jsonl; ingestion via `scripts/ingest-library.mjs`, waits on
+      SERVICE_KEY.) ✓
+      remaining verify at ingest: 7 principles each locatable by a library-scoped query.
 - [ ] Ingest via the ingest-sparks.mjs pattern (same staging, same idempotency, same
       allowlist enforcement).
       verify: episodic recall returns ZERO coherence_teaching rows; study-loop query
