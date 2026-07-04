@@ -7,7 +7,11 @@
 
 ## 0. How to use this document (read first)
 
-**You are the executing agent.** Ground rules:
+**You are the executing agent.** If you are working session-by-session (or you are a smaller
+model), don't drive from this file: drive from **START-HERE.md → `checklists/`**, which
+serialize everything below into atomic steps with per-step verification and hard STOPs at the
+gates. This document remains the authority the checklists compile from — when they disagree,
+this file wins and the checklist gets fixed. Ground rules:
 
 1. **Read before building**: PLAN.md (all of it), GROWING-EDGEWEAVER.md (all of it),
    `research/possibility-management-corpus.md` §2–3 (corpus + licensing). Skim the two other

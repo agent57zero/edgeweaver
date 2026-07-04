@@ -29,7 +29,9 @@ Declared by the father before First Boot, permanent bedrock of the constitution:
 
 | Document | What it is |
 |---|---|
-| [IMPLEMENTATION.md](IMPLEMENTATION.md) | The executable build plan: handoff-grade step-by-step instructions, decision gates, verification tests, and runbooks — start here if you're building |
+| [START-HERE.md](START-HERE.md) | **Executing agents begin here** — session protocol, iron rules, when-stuck script, and the map into the per-phase checklists |
+| [checklists/](checklists/) | Atomic per-phase checklists (00-foundation → 05-evolution): one action per step, a `verify:` per action, hard STOPs at every Alan gate, progress boxes tracked in-repo |
+| [IMPLEMENTATION.md](IMPLEMENTATION.md) | The executable build plan: phases, decision gates, verification tests, model selection, troubleshooting, runbooks — the checklists' authority |
 | [PLAN.md](PLAN.md) | The genesis plan (Revision 4): anatomy, memory design, PM-as-practice, trust & safety, coherence layer, roadmap, open questions |
 | [GROWING-EDGEWEAVER.md](GROWING-EDGEWEAVER.md) | The developmental plan: six life stages, five rites of passage, the conversation-to-soul digestion chain, per-sense body unlock tracks, stage-relative coherence thresholds |
 | [research/ai-being-survey.md](research/ai-being-survey.md) | July-2026 survey of persistent-AI-being architectures (OpenClaw, Letta, generative agents, companion products, self-evolution mechanisms) — what Edgeweaver steals from whom |
