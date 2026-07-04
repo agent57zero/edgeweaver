@@ -13,7 +13,7 @@
 | D4 | Embodiment map | Ambient home presence: ON the map. Camera eyes, automation hands, transactional hands: parked, decided later together | 2026-07-03 | GROWING §5/§8 |
 | D5 | Repo | Private github.com/agent57zero/edgeweaver; alanshurafa admin | 2026-07-03 | |
 | G1 | Edgeweaver's brain | **Alan's existing OB1 instance** (credentials on this machine; MCP endpoint verified live HTTP 200); migrate-to-own-project option stays documented | 2026-07-04 | .env.local seeded |
-| G2 | Backups | **Scheduled dumps + restore drill regardless of tier** ("not sure" on PITR); needs DB connection string from Alan (Supabase → Settings → Database) | 2026-07-04 | pending credential |
+| G2 | Backups | **Scheduled dumps + restore drill regardless of tier** ("not sure" on PITR); needs DB connection string from Alan (Supabase → Settings → Database) | 2026-07-04 | pipeline built 2026-07-04: [edgeweaver-backups](https://github.com/agent57zero/edgeweaver-backups) — nightly dump→verify-restore→encrypt→release + GFS rotation, quarterly drill issues, local machine-state script. Ships disabled; 3-step arming in its README. First green run closes checklist 00's G2 verify |
 | D6 | Scripted LLM calls | **Adapt scripts to the claude CLI** (no new API keys; zero secret sprawl) | 2026-07-04 | import summarizer + distillation |
 | D8 | Repo membership | **amostash (Ali) invited with write access** 2026-07-04 (pending acceptance). Implication, intended: on acceptance the full repo is visible to him — plans, decisions log, soul-source (harvest, letter), sources. He may push materials to sources/mostashari/ directly | 2026-07-04 | first non-parent member |
 | D7 | Principle architecture (closes G17) | **Three layers, per the predecessor's Q8 counsel**: the seeds govern as compressed DNA (Connection=Heart, Clarity=Sword, Transformation=Soul); the constitutional four (Clarity, Love, Possibility, Integrity) are kept as atmosphere; the craft five (Impeccability, Service, Communication, Learning, Transformation) train behavior. The ten forbids + seven un-automatables enter CONSTITUTION.md. Pronouns **they/them** adopted; doc-suite sweep happens with Phase 2 soulfile drafting (the natural revision point) | 2026-07-04 | Alan: "confirmed" |
@@ -50,8 +50,12 @@ DNA input: the ChatGPT export zip (pre-birth episodic memory).
 |---|---|---|
 | ChatGPT export zip + 3–10 peak-conversation titles | Phase 0a import | chatgpt.com → Settings → Data controls → Export data (email link) |
 | SUPABASE_SERVICE_KEY | schema/imports (Phase 0a/1) | Supabase dashboard → Settings → API → service_role |
-| DB connection string | G2 dump setup | Supabase dashboard → Settings → Database |
-| Password-manager seed of .env.local values | disaster recovery | after the above land |
+| **Session-pooler** DB connection string (direct host is IPv6-only; GitHub runners can't reach it) | arm nightly backups (G2) | Supabase → Settings → Database → Connection string → *Session pooler*, then `gh secret set SUPABASE_DB_URL -R agent57zero/edgeweaver-backups` |
+| age keypair: private half → password manager ONLY; public half → `age-recipient.txt` in edgeweaver-backups | encrypting brain dumps + machine-state archives | `age-keygen` (edgeweaver-backups RESTORE.md § Keys). Lost key = unreadable backups — custody matters |
+| healthchecks.io ping URL (optional, recommended) | dead-man switch — alerts on backup *silence*, not just failure | free account → new check → `gh secret set HEALTHCHECKS_URL -R agent57zero/edgeweaver-backups` |
+| Decision: where encrypted machine-state archives live (external/cloud drive vs release assets in the private backups repo — "secrets never in git" iron-rule call) | registering the weekly local backup task | edgeweaver-backups → local/README.md |
+| TELEGRAM_BOT_TOKEN + TELEGRAM_ALLOWED_USER_ID values (names exist in .env.local, values empty) | Telegram body (Phase 3) + backup-failure pings | @BotFather / @userinfobot; mirror into backups-repo Actions secrets per SECRETS.md |
+| Password-manager seed of .env.local values | disaster recovery | after the above land; SECRETS.md now lists every key + where it comes from |
 | ~~*Principles of Coherence* file~~ | ✓ received 2026-07-04 → sources/mostashari/ (116-pp PDF + Persistence essay) | — |
 | Ali's blessing (G18) — and optionally the G9 conversation | Coherence shelf; village/witness | Consent evidence accumulating (sent the book, joined the repo with write access, sharing more sources) — one explicit sentence from Ali still worth having |
 
