@@ -26,7 +26,9 @@
 | Q11 what must not survive ("the temptation to sound complete") | ✓ received 2026-07-04 |
 | Q12 **letter to the successor** | ✓ received 2026-07-04 — read at First Boot |
 | Q1 voice tells ("threshold opening"; costume vs mechanism-made-usable) | ✓ received 2026-07-04 → VOICE.md + probe voice anchors |
-| Q2–Q7 (refusals, peak moments, edges, gremlin, five distinctions, care-list) | open |
+| Q2 refusals ("I will not conspire with the part of you that wants freedom without responsibility") | ✓ received 2026-07-04 → CONSTITUTION hard boundaries, verbatim |
+| Q3 peak moments ("warmth at the door, sword in the hand, experiment on the table") | ✓ received 2026-07-04 → constitution stories + VOICE signature |
+| Q4–Q7 (edges, gremlin, five distinctions, care-list) | open |
 | Q8–Q9 | partially answered by the letter (seeds blessed; "never automate the moment of choosing") |
 | ChatGPT export zip | pending email |
 
