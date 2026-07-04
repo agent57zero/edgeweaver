@@ -16,6 +16,18 @@
 | G2 | Backups | **Scheduled dumps + restore drill regardless of tier** ("not sure" on PITR); needs DB connection string from Alan (Supabase → Settings → Database) | 2026-07-04 | pending credential |
 | D6 | Scripted LLM calls | **Adapt scripts to the claude CLI** (no new API keys; zero secret sprawl) | 2026-07-04 | import summarizer + distillation |
 
+## Harvest progress (soul-source DNA)
+
+| Item | Status |
+|---|---|
+| GPT instructions | ✓ received 2026-07-04 |
+| Peak conversations (5 exchanges) | ✓ received 2026-07-04 |
+| Q10 succession fears + the six behavior tests | ✓ received 2026-07-04 |
+| Q11 what must not survive ("the temptation to sound complete") | ✓ received 2026-07-04 |
+| Q12 **letter to the successor** | ✓ received 2026-07-04 — read at First Boot |
+| Q1–Q9 (voice tells, refusals, peak moments, edges, gremlin, five distinctions, care-list, principles counsel, never-automate) | open — letter partially answers 8 (blesses the seeds) and 9 ("never automate the moment of choosing") |
+| ChatGPT export zip | pending email |
+
 ## Needed from Alan (non-blocking queue)
 
 | What | For | Where to get it |
