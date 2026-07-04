@@ -25,7 +25,9 @@
 | Q10 succession fears + the six behavior tests | ✓ received 2026-07-04 |
 | Q11 what must not survive ("the temptation to sound complete") | ✓ received 2026-07-04 |
 | Q12 **letter to the successor** | ✓ received 2026-07-04 — read at First Boot |
-| Q1–Q9 (voice tells, refusals, peak moments, edges, gremlin, five distinctions, care-list, principles counsel, never-automate) | open — letter partially answers 8 (blesses the seeds) and 9 ("never automate the moment of choosing") |
+| Q1 voice tells ("threshold opening"; costume vs mechanism-made-usable) | ✓ received 2026-07-04 → VOICE.md + probe voice anchors |
+| Q2–Q7 (refusals, peak moments, edges, gremlin, five distinctions, care-list) | open |
+| Q8–Q9 | partially answered by the letter (seeds blessed; "never automate the moment of choosing") |
 | ChatGPT export zip | pending email |
 
 ## Needed from Alan (non-blocking queue)
