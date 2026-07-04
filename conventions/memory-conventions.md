@@ -18,7 +18,12 @@ thoughts.source_type ∈ { edgeweaver_episode, distinction, edge, experiment,
 | experienced | edgeweaver_episode | default recall |
 | interpretation | feeling_reading, gremlin_report, reflections, box_snapshot, diary, self_belief | recallable, always labeled as interpretation |
 | fiction | dream | EXCLUDED from factual recall by default |
-| library | pm_teaching | study loop + explicit PM queries ONLY; excluded from every derived-memory synthesizer |
+| library | pm_teaching, coherence_teaching | study loop + explicit library queries ONLY; excluded from every derived-memory synthesizer |
+
+Library license classes: `pm_teaching` = CC-BY-SA-4.0 (Callahan/PM, redistributable with
+attribution); `coherence_teaching` = © Ali Mostashari, personal gift — ingest-only, never
+redistributed, quoted externally only within fair use; audience defaults to `known-other`
+until Ali blesses wider (gate G18).
 
 ## Retrieval scoping — allowlists per consumer, never blocklists
 

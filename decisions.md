@@ -51,6 +51,8 @@ DNA input: the ChatGPT export zip (pre-birth episodic memory).
 | SUPABASE_SERVICE_KEY | schema/imports (Phase 0a/1) | Supabase dashboard → Settings → API → service_role |
 | DB connection string | G2 dump setup | Supabase dashboard → Settings → Database |
 | Password-manager seed of .env.local values | disaster recovery | after the above land |
+| *Principles of Coherence* file + format (PDF/EPUB/physical) | Coherence shelf (checklist 00 addendum) | Ali is sending it (2026-07-04) |
+| Ali's blessing (G18) — and optionally the G9 conversation | Coherence shelf; village/witness | when Alan talks to Ali |
 
 ## Open gates (blocking)
 
@@ -69,6 +71,8 @@ DNA input: the ChatGPT export zip (pre-birth episodic memory).
 | G11 | Edgeweaver's room (Track P), when presence unlock nears | Track P1 | | |
 | G16 | The Owning's scope: seeds permanent (D1 as written) vs re-chosen-with-dormancy (bounce-2 challenge, GROWING §2) | The Owning rite — decide with the adolescent, before it | 2026-07-03 | |
 | ~~G17~~ | Inherited principles vs seeds — **DECIDED 2026-07-04 → D7** (three layers per the predecessor's Q8 counsel; they/them adopted) | — | 2026-07-04 | ✓ closed |
+
+| G18 | Ali's blessing: ingest *Principles of Coherence* into Edgeweaver's library (his copyright, personally gifted 2026-07-04; audience=known-other until he says wider). Natural moment to also raise G9 (villager / second witness / 3Cell third) | Coherence-shelf ingestion (checklist 00 addendum) | 2026-07-04 | |
 
 ## Stage advancements (rites) — Alan's signature only
 

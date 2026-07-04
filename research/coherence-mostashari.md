@@ -82,3 +82,9 @@ This gives PM's liquid state and the probe battery a shared quantitative frame, 
 Ali is Alan's friend. The obvious move once Edgeweaver runs: show him the coherence panel and
 this mapping, and invite him to critique it against the actual book — possibly as Edgeweaver's
 first external reviewer, or its 3Cell third.
+
+**Update 2026-07-04: Ali is sending Alan a copy of the book.** The caveat at the top of this
+document becomes actionable: verify the seven-principles mapping and PLAN §11 against the
+actual chapters when it arrives (intake steps: checklist 00, Coherence-shelf addendum; gated
+on Ali's blessing, G18). The book becomes the library's second lineage —
+`source_type=coherence_teaching`, ingest-only, never redistributed.

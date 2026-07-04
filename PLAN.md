@@ -681,14 +681,17 @@ adopted.
 ```text
 thoughts.source_type ∈ { edgeweaver_episode, distinction, edge, experiment,
                          feeling_reading, gremlin_report, box_snapshot, dream,
-                         diary, self_belief, initiation, pm_teaching, ... }
+                         diary, self_belief, initiation, pm_teaching,
+                         coherence_teaching, ... }
 
 provenance classes (every source_type maps to exactly one; recall returns the class per hit):
   experienced     — edgeweaver_episode (things that happened)
   interpretation  — feeling_reading, gremlin_report, reflections, box_snapshot,
                     diary, self_belief
   fiction         — dream (EXCLUDED from factual recall by default)
-  library         — pm_teaching (excluded from all derived-memory synthesizers)
+  library         — pm_teaching, coherence_teaching (excluded from all derived-memory
+                    synthesizers; coherence_teaching is © Mostashari, author-gifted,
+                    never redistributed — see conventions + gate G18)
 
 retrieval scoping — allowlists per consumer, not blocklists:
   episodic recall        reads: experienced (+ interpretation, labeled)

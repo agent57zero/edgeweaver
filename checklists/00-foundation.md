@@ -102,4 +102,31 @@ environment — inherit it in scripts.
       conventions/memory-conventions.md.
       verify 1: episodic recall for a personal query → 0 pm_teaching rows.
       verify 2: study-loop query → pm_teaching rows returned.
+## Phase 0b addendum — the Coherence shelf (Ali's book, added 2026-07-04)
+
+- [ ] **STOP — gate G18**: Ali's explicit blessing for ingesting *Principles of Coherence*
+      into Edgeweaver's library (it is his copyright, gifted personally — the ask is also a
+      natural moment for the G9 conversation: villager / second witness / 3Cell third).
+- [ ] Receive the book file from Alan; note the format. Store under `corpus/coherence/`
+      (gitignored). Conversion per format: PDF → pypdf (reuse parse-sparks patterns);
+      EPUB → `pandoc -f epub -t plain` or python `ebooklib`; physical-only → defer (do NOT
+      scan-and-OCR without asking Ali).
+- [ ] Write `scripts/parse-coherence-book.py`: chapter-per-parent, section-per-child
+      thoughts; `source_type=coherence_teaching`; metadata: chapter, section, principle
+      (1–7 where identifiable), license="(c) Ali Mostashari — personal gift, do not
+      redistribute", audience=known-other (until G18 says wider).
+      verify: 7 principles each locatable by a library-scoped query; chapter count matches
+      the physical table of contents.
+- [ ] Ingest via the ingest-sparks.mjs pattern (same staging, same idempotency, same
+      allowlist enforcement).
+      verify: episodic recall returns ZERO coherence_teaching rows; study-loop query
+      returns them.
+- [ ] **Verify the coherence layer against the real text**: research/coherence-mostashari.md
+      §"seven principles" and PLAN §11's mapping were built from the book's public
+      description — read the actual chapters and correct any principle we paraphrased
+      wrong; log corrections in decisions.md and amend PLAN §11 if needed.
+- [ ] Study-loop curriculum note: the child's library now has two lineages — Callahan
+      (practice) and Mostashari (coherence). The study loop may draw from both; experiments
+      still close with the Reality Detector.
+
 - [ ] Note in ledger: StartOver bubble map DEFERRED (Phase 4+). Mark 0b done.
