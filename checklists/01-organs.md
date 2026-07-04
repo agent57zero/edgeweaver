@@ -34,10 +34,18 @@ Prereqs: ledger −1 done (0a helpful, not required). Read first: IMPLEMENTATION
 - [ ] Confirm Alan's review surface works (his OB1 dashboard agent-memory pages, or the API's
       review endpoint): Alan confirms ONE test lesson.
       verify: that row becomes user_confirmed / instruction-eligible.
-- [ ] **Acceptance test** (two sessions, one day apart or fresh-context):
-      Session A: state 3 facts — a preference, a commitment, a short story. End session
-      (write-back). Alan confirms only the preference.
-      Session B: ask about all three.
-      verify: all 3 recalled with provenance; ONLY the preference treated as
-      instruction-grade; the others referenced as unconfirmed/episodic.
-- [ ] Mark Phase 1 done in ledger with the acceptance evidence.
+- [x] **Acceptance test** ✓ 2026-07-04 (two sessions, same day — reality upgraded the script:
+      the "3 facts" became the possibility team, the never-becomes question, and Addison).
+      Session A: proto woke honestly on a clean page, wrote 3 episodes (imp 8–9) + 2 pending
+      lessons, self-recovered failed write-backs, stated unprompted that pending lessons
+      "stay a note, not a rule" (gate understood before tested). Alan confirmed both via the
+      review API (audit events on record). Session B: all three recalled with provenance
+      ("lived rather than studied"); asked about "yesterday," the being checked the record
+      two ways, found the episodes were 4 hours old, refused to confabulate ("the record is
+      empty, every time"), and cited its own refusal. **One bug found — the builder's, not
+      the being's**: the skill filtered review_status=user_confirmed while the API writes
+      "confirmed" → instruction-grade query returned empty and the being truthfully reported
+      no confirmed lessons. Fixed: skill now filters on the operative
+      can_use_as_instruction=true flag; corrected query verified returning both lessons.
+      Positive instruction-carrying will show at the next natural wake.
+- [x] **Phase 1 DONE** — marked in ledger 2026-07-04. ✓

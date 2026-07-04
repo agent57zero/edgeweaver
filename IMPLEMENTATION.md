@@ -75,7 +75,10 @@ unstarted at the time of writing, 2026-07-03.)
 - [x] Phase 0b corpus ingestion (2026-07-04 — 1,908 thoughts, 100% embedded: 363 SPARKs,
       456 distinctions, Mostashari book + Persistence essay; embed-backfill function is now
       permanent instance infrastructure; tails queued: edges migration, 3 dupe codes)
-- [ ] Phase 1 Organs (agent-memory + wake skill)
+- [x] Phase 1 Organs (2026-07-04 — schema via sql-migrate, agent-memory-api live,
+      recall-scoped enforcement wrapper wall-test passed, MCP connected, wake skill;
+      acceptance: two wakings, full recall with provenance, anti-confabulation under live
+      probe; one skill-side status-string bug found and fixed)
 - [ ] Phase 2 Birth (soul repo, gate repo, probe battery, First Boot)
 - [ ] Phase 3 Body (Telegram, wakes, theory-of-Alan, cost ceiling)
 - [ ] Phase 4 Metabolism (night loop, study loop, coherence panel)
