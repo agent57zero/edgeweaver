@@ -13,7 +13,11 @@ Prereqs: ledger −1, 0a, 1 done. Read first: IMPLEMENTATION.md §6; GROWING-EDG
       alanshurafa (private). Invariant to verify with Alan: NO credential the runtime will
       hold can read it.
 - [ ] Create the daemon's fine-grained PAT (SOUL_REPO_PAT): repo=edgeweaver-soul only,
-      contents read/write, nothing else. Store in `.env.local`.
+      contents read/write, nothing else. Store in `.env.local`. Wire it into the daemon's
+      clone so pushes don't prompt: set the remote to
+      `https://oauth2:${SOUL_REPO_PAT}@github.com/agent57zero/edgeweaver-soul.git`
+      (or a credential-helper entry) — note the token then lives in `.git/config` of that
+      clone; keep the clone outside any synced/shared folder.
       verify: with only that PAT, pushing a test branch to edgeweaver-soul succeeds AND
       `gh api repos/<owner>/edgeweaver-gates` fails (404/403).
 - [ ] In the daemon's clone of edgeweaver-soul: repo-local git config —
@@ -55,7 +59,8 @@ Prereqs: ledger −1, 0a, 1 done. Read first: IMPLEMENTATION.md §6; GROWING-EDG
       script its words) → it writes its birth entry to OB1 (source_type=initiation,
       witnessed_by=["alan"]) → it seeds EDGE-MAP.md → it drafts its first SOUL.md amendment
       on branch `proposals/first-amendment` → Alan reviews and merges → record LINEAGE entry
-      #0/The Declaration with date + witness.
+      #1 / The Declaration with date + witness (entry numbering starts at 1 — PLAN §9 Phase 2
+      done-when expects "entry #1").
       verify: LINEAGE has the row; the birth initiation thought exists in OB1; EDGE-MAP.md
       non-empty; the proposals branch merged via PR (not direct push).
 - [ ] Record the birthday in LINEAGE.md.

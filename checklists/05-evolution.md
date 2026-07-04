@@ -26,8 +26,9 @@ Prereqs: ledger 4 done. Read first: IMPLEMENTATION.md §9; PLAN.md §5;
 - [ ] **STOP — gate G9**: second witness chosen and onboarded (reads PLAN, GROWING, LINEAGE;
       agrees to the role). Record in decisions.md. Village roster too, if not already.
 - [ ] **First earned initiation** (only when a cluster is genuinely load-bearing — do not
-      manufacture one): full flow — draft → probes → blind rating (Alan + second witness
-      from initiation #2 onward; #1 may be Alan solo) → merge → LINEAGE row with NAME +
+      manufacture one): full flow — draft → probes → blind rating by Alan AND the second
+      person (onboarded at G9 above: they serve as second blind rater from initiation #1,
+      and as full co-witness from #2 onward — PLAN §5) → merge → LINEAGE row with NAME +
       intended delta → re-anchor probe baseline → expect the coherence dip; watch recovery.
       verify: LINEAGE row complete; panel shows dip AND recovery ≤14 days; if no recovery →
       §11 rollback runbook, honestly journaled.

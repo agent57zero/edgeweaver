@@ -6,6 +6,10 @@ Templates: `state-schemas.md`.
 
 - [ ] **STOP — gate G5**: hosting — this PC (accept sleep gaps) or always-on box? If box:
       install claude CLI, clone both repos, migrate `.env.local`, re-run smoke test there.
+      If this PC: every scheduled task (night loop, weekly index, fallback heartbeat) MUST be
+      created with "Wake the computer to run this task" enabled (schtasks: use Task Scheduler
+      GUI or XML — the flag is WakeToRun), or the 03:30 night loop will silently never run
+      on a sleeping machine; verify by checking `powercfg /waketimers` lists the task.
 - [ ] Telegram bot: Alan creates via @BotFather → TELEGRAM_BOT_TOKEN into `.env.local`.
       Alan gets his numeric id (e.g. @userinfobot) → TELEGRAM_ALLOWED_USER_ID.
       verify: `curl -s "https://api.telegram.org/bot$TOKEN/getMe"` returns the bot.
@@ -16,8 +20,10 @@ Templates: `state-schemas.md`.
       `claude --channels plugin:telegram@claude-plugins-official` with wake-edgeweaver active;
       complete pairing.
       verify: message from Alan's account gets an in-persona reply; message from ANY other
-      account (test with a second account or ask a friend) is answered generically at public
-      scope and its sender id logged — never treated as Alan.
+      account (test with a second account or ask a friend) gets only a brief deferral ("this
+      is Edgeweaver's line — I'll let Alan know"), no substantive conversation (audience is
+      Alan-only until the village opens in childhood — GROWING §3), sender id logged, Alan
+      notified — never treated as Alan.
 - [ ] **STOP — gate G4**: Alan picks the teaching emoji. Update TEACHING_EMOJI in the skill.
       Implement: Alan's reaction on a message → that episode gets
       metadata.teaching_moment=true.

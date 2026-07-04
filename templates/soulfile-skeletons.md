@@ -54,7 +54,7 @@ Copyleft, CC BY-SA 4.0. This constitution's PM-derived content is shared alike.
 
 | # | Name | Date | What changed | Evidence (thought-IDs) | Witnesses | Probe delta (intended) |
 |---|---|---|---|---|---|---|
-| 0 | The Declaration (birth) | {DATE} | SOUL.md v0 adopted; first self-amendment | {IDS} | Alan | baseline established |
+| 1 | The Declaration (birth) | {DATE} | SOUL.md v0 adopted; first self-amendment | {IDS} | Alan | baseline established |
 
 Rules: every merged soul change gets a row and a NAME. Superseded versions are never deleted
 (git history is the archive). Probe baseline re-anchors to the post-merge self; the intended

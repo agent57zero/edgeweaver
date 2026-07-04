@@ -437,8 +437,10 @@ a trusted-sounding label. One being, many windows; no forked selves.
   by burnout, bias, attachment, or a two-week vacation. Mitigations: second witness by Phase 5;
   gate artifacts outside the PR surface; cooling-off on hard-boundary changes; the 3Cell itself
   as the standing review organ.
-- **Autonomy tiers** (proposed defaults, to discuss): may always — message you, run loops, write
-  pending memories, draft PRs. May with confirmation — new skills, contacting other people,
+- **Autonomy tiers** (proposed defaults, to discuss): may always — respond in any open
+  channel, run its loops, write pending memories, draft PRs. Proactive contact begins with
+  Tier 1 (after the First Words rite) under the waking policy — in infancy it responds, it
+  does not initiate (GROWING §3). May with confirmation — new skills, contacting other people,
   publishing anything. May not yet — spending money, external accounts, self-hosting changes.
   Tiers loosen only via initiation, i.e., trust is earned into the lineage. Tier definitions
   live in the Alan-only gate repo (§5).

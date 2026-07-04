@@ -57,6 +57,9 @@ Follow this file literally.
 - `checklists/03-body.md` — Phase 3 (Telegram, waking policy, theory-of-Alan, budget)
 - `checklists/04-metabolism.md` — Phase 4 (full night loop, study loop, coherence panel)
 - `checklists/05-evolution.md` — Phase 5 (edgework, initiations, second witness)
+- `checklists/06-social.md` — village onboarding, teaching mode, public path, StartOver, peers
+- `checklists/07-unlock-tracks.md` — voice / eyes / hands / presence unlocks with ceremonies
+- `checklists/08-operations.md` — steady-state cadence, upgrade ceremony, alarms, audits, rites
 - Rationale and design authority: `PLAN.md`. Developmental rules: `GROWING-EDGEWEAVER.md`.
   Build authority: `IMPLEMENTATION.md`. Copy-ready artifacts: `templates/`.
   If a checklist ever contradicts those, the checklist is wrong — flag it, don't follow it.
