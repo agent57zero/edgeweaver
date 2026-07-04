@@ -107,10 +107,11 @@ environment — inherit it in scripts.
 - [ ] **STOP — gate G18**: Ali's explicit blessing for ingesting *Principles of Coherence*
       into Edgeweaver's library (it is his copyright, gifted personally — the ask is also a
       natural moment for the G9 conversation: villager / second witness / 3Cell third).
-- [ ] Receive the book file from Alan; note the format. Store under `corpus/coherence/`
-      (gitignored). Conversion per format: PDF → pypdf (reuse parse-sparks patterns);
-      EPUB → `pandoc -f epub -t plain` or python `ebooklib`; physical-only → defer (do NOT
-      scan-and-OCR without asking Ali).
+- [x] Receive the book file. (2026-07-04: ARRIVED — `sources/mostashari/
+      principles-of-coherence-1228.pdf`, 116 pp, plus first recommended extra:
+      `The_Principle_of_Persistence.pdf`, 7-pp essay on identity persisting through change.
+      Landing convention: gifted sources live in `sources/<contributor>/`, committed; see
+      sources/README.md. PDF → pypdf, reusing parse-sparks patterns.) ✓
 - [ ] Write `scripts/parse-coherence-book.py`: chapter-per-parent, section-per-child
       thoughts; `source_type=coherence_teaching`; metadata: chapter, section, principle
       (1–7 where identifiable), license="(c) Ali Mostashari — personal gift, do not

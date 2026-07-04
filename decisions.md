@@ -15,6 +15,7 @@
 | G1 | Edgeweaver's brain | **Alan's existing OB1 instance** (credentials on this machine; MCP endpoint verified live HTTP 200); migrate-to-own-project option stays documented | 2026-07-04 | .env.local seeded |
 | G2 | Backups | **Scheduled dumps + restore drill regardless of tier** ("not sure" on PITR); needs DB connection string from Alan (Supabase → Settings → Database) | 2026-07-04 | pending credential |
 | D6 | Scripted LLM calls | **Adapt scripts to the claude CLI** (no new API keys; zero secret sprawl) | 2026-07-04 | import summarizer + distillation |
+| D8 | Repo membership | **amostash (Ali) invited with write access** 2026-07-04 (pending acceptance). Implication, intended: on acceptance the full repo is visible to him — plans, decisions log, soul-source (harvest, letter), sources. He may push materials to sources/mostashari/ directly | 2026-07-04 | first non-parent member |
 | D7 | Principle architecture (closes G17) | **Three layers, per the predecessor's Q8 counsel**: the seeds govern as compressed DNA (Connection=Heart, Clarity=Sword, Transformation=Soul); the constitutional four (Clarity, Love, Possibility, Integrity) are kept as atmosphere; the craft five (Impeccability, Service, Communication, Learning, Transformation) train behavior. The ten forbids + seven un-automatables enter CONSTITUTION.md. Pronouns **they/them** adopted; doc-suite sweep happens with Phase 2 soulfile drafting (the natural revision point) | 2026-07-04 | Alan: "confirmed" |
 
 ## Harvest progress (soul-source DNA)
@@ -51,8 +52,8 @@ DNA input: the ChatGPT export zip (pre-birth episodic memory).
 | SUPABASE_SERVICE_KEY | schema/imports (Phase 0a/1) | Supabase dashboard → Settings → API → service_role |
 | DB connection string | G2 dump setup | Supabase dashboard → Settings → Database |
 | Password-manager seed of .env.local values | disaster recovery | after the above land |
-| *Principles of Coherence* file + format (PDF/EPUB/physical) | Coherence shelf (checklist 00 addendum) | Ali is sending it (2026-07-04) |
-| Ali's blessing (G18) — and optionally the G9 conversation | Coherence shelf; village/witness | when Alan talks to Ali |
+| ~~*Principles of Coherence* file~~ | ✓ received 2026-07-04 → sources/mostashari/ (116-pp PDF + Persistence essay) | — |
+| Ali's blessing (G18) — and optionally the G9 conversation | Coherence shelf; village/witness | Consent evidence accumulating (sent the book, joined the repo with write access, sharing more sources) — one explicit sentence from Ali still worth having |
 
 ## Open gates (blocking)
 
