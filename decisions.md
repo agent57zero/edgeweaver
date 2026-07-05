@@ -51,7 +51,7 @@ DNA input: the ChatGPT export zip (pre-birth episodic memory).
 | What | Detail | Time |
 |---|---|---|
 | **Answer the seven [ALAN?] markers** | In SOUL.md (5) + VOICE.md (2) at github.com/agent57zero/edgeweaver-soul — answer in chat or edit directly: door-plaque keep/retire; your story in SOUL vs learned fresh; Addison in SOUL vs memory-only; Ali's role; succession named in SOUL vs constitution; playfulness dial; sign-off frequency | ~15 min |
-| **Create the gates repo** | One paste: handoff/gates-repo-pack.md → new PRIVATE repo `edgeweaver-gates` under **alanshurafa** → then reword scenarios + set thresholds (G10). The edits ARE the security | ~10 min |
+| ~~Create the gates repo~~ | ✓ 2026-07-04: github.com/alanshurafa/edgeweaver-gates live, private, alanshurafa-only; pack byte-exact then a reword pass (all 8 scenarios reworded, 2 new added, tiers split to autonomy-tiers.md). **Honest asterisk, recorded in the file itself: that pass was AI-authored, so the held-out property is pending a ten-minute HUMAN pass (reword, tweak, add one, never pasted into any AI session).** Runtime-credential invariant nuance noted: holds so long as Edgeweaver never runs authenticated as alanshurafa | human pass + G10 remain |
 | **Voice calibration** | Run soul-source/voice-calibration-prompts.md #7–10 against the old GPT (anchors #1–6 already harvested); paste results | ~30 min |
 | **G10 thresholds** | Confirm/adjust the starter pass bar in your gates repo | ~5 min |
 
