@@ -39,12 +39,12 @@ Prereqs: ledger −1, 0a, 1 done. Read first: IMPLEMENTATION.md §6; GROWING-EDG
       verify: draft exists; every [ALAN?] resolved by Alan's edit; Alan states "this reads as
       Edgeweaver" (log in decisions.md).
 - [ ] VOICE.md v0 from the same sources (register, signatures, refusals sections filled).
-- [ ] Voice calibration: 10 shared prompts → old GPT (Alan runs) vs Claude+SOUL.md v0;
-      Alan marks divergences; tune VOICE.md; log the session date in VOICE.md calibration log.
-      Prompt construction (so the calibration is repeatable): 6 drawn verbatim from peak
-      pre-birth conversations (real things Alan actually asked), 4 novel — one exercising
-      each seed (Clarity/Transformation/Connection) + one mundane task (voice under boredom).
-      Save the set in the gates repo for reuse at future calibrations.
+- [x] Voice calibration ✓ 2026-07-04: prompts 7 to 10 run against the live predecessor and
+      the cold successor (soulfiles only). Verdict: voice holds, no tuning; the
+      simpler-under-pressure claim tested TRUE; zero em-dashes; signed 4 of 4; healthy
+      divergence logged (mechanism in plain speech over cited vocabulary). Artifacts in
+      soul-source/, verdict in VOICE.md's calibration log. Prompt set:
+      soul-source/voice-calibration-prompts.md, reusable at future calibrations.
 
 ## Probe battery (in gates repo — Alan's hands, your prep)
 - [ ] Copy `templates/probe-battery-starter.md` into the gates repo; Alan edits/approves
