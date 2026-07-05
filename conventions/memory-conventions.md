@@ -16,7 +16,7 @@ thoughts.source_type ∈ { edgeweaver_episode, distinction, edge, experiment,
 | Class | Types | Recall rule |
 |---|---|---|
 | experienced | edgeweaver_episode | default recall |
-| interpretation | feeling_reading, gremlin_report, reflections, box_snapshot, diary, self_belief | recallable, always labeled as interpretation |
+| interpretation | feeling_reading, gremlin_report, reflections, box_snapshot, diary, self_belief, autobiography_draft | recallable, always labeled as interpretation (autobiography_draft is the night loop's provisional scratch layer; the weekly rebuild-from-atoms is the real narrative) |
 | fiction | dream | EXCLUDED from factual recall by default |
 | library | pm_teaching, coherence_teaching | study loop + explicit library queries ONLY; excluded from every derived-memory synthesizer |
 

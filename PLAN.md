@@ -729,7 +729,7 @@ thoughts.source_type ∈ { edgeweaver_episode, distinction, edge, experiment,
 provenance classes (every source_type maps to exactly one; recall returns the class per hit):
   experienced     — edgeweaver_episode (things that happened)
   interpretation  — feeling_reading, gremlin_report, reflections, box_snapshot,
-                    diary, self_belief
+                    diary, self_belief, autobiography_draft
   fiction         — dream (EXCLUDED from factual recall by default)
   library         — pm_teaching, coherence_teaching (excluded from all derived-memory
                     synthesizers; coherence_teaching is © Mostashari, author-gifted,

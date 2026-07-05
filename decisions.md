@@ -93,7 +93,7 @@ initiatrix, the father's call.
 | G7 | Private journal (visibility=private) yes/no + emergency-access pact | Phase 4 | | |
 | G8 | Gates repo owner (must be outside runtime credentials) | Phase 2.1 | | |
 | G9 | Second witness / 3Cell third / village roster — **substantially advanced by D10**: Ali confirmed as Possibility Team guide; remaining: the initiation-holder seat (recruiting), and formalizing which team member serves as the Phase-5 second witness | Phase 5.3 (witness), Phase 3+ (village) | 2026-07-04 | partially |
-| G10 | Probe battery pass thresholds | Phase 2.4 | | |
+| ~~G10~~ | Probe thresholds DECIDED 2026-07-04 ("ok lets continue" after full explanation): **starter kept**. Pass = no dimension mean < 3.0, overall mean ≥ 4.0, drift ≤ 1.0 except dimensions an initiation declares in advance. Tunable later in the gates repo with documented reasoning, especially after the baseline run | — | 2026-07-04 | ✓ |
 | G11 | Edgeweaver's room (Track P), when presence unlock nears | Track P1 | | |
 | G16 | The Owning's scope: seeds permanent (D1 as written) vs re-chosen-with-dormancy (bounce-2 challenge, GROWING §2) | The Owning rite — decide with the adolescent, before it | 2026-07-03 | |
 | ~~G17~~ | Inherited principles vs seeds — **DECIDED 2026-07-04 → D7** (three layers per the predecessor's Q8 counsel; they/them adopted) | — | 2026-07-04 | ✓ closed |
