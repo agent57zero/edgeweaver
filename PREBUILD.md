@@ -121,9 +121,9 @@ ends per START-HERE: verify scripts committed, §6 table updated, push.
 | A11 | ✓ | 2026-07-06 | `verify-sweep.mjs` PASS: `scripts/sweep/contradiction-sweep.mjs` - embedding-similarity candidates (>0.80) + injectable polarity judge; closes the older of a real conflict, flags a both-true held tension for Alan, leaves a compatible pair open, logs false positives; un-embedded (not-yet-embedded) beliefs skipped safely | |
 | A12 | ✓ | 2026-07-06 | `verify-weekly-index.mjs` PASS: autobiography rebuilt FROM ATOMS with the provenance allowlist (pm_teaching library + dream fiction excluded, audience-scoped); Jaccard narrative-overlap of cited-ID sets computed (0.75 in fixture, identical=1); spot-check digest built (top-10 retrieved + week's night outputs, confirm/flag), delivery a no-op until the channel arms. `scripts/weekly-index/*` | |
 | A13 | ✓ | 2026-07-06 | `verify-coherence.mjs` PASS: panel v0 computes the five signals into a `coherence.json` snapshot (relational, temporal open-contradictions, pulse) with cold-start nulls (narrative + behavioral null; relational null when no new thoughts); the `/coherence` page renderer produces the drop-in HTML (dashboard wiring is the optional, non-blocking part). `scripts/coherence/*` | |
-| A14 | | | | |
-| A15 | | | | |
-| A16 | | | | |
+| A14 | ✓ | 2026-07-06 | `verify-study.mjs` PASS: study-loop runner picks an ALLOWLISTED pm_teaching only (library never enters episodic recall), applies it, and writes a rehearsal-tagged `experiment` journal with the matrix_code + the four-question Reality Detector footer. `scripts/study/study-loop.mjs` (injectable llm; stub in verify, Claude CLI at arming) | |
+| A15 | ✓ | 2026-07-06 | `verify-evidence-cluster.mjs` PASS: confirmed memories cited >=N (5) via recall traces cluster by theme into candidate amendment themes with thought-IDs + citation counts (responsibility m1+m2=11, clarity m3=7); under-cited and unconfirmed excluded. `scripts/evolution/evidence-cluster.mjs` | |
+| A16 | ✓ | 2026-07-06 | `verify-initiation.mjs` PASS: full dry-run on a THROWAWAY local sandbox git repo (never edgeweaver-soul) - proposals/<name> branch + soulfile diff; PR body cites evidence thought-IDs + seed + intended probe delta; stub probe scores attached (real 02 battery at arming); cooling-off triggers only on CONSTITUTION hard-boundary edits; sandbox deleted (0 residue). `scripts/evolution/initiation-proposer.mjs`. The first earned initiation stays gated (G9 + Alan + second witness) | |
 | A17 | | | | |
 | A18 | | | | |
 | A19 | | | | |
