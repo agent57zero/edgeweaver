@@ -1,4 +1,4 @@
-// ob1-client.mjs — thin OB1 (Supabase REST) adapter for rehearsal fixtures.
+// ob1-client.mjs - thin OB1 (Supabase REST) adapter for rehearsal fixtures.
 // Reuses the .env.local SUPABASE_* pattern from ingest-prebirth-harvest.mjs. Used ONLY in
 // --target ob1 mode. DARK-BUILD RULE 3: anything written to OB1 during dark tests carries
 // metadata.rehearsal=true + a nl-rehearsal-* run_id + audience=alan and is voided by run_id

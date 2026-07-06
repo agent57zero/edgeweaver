@@ -1,4 +1,4 @@
-// run-all.mjs — run every scripts/verify/verify-*.mjs and summarize (fixed-ropes convention:
+// run-all.mjs - run every scripts/verify/verify-*.mjs and summarize (fixed-ropes convention:
 // each phase ships verify scripts printing PASS/FAIL). Exit 0 iff all pass.
 // Usage: node scripts/verify/run-all.mjs
 import { readdir } from "node:fs/promises";
@@ -20,6 +20,6 @@ for (const f of files) {
   else rows.push(`  PASS  ${f}: ${line.replace(/^PASS:?\s*/, "")}`);
 }
 
-console.log(`\nDark verify — ${files.length} scripts:\n` + rows.join("\n"));
+console.log(`\nDark verify - ${files.length} scripts:\n` + rows.join("\n"));
 console.log(`\n${allPass ? "ALL PASS" : "SOME FAILED"}`);
 process.exit(allPass ? 0 : 1);

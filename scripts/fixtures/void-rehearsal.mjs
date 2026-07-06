@@ -1,4 +1,4 @@
-// void-rehearsal.mjs — A1 rehearsal voider (the §11 rollback mechanism, used on purpose).
+// void-rehearsal.mjs - A1 rehearsal voider (the §11 rollback mechanism, used on purpose).
 // Removes rehearsal records by run_id and reports residual (0 residual = clean, rule 3/5).
 //   node scripts/fixtures/void-rehearsal.mjs --run-id <id> [--target local|ob1]
 // local: deletes state/rehearsal/<run_id>/.  ob1: deletes OB1 thoughts where metadata.run_id=<id>.

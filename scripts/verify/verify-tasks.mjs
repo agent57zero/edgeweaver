@@ -1,4 +1,4 @@
-// verify-tasks.mjs — A2 dark verify for the Task Scheduler definitions. Static validation
+// verify-tasks.mjs - A2 dark verify for the Task Scheduler definitions. Static validation
 // (safe, repeatable, no Task Scheduler writes): each tasks/*.xml exists, is a single well-formed
 // <Task> doc, sets WakeToRun=true (mandatory on this-PC hosting, G5), ships DISABLED
 // (<Enabled>false</Enabled> in Settings), carries a trigger, and runs the wake skill. Prints

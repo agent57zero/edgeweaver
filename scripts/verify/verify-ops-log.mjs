@@ -1,4 +1,4 @@
-// verify-ops-log.mjs — A20 dark verify. PASS iff ops-log.md exists with its cadence-definitions
+// verify-ops-log.mjs - A20 dark verify. PASS iff ops-log.md exists with its cadence-definitions
 // section and at least one dated log entry (checklist 08: "file exists; first entries present").
 // Prints PASS/FAIL; exit 0/1.
 import { readFile } from "node:fs/promises";

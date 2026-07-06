@@ -1,8 +1,8 @@
-# ops-log.md — Edgeweaver operations log
+# ops-log.md - Edgeweaver operations log
 
 > One line per cadence event: date, what, outcome (checklist 08; PLAN §7/§11). The audit
 > surface for steady-state operations. Dark-build entries are prefixed **[DARK]** and never
-> imply an armed component — PREBUILD.md §6 is the dark ledger; checklist boxes and the
+> imply an armed component - PREBUILD.md §6 is the dark ledger; checklist boxes and the
 > IMPLEMENTATION §1 ledger tick only at arming.
 
 ## Cadence definitions (schedules; ALL DISABLED until their phase/gate arms)
@@ -26,5 +26,6 @@ arming pass (Phase 4 + G5), not before.
 
 | Date | What | Outcome |
 |---|---|---|
-| 2026-07-05 | [DARK] Phase 0 provisioning — loop iteration 1 (Alan present) | `ant` CLI v1.16.0 installed via **release binary** (`ant_1.16.0_windows_amd64.zip`, SHA-256 checksum-verified) to `C:\Users\agent\.local\bin`; scoop's `ant` is Apache Ant, not this tool — not used. `.env.local` scaffolded with voice/backup placeholders (names only). B5 Supabase session-pooler string captured via browser (needs Alan's DB password). B1/B2/B3/B4/B6 handed to Alan with per-service tabs opened. |
-| 2026-07-05 | [DARK] S1 built — A1 fixtures kit, A2 flags + task defs, A20 ops-log | Verify scripts under `scripts/verify/` print PASS/FAIL; evidence recorded in PREBUILD.md §6. No credentials required; no OB1 writes (fixtures default to a local rehearsal store). |
+| 2026-07-05 | [DARK] Phase 0 provisioning - loop iteration 1 (Alan present) | `ant` CLI v1.16.0 installed via **release binary** (`ant_1.16.0_windows_amd64.zip`, SHA-256 checksum-verified) to `C:\Users\agent\.local\bin`; scoop's `ant` is Apache Ant, not this tool - not used. `.env.local` scaffolded with voice/backup placeholders (names only). B5 Supabase session-pooler string captured via browser (needs Alan's DB password). B1/B2/B3/B4/B6 handed to Alan with per-service tabs opened. |
+| 2026-07-05 | [DARK] S1 built - A1 fixtures kit, A2 flags + task defs, A20 ops-log | Verify scripts under `scripts/verify/` print PASS/FAIL; evidence recorded in PREBUILD.md §6. No credentials required; no OB1 writes (fixtures default to a local rehearsal store). |
+| 2026-07-06 | [DARK] S3 built - A4 WAL/degraded, A5 waking policy, A6 budget meters, A7 teaching hook, A8 Telegram config | 9/9 dark verifies PASS (`node scripts/verify/run-all.mjs`); evidence in PREBUILD.md §6. No credentials; no live channel (Telegram unpaired, token parked B4). Em-dashes stripped from all session files (Alan's rule). |

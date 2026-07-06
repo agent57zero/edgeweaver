@@ -1,4 +1,4 @@
-// verify-fixtures.mjs — A1 dark verify (LOCAL target; safe, no OB1 writes). Generates one
+// verify-fixtures.mjs - A1 dark verify (LOCAL target; safe, no OB1 writes). Generates one
 // synthetic day, asserts it is plausible and fully rehearsal-tagged (rule 3), voids it by run_id,
 // asserts ZERO residue (rule 5). Prints PASS/FAIL; exit 0/1. The OB1-target round-trip is
 // exercised in S4 against the scratch-restore DB (rule 3).

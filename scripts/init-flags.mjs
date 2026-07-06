@@ -1,9 +1,9 @@
-// init-flags.mjs — rebuild the live state/flags.json from templates/flags.default.json.
+// init-flags.mjs - rebuild the live state/flags.json from templates/flags.default.json.
 // Idempotent and NON-DESTRUCTIVE: creates state/flags.json if absent; adds any missing
 // component/task/channel entry as DISABLED; PRESERVES existing entries verbatim (never flips an
 // armed flag back to disabled, never deletes). state/ is gitignored (live operational state);
 // the committed default + this script are the fixed rope. Arming still happens only per
-// PREBUILD.md §7 — this script never enables anything.
+// PREBUILD.md §7 - this script never enables anything.
 // Usage: node scripts/init-flags.mjs
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";

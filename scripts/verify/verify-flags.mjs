@@ -1,4 +1,4 @@
-// verify-flags.mjs — A2 dark verify. Rebuilds state/flags.json from the committed default, then
+// verify-flags.mjs - A2 dark verify. Rebuilds state/flags.json from the committed default, then
 // PASS iff it parses, every component A1..A21 is present and DISABLED, and every task/channel is
 // disabled + unregistered (dark by default). Prints PASS/FAIL; exit 0/1.
 import { readFile } from "node:fs/promises";

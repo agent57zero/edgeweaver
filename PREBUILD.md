@@ -111,11 +111,11 @@ ends per START-HERE: verify scripts committed, §6 table updated, push.
 | A1 | ✓ | 2026-07-05 | `scripts/verify/verify-fixtures.mjs` PASS: synthetic day (5 episodes + 2 intentions + 2 calendar), all rehearsal/run_id/audience=alan tagged; voided by run_id; 0 residue. Local target (safe); OB1 round-trip deferred to S4/scratch-DB per rule 3. Kit: `scripts/fixtures/{generate-synthetic-day,void-rehearsal,ob1-client}.mjs` | |
 | A2 | ✓ | 2026-07-05 | `verify-flags.mjs` PASS (21 components present, all disabled; 3 tasks + 1 channel dark) + `verify-tasks.mjs` PASS (3 XML defs, WakeToRun=true, shipped disabled) + `task-import-test.ps1` PASS (all 3 import to Task Scheduler *Disabled* and self-remove; machine left clean). Registry: `templates/flags.default.json` + `scripts/init-flags.mjs`; defs: `tasks/*.xml` | |
 | A3 | | | | |
-| A4 | | | | |
-| A5 | | | | |
-| A6 | | | | |
-| A7 | | | | |
-| A8 | | | | |
+| A4 | ✓ | 2026-07-06 | `verify-wal.mjs` PASS: simulated outage buffers writes to `state/wal/*.jsonl`; replay dedupes by content fingerprint (2 unique, 1 dup) and drains to `replayed/`; health check reports degraded (not guessing) on outage, healthy when reachable. `scripts/wal/wal.mjs` | |
+| A5 | ✓ | 2026-07-06 | `verify-waking.mjs` PASS: fixture expectations - contradiction wakes/acts, no-news sends nothing (name "Alan" does NOT false-trigger), a surprise in quiet hours is held, attention-budget decrements on send. `scripts/waking/waking-policy.mjs` | |
+| A6 | ✓ | 2026-07-06 | `verify-budget.mjs` PASS: 85% spend soft-warns, 100% flips degrade (skip optional loops), voice per-minute meter accumulates (VOICE-STACK §5), unset ceiling stays "unset" (G6 number parked). `scripts/budget/budget.mjs` | |
+| A7 | ✓ | 2026-07-06 | `verify-teaching.mjs` PASS: placeholder emoji until G4; a matching reaction sets `metadata.teaching_moment=true`; non-matching does nothing; consolidation lifts flagged episodes to *pending* candidate lessons. `scripts/teaching/teaching-hook.mjs` (emoji constant parked on G4) | |
+| A8 | ✓ | 2026-07-06 | `verify-telegram.mjs` PASS (unpaired, no token): `interlocutors.json` builds+parses; pinned Alan replies, every other sender deferred+logged+untrusted+never-Alan; lesson-confirm gated to the pinned confirmer. `scripts/telegram/{channel-policy,init-interlocutors}.mjs` + `handoff/telegram-pairing-runbook.md`. Single pairing round-trip parked on token (B4) + Phase 3 | |
 | A9 | | | | |
 | A10 | | | | |
 | A11 | | | | |

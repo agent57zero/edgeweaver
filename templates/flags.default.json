@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "note": "Dark-build flag registry (PREBUILD.md D13). Every component ships DISABLED. Arming flips enabled:true at the phase/gate named in arms_at, per PREBUILD.md §7 — never here, never by the loop. scripts/init-flags.mjs rebuilds the live, gitignored state/flags.json from this committed default (adds missing keys as disabled, preserves anything already armed).",
+  "note": "Dark-build flag registry (PREBUILD.md D13). Every component ships DISABLED. Arming flips enabled:true at the phase/gate named in arms_at, per PREBUILD.md §7 - never here, never by the loop. scripts/init-flags.mjs rebuilds the live, gitignored state/flags.json from this committed default (adds missing keys as disabled, preserves anything already armed).",
   "components": {
     "A1_fixtures":            { "enabled": false, "title": "Fixtures kit", "arms_at": "n/a (tooling)" },
     "A2_flags_tasks":         { "enabled": false, "title": "Flags + task definitions", "arms_at": "G5" },

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- DARK / UNREGISTERED: definition only (PREBUILD A2, dark rule 1). Arms at Phase 4 + G5.
-     Weekly Sun 04:30 — after that night's loop, never overlapping it (checklist 08 cadence).
+     Weekly Sun 04:30 - after that night's loop, never overlapping it (checklist 08 cadence).
      WakeToRun mandatory on this-PC hosting. Enabled=false so an accidental import lands disabled. -->
 <Task version="1.4" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
   <RegistrationInfo>
