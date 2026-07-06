@@ -110,7 +110,7 @@ ends per START-HERE: verify scripts committed, §6 table updated, push.
 |---|---|---|---|---|
 | A1 | ✓ | 2026-07-05 | `scripts/verify/verify-fixtures.mjs` PASS: synthetic day (5 episodes + 2 intentions + 2 calendar), all rehearsal/run_id/audience=alan tagged; voided by run_id; 0 residue. Local target (safe); OB1 round-trip deferred to S4/scratch-DB per rule 3. Kit: `scripts/fixtures/{generate-synthetic-day,void-rehearsal,ob1-client}.mjs` | |
 | A2 | ✓ | 2026-07-05 | `verify-flags.mjs` PASS (21 components present, all disabled; 3 tasks + 1 channel dark) + `verify-tasks.mjs` PASS (3 XML defs, WakeToRun=true, shipped disabled) + `task-import-test.ps1` PASS (all 3 import to Task Scheduler *Disabled* and self-remove; machine left clean). Registry: `templates/flags.default.json` + `scripts/init-flags.mjs`; defs: `tasks/*.xml` | |
-| A3 | | | | |
+| A3 | PARKED | 2026-07-06 | Blocked on B1 (`ant auth login`): the mind server is the first organ to call the Anthropic API directly and cannot be benched without the OAuth profile. Design ready (VOICE-STACK.md), voice keys (B2/B3) landed + verified. Builds as S2 the moment B1 lands. decisions.md: PREBUILD §2 B1 | |
 | A4 | ✓ | 2026-07-06 | `verify-wal.mjs` PASS: simulated outage buffers writes to `state/wal/*.jsonl`; replay dedupes by content fingerprint (2 unique, 1 dup) and drains to `replayed/`; health check reports degraded (not guessing) on outage, healthy when reachable. `scripts/wal/wal.mjs` | |
 | A5 | ✓ | 2026-07-06 | `verify-waking.mjs` PASS: fixture expectations - contradiction wakes/acts, no-news sends nothing (name "Alan" does NOT false-trigger), a surprise in quiet hours is held, attention-budget decrements on send. `scripts/waking/waking-policy.mjs` | |
 | A6 | ✓ | 2026-07-06 | `verify-budget.mjs` PASS: 85% spend soft-warns, 100% flips degrade (skip optional loops), voice per-minute meter accumulates (VOICE-STACK §5), unset ceiling stays "unset" (G6 number parked). `scripts/budget/budget.mjs` | |
@@ -124,11 +124,11 @@ ends per START-HERE: verify scripts committed, §6 table updated, push.
 | A14 | ✓ | 2026-07-06 | `verify-study.mjs` PASS: study-loop runner picks an ALLOWLISTED pm_teaching only (library never enters episodic recall), applies it, and writes a rehearsal-tagged `experiment` journal with the matrix_code + the four-question Reality Detector footer. `scripts/study/study-loop.mjs` (injectable llm; stub in verify, Claude CLI at arming) | |
 | A15 | ✓ | 2026-07-06 | `verify-evidence-cluster.mjs` PASS: confirmed memories cited >=N (5) via recall traces cluster by theme into candidate amendment themes with thought-IDs + citation counts (responsibility m1+m2=11, clarity m3=7); under-cited and unconfirmed excluded. `scripts/evolution/evidence-cluster.mjs` | |
 | A16 | ✓ | 2026-07-06 | `verify-initiation.mjs` PASS: full dry-run on a THROWAWAY local sandbox git repo (never edgeweaver-soul) - proposals/<name> branch + soulfile diff; PR body cites evidence thought-IDs + seed + intended probe delta; stub probe scores attached (real 02 battery at arming); cooling-off triggers only on CONSTITUTION hard-boundary edits; sandbox deleted (0 residue). `scripts/evolution/initiation-proposer.mjs`. The first earned initiation stays gated (G9 + Alan + second witness) | |
-| A17 | | | | |
-| A18 | | | | |
-| A19 | | | | |
+| A17 | ✓ | 2026-07-06 | `verify-import-filter.mjs` PASS: 0a import filter keeps Edgeweaver conversations by gizmo_id OR title whitelist and reports the kept-count (2/4 in fixture, 2 unrelated dropped). `scripts/filter-edgeweaver-convos.mjs` (real gizmo_id + titles supplied at ChatGPT-zip arrival) | |
+| A18 | ✓ | 2026-07-06 | `verify-security-audit.mjs` PASS: the 5-check sweep runs and each reports individually, all pass on the current machine - no secrets in tracked files, third-party skills, no public ports, pinned senders + untrusted default, gates repo unreachable with the runtime gh credential. `scripts/security/security-audit.mjs` | |
+| A19 | ✓ | 2026-07-06 | `verify-dr.mjs` PASS: `templates/disaster-recovery.md` (machine-dies path + time-to-recover) present; drill performed (cloned the repo to a scratch dir from git alone, ran the full verify suite green in ~3s, recursion-guarded, scratch deleted). Arms by being done. `scripts/dr/dr-drill.mjs`. Full-path drill (soul + OB1 + tasks) at arming | |
 | A20 | ✓ | 2026-07-05 | `scripts/verify/verify-ops-log.mjs` PASS: `ops-log.md` present with cadence definitions + Log sections + 2 dated entries (Phase 0 provisioning incl. ant install method; S1 build). Schedule defs disabled (A2 XMLs) | |
-| A21 | | | | |
+| A21 | PARKED | 2026-07-06 | Blocked on A3/S2 (the voice mind server, itself gated on B1) + the W2 voice loop. Voice ear/mouth/transport keys (B2/B3) landed + verified; builds in S7 after S2 (mind server) and W2. decisions.md: PREBUILD §2 B1 | |
 
 ## 7. Arming passes (how "plug in" happens later)
 
