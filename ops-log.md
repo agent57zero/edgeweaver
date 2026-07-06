@@ -55,3 +55,5 @@ The autonomous dark build (D13 / PREBUILD.md) is complete. Every A1-A21 row in ย
 **Human moves now next:** (1) B1 `ant auth login` -> voice mind server (S2) + voice (S7). (2) B5 - resolve the Supabase DB-password permission (org Owner login / retry post-incident / original password) -> arm backups. (3) B6 thought_edges yes/no. (4) Gate answers when ready: G4 emoji, G5 hosting, G6 ceiling, G7 journal. (5) First Boot readiness: the machinery is ready to plug in; First Boot, rites, and stage advancement remain the father's calls (Bucket D, never prebuilt).
 
 The loop ends here.
+
+**Post-report update (2026-07-06):** Alan completed B1 (`ant auth login`); the `ant` OAuth profile is active + verified (`ant auth status`, agent57zero@gmail.com, user:inference scope). A live `count-tokens` call then returned 400 "credit balance is too low" - the Anthropic org has no API credits. So A3 (mind server) stays parked, now on **Anthropic API credits** rather than auth: add credits at the console (Plans & Billing) and S2 builds immediately. A21 remains downstream of A3. All other ยง6 rows unchanged (PASS).
