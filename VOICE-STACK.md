@@ -72,9 +72,23 @@ checklist 03 gate G5 (WakeToRun and the always-on box question) already owns tha
 
 The first organ that calls the Anthropic API directly. Claude Code session round-trips are
 seconds; voice needs sub-second streaming, so the CLI path (D6) cannot serve this loop.
-D12 records the exception: ANTHROPIC_API_KEY enters .env.local for this organ only; all
-scripts and the night loop stay on the claude CLI. ANTHROPIC_BASE_URL is inherited from the
-machine environment, never hardcoded.
+D12 (amended 2026-07-05, Alan's call) keeps D6's zero-key spirit anyway: **authentication is
+OAuth, not an API key.** Alan runs `ant auth login` once (browser flow; profile stored under
+%APPDATA%\Anthropic; CLI install method on Windows verified at W1) and the SDK's
+zero-argument client (`AsyncAnthropic()`) picks the profile up and auto-refreshes its
+short-lived tokens. No ANTHROPIC_API_KEY exists anywhere. Operational rules that come with
+this:
+
+- ANTHROPIC_API_KEY and ANTHROPIC_AUTH_TOKEN must stay **unset** in the worker's
+  environment: even an empty value shadows the profile and wins.
+- OAuth refresh tokens hard-expire eventually (they do not slide with use). When auth starts
+  failing, the fix is re-running `ant auth login`; the worker must surface that state
+  plainly ("voice is resting: needs ant auth login"), never fail silently.
+- ANTHROPIC_BASE_URL is inherited from the machine environment, never hardcoded.
+- At G5 (always-on box): repeat the login on the box, or evaluate Workload Identity
+  Federation for a non-interactive host. Decide then, not now.
+- OAuth here is an authentication method, not a billing change: usage bills the same
+  Anthropic org/workspace the profile is logged into, same as an API key would.
 
 Contract:
 
@@ -138,8 +152,9 @@ gets a voice meter alongside the token meter.
   (soul repo, proposal branch). Until then, the placeholder voice is clearly labeled as
   scaffolding. Never clone a real person's voice.
 - Secrets (DEEPGRAM_API_KEY, ELEVENLABS_API_KEY or CARTESIA_API_KEY, LIVEKIT_API_KEY and
-  LIVEKIT_API_SECRET, ANTHROPIC_API_KEY) live in .env.local only. Never in git, OB1,
-  soulfiles, or anywhere near the gates repo.
+  LIVEKIT_API_SECRET) live in .env.local only. Never in git, OB1, soulfiles, or anywhere
+  near the gates repo. Anthropic access carries no key at all: OAuth profile per §3. Only
+  the ear, mouth, and transport vendors still require keys.
 - Provider hygiene: retention and training opt-outs enabled where offered. Audio is
   transient; the durable record is the OB1 episode transcript.
 - Room access: short-lived join tokens minted by the worker for Alan's devices only.
