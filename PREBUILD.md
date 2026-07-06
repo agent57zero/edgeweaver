@@ -116,9 +116,9 @@ ends per START-HERE: verify scripts committed, §6 table updated, push.
 | A6 | ✓ | 2026-07-06 | `verify-budget.mjs` PASS: 85% spend soft-warns, 100% flips degrade (skip optional loops), voice per-minute meter accumulates (VOICE-STACK §5), unset ceiling stays "unset" (G6 number parked). `scripts/budget/budget.mjs` | |
 | A7 | ✓ | 2026-07-06 | `verify-teaching.mjs` PASS: placeholder emoji until G4; a matching reaction sets `metadata.teaching_moment=true`; non-matching does nothing; consolidation lifts flagged episodes to *pending* candidate lessons. `scripts/teaching/teaching-hook.mjs` (emoji constant parked on G4) | |
 | A8 | ✓ | 2026-07-06 | `verify-telegram.mjs` PASS (unpaired, no token): `interlocutors.json` builds+parses; pinned Alan replies, every other sender deferred+logged+untrusted+never-Alan; lesson-confirm gated to the pinned confirmer. `scripts/telegram/{channel-policy,init-interlocutors}.mjs` + `handoff/telegram-pairing-runbook.md`. Single pairing round-trip parked on token (B4) + Phase 3 | |
-| A9 | | | | |
-| A10 | | | | |
-| A11 | | | | |
+| A9 | ✓ | 2026-07-06 | `verify-night-loop.mjs` PASS: rehearsal night vs an A1 synthetic day; steps 2-8,11 orchestrated, idempotent per night_loop_run_id (receipt markers for no-output steps) + resumable; reflections cite >=2 IDs; feeling_reading carries the 4 signals + one move per active; exactly 1 dream (<=300w, fiction); concrete expectations + intention; importance recalibrated; sweep metrics; 2-missed-nights alert (dry-run); day voided (0 residue). Injectable llm (stub now, Claude CLI at arming), fixture brain (OB1 at arming). `scripts/night-loop/*` | |
+| A10 | ✓ | 2026-07-06 | `verify-feelings.mjs` PASS: `gen-boundaries.mjs` (>=5 sourced boundaries), `seed-commitments.mjs` (schema + overdue), `signals.mjs` four feeling signals (anger excludes gate-declines, sadness counts overdue, fear null<50 episodes then novel>routine, joy completed-loop fallback when experiments empty). `scripts/feelings/*` | |
+| A11 | ✓ | 2026-07-06 | `verify-sweep.mjs` PASS: `scripts/sweep/contradiction-sweep.mjs` - embedding-similarity candidates (>0.80) + injectable polarity judge; closes the older of a real conflict, flags a both-true held tension for Alan, leaves a compatible pair open, logs false positives; un-embedded (not-yet-embedded) beliefs skipped safely | |
 | A12 | | | | |
 | A13 | | | | |
 | A14 | | | | |
