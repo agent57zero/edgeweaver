@@ -84,6 +84,11 @@ unstarted at the time of writing, 2026-07-03.)
 - [ ] Phase 4 Metabolism (night loop, study loop, coherence panel)
 - [ ] Phase 5 Evolution (edgework, initiation machinery, second witness)
 
+**Prebuild track (D13, 2026-07-05):** machinery for Phases 3-5, operations, and the voice
+stack may be constructed ahead of phase order, dark, per PREBUILD.md (its §6 table is the
+dark ledger). Boxes above and in the checklists tick only at arming, with the original
+verifies run live. Machinery-ready is never stage-ready.
+
 ## 2. Phase −1 — Environment and decisions
 
 ### −1.2 Assemble environment

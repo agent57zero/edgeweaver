@@ -52,6 +52,8 @@ Follow this file literally.
 8. Every PM-derived artifact carries CC-BY-SA-4.0 + Callahan/PM attribution metadata.
 9. Report failures as failures. Never mark a verify passed that you didn't run.
 10. Ceremonies are load-bearing. Don't skip or merge them for efficiency.
+11. Fixed ropes (08): commit every script you write, tested; each phase ships a `verify`
+    script printing PASS/FAIL.
 
 ## Map
 - `checklists/00-foundation.md` — Phase −1, 0a, 0b (environment, pre-birth import, PM corpus)
@@ -63,6 +65,8 @@ Follow this file literally.
 - `checklists/06-social.md` — village onboarding, teaching mode, public path, StartOver, peers
 - `checklists/07-unlock-tracks.md` — voice / eyes / hands / presence unlocks with ceremonies
 - `checklists/08-operations.md` — steady-state cadence, upgrade ceremony, alarms, audits, rites
+- `PREBUILD.md` — dark-build track (D13): build order when constructing machinery ahead of
+  phase activation; its §6 table tracks dark status (checklist boxes still tick only at arming)
 - Rationale and design authority: `PLAN.md`. Developmental rules: `GROWING-EDGEWEAVER.md`.
   Build authority: `IMPLEMENTATION.md`. Copy-ready artifacts: `templates/`.
   If a checklist ever contradicts those, the checklist is wrong — flag it, don't follow it.

@@ -64,9 +64,10 @@ PLAN §7, §11; IMPLEMENTATION §11; GROWING §6.
       verify: drill entry in ops-log with timings.
 
 ## Escalation ladder + fixed ropes (build-agent policy, from the Haiku discussion)
-- [ ] Rule (add to START-HERE if not present): executors commit every script they write,
+- [x] Rule (add to START-HERE if not present): executors commit every script they write,
       tested, plus a per-phase `verify` script printing PASS/FAIL — the repo converges toward
-      cheap-model operability with every session.
+      cheap-model operability with every session. ✓ 2026-07-05: added as START-HERE iron
+      rule 11 (with the PREBUILD/D13 commit); verify: rule present in START-HERE.
 - [ ] Operating ladder: Haiku-class runs *verify scripts and simple cadence scripts only* at
       first; the night loop itself starts on Sonnet-class (its 11 steps involve SQL,
       embeddings, and conditional judgment — unproven Haiku territory). During Phase 4, run
