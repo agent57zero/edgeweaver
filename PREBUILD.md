@@ -108,8 +108,8 @@ ends per START-HERE: verify scripts committed, §6 table updated, push.
 
 | Id | Dark verify passed | Date | Evidence | Armed (date + live verify) |
 |---|---|---|---|---|
-| A1 | | | | |
-| A2 | | | | |
+| A1 | ✓ | 2026-07-05 | `scripts/verify/verify-fixtures.mjs` PASS: synthetic day (5 episodes + 2 intentions + 2 calendar), all rehearsal/run_id/audience=alan tagged; voided by run_id; 0 residue. Local target (safe); OB1 round-trip deferred to S4/scratch-DB per rule 3. Kit: `scripts/fixtures/{generate-synthetic-day,void-rehearsal,ob1-client}.mjs` | |
+| A2 | ✓ | 2026-07-05 | `verify-flags.mjs` PASS (21 components present, all disabled; 3 tasks + 1 channel dark) + `verify-tasks.mjs` PASS (3 XML defs, WakeToRun=true, shipped disabled) + `task-import-test.ps1` PASS (all 3 import to Task Scheduler *Disabled* and self-remove; machine left clean). Registry: `templates/flags.default.json` + `scripts/init-flags.mjs`; defs: `tasks/*.xml` | |
 | A3 | | | | |
 | A4 | | | | |
 | A5 | | | | |
@@ -127,7 +127,7 @@ ends per START-HERE: verify scripts committed, §6 table updated, push.
 | A17 | | | | |
 | A18 | | | | |
 | A19 | | | | |
-| A20 | | | | |
+| A20 | ✓ | 2026-07-05 | `scripts/verify/verify-ops-log.mjs` PASS: `ops-log.md` present with cadence definitions + Log sections + 2 dated entries (Phase 0 provisioning incl. ant install method; S1 build). Schedule defs disabled (A2 XMLs) | |
 | A21 | | | | |
 
 ## 7. Arming passes (how "plug in" happens later)

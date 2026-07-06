@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- DARK / UNREGISTERED: definition only (PREBUILD A2, dark rule 1). Not imported into Task
+     Scheduler until arming at Phase 4 + G5. WakeToRun is mandatory on this-PC hosting (checklist
+     03 gate G5) or the 03:30 run silently never fires on a sleeping machine. Enabled=false so an
+     accidental import lands disabled. Command mirrors templates/night-loop-contracts.md. -->
+<Task version="1.4" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
+  <RegistrationInfo>
+    <Description>Edgeweaver nightly night-loop (11 steps) + coherence snapshot.</Description>
+    <URI>\Edgeweaver\EdgeweaverNightLoop</URI>
+  </RegistrationInfo>
+  <Triggers>
+    <CalendarTrigger>
+      <StartBoundary>2026-01-01T03:30:00</StartBoundary>
+      <Enabled>true</Enabled>
+      <ScheduleByDay>
+        <DaysInterval>1</DaysInterval>
+      </ScheduleByDay>
+    </CalendarTrigger>
+  </Triggers>
+  <Principals>
+    <Principal id="Author">
+      <LogonType>InteractiveToken</LogonType>
+      <RunLevel>LeastPrivilege</RunLevel>
+    </Principal>
+  </Principals>
+  <Settings>
+    <Enabled>false</Enabled>
+    <WakeToRun>true</WakeToRun>
+    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
+    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>
+    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>
+    <StartWhenAvailable>true</StartWhenAvailable>
+    <RunOnlyIfNetworkAvailable>true</RunOnlyIfNetworkAvailable>
+    <ExecutionTimeLimit>PT2H</ExecutionTimeLimit>
+    <Priority>7</Priority>
+  </Settings>
+  <Actions Context="Author">
+    <Exec>
+      <Command>powershell.exe</Command>
+      <Arguments>-NoProfile -Command "Set-Location 'C:\Users\agent\Project\Edgeweaver'; claude -p '/wake-edgeweaver night-loop' --output-format text *&gt;&gt; logs\night.log"</Arguments>
+    </Exec>
+  </Actions>
+</Task>

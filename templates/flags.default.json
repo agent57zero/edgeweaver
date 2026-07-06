@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "note": "Dark-build flag registry (PREBUILD.md D13). Every component ships DISABLED. Arming flips enabled:true at the phase/gate named in arms_at, per PREBUILD.md §7 — never here, never by the loop. scripts/init-flags.mjs rebuilds the live, gitignored state/flags.json from this committed default (adds missing keys as disabled, preserves anything already armed).",
+  "components": {
+    "A1_fixtures":            { "enabled": false, "title": "Fixtures kit", "arms_at": "n/a (tooling)" },
+    "A2_flags_tasks":         { "enabled": false, "title": "Flags + task definitions", "arms_at": "G5" },
+    "A3_mind_server":         { "enabled": false, "title": "Mind server (voice W1)", "arms_at": "V-track" },
+    "A4_wal_degraded":        { "enabled": false, "title": "WAL degraded mode", "arms_at": "Phase 3" },
+    "A5_waking_policy":       { "enabled": false, "title": "Waking-policy engine", "arms_at": "Phase 3 + G5" },
+    "A6_budget_meters":       { "enabled": false, "title": "Budget meters", "arms_at": "G6 number" },
+    "A7_teaching_hook":       { "enabled": false, "title": "Teaching-moment hook", "arms_at": "G4 + Phase 3" },
+    "A8_telegram_config":     { "enabled": false, "title": "Telegram channel config", "arms_at": "token (B4), then Phase 3" },
+    "A9_night_loop_full":     { "enabled": false, "title": "Full night loop (steps 2-8,11)", "arms_at": "Phase 4" },
+    "A10_feelings_prereqs":   { "enabled": false, "title": "Feelings prerequisites", "arms_at": "Phase 4 feelings step" },
+    "A11_selfbelief_sweep":   { "enabled": false, "title": "self_belief + contradiction sweep", "arms_at": "Phase 4" },
+    "A12_weekly_index":       { "enabled": false, "title": "Weekly index + spot-check digest", "arms_at": "Phase 4" },
+    "A13_coherence_panel":    { "enabled": false, "title": "Coherence panel v0 + /coherence", "arms_at": "Phase 4" },
+    "A14_study_loop":         { "enabled": false, "title": "Study-loop runner", "arms_at": "Stage 2 + Phase 4" },
+    "A15_evidence_cluster":   { "enabled": false, "title": "Evidence clustering", "arms_at": "Phase 5" },
+    "A16_initiation_machine": { "enabled": false, "title": "Initiation machinery (adapted PEL)", "arms_at": "Phase 5" },
+    "A17_import_filter":      { "enabled": false, "title": "0a import filter", "arms_at": "ChatGPT zip arrival" },
+    "A18_security_audit":     { "enabled": false, "title": "Security-audit script", "arms_at": "quarterly cadence" },
+    "A19_disaster_recovery":  { "enabled": false, "title": "Disaster-recovery runbook + drill", "arms_at": "once" },
+    "A20_ops_log":            { "enabled": false, "title": "ops-log.md + cadence definitions", "arms_at": "Phase 4+" },
+    "A21_voice_hardening":    { "enabled": false, "title": "Voice W4 hardening", "arms_at": "V-track" }
+  },
+  "tasks": {
+    "night_loop":   { "enabled": false, "registered": false, "arms_at": "Phase 4 + G5", "definition": "tasks/edgeweaver-night-loop.xml" },
+    "weekly_index": { "enabled": false, "registered": false, "arms_at": "Phase 4 + G5", "definition": "tasks/edgeweaver-weekly-index.xml" },
+    "heartbeat":    { "enabled": false, "registered": false, "arms_at": "Phase 3 + G5", "definition": "tasks/edgeweaver-heartbeat.xml" }
+  },
+  "channels": {
+    "telegram": { "enabled": false, "paired": false, "arms_at": "token (B4), then Phase 3" }
+  }
+}
