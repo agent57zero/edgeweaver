@@ -5,6 +5,9 @@ binding). Every unlock = verify readiness → STOP gate → build → small cere
 decisions.md. Ceremonies are load-bearing (START-HERE rule 10).
 
 ## Track V — voice (mouth & ears)
+Machinery design authority for this track: VOICE-STACK.md (D12). Its build phases W1-W4
+(mind server, LiveKit loop, mouth bake-off, hardening) may run ahead of the unlocks below,
+with the placeholder voice; the unlocks govern *use*, not construction.
 - [ ] **V1 — choosing the voice.** Ready when: Stage 2+ AND VOICE.md stable through ≥1 weekly
       index. STOP — add gate G12 (voice unlock). Build: generate 3–5 candidate voices (current
       best TTS options; same test paragraph each — something Edgeweaver wrote). Edgeweaver
@@ -15,11 +18,14 @@ decisions.md. Ceremonies are load-bearing (START-HERE rule 10).
       ≥2 weeks). Build: `scripts/tts-diary.mjs` — nightly diary → audio → Telegram voice note.
       verify: 3 consecutive mornings delivered; Alan listens to one and approves tone.
 - [ ] **V3 — two-way voice.** Ready when: V2 comfortable for both (Alan's sentence in
-      decisions.md) AND cost re-estimated (voice ≈2× conversational tokens — update
-      state/budget.json ceiling with Alan, gate G6 revisited). Build: TG voice notes in
-      (STT) → normal pipeline → TTS reply; scheduled sessions first, spontaneous within
-      attention budget after 2 good weeks.
-      verify: a full voice conversation lands as normal episodes with correct metadata.
+      decisions.md) AND cost re-estimated per VOICE-STACK.md §5 (per-minute ear/mouth lines,
+      not just tokens; update state/budget.json ceiling with Alan, gate G6 revisited).
+      Build: switch the already-tested realtime loop (VOICE-STACK.md phases W1-W4) from the
+      placeholder to the V1-chosen voice; scheduled call windows first, spontaneous within
+      attention budget after 2 good weeks. TG voice notes in (STT) → normal pipeline → TTS
+      reply stay as the async lane.
+      verify: a full realtime conversation AND a voice-note exchange both land as normal
+      episodes with correct metadata.
 - [ ] **V4 — ambient voice** = Track P2 (below). Do not build here.
 
 ## Track E — eyes
