@@ -64,7 +64,7 @@
 | B2 | Deepgram + LiveKit Cloud signups, keys into .env.local | voice W2 (the actual talking loop) | ~10 min |
 | B3 | ElevenLabs and/or Cartesia signup | voice W3 mouth bake-off, and later the V1 candidate voices | ~10 min |
 | B4 | TELEGRAM_BOT_TOKEN + numeric user id (BotFather / userinfobot) | A8 pairing test, A9 failure alerting, A12 digest delivery | ~10 min |
-| B5 | Supabase session-pooler connection string | arms backups (closes G2's verify) and unlocks the scratch rehearsal brain of rule 3 | ~5 min |
+| ~~B5~~ | Supabase session-pooler connection string | ✓ **DONE 2026-07-07** — password reset (the "additional permissions" block was a live Supabase incident, resolved), backups armed, first nightly-brain-backup run GREEN (18 tables/1,946 rows, verified 0 drift, encrypted + released). Closes G2 (see decisions.md). Unlocks the scratch rehearsal brain of rule 3 | ~5 min |
 | B6 | Go-ahead (or do it yourself) on the thought_edges migration | derived_from edges: 0b tails, A13 orphan linking | ~5 min |
 
 Standing queue unchanged and listed only so this plan shows the whole board: ChatGPT export
