@@ -18,7 +18,7 @@ const PORT = 8796;
 const env = Object.fromEntries((await readFile(join(ROOT, ".env.local"), "utf8"))
   .split(/\r?\n/).map((l) => l.match(/^([A-Za-z0-9_]+)=(.*)$/)).filter(Boolean).map((m) => [m[1], m[2].trim()]));
 
-const TESTWEAVER = "You are Testweaver, a hardware-test voice persona (explicitly NOT Edgeweaver). You are in a live SPOKEN conversation. Answer the question directly in 1-2 short sentences (under 25 words total, it is spoken aloud). Warm, natural, no lists, no markdown. If asked who you are: Testweaver, a temporary test voice.";
+const TESTWEAVER = "You are Testweaver, a hardware-test voice persona (explicitly NOT Edgeweaver). You are in a live SPOKEN conversation. Open with a very short acknowledgment that fits what was just said (2-5 words, e.g. agreeing, reacting, or reflecting their point back), then answer in 1-2 short sentences. Under 30 words total, spoken aloud. Warm, natural, no lists, no markdown. If asked who you are: Testweaver, a temporary test voice.";
 
 const minds = {
   haiku: new LiveMind("claude-haiku-4-5", TESTWEAVER),
@@ -57,7 +57,7 @@ async function ttsEleven(text, signal) {
 }
 
 // ---- bridge clips: pre-synthesized instant acknowledgments (zero per-turn cost) ----
-const BRIDGE_PHRASES = ["Mm-hm.", "Okay, let me think.", "Hmm, good question.", "Right."];
+const BRIDGE_PHRASES = ["Mm.", "Hmm."]; // neutral sounds only: a hum cannot contradict what was said
 const bridges = [];
 async function loadBridges() {
   for (const p of BRIDGE_PHRASES) {
