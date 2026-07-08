@@ -48,7 +48,10 @@ load in test-mode processes unless explicitly armed (`EW_ALLOW_LIVE=1`).
    history.
 2. Scratch memories are rehearsal-grade and are NEVER bulk-merged into live. Learnings
    promote through the existing review flow (or re-teaching), never row copies.
-3. Spawn from a nightly dump for point-in-time; from live READ-ONLY for freshness.
+3. Default spawn source is a live READ-ONLY snapshot (structure via committed DDL, rows via
+   stream-copy). Point-in-time spawns from a nightly dump are possible but need Alan: the
+   dumps are age-encrypted and only he holds the key (D11), so dump-sourced spawning is an
+   Alan-present move, never automated.
 4. Migrations hit a scratch first, live last.
 5. Quarterly sweep retires stale schemas (rides the existing quarterly cadence line).
 6. Testweaver stays memoryless against live; memory-exercising tests use scratch profiles
@@ -56,6 +59,9 @@ load in test-mode processes unless explicitly armed (`EW_ALLOW_LIVE=1`).
 7. The generation stamp: every write carries `generation: <N>` metadata (0 = Genesis), so
    any memory's substrate origin is queryable forever. At cutover only the stamp flips; rows
    never move.
+8. Scratch-brain writebacks carry `era: "rehearsal"` (the value D16 regularized) plus the
+   candidate's generation-under-test, so scratch data is self-describing even inside its own
+   schema.
 
 ## 4. Implementation plan (dark-build discipline, D13 spirit)
 
@@ -77,9 +83,10 @@ load in test-mode processes unless explicitly armed (`EW_ALLOW_LIVE=1`).
 - [ ] **STOP - lab gate**: Alan confirms a free-project slot and creates `edgeweaver-lab`
       (or authorizes creation under the org). Credential tracker gains `LAB_DB_URL`
       (name only).
-- [ ] **L3 Lab arm** (live): spawn a scratch from the latest nightly dump; verify row-count
-      parity with the backup manifest (18 tables / ~1,946 rows); retire it. Spawn once from
-      live read-only; retire. Zero residue; dated ops-log entry.
+- [ ] **L3 Lab arm** (live): spawn a scratch from live read-only; verify row-count parity
+      per table against live counts taken at the spawn moment (~18 tables / ~1,946 rows);
+      retire it; confirm zero residue in the lab and zero writes to live. Dated ops-log
+      entry. (Dump-sourced spawn is exercised later, Alan present with the age key.)
 - [ ] **L4 Harness integration + first A/B**: brain profile in the JSONL session header and a
       page badge; two scratches, one 10-question set, two configs; findings to
       handoff/voice-testing-notes.md.
@@ -92,9 +99,11 @@ Estimates: L1 1-2h; L2 2-3h; L3 30min once the slot exists; L4 ~1h with Alan pre
 Ownership map:
 - THIS workstream owns: BRAINS.md, `brains/**`, `scripts/brains/**`,
   `scripts/verify/verify-brains.mjs`.
-- Temporal-awareness workstream (parallel; currently drafting in
-  `runs/temporal-awareness-coevolve.md`): expected to touch wake-skill recall scoring, night
-  loop, prompt assembly, temporal metadata. Nothing here blocks it.
+- Temporal-awareness workstream: LANDED 2026-07-08 as D16 (conventions "Time" section,
+  occurred_at/precision keys, era enum + `rehearsal`, orient.mjs + wrapper amendments in
+  checklists 01/04 with their own STOP). Compatibility reviewed same day: no conflicts; the
+  D15 generation key was carried into PLAN Appendix B by that session. These deconfliction
+  rules stay in force as standing practice whenever two sessions run in parallel.
 - Shared, append-only files, edited in ONE small commit per session: decisions.md (take the
   next free D-number at commit time; this plan claimed D15 while D14 was highest),
   conventions/memory-conventions.md (this workstream adds ONLY the `generation` key),
