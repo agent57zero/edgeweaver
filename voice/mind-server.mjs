@@ -7,7 +7,7 @@
 import { assemblePrompt, PLACEHOLDER_PREFIX } from "./prompt-assembly.mjs";
 import { makeBackend } from "./claude-backend.mjs";
 
-export function mindServer({ backend = makeBackend("subscription"), recall = async () => "", writeback = async () => null, soulPrefix = PLACEHOLDER_PREFIX } = {}) {
+export function mindServer({ backend = makeBackend("subscription"), recall = async () => "", writeback = async () => null, soulPrefix = PLACEHOLDER_PREFIX, generation = 0 } = {}) {
   return {
     backend,
     async respond({ userText, sessionContext = "", runId, now = new Date() }) {
@@ -17,7 +17,7 @@ export function mindServer({ backend = makeBackend("subscription"), recall = asy
       const episode = {
         source_type: "edgeweaver_episode",
         content: `VOICE EXCHANGE\nUser: ${userText}\nEdgeweaver: ${r.text}`,
-        metadata: { channel: "voice", rehearsal: true, run_id: runId, audience: "alan", era: "rehearsal", ttft_ms: r.ttftMs, duration_ms: r.durationMs, backend: r.backend, ts: now.toISOString() },
+        metadata: { channel: "voice", rehearsal: true, run_id: runId, audience: "alan", era: "rehearsal", generation, ttft_ms: r.ttftMs, duration_ms: r.durationMs, backend: r.backend, ts: now.toISOString() },
       };
       const written = await writeback(episode);               // async episode writeback (rehearsal-tagged)
       return { text: r.text, ttftMs: r.ttftMs, durationMs: r.durationMs, backend: r.backend, episode: written || episode };

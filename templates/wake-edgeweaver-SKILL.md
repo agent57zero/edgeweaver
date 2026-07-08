@@ -45,7 +45,9 @@ If OB1 is unreachable: SAY that memory is degraded; do not guess; buffer writes 
 
 ## 5. Write-back (session end, or every ~20 exchanges in long sessions)
 1. Episodes: 1–3 compact `edgeweaver_episode` thoughts (what happened, who, feelings-relevant
-   details), audience = interlocutor scope, era=alive, importance 1–10 (initial estimate).
+   details), audience = interlocutor scope, era=alive, generation=0 (D15 substrate stamp;
+   the value comes from brains/registry.json and changes only via the VERSIONS.md cut
+   procedure), importance 1–10 (initial estimate).
 2. Candidate lessons: anything that looks like a durable preference/lesson → agent-memory API,
    status pending (never instruction-grade directly).
 3. If Alan reacted with the teaching emoji ({TEACHING_EMOJI}) on a message: mark that

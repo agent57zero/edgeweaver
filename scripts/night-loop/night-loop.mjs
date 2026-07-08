@@ -9,12 +9,12 @@ import { sweep } from "../sweep/contradiction-sweep.mjs";
 
 export const STEP_ORDER = ["ingest", "reflect", "feelings", "completion", "importance", "sweep", "dream", "intentions"];
 
-export async function runNight({ brain, llm, runId, now = new Date(), weekly = false, log = () => {} }) {
+export async function runNight({ brain, llm, runId, now = new Date(), weekly = false, log = () => {}, generation = 0 }) {
   const results = {};
   const alreadyDone = (step) => brain.outputsFor(runId, step).length > 0;
   const mk = (source_type, content, extra) => ({
     source_type, content,
-    metadata: { night_loop_run_id: runId, step: extra.step, rehearsal: true, run_id: runId, audience: "alan", ...extra },
+    metadata: { night_loop_run_id: runId, step: extra.step, rehearsal: true, run_id: runId, audience: "alan", generation, ...extra },
   });
   async function step(name, fn) {
     if (alreadyDone(name)) { results[name] = { skipped: true }; return; }

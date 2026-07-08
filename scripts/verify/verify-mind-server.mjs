@@ -40,6 +40,7 @@ try {
     const ep = JSON.parse(readFileSync(epPath, "utf8"));
     if (ep.metadata.rehearsal !== true || ep.metadata.run_id !== runId) fails.push("episode not rehearsal-tagged");
     if (ep.metadata.channel !== "voice") fails.push("episode not marked channel=voice");
+    if (ep.metadata.generation !== 0) fails.push("episode missing generation stamp (D15; default 0)");
     if (ep.source_type !== "edgeweaver_episode") fails.push("episode wrong source_type");
   }
 

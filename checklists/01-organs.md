@@ -81,3 +81,11 @@ Phase 1 is done; these amend its organs. Rules live in conventions/memory-conven
 - [ ] (standing note, unchanged) recency/importance re-rank remains a deferred wrapper
       enhancement (post-infancy experiment, D16 A6) - behavior-altering, never bundled with
       plumbing.
+
+## Generation-stamp amendment (D15, 2026-07-08; design: BRAINS.md)
+
+- [ ] Wake-skill write-back carries `generation: 0` on episodes and candidate lessons
+      (template updated 2026-07-08; applies to the installed skill at the NEXT skill sync,
+      alongside the D16 orientation sync - one sync, both changes; the value's source of
+      truth is brains/registry.json).
+      verify: after the sync, the next session's episode metadata carries generation=0.

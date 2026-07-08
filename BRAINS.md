@@ -65,21 +65,24 @@ load in test-mode processes unless explicitly armed (`EW_ALLOW_LIVE=1`).
 
 ## 4. Implementation plan (dark-build discipline, D13 spirit)
 
-- [ ] **L0 Docs + decision** (this commit): this file; D15 row; `generation` key in
+- [x] **L0 Docs + decision** (2026-07-08): this file; D15 row; `generation` key in
       conventions/memory-conventions.md; VERSIONS.md stamp-flip step; README row.
-      verify: committed and pushed.
-- [ ] **L1 Profiles + stamp plumbing** (dark; new files + small wiring): `brains/registry.json`
-      seeded with the live row (schemaVersion 1); DDL export to `brains/schema/ddl-v1.sql`
-      (`pg_dump --schema-only`; structure only, committable); `scripts/brains/profiles.mjs`
-      resolver + the two guards; `generation: 0` stamped at the write-back seams (mind-server
-      writeback, night-loop writes, wake-skill spec text). Wiring into voice/mind-server.mjs
-      waits for a clean window (§5).
-      verify: `scripts/verify/verify-brains.mjs` green inside run-all (resolver, guards,
-      stamp present on a fixture write); zero live calls.
-- [ ] **L2 Fleet tools** (dark): `spawn` (create schema from DDL, stream-copy ~2k rows from a
-      dump or live read-only, register), `list`, `retire` (drop schema, mark row), `migrate`
-      (`--profile` / `--all`, stamps schemaVersion), `diff` (row counts, new-since-spawn).
-      verify: dry-run mode emits correct SQL against fixtures; no credentials touched.
+      verify: committed and pushed (a458975, ee5b131).
+- [x] **L1 Profiles + stamp plumbing** (2026-07-08, dark): `brains/registry.json` seeded with
+      the live row (schemaVersion 1, generation 0); `brains/schema/ddl-v1.sql` exported from
+      live (pg_dump 18.4, schema-only, 18 tables, checked secret-free);
+      `scripts/brains/profiles.mjs` resolver + both guards; `generation: 0` stamped at the
+      write-back seams (mind-server writeback, night-loop mk(), wake-skill template + the
+      checklist 01 amendment box; template applies at the next skill sync).
+      verify: verify-brains.mjs green inside run-all (22/22 PASS); zero live writes (the DDL
+      export was the one read-only live access).
+- [x] **L2 Fleet tools** (2026-07-08, dark): `spawn` (transform DDL, stream-copy in FK order,
+      count-parity check, register), `list`, `retire` (drop schema, keep the row), `migrate`
+      (`--profile` / `--all`, scratches first live last, bumps schemaVersion), `diff` (counts
+      + lived-since-spawn). Real-DDL quirks handled: extension types stay at their extension
+      schema (public.vector here), function search_path pins re-pinned per scratch.
+      verify: hermetic spawn --dry-run + pure SQL generation pinned on a fixture DDL inside
+      verify-brains.mjs; no credentials touched.
 - [ ] **STOP - lab gate**: Alan confirms a free-project slot and creates `edgeweaver-lab`
       (or authorizes creation under the org). Credential tracker gains `LAB_DB_URL`
       (name only).
@@ -122,6 +125,6 @@ Working-tree rules while more than one session is active:
 
 | What | Unblocks | Notes |
 |---|---|---|
-| Confirm free-project slot; create `edgeweaver-lab` (or say "create it" and the agent does) | L3 | Supabase dashboard shows the org's active projects; free tier allows 2 |
+| Confirm free-project slot; create `edgeweaver-lab` (or say "create it" and the agent does), then run `CREATE EXTENSION vector;` once in its SQL editor and put the pooler connection string in `.env.local` as `LAB_DB_URL` | L3 | Supabase dashboard shows the org's active projects; free tier allows 2; spawn checks the extension and refuses clearly if missing |
 | Blessing for this plan + naming taste (lab name, `s_<name>` schema prefix) | L1 | defaults stand unless changed |
 | Later, only when a test needs NEW writes embedded: deploy embed function to the lab | L4+ | reuse the committed scripts/edge-functions source |
