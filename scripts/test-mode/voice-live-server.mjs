@@ -62,6 +62,7 @@ async function ttsEleven(text, signal) {
 // pattern: filler masks genuine slowness, never plays on fast turns (constant filler = robotic).
 const BRIDGE_PHRASES = ["Let me think about that.", "One sec.", "Hmm, let me see."];
 const FILLER_AFTER_MS = 1100;
+const WORKING_AFTER_MS = 2600; // progress earcon: looped ticking when a turn runs genuinely long
 const bridges = [];
 async function loadBridges() {
   for (const p of BRIDGE_PHRASES) {
@@ -125,6 +126,12 @@ function session(ws) {
 
     // adaptive filler: fires ONLY if the mind is still silent after FILLER_AFTER_MS
     let fillerTimer = null;
+    // progress earcon: browser loops a soft tick while we are still silent past WORKING_AFTER_MS
+    let workingTimer = null, workingOn = false;
+    const stopWorking = () => {
+      if (workingTimer) { clearTimeout(workingTimer); workingTimer = null; }
+      if (workingOn) { workingOn = false; send({ type: "working", on: false }); }
+    };
 
     // serialized sentence -> TTS -> send pipeline (keeps audio in order)
     let ttsChain = Promise.resolve();
@@ -137,6 +144,11 @@ function session(ws) {
           send({ type: "audio", b64: clip.toString("base64"), bridge: true, sinceSpeechEndMs: Date.now() - tSpeechEnd });
         }
       }, FILLER_AFTER_MS);
+    }
+    if (opts.mind !== "stub") {
+      workingTimer = setTimeout(() => {
+        if (myGen === gen && !firstAudioSent) { workingOn = true; send({ type: "working", on: true }); }
+      }, WORKING_AFTER_MS);
     }
     const speakSentence = (s) => {
       ttsChain = ttsChain.then(async () => {
@@ -152,6 +164,7 @@ function session(ws) {
           });
           firstAudioSent = true;
           if (fillerTimer) { clearTimeout(fillerTimer); fillerTimer = null; }
+          stopWorking();
         } catch (e) { if (myGen === gen) send({ type: "error", error: e.message }); }
       });
     };
@@ -177,6 +190,7 @@ function session(ws) {
     } catch (e) {
       if (myGen === gen) send({ type: "error", error: e.message });
     } finally {
+      stopWorking();
       if (myGen === gen) { state = "listening"; send({ type: "state", state: "listening" }); }
     }
   }
@@ -221,7 +235,25 @@ button#go{width:100%;padding:1rem;font-size:19px;border:0;border-radius:12px;bac
 <div class="log" id="log"></div>
 <script>
 const logEl=document.getElementById('log'), stateEl=document.getElementById('state'), latEl=document.getElementById('lat');
-let ws, rec, audioQ=[], playing=null, interimEl=null, running=false;
+let ws, rec, audioQ=[], playing=null, interimEl=null, running=false, ac=null, tickTimer=null;
+function ticks(on){
+  if(on){
+    if(tickTimer)return;
+    ac=ac||new (window.AudioContext||window.webkitAudioContext)();
+    const tick=()=>{
+      const dur=0.012+Math.random()*0.008;
+      const buf=ac.createBuffer(1,Math.floor(ac.sampleRate*dur),ac.sampleRate);
+      const d=buf.getChannelData(0);
+      for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.exp(-i/(d.length/4));
+      const src=ac.createBufferSource();src.buffer=buf;
+      const bp=ac.createBiquadFilter();bp.type='bandpass';bp.frequency.value=1900+Math.random()*900;bp.Q.value=6;
+      const g=ac.createGain();g.gain.value=0.12;
+      src.connect(bp);bp.connect(g);g.connect(ac.destination);src.start();
+      tickTimer=setTimeout(tick,130+Math.random()*110);
+    };
+    tick();
+  } else if(tickTimer){clearTimeout(tickTimer);tickTimer=null;}
+}
 function log(html){const d=document.createElement('div');d.innerHTML=html;logEl.appendChild(d);logEl.scrollTop=logEl.scrollHeight;return d}
 function setState(s){stateEl.className='state '+s;stateEl.textContent=s}
 function stopPlayback(){audioQ=[];if(playing){playing.pause();playing=null}}
@@ -240,11 +272,12 @@ document.getElementById('go').onclick=async()=>{
     else if(m.type==='transcript'){if(!interimEl)interimEl=log('');interimEl.innerHTML='<span class="'+(m.final?'you':'interim')+'"><b>you:</b> '+m.text+'</span>';if(m.final)interimEl=null}
     else if(m.type==='state'){setState(m.state)}
     else if(m.type==='reply'){log('<span class="tw"><b>Testweaver:</b> '+m.text+'</span> <span class="meta">first sentence '+m.mindMs+'ms</span>')}
-    else if(m.type==='audio'){const bytes=Uint8Array.from(atob(m.b64),c=>c.charCodeAt(0));audioQ.push(new Blob([bytes],{type:'audio/mpeg'}));playNext();
+    else if(m.type==='audio'){if(!m.bridge)ticks(false);const bytes=Uint8Array.from(atob(m.b64),c=>c.charCodeAt(0));audioQ.push(new Blob([bytes],{type:'audio/mpeg'}));playNext();
       if(m.bridge){latEl.textContent='bridge at '+(m.sinceSpeechEndMs/1000).toFixed(2)+'s'}
       else if(m.sinceSpeechEndMs!==undefined){latEl.textContent=(latEl.textContent?latEl.textContent+' - ':'')+'real answer audio at '+(m.sinceSpeechEndMs/1000).toFixed(2)+'s (mind '+(m.mindFirstSentenceMs/1000).toFixed(2)+'s)'}}
-    else if(m.type==='barge'){stopPlayback();log('<span class="meta">[interrupted - '+m.reason+']</span>')}
-    else if(m.type==='error'){log('<b style="color:#b3261e">error:</b> '+m.error)}
+    else if(m.type==='working'){ticks(m.on)}
+    else if(m.type==='barge'){ticks(false);stopPlayback();log('<span class="meta">[interrupted - '+m.reason+']</span>')}
+    else if(m.type==='error'){ticks(false);log('<b style="color:#b3261e">error:</b> '+m.error)}
   };
 };
 </script></body></html>`;
