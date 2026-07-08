@@ -106,3 +106,5 @@ Interruption (the baby-noise problem, solved in two stages):
 - v2.4: progress earcon. v2.5/2.6: earcon volume/fullness + two-stage duck barge + ghost-turn guard.
 - v2.7: direct answers for simple questions. v2.8: filler keys off first sentence, threshold 1400ms.
 - v2.9: escalation turn ("think hard about ...") -> Opus deep mind + dedicated bridge clip.
+- v2.10: visible escalation indicator (purple banner, deep badge, labeled replies). v2.11: live threshold labels.
+- v3.0: ONE voice (Sonnet, no mind dropdown). Escalation: explicit ("think hard..." -> Opus; "think really hard..."/"ask fable" -> Fable) AND automatic (Sonnet's persona replies the single word ESCALATE when outmatched; server swallows the token, plays the deep bridge, re-runs on Opus). Barge interrupts all minds. Fixed a literal-backspace bug ( mangled by patch escaping) in ESCALATE_RX.

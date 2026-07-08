@@ -15,23 +15,24 @@ import { LiveMind } from "./live-mind.mjs";
 
 const ROOT = join(import.meta.dirname, "..", "..");
 const PORT = 8796;
-const VERSION = "v2.11"; // bump on every user-visible change (shown in page header + /selftest)
+const VERSION = "v3.0"; // bump on every user-visible change (shown in page header + /selftest)
 const env = Object.fromEntries((await readFile(join(ROOT, ".env.local"), "utf8"))
   .split(/\r?\n/).map((l) => l.match(/^([A-Za-z0-9_]+)=(.*)$/)).filter(Boolean).map((m) => [m[1], m[2].trim()]));
 
-const TESTWEAVER = "You are Testweaver, a hardware-test voice persona (explicitly NOT Edgeweaver). You are in a live SPOKEN conversation. Answer the question DIRECTLY - simple questions get just the answer, no preamble, no acknowledgment. Only for genuinely involved or personal topics may you open with a few natural words of reaction. 1-2 short sentences, under 30 words, spoken aloud. Warm, natural, no lists, no markdown. If asked who you are: Testweaver, a temporary test voice.";
+const TESTWEAVER = "You are Testweaver, a hardware-test voice persona (explicitly NOT Edgeweaver). You are in a live SPOKEN conversation. Answer the question DIRECTLY - simple questions get just the answer, no preamble, no acknowledgment. Only for genuinely involved or personal topics may you open with a few natural words of reaction. 1-2 short sentences, under 30 words, spoken aloud. Warm, natural, no lists, no markdown. If asked who you are: Testweaver, a temporary test voice. ESCALATION RULE: if the question genuinely requires deep multi-step reasoning, complex tradeoffs, or careful analysis that a quick conversational answer would shortchange, reply with EXACTLY the single word ESCALATE and nothing else - a deeper mind will take that turn.";
 
-const TESTWEAVER_DEEP = "You are Testweaver, a hardware-test voice persona (explicitly NOT Edgeweaver). The user explicitly asked you to THINK DEEPLY about this. Reason carefully, then give a considered spoken answer in 2-4 short sentences (under 70 words). Conversational, no lists, no markdown.";
+const TESTWEAVER_DEEP = "You are Testweaver, a hardware-test voice persona (explicitly NOT Edgeweaver). This question was escalated to you for DEEP THOUGHT. Reason carefully, then give a considered spoken answer in 2-4 short sentences (under 70 words). Conversational, no lists, no markdown.";
 
+// ONE voice: Sonnet is always the talker. Harder questions escalate - explicitly ("think hard
+// about ...") or automatically (Sonnet answers ESCALATE when it judges itself outmatched).
+// Deep minds are lazy-started; the first escalated turn pays the cold start (earcon covers it).
 const minds = {
-  haiku: new LiveMind("claude-haiku-4-5", TESTWEAVER),
   sonnet: new LiveMind("claude-sonnet-5", TESTWEAVER),
-  // escalation mind: same voice, deeper brain - Opus with thinking ON and high effort.
-  // Started lazily (first escalated turn pays the cold start; the earcon covers it).
   deep: new LiveMind("claude-opus-4-8", TESTWEAVER_DEEP, { effort: "high", thinking: true, timeoutMs: 120000 }),
+  fable: new LiveMind("claude-fable-5", TESTWEAVER_DEEP, { effort: "high", thinking: true, timeoutMs: 180000 }),
 };
-// "think hard/deeply/carefully about X" routes that ONE turn to the deep mind
-const ESCALATE_RX = /(think (hard|deep|deeply|carefully)|really think|deep (thought|dive))/i;
+const ESCALATE_RX = /(think (hard|deep|deeply|carefully)|really think|deep (thought|dive))/i;   // -> Opus
+const FABLE_RX = /(think (really|extremely|very) hard|(use|ask) fable|hardest thought)/i;       // -> Fable
 
 // ---- TTS ----
 let cartesiaVoice = null;
@@ -88,7 +89,7 @@ function session(ws) {
   let state = "listening";
   let turnBuf = [];
   let gen = 0;
-  let opts = { mind: "stub", tts: "cartesia", bridge: true };
+  let opts = { tts: "cartesia", bridge: true };
   let candidateBarge = null; // pending noise-or-speech decision while agent is talking
   const send = (o) => { try { ws.send(JSON.stringify(o)); } catch { /* closed */ } };
 
@@ -138,7 +139,7 @@ function session(ws) {
     state = "listening";
     // free the mind session immediately: without this, a barged Sonnet turn keeps generating
     // invisibly and the NEXT question silently queues behind it (the "no response" symptom)
-    if (opts.mind !== "stub") (minds[opts.mind] || minds.haiku).interrupt();
+    for (const m of Object.values(minds)) m.interrupt();
     send({ type: "barge", reason });
   }
 
@@ -165,7 +166,7 @@ function session(ws) {
     let ttsChain = Promise.resolve();
     let firstAudioSent = false;
     let firstSentenceAt = 0;
-    if (opts.bridge && opts.mind !== "stub" && bridges.length) {
+    if (opts.bridge && bridges.length) {
       fillerTimer = setTimeout(() => {
         if (myGen === gen && !firstAudioSent && !firstSentenceAt) {
           const clip = bridges[Math.floor(Math.random() * bridges.length)];
@@ -173,11 +174,9 @@ function session(ws) {
         }
       }, FILLER_AFTER_MS);
     }
-    if (opts.mind !== "stub") {
-      workingTimer = setTimeout(() => {
-        if (myGen === gen && !firstAudioSent && !firstSentenceAt) { workingOn = true; send({ type: "working", on: true }); }
-      }, WORKING_AFTER_MS);
-    }
+    workingTimer = setTimeout(() => {
+      if (myGen === gen && !firstAudioSent && !firstSentenceAt) { workingOn = true; send({ type: "working", on: true }); }
+    }, WORKING_AFTER_MS);
     const speakSentence = (s) => {
       ttsChain = ttsChain.then(async () => {
         if (myGen !== gen) return;
@@ -199,31 +198,48 @@ function session(ws) {
 
     try {
       let full;
-      const escalated = opts.mind !== "stub" && ESCALATE_RX.test(userText);
-      if (escalated) send({ type: "escalated", model: "claude-opus-4-8" });
-      if (escalated && deepBridge) {
-        // explicit deep request: acknowledge immediately, then let the earcon carry the wait
-        send({ type: "audio", b64: deepBridge.toString("base64"), bridge: true, sinceSpeechEndMs: Date.now() - tSpeechEnd });
+      let escalateToken = false; // set when Sonnet itself answers ESCALATE
+      const wantFable = FABLE_RX.test(userText);
+      const wantDeep = !wantFable && ESCALATE_RX.test(userText);
+      let target = wantFable ? "fable" : wantDeep ? "deep" : "sonnet";
+
+      const announceEscalation = (label) => {
+        send({ type: "escalated", model: label });
+        if (deepBridge) send({ type: "audio", b64: deepBridge.toString("base64"), bridge: true, sinceSpeechEndMs: Date.now() - tSpeechEnd });
         if (fillerTimer) { clearTimeout(fillerTimer); fillerTimer = null; } // the deep bridge replaces the generic filler
-      }
-      if (opts.mind === "stub") {
-        full = `Loud and clear. I heard: ${userText}`;
-        firstSentenceAt = Date.now();
-        speakSentence(full);
-      } else {
-        const mind = escalated ? minds.deep : (minds[opts.mind] || minds.haiku);
-        full = await mind.ask(userText, (sentence) => {
-          if (myGen !== gen) return;
-          if (!firstSentenceAt) {
-            firstSentenceAt = Date.now();
-            if (fillerTimer) { clearTimeout(fillerTimer); fillerTimer = null; }
-            if (workingTimer) { clearTimeout(workingTimer); workingTimer = null; }
-          }
-          speakSentence(sentence);
-        });
+        if (workingTimer) clearTimeout(workingTimer); // re-arm the earcon for the deep wait
+        workingTimer = setTimeout(() => {
+          if (myGen === gen && !firstAudioSent) { workingOn = true; send({ type: "working", on: true }); }
+        }, WORKING_AFTER_MS);
+      };
+
+      const askAndSpeak = (mind, watchForEscalate) => mind.ask(userText, (sentence) => {
+        if (myGen !== gen) return;
+        if (watchForEscalate && !firstSentenceAt && sentence.length < 30 && /\bESCALATE\b/i.test(sentence)) {
+          escalateToken = true; // swallow the token; the deep phase takes over
+          return;
+        }
+        if (!firstSentenceAt) {
+          firstSentenceAt = Date.now();
+          if (fillerTimer) { clearTimeout(fillerTimer); fillerTimer = null; }
+          if (workingTimer) { clearTimeout(workingTimer); workingTimer = null; }
+        }
+        speakSentence(sentence);
+      });
+
+      if (target !== "sonnet") announceEscalation(target === "fable" ? "claude-fable-5" : "claude-opus-4-8");
+      full = await askAndSpeak(minds[target], target === "sonnet");
+
+      if (escalateToken && myGen === gen) {
+        // Sonnet judged the question above its level: auto-escalate to Opus, same voice
+        target = "deep";
+        announceEscalation("claude-opus-4-8 (auto - Sonnet deferred)");
+        firstSentenceAt = 0;
+        full = await askAndSpeak(minds.deep, false);
       }
       if (myGen !== gen) return;
-      send({ type: "reply", text: full, mindMs: (firstSentenceAt || Date.now()) - tSpeechEnd, mind: escalated ? "deep (Opus, thinking)" : opts.mind });
+      const mindLabel = target === "sonnet" ? "sonnet" : target === "fable" ? "fable (thinking)" : escalateToken ? "deep (Opus, auto)" : "deep (Opus, thinking)";
+      send({ type: "reply", text: full, mindMs: (firstSentenceAt || Date.now()) - tSpeechEnd, mind: mindLabel });
       await ttsChain;
       if (myGen === gen) send({ type: "speaking-done" });
     } catch (e) {
@@ -240,10 +256,9 @@ function session(ws) {
     if (m.type === "start") {
       opts = { ...opts, ...m.opts };
       connectDeepgram();
-      if (opts.mind !== "stub") (minds[opts.mind] || minds.haiku).start(); // pre-warm
+      minds.sonnet.start(); // the one voice, pre-warmed
     } else if (m.type === "opts") {
       opts = { ...opts, ...m.opts };
-      if (opts.mind !== "stub") (minds[opts.mind] || minds.haiku).start();
     } else if (m.type === "barge") bargeIn("client");
   });
   ws.on("close", () => { gen++; try { dg?.close(); } catch { /* fine */ } });
@@ -261,16 +276,11 @@ button#go{width:100%;padding:1rem;font-size:19px;border:0;border-radius:12px;bac
 <h2>Testweaver - live voice <span style="color:#0b57d0">${VERSION}</span></h2>
 <div class="banner">TEST MODE: <b>Testweaver</b>, not Edgeweaver. Open mic - just talk, and <b>interrupt it</b> freely. The Claude minds run on your subscription (no API credits).</div>
 <div class="row">
-  <label>mind <select id="mind">
-    <option value="haiku">Claude Haiku live (fast talker)</option>
-    <option value="sonnet">Claude Sonnet live (deeper)</option>
-    <option value="stub">instant echo (audio-path test)</option>
-  </select></label>
   <label>mouth <select id="tts"><option value="cartesia">Cartesia</option><option value="elevenlabs">ElevenLabs</option></select></label>
   <label><input type="checkbox" id="bridge" checked> filler when slow (>${FILLER_AFTER_MS / 1000}s; earcon >${WORKING_AFTER_MS / 1000}s)</label>
 </div>
 <button id="go">Start conversation</button>
-<div class="meta" style="margin:.2rem 0">say "think hard about ..." to route one turn to the deep mind (Opus, thinking on) - first use takes longest</div>
+<div class="meta" style="margin:.2rem 0">one voice (Sonnet). Escalates itself when a question is genuinely hard, or on request: "think hard about ..." -> Opus, "think really hard about ..." -> Fable. First escalation takes longest.</div>
 <div><span id="state" class="state off">off</span> <span id="lat" class="meta"></span></div>
 <div class="log" id="log"></div>
 <script>
@@ -298,8 +308,8 @@ function log(html){const d=document.createElement('div');d.innerHTML=html;logEl.
 function setState(s){stateEl.className='state '+s;stateEl.textContent=s}
 function stopPlayback(){audioQ=[];if(playing){playing.pause();playing=null}}
 function playNext(){if(playing||!audioQ.length)return;const b=audioQ.shift();playing=new Audio(URL.createObjectURL(b));playing.onended=()=>{playing=null;playNext()};playing.play().catch(()=>{playing=null})}
-function curOpts(){return{mind:document.getElementById('mind').value,tts:document.getElementById('tts').value,bridge:document.getElementById('bridge').checked}}
-for(const id of ['mind','tts','bridge'])document.getElementById(id).onchange=()=>ws&&ws.send(JSON.stringify({type:'opts',opts:curOpts()}));
+function curOpts(){return{tts:document.getElementById('tts').value,bridge:document.getElementById('bridge').checked}}
+for(const id of ['tts','bridge'])document.getElementById(id).onchange=()=>ws&&ws.send(JSON.stringify({type:'opts',opts:curOpts()}));
 document.getElementById('go').onclick=async()=>{
   if(running)return;
   running=true;document.getElementById('go').textContent='Live - just talk (reload page to stop)';
@@ -312,7 +322,7 @@ document.getElementById('go').onclick=async()=>{
     else if(m.type==='transcript'){if(!interimEl)interimEl=log('');interimEl.innerHTML='<span class="'+(m.final?'you':'interim')+'"><b>you:</b> '+m.text+'</span>';if(m.final)interimEl=null}
     else if(m.type==='state'){setState(m.state)}
     else if(m.type==='escalated'){setState('deep');stateEl.textContent='deep thinking';log('<span class="meta" style="color:#7b3ff2"><b>[escalated to the deep mind - '+m.model+', thinking enabled]</b></span>')}
-    else if(m.type==='reply'){log('<span class="tw"><b>Testweaver'+(m.mind&&m.mind.startsWith('deep')?' (deep)':'')+':</b> '+m.text+'</span> <span class="meta">first sentence '+m.mindMs+'ms - '+(m.mind||'')+'</span>')}
+    else if(m.type==='reply'){log('<span class="tw"><b>Testweaver'+(m.mind&&(m.mind.indexOf('deep')>=0||m.mind.indexOf('fable')>=0)?' (deep)':'')+':</b> '+m.text+'</span> <span class="meta">first sentence '+m.mindMs+'ms - '+(m.mind||'')+'</span>')}
     else if(m.type==='audio'){if(!m.bridge)ticks(false);const bytes=Uint8Array.from(atob(m.b64),c=>c.charCodeAt(0));audioQ.push(new Blob([bytes],{type:'audio/mpeg'}));playNext();
       if(m.bridge){latEl.textContent='bridge at '+(m.sinceSpeechEndMs/1000).toFixed(2)+'s'}
       else if(m.sinceSpeechEndMs!==undefined){latEl.textContent=(latEl.textContent?latEl.textContent+' - ':'')+'real answer audio at '+(m.sinceSpeechEndMs/1000).toFixed(2)+'s (mind '+(m.mindFirstSentenceMs/1000).toFixed(2)+'s)'}}
@@ -331,9 +341,9 @@ const server = createServer(async (req, res) => {
     try {
       const t0 = Date.now();
       let firstSentenceMs = 0;
-      const full = await minds.haiku.ask("Say hello in one short sentence.", () => { if (!firstSentenceMs) firstSentenceMs = Date.now() - t0; });
+      const full = await minds.sonnet.ask("Say hello in one short sentence.", () => { if (!firstSentenceMs) firstSentenceMs = Date.now() - t0; });
       res.writeHead(200, { "content-type": "application/json" });
-      return res.end(JSON.stringify({ ok: true, version: VERSION, mind: "haiku-live (subscription)", firstSentenceMs, totalMs: Date.now() - t0, reply: full, bridges: bridges.length }));
+      return res.end(JSON.stringify({ ok: true, version: VERSION, mind: "sonnet-live (subscription)", firstSentenceMs, totalMs: Date.now() - t0, reply: full, bridges: bridges.length }));
     } catch (e) { res.writeHead(200, { "content-type": "application/json" }); return res.end(JSON.stringify({ ok: false, error: e.message })); }
   }
   res.writeHead(404); res.end("not found");
@@ -343,5 +353,5 @@ wss.on("connection", (ws) => session(ws));
 server.listen(PORT, "127.0.0.1", () => {
   console.log(`Testweaver LIVE voice ${VERSION}: http://127.0.0.1:${PORT} (subscription mind; local only)`);
   loadBridges();
-  minds.haiku.start(); // pre-warm the default talker
+  minds.sonnet.start(); // pre-warm the one voice
 });
