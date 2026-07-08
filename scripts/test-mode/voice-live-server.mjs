@@ -15,6 +15,7 @@ import { LiveMind } from "./live-mind.mjs";
 
 const ROOT = join(import.meta.dirname, "..", "..");
 const PORT = 8796;
+const VERSION = "v2.6"; // bump on every user-visible change (shown in page header + /selftest)
 const env = Object.fromEntries((await readFile(join(ROOT, ".env.local"), "utf8"))
   .split(/\r?\n/).map((l) => l.match(/^([A-Za-z0-9_]+)=(.*)$/)).filter(Boolean).map((m) => [m[1], m[2].trim()]));
 
@@ -227,7 +228,7 @@ function session(ws) {
   ws.on("close", () => { gen++; try { dg?.close(); } catch { /* fine */ } });
 }
 
-const PAGE = `<!doctype html><html><head><meta charset="utf-8"><title>Testweaver live voice v2</title>
+const PAGE = `<!doctype html><html><head><meta charset="utf-8"><title>Testweaver ${VERSION}</title>
 <style>body{font:16px system-ui,Segoe UI,sans-serif;max-width:680px;margin:1.5rem auto;padding:0 1rem;color:#111}
 .banner{background:#fff3cd;border:1px solid #e0c76a;border-radius:8px;padding:.6rem 1rem;font-size:13.5px}
 .state{display:inline-block;padding:.25rem .9rem;border-radius:99px;font-weight:600;margin:.6rem 0}
@@ -236,7 +237,7 @@ button#go{width:100%;padding:1rem;font-size:19px;border:0;border-radius:12px;bac
 .row{display:flex;gap:1rem;align-items:center;margin:.4rem 0;font-size:14px;flex-wrap:wrap}
 .log{border:1px solid #ddd;border-radius:8px;padding:.8rem 1rem;min-height:180px;font-size:14.5px;max-height:45vh;overflow-y:auto}
 .you{color:#0b57d0}.tw{color:#1b6e20}.meta{color:#888;font-size:12px}.interim{color:#999;font-style:italic}</style></head><body>
-<h2>Testweaver - live voice v2 (subscription mind)</h2>
+<h2>Testweaver - live voice <span style="color:#0b57d0">${VERSION}</span></h2>
 <div class="banner">TEST MODE: <b>Testweaver</b>, not Edgeweaver. Open mic - just talk, and <b>interrupt it</b> freely. The Claude minds run on your subscription (no API credits).</div>
 <div class="row">
   <label>mind <select id="mind">
@@ -309,7 +310,7 @@ const server = createServer(async (req, res) => {
       let firstSentenceMs = 0;
       const full = await minds.haiku.ask("Say hello in one short sentence.", () => { if (!firstSentenceMs) firstSentenceMs = Date.now() - t0; });
       res.writeHead(200, { "content-type": "application/json" });
-      return res.end(JSON.stringify({ ok: true, mind: "haiku-live (subscription)", firstSentenceMs, totalMs: Date.now() - t0, reply: full, bridges: bridges.length }));
+      return res.end(JSON.stringify({ ok: true, version: VERSION, mind: "haiku-live (subscription)", firstSentenceMs, totalMs: Date.now() - t0, reply: full, bridges: bridges.length }));
     } catch (e) { res.writeHead(200, { "content-type": "application/json" }); return res.end(JSON.stringify({ ok: false, error: e.message })); }
   }
   res.writeHead(404); res.end("not found");
@@ -317,7 +318,7 @@ const server = createServer(async (req, res) => {
 const wss = new WebSocketServer({ server, path: "/ws" });
 wss.on("connection", (ws) => session(ws));
 server.listen(PORT, "127.0.0.1", () => {
-  console.log(`Testweaver LIVE voice v2: http://127.0.0.1:${PORT} (subscription mind; local only)`);
+  console.log(`Testweaver LIVE voice ${VERSION}: http://127.0.0.1:${PORT} (subscription mind; local only)`);
   loadBridges();
   minds.haiku.start(); // pre-warm the default talker
 });
