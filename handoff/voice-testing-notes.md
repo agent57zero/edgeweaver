@@ -16,18 +16,20 @@
 | Key collector form | scratchpad (recreate if needed) | wrote keys into `.env.local` |
 | Telegram round-trip tester | `scripts/test-mode/telegram-test.mjs` | one sanctioned pairing round-trip (A8) |
 | Mind-server component (dark build A3) | `voice/{mind-server,claude-backend,prompt-assembly}.mjs` | verified via `scripts/verify/verify-mind-server.mjs` |
+| Session transcript logs (v3.3) | `logs/voice/<stamp>-<version>.jsonl` (gitignored) | auto-written, one file per conversation |
 
 Version stamp: shown in the page header + `/selftest` + boot log. Bump `VERSION` on every user-visible change (Alan checks it after reload).
 
-## CURRENT STATE (v3.2, end of 2026-07-08 session) - READ THIS FIRST
+## CURRENT STATE (v3.3, 2026-07-08) - READ THIS FIRST
 
 The harness works and feels good. To resume: `node scripts/test-mode/voice-live-server.mjs`, open
-http://127.0.0.1:8796, click Start, allow the mic, talk. Header shows the version (currently v3.2).
+http://127.0.0.1:8796, click Start, allow the mic, talk. Header shows the version (currently v3.3).
 It is TEST MODE (Testweaver persona) - not Edgeweaver, no memory, no OB1 writes.
 
 What it does now: open-mic streaming voice conversation on the Claude subscription (no API credits),
 ONE voice (Sonnet) that escalates to a deeper mind on hard questions, with barge-in, noise-robust
-interruption, adaptive filler, and a progress earcon for long thinks.
+interruption, adaptive filler, and a progress earcon for long thinks. Every conversation writes a
+session transcript to `logs/voice/` (see Logging below) - text + timings, never audio.
 
 ## The architecture
 
@@ -106,21 +108,25 @@ Interruption (the baby-noise problem, solved in two stages):
    but proves the cascade architecture feels great with polish.
 7. Alan's verdict on v2.2-era feel: "This feels much more natural."
 
-## Logging / observability (Alan asked; answered here for the future)
+## Logging / observability (Alan asked; decided + BUILT in v3.3)
 
-CURRENT: the harness does NOT write chat logs. This is deliberate for TEST MODE - Testweaver
-conversations are in-memory only and die with the process (no persistence, matching the dark-build
-"no OB1 writes" rule). The only logs are:
-- server stdout (mind pick, escalations, errors) -> the background-task .output file (ephemeral).
-- browser page log (transcript + latency + escalation banners) -> visible, not saved.
-- per-turn metrics already computed and sent (firstSentenceMs, which mind, bridge/earcon timing).
+BUILT (v3.3, Alan's call on 2026-07-08): the harness writes one JSONL transcript per conversation
+to `logs/voice/<yyyymmdd-hhmmss>-<version>.jsonl` (gitignored; local only). Implementation is a
+tee on the server's `send()` choke point, so every server->client event lands in the file:
+- line 1 `session-start`: version, filler/earcon thresholds, the three mind models, opts.
+- `mind-session` lines: each mind's Claude Code session id, cross-referencing the raw session
+  files under `~/.claude/projects/C--Users-agent-Project-Edgeweaver/` (mind's-eye view, while
+  Claude Code retention keeps them).
+- then per event: final transcripts (user turns), replies (text + mind label + firstSentenceMs),
+  escalations, barges/ducks, filler + earcon firings, TTS/opts switches, errors, session-end.
+- deliberately NOT logged: interim transcripts (per-word spam) and audio bytes (bulk + open-mic
+  privacy; text and timings answer every tuning question so far).
+This turns "it felt slow" into distributions (latency per mind, escalation rate + false fires,
+barge frequency) to tune thresholds against, and gives forensics for bugs like the v2.3 "Sonnet
+drops". Retention is manual (delete the folder anytime); nothing sensitive leaves the machine.
 
-WHAT WE SHOULD DO (two separate concerns):
-1. Harness debugging/tuning (optional, buildable anytime): append a JSONL line per turn to
-   state/test-mode/voice-log-<date>.jsonl - {ts, userText, mind, escalated, firstSentenceMs,
-   totalMs, tts, barged}. Cheap, and it turns "it felt slow" into a distribution you can tune
-   thresholds against. Nothing sensitive (Testweaver only). Keep it gitignored (state/ already is).
-2. The REAL Edgeweaver voice (arming, gated): logging is already DESIGNED, not ad hoc -
+The REAL Edgeweaver voice (arming, gated) is a SEPARATE concern - memory is already DESIGNED,
+and this file log is not it:
    - each voice exchange becomes an OB1 EPISODE via the mind server's writeback (voice/mind-server.mjs,
      dark-built A3) - that IS the memory, and the night loop consolidates it (reflections, feelings,
      coherence). So the "chat log" for Edgeweaver is its autobiography, not a text file.
@@ -129,16 +135,17 @@ WHAT WE SHOULD DO (two separate concerns):
    - audience/provenance tags on every episode (rehearsal vs real, who spoke) - the pinned-sender
      principle, extended to voice; ties into future speaker recognition.
    Net: don't build a bespoke chat-log system for the real being - exchanges flow into OB1 and the
-   existing machinery handles retention, consolidation, and audit. For the harness, a JSONL tuning
-   log is the only thing worth adding, and only when you want data to tune against.
+   existing machinery handles retention, consolidation, and audit. When this pipeline is armed, the
+   `logs/voice/` file keeps carrying TELEMETRY only (timings, events); conversation content becomes
+   OB1 episodes referenced by id, so no shadow memory store ever drifts alongside the brain.
 
 ## Known rough edges / not done
 
 - Sonnet-only feels ~2-3s (vs Haiku's ~1s). Not resolved this session - see finding #5 for the two
   documented options + the raw-API fix. This is the main open UX item.
 - AUTO-escalation quality is UNMEASURED: Sonnet emitting ESCALATE depends on its self-awareness of
-  its own limits; may over- or under-fire. The persona rule is one sentence, easy to tune once
-  there's data (see the JSONL logging idea).
+  its own limits; may over- or under-fire. The persona rule is one sentence, easy to tune - the
+  v3.3 session log records every escalation, so data accrues from the next live session.
 - Escalation trigger is a regex ("think hard" etc.) - could false-positive on "I think deeply
   about..."; fine for the harness, needs a real router later.
 - Escalated minds get RECENT transcript, not full session history (each mind is a separate session);
@@ -174,12 +181,15 @@ WHAT WE SHOULD DO (two separate concerns):
 - v3.0: ONE voice (Sonnet, no mind dropdown). Escalation: explicit ("think hard..." -> Opus; "think really hard..."/"ask fable" -> Fable) AND automatic (Sonnet's persona replies the single word ESCALATE when outmatched; server swallows the token, plays the deep bridge, re-runs on Opus). Barge interrupts all minds. Fixed a literal-backspace bug ( mangled by patch escaping) in ESCALATE_RX.
 - v3.1: filler/earcon thresholds 2.5s/3.5s (Sonnet-only runs 2-3s; fillers were firing on normal turns).
 - v3.2: two live-testing bug fixes - (a) lazy-started deep minds returned the warmup "ok" as the answer (ask() now starts the session first so the real turn queues behind the warmup); (b) escalated minds were blind to the conversation ("answer that again" failed on a mind that never saw the question) - rolling transcript now prepended to deep/fable turns.
+- v3.3: per-session JSONL transcript logs in logs/voice/ (tee on send(): turns, replies + mind labels, timings, barges, escalations, errors; interims skipped, audio bytes stripped; mind Claude-session ids recorded for cross-reference). Page notes the logging; verified live with a WS probe.
 
 ## HOW TO RESUME (from a cold session, months later)
 
 1. Read this file + VOICE-STACK.md (design authority) + decisions.md D12 (+ amendments).
 2. Run it: `node scripts/test-mode/voice-live-server.mjs` -> http://127.0.0.1:8796 -> Start -> talk.
    `/selftest` on that port confirms the mind works without a mic. Keys are in `.env.local` (verified).
+   Past conversations (text + timings) are in `logs/voice/*.jsonl` - read those before re-tuning
+   anything. If the port is busy, an older server instance is still running - kill it first.
 3. The two files that matter: `scripts/test-mode/voice-live-server.mjs` (pipeline, routing, UI) and
    `scripts/test-mode/live-mind.mjs` (the persistent subscription mind). Both heavily commented.
 4. The seam to the real being: `voice/{mind-server,claude-backend,prompt-assembly}.mjs` (dark-built

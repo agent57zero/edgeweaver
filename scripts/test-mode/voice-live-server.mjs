@@ -5,17 +5,21 @@
 //   browser mic (open, echo-cancelled) --webm chunks--> Deepgram streaming (interim transcripts)
 //   end-of-turn -> bridge clip plays INSTANTLY -> mind streams -> each sentence TTS'd and played
 //   as it forms. BARGE-IN: speaking over it cancels everything at once.
-// Explicitly NOT Edgeweaver: dummy persona, no OB1 writes, dies with the process.
+// Explicitly NOT Edgeweaver: dummy persona, no OB1 writes; conversation state dies with the
+// process. v3.3 adds a per-session transcript log (logs/voice/, gitignored): engineering
+// telemetry - text + timings only, never audio bytes, never OB1/soulfiles.
 // Usage: node scripts/test-mode/voice-live-server.mjs   then open http://127.0.0.1:8796
 import { createServer } from "node:http";
+import { appendFileSync, mkdirSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { WebSocketServer } from "ws";
 import { LiveMind } from "./live-mind.mjs";
 
 const ROOT = join(import.meta.dirname, "..", "..");
+const LOG_DIR = join(ROOT, "logs", "voice");
 const PORT = 8796;
-const VERSION = "v3.2"; // bump on every user-visible change (shown in page header + /selftest)
+const VERSION = "v3.3"; // bump on every user-visible change (shown in page header + /selftest)
 const env = Object.fromEntries((await readFile(join(ROOT, ".env.local"), "utf8"))
   .split(/\r?\n/).map((l) => l.match(/^([A-Za-z0-9_]+)=(.*)$/)).filter(Boolean).map((m) => [m[1], m[2].trim()]));
 
@@ -92,7 +96,43 @@ function session(ws) {
   let opts = { tts: "cartesia", bridge: true };
   let candidateBarge = null; // pending noise-or-speech decision while agent is talking
   const transcript = []; // rolling {user, reply} pairs - escalated minds are cold to the convo
-  const send = (o) => { try { ws.send(JSON.stringify(o)); } catch { /* closed */ } };
+
+  // ---- session transcript log (v3.3): logs/voice/<stamp>-<version>.jsonl, one per connection ----
+  // Telemetry for threshold tuning and forensics: turns, replies, mind labels, timings, barges,
+  // escalations, errors. Text + timings ONLY - audio bytes are stripped, nothing is committed
+  // (logs/ is gitignored), and nothing here ever feeds OB1 or soulfiles.
+  let logPath = null;
+  const seenSids = new Set();
+  const logLine = (o) => {
+    if (!logPath) return;
+    const write = (x) => { try { appendFileSync(logPath, JSON.stringify({ t: new Date().toISOString(), ...x }) + "\n"); } catch { /* logging must never break the loop */ } };
+    write(o);
+    // cross-reference: each mind is a Claude Code session whose own transcript lives under
+    // ~/.claude/projects/ - record its id the first time it becomes known
+    for (const [name, m] of Object.entries(minds)) {
+      if (m.sessionId && !seenSids.has(m.sessionId)) {
+        seenSids.add(m.sessionId);
+        write({ ev: "mind-session", mind: name, model: m.model, sessionId: m.sessionId });
+      }
+    }
+  };
+  const openLog = () => {
+    const d = new Date(), p = (n) => String(n).padStart(2, "0");
+    mkdirSync(LOG_DIR, { recursive: true });
+    logPath = join(LOG_DIR, `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}-${VERSION}.jsonl`);
+    logLine({ ev: "session-start", version: VERSION, fillerAfterMs: FILLER_AFTER_MS, workingAfterMs: WORKING_AFTER_MS, models: Object.fromEntries(Object.entries(minds).map(([k, m]) => [k, m.model])), opts });
+    console.log(`session transcript: ${logPath}`);
+  };
+
+  const send = (o) => {
+    try { ws.send(JSON.stringify(o)); } catch { /* closed */ }
+    // tee every server->client event to the session log, minus the noise:
+    // interim transcripts (per-word spam) are skipped; audio events shed their base64 bytes
+    // but keep sentence + timing fields (JSON.stringify drops the undefined ones).
+    if (o.type === "transcript" && !o.final) return;
+    const { type, b64, ...rest } = o;
+    logLine({ ev: type, ...rest });
+  };
 
   function connectDeepgram() {
     const q = "model=nova-2&interim_results=true&smart_format=true&endpointing=300&utterance_end_ms=1200&vad_events=true";
@@ -263,13 +303,15 @@ function session(ws) {
     let m; try { m = JSON.parse(data.toString()); } catch { return; }
     if (m.type === "start") {
       opts = { ...opts, ...m.opts };
+      openLog();
       connectDeepgram();
       minds.sonnet.start(); // the one voice, pre-warmed
     } else if (m.type === "opts") {
       opts = { ...opts, ...m.opts };
+      logLine({ ev: "opts", ...m.opts });
     } else if (m.type === "barge") bargeIn("client");
   });
-  ws.on("close", () => { gen++; try { dg?.close(); } catch { /* fine */ } });
+  ws.on("close", () => { gen++; logLine({ ev: "session-end" }); try { dg?.close(); } catch { /* fine */ } });
 }
 
 const PAGE = `<!doctype html><html><head><meta charset="utf-8"><title>Testweaver ${VERSION}</title>
@@ -289,6 +331,7 @@ button#go{width:100%;padding:1rem;font-size:19px;border:0;border-radius:12px;bac
 </div>
 <button id="go">Start conversation</button>
 <div class="meta" style="margin:.2rem 0">one voice (Sonnet). Escalates itself when a question is genuinely hard, or on request: "think hard about ..." -> Opus, "think really hard about ..." -> Fable. First escalation takes longest.</div>
+<div class="meta" style="margin:.2rem 0">each conversation is logged to logs/voice/ (text + timings for tuning; no audio is recorded)</div>
 <div><span id="state" class="state off">off</span> <span id="lat" class="meta"></span></div>
 <div class="log" id="log"></div>
 <script>

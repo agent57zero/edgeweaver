@@ -20,12 +20,15 @@ export class LiveMind {
     this.opts = { effort: "low", thinking: false, timeoutMs: TURN_TIMEOUT_MS, ...opts }; // deep minds: effort high + thinking on
     this.proc = null;
     this.buf = "";
+    this.sessionId = null; // Claude Code session id (from stream-json events) - lets the voice
+                           // transcript log cross-reference ~/.claude/projects/ session files
     this.current = null;   // { onSentence, resolve, reject, pending, full, warmup, timer }
     this.queue = [];       // waiting turns: { text, onSentence, resolve, reject }
   }
 
   start() {
     if (this.proc) return;
+    this.sessionId = null; // a respawned process is a new Claude session
     this.proc = spawn(resolveClaude(), [
       "-p", "--input-format", "stream-json", "--output-format", "stream-json",
       "--include-partial-messages", "--verbose",
@@ -79,6 +82,7 @@ export class LiveMind {
       this.buf = this.buf.slice(idx + 1);
       if (!line) continue;
       let e; try { e = JSON.parse(line); } catch { continue; }
+      if (e.session_id && !this.sessionId) this.sessionId = e.session_id;
       const cur = this.current;
       if (!cur) continue;
       if (e.type === "stream_event" && e.event?.type === "content_block_delta" && e.event?.delta?.type === "text_delta") {
