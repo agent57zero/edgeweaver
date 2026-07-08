@@ -95,10 +95,17 @@ load in test-mode processes unless explicitly armed (`EW_ALLOW_LIVE=1`).
       psql error output, now redacted). The lab DB password was rotated after that one
       exposure (management API, PATCH 200, old credential dead). Dated ops-log entry.
       (Dump-sourced spawn is exercised later, Alan present with the age key.)
-- [ ] **L4 Harness integration + first A/B**: brain profile in the JSONL session header and a
-      page badge; two scratches, one 10-question set, two configs; findings to
-      handoff/voice-testing-notes.md.
-      verify: two attributable transcripts; live brain row-count unchanged.
+- [x] **L4 Harness integration + first A/B** (2026-07-08): harness v3.4 stamps the JSONL
+      session header (and a page badge) with the brain profile + generation; ab-run.mjs
+      executed the first real A/B: gen1-sonnet (claude-sonnet-5) vs gen1-opus
+      (claude-opus-4-8), same 10-question set, each against its own full clone, 10/10 turns
+      both, mean first-token ~8.9s vs ~8.5s on the subscription backend.
+      verify PASSED: two attributable transcripts in logs/ab/ (profile, schema, generation,
+      model, code hash, shared runId); each scratch lived exactly +10 thoughts (era
+      rehearsal, generation 1); live brain unchanged at 1,931 thoughts in both diffs; both
+      candidates retired, registry keeps history. Known caveat reproduced in data: the
+      claude -p subscription path leaks CLI response formatting into replies (the D12 / V3
+      identity-cleanliness consideration).
 
 Estimates: L1 1-2h; L2 2-3h; L3 30min once the slot exists; L4 ~1h with Alan present.
 

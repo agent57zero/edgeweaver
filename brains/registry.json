@@ -33,6 +33,38 @@
       "retired": "2026-07-08",
       "status": "retired",
       "purpose": "L3 arm drill (BRAINS.md), disposable"
+    },
+    {
+      "name": "gen1-sonnet",
+      "kind": "scratch",
+      "schema": "s_gen1_sonnet",
+      "connEnv": "LAB_DB_URL",
+      "restUrlEnv": null,
+      "restKeyEnv": null,
+      "schemaVersion": 1,
+      "soulRef": "main",
+      "generation": 1,
+      "created": "2026-07-08",
+      "spawnedAt": "2026-07-08T23:26:05.736Z",
+      "retired": "2026-07-08",
+      "status": "retired",
+      "purpose": "L4 first A/B: candidate mind claude-sonnet-5"
+    },
+    {
+      "name": "gen1-opus",
+      "kind": "scratch",
+      "schema": "s_gen1_opus",
+      "connEnv": "LAB_DB_URL",
+      "restUrlEnv": null,
+      "restKeyEnv": null,
+      "schemaVersion": 1,
+      "soulRef": "main",
+      "generation": 1,
+      "created": "2026-07-08",
+      "spawnedAt": "2026-07-08T23:26:31.524Z",
+      "retired": "2026-07-08",
+      "status": "retired",
+      "purpose": "L4 first A/B: candidate mind claude-opus-4-8"
     }
   ]
 }
