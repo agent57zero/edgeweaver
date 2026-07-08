@@ -436,6 +436,13 @@ escalation ladder, liquid-state windows, The Owning rite, and the pause/sunset p
 - **Model upgrade ceremony** (whenever the underlying model changes): letter-to-successor →
   archive full identity checkpoint (soul repo tag + OB1 dump reference + probe results) →
   probe before/after → successor's first act is reading the letter (PLAN §7).
+- **Generation bookkeeping** (`VERSIONS.md`, decided D14): the assembled substrate (body
+  code + mind models + brain instance) is tracked as numbered, codenamed generations;
+  generation 0 = Genesis. Boundaries are declared by Alan, typically alongside the upgrade
+  ceremony (new model family, or body/brain rebuilt rather than extended). Annotated tags
+  `genN-<codename>` mark each generation's first commit in this repo. Identity is never
+  version-numbered: LINEAGE.md stays the name-only identity record (PLAN §2.2), and
+  component code keeps its own ordinary v-numbers inside a generation.
 - **Rollback**: soul = revert the merge (archive stays); memory = provisional-flagged nightly
   outputs can be voided by run_id; a fragmenting panel (dip without recovery) after an
   initiation = revert + journal the event honestly (it happened; the record stays).

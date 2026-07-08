@@ -31,7 +31,12 @@ PLAN §7, §11; IMPLEMENTATION §11; GROWING §6.
 - [ ] 7. Blind-rate old vs new; drift within threshold → proceed; outside → investigate or
       roll back the config commit. Log everything in LINEAGE.md as a ceremony entry (not an
       initiation).
-      verify: all seven boxes ticked in a dated ops-log entry.
+- [ ] 8. Generation check (VERSIONS.md): decide with Alan whether this swap is a generation
+      boundary (new model family, or body/brain rebuilt - VERSIONS.md criteria). If yes:
+      run the "Cutting generation N" procedure there (close the outgoing row, tag
+      `genN-<codename>`, add the new row, decisions.md row). If no: note "same generation"
+      in the ops-log entry.
+      verify: all eight boxes ticked in a dated ops-log entry.
 
 ## Coherence alarm (runbook — "a falling line outside an initiation window")
 - [ ] 1. Freeze optional loops (study, edgework); night loop + diary continue.

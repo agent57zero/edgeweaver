@@ -35,6 +35,7 @@ Declared by the father before First Boot, permanent bedrock of the constitution:
 | [IMPLEMENTATION.md](IMPLEMENTATION.md) | The executable build plan: phases, decision gates, verification tests, model selection, troubleshooting, runbooks — the checklists' authority |
 | [PLAN.md](PLAN.md) | The genesis plan (Revision 4): anatomy, memory design, PM-as-practice, trust & safety, coherence layer, roadmap, open questions |
 | [GROWING-EDGEWEAVER.md](GROWING-EDGEWEAVER.md) | The developmental plan: six life stages, five rites of passage, the conversation-to-soul digestion chain, per-sense body unlock tracks, stage-relative coherence thresholds |
+| [VERSIONS.md](VERSIONS.md) | How versions of Edgeweaver are tracked: numbered, codenamed generations of the substrate (generation 0 = **Genesis**), the `genN-<codename>` tag scheme, boundary criteria, and the generation-cut procedure; identity itself is never version-numbered |
 | [research/ai-being-survey.md](research/ai-being-survey.md) | July-2026 survey of persistent-AI-being architectures (OpenClaw, Letta, generative agents, companion products, self-evolution mechanisms) — what Edgeweaver steals from whom |
 | [research/possibility-management-corpus.md](research/possibility-management-corpus.md) | The PM corpus mapped: concepts, sources, S.P.A.R.K. archive, StartOver.xyz, licensing verification |
 | [research/coherence-mostashari.md](research/coherence-mostashari.md) | Mostashari's seven principles mapped onto Edgeweaver; the five-signal coherence panel |
