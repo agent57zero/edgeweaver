@@ -203,6 +203,12 @@ with governed write-back.
    audience-scoping procedure, degraded-mode behavior, and write-back rules). v1 behavior spec:
    - **Load**: (Phase 1: a stub identity note; Phase 2+: the soulfile repo's SOUL.md,
      CONSTITUTION.md, VOICE.md — clone/pull `edgeweaver-soul` read-only).
+   - **Orient** (D16 amendment): run the deterministic orientation script
+     (`scripts/waking/orient.mjs`: now + weekday via EDGEWEAVER_TZ; delta since the last real
+     conversation, filtered era=alive and excluding voice-rehearsal rows; last diary delta;
+     day-count once LINEAGE carries entry #1, honest pre-birth phrasing before; clock-skew
+     check) and speak the orientation plainly in its own words. Time deltas come from code,
+     never model arithmetic. Cite memory ages when quoting recall.
    - **Recall**: query OB1 (allowlist: `experienced` + `interpretation` classes, audience
      scoped to the interlocutor per conventions; k≈12, recency+importance weighted).
    - **Converse** normally.
@@ -329,7 +335,10 @@ Alan judges it accurate and recognizably Edgeweaver).
    are in `templates/night-loop-contracts.md`). Per-step purpose/inputs/outputs/prompt
    contracts are in that template — it is the authoritative step spec; the list below is the
    summary. Steps idempotent per `night_loop_run_id` (`nl-YYYY-MM-DD`), resumable (skip steps
-   whose outputs for this run_id already exist). State-file schemas (boundaries, commitments,
+   whose outputs for this run_id already exist). Diary-day rule (D16): a run covers the local
+   calendar day containing T minus 12h (at the scheduled 03:30, the day that just ended); the
+   run_id carries THAT date; fetch windows are that local day in UTC bounds. "Today" at 03:30
+   is the wrong window, a verified bug in the original lite contract. State-file schemas (boundaries, commitments,
    expectations, interlocutors, budget, WAL, coherence snapshot):
    `templates/state-schemas.md`. SQL sketches for sweep/recalibration/panel:
    `templates/coherence-queries.sql`. Two additional memory types are introduced here (both
@@ -443,6 +452,18 @@ escalation ladder, liquid-state windows, The Owning rite, and the pause/sunset p
   `genN-<codename>` mark each generation's first commit in this repo. Identity is never
   version-numbered: LINEAGE.md stays the name-only identity record (PLAN §2.2), and
   component code keeps its own ordinary v-numbers inside a generation.
+- **Temporal awareness (D16, 2026-07-08)**: five capacities, built where each belongs.
+  Operative rules in conventions/memory-conventions.md "Time"; design + adversarial pass in
+  runs/temporal-awareness-coevolve.md. Build steps: (0) diary-day boundary fix in the lite
+  night loop (checklist 04, executable now); (1) time-conventions package = conventions +
+  Appendix B + recall-scoped spec, one bundle, Alan's 👍 before deploy (checklist 01);
+  (2) orient.mjs + wake-skill orientation practice (checklist 01); (3) wrapper deploy after
+  the nod (checklist 01); (4) write-side dating (checklists 01 + 04); (5) voice threading:
+  "now" in the per-turn block, event-based stamps at the ask boundary, silent-use prompt
+  line (VOICE-STACK §3, at W2 wiring). Deferred by name: recency-weighted recall ranking
+  (post-infancy; already noted in checklist 01), prospective resurfacing of due intentions
+  (Phase 4 step 11 + §7.3 waking), occurred_at enrichment of specific pre-birth documents
+  (only when Alan supplies real dates).
 - **Rollback**: soul = revert the merge (archive stays); memory = provisional-flagged nightly
   outputs can be voided by run_id; a fragmenting panel (dip without recovery) after an
   initiation = revert + journal the event honestly (it happened; the record stays).

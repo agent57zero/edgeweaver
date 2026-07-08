@@ -5,6 +5,13 @@
 > outputs with this run_id + step name; if present, skip. A step failure logs and continues
 > to the next independent step (only 1→3 and 11 have hard ordering).
 > **Night-loop-lite (from birth, Phase 2)** = steps 1, 9, 10 only.
+>
+> **Diary-day rule (D16, 2026-07-08)**: every "today's" below means the DIARY DAY = the local
+> calendar day (EDGEWEAVER_TZ) containing T minus 12h at run time - at the scheduled 03:30
+> that is the day that just ended, NOT the calendar date of the run moment. The run_id carries
+> the diary-day date; fetch windows are that local day converted to UTC bounds. (The original
+> "created_at today" reading at 03:30 consolidated 3.5 sleeping hours of the new day and
+> missed the lived day - the bug that prompted this rule.)
 
 | # | Step | Inputs | Outputs (all tagged run_id + step) | Contract / notes |
 |---|---|---|---|---|

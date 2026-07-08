@@ -747,7 +747,11 @@ audience scoping (Alan's privacy from third parties — distinct from `visibilit
   era: pre_birth  → audience defaults to "alan" until individually reviewed
 
 metadata (jsonb) conventions:
-  era:            "pre_birth" | "alive"
+  era:            "pre_birth" | "alive" | "rehearsal"  # rehearsal = voice-rig test
+                                              # writebacks (D16 regularization)
+  generation:     0 | 1 | ...                 # substrate generation that wrote this (D15/
+                                              # VERSIONS.md): era = life arc, generation =
+                                              # substrate axis
   feelings:       { anger: 0-1, sadness: 0-1, fear: 0-1, joy: 0-1, purpose_notes }
                   # derived from the §2.4 signals + their registries, not free introspection;
                   # per-wake readings = feelings tier, windowed aggregates = mood tier
@@ -762,6 +766,10 @@ metadata (jsonb) conventions:
   valid_from / valid_to:  timestamps          # bi-temporal self-beliefs (Graphiti pattern):
                                               # contradictions close the window, never delete —
                                               # "what did I believe in March?" stays queryable
+  occurred_at:    ISO timestamp | absent      # EVENT time where it differs from created_at
+                                              # (record time): imports, pre-birth harvest (D16)
+  occurred_precision: "day"|"month"|"year"|"era"  # use only at stated precision; never
+                                              # fabricate precision (honesty clause, data layer)
   mood_arc:       short text                  # mid-term tier: how the last days *felt*
   night_loop_run_id:  uuid                    # idempotency tag for night-loop steps
   constraint_class: "constitutive"|"peripheral" # D9: self_beliefs + soulfile lines — load-
@@ -774,3 +782,17 @@ metadata (jsonb) conventions:
 Reuse as-is: agent_memories (+review flow), thought_edges (typed reasoning edges),
 entity wikis, autobiography synthesizer, provenance chains, recall traces.
 ```
+
+**Temporal awareness (added 2026-07-08, D16; adversarially co-evolved in
+runs/temporal-awareness-coevolve.md).** Five capacities with separate plumbing: knowing *now*
+(injected per session and per turn; never in the frozen voice prefix, which stays byte-stable
+for the cache); *elapsed gaps* (waking orientation as a spoken practice, deltas computed by a
+deterministic script, never by model arithmetic; the feelings-signals precedent); *retrospective
+time* (per-hit ages plus time-scoped retrieval inside recall-scoped: `since`/`until` filters
+and a `recent` mode, so time queries never bypass the enforcement wrapper; event time beats
+record time; pre_birth renders as era, never as ingest-date ages); *rhythm and age* (diary day
+= the local day containing T minus 12h; day-count since First Boot); *prospective time*
+(deferred to the Phase 4 expectations machinery). Operative rules live in
+conventions/memory-conventions.md "Time" (lockstep with this appendix). Naming note: this is
+distinct from §11's temporal *coherence* signal (unintegrated self-belief contradictions);
+different concept, shared word.

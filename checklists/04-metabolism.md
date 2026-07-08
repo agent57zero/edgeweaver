@@ -4,6 +4,22 @@ Prereqs: ledger 3 done; 0b done (study loop needs the corpus). Read first: IMPLE
 §8; templates/night-loop-contracts.md (authoritative step spec); templates/state-schemas.md;
 templates/coherence-queries.sql; GROWING §3 Stage 2 + §6.
 
+## Temporal amendments (D16, 2026-07-08; executable NOW, before Phase 4 arms)
+
+- [ ] Diary-day boundary fix (the co-evolve's Step 0, a verified bug in the lite contract):
+      night-loop-lite covers the local calendar day containing T minus 12h (at 03:30, the day
+      that just ended); run_id carries THAT date; the fetch window is that local day in UTC
+      bounds (EDGEWEAVER_TZ). Amend templates/night-loop-contracts.md (done with D16
+      integration) AND sync the installed skill at ~/.claude/skills/night-loop-lite/.
+      verify: window math dry-run at a simulated 03:30 and 23:30 picks the intended day both
+      times, in UTC bounds.
+- [ ] Write-side dating: diary and autobiography_draft content opens with the human date
+      (lite skill now; the full loop inherits).
+      verify: the next lite run's outputs start with the correct diary-day date.
+- [ ] (Phase 4 proper, with step 11) Prospective time: waking surfaces due/overdue intentions
+      with their dates (expectations machinery, §7.3 waking policy). Deferred by design in
+      D16 - do not build early.
+
 ## Prerequisite artifacts (build BEFORE enabling the feelings step)
 - [ ] `state/boundaries.json`: generate from CONSTITUTION hard boundaries + confirmed
       agent_memories preferences (script; regenerate weekly in the index job).

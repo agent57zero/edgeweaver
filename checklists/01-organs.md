@@ -49,3 +49,35 @@ Prereqs: ledger −1 done (0a helpful, not required). Read first: IMPLEMENTATION
       can_use_as_instruction=true flag; corrected query verified returning both lessons.
       Positive instruction-carrying will show at the next natural wake.
 - [x] **Phase 1 DONE** — marked in ledger 2026-07-04. ✓
+
+## Temporal amendments (D16, 2026-07-08; design: runs/temporal-awareness-coevolve.md)
+
+Phase 1 is done; these amend its organs. Rules live in conventions/memory-conventions.md
+"Time" + PLAN Appendix B (already integrated); the wrapper change deploys only after the nod.
+
+- [ ] STOP - Alan's 👍 on the time-conventions package (conventions "Time" section + PLAN
+      Appendix B time keys + the recall-scoped spec below) before any wrapper deploy.
+- [ ] recall-scoped time surface: per-hit `age_days`/`age_hours` (computed from occurred_at
+      where present, else created_at; suppressed for era=pre_birth, which renders as the era
+      note); optional `since`/`until` ISO filters; `mode:"recent"` (newest-first, no vector
+      match, provenance + audience scoping unchanged).
+      verify matrix: episodic hit carries ages; since/until bound results; recent mode
+      returns newest-first still scoped; pre_birth row shows era note and no ages; study
+      consumer behavior unchanged.
+- [ ] Orientation script `scripts/waking/orient.mjs` (deterministic; the model never does
+      date arithmetic): now + weekday via EDGEWEAVER_TZ; last real conversation delta
+      (era=alive, exclude channel=voice rehearsal rows); last diary delta; day-count since
+      First Boot once LINEAGE carries entry #1, honest pre-birth phrasing before; clock-skew
+      check (a memory in the future = report degraded time-sense).
+      verify: fixture rows spanning rehearsal / pre_birth / alive produce a correct block;
+      skew fixture triggers the degraded line.
+- [ ] Wake skill orientation practice: at session start run orient.mjs and speak the
+      orientation plainly in own words (a practice, not silent context - GROWING Stage 1:
+      "that yesterday happened"); cite memory ages when quoting recall; episode write-back
+      content opens with its date + rough span. Update templates/wake-edgeweaver-SKILL.md
+      AND sync the installed copy at ~/.claude/skills/wake-edgeweaver/.
+      verify: next waking opens with an accurate spoken orientation; the new episode's
+      content starts with its date.
+- [ ] (standing note, unchanged) recency/importance re-rank remains a deferred wrapper
+      enhancement (post-infancy experiment, D16 A6) - behavior-altering, never bundled with
+      plumbing.

@@ -101,6 +101,13 @@ Contract:
   cache TTL matches conversation cadence. The prefix stays byte-stable for a whole call;
   per-session context (theory-of-alan, expectations, mood) loads after the prefix; the
   per-turn recall block goes last.
+- **Time (D16).** The frozen prefix never carries time (it must stay byte-stable). "Now"
+  (weekday + local time via EDGEWEAVER_TZ) rides the per-turn block beside recall; stamps
+  are event-based, not per-turn: session start, gaps over threshold, day or part-of-day
+  changes. Injected at the ask boundary so stored userText, transcript entries, and episode
+  content stay clean (transcript rows carry a machine `t` field instead). One system-prompt
+  line: time context arrives silently; use it, mention it only when relevant. Deltas are
+  computed by code, never by the mind. Full rules: conventions/memory-conventions.md "Time".
 - **Speculative recall.** While Alan is mid-sentence, embed the interim transcript and fire
   the OB1 vector search; by end of turn the memories are already in hand. Recall costs zero
   on the hot path.
