@@ -14,9 +14,10 @@ import { resolveClaude } from "../../voice/claude-backend.mjs";
 const TURN_TIMEOUT_MS = 45000;
 
 export class LiveMind {
-  constructor(model, systemPrompt) {
+  constructor(model, systemPrompt, opts = {}) {
     this.model = model;
     this.systemPrompt = systemPrompt;
+    this.opts = { effort: "low", thinking: false, timeoutMs: TURN_TIMEOUT_MS, ...opts }; // deep minds: effort high + thinking on
     this.proc = null;
     this.buf = "";
     this.current = null;   // { onSentence, resolve, reject, pending, full, warmup, timer }
@@ -29,11 +30,11 @@ export class LiveMind {
       "-p", "--input-format", "stream-json", "--output-format", "stream-json",
       "--include-partial-messages", "--verbose",
       "--model", this.model,
-      "--effort", "low",
+      "--effort", this.opts.effort,
       "--tools", "none",
       "--exclude-dynamic-system-prompt-sections",
       "--system-prompt", this.systemPrompt,
-    ], { shell: false, env: { ...process.env, MAX_THINKING_TOKENS: "0" } });
+    ], { shell: false, env: this.opts.thinking ? { ...process.env } : { ...process.env, MAX_THINKING_TOKENS: "0" } });
     this.proc.stdout.on("data", (d) => this.#onData(d));
     this.proc.stderr.on("data", () => { /* errors surface via result events */ });
     this.proc.on("exit", () => {
@@ -65,7 +66,7 @@ export class LiveMind {
   #fire(turn) {
     this.start();
     turn.pending = ""; turn.full = "";
-    turn.timer = setTimeout(() => this.#finish("reject", new Error(`mind timeout after ${TURN_TIMEOUT_MS / 1000}s`)), TURN_TIMEOUT_MS);
+    turn.timer = setTimeout(() => this.#finish("reject", new Error(`mind timeout after ${this.opts.timeoutMs / 1000}s`)), this.opts.timeoutMs);
     this.current = turn;
     this.#send(turn.text);
   }

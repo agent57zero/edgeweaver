@@ -15,16 +15,23 @@ import { LiveMind } from "./live-mind.mjs";
 
 const ROOT = join(import.meta.dirname, "..", "..");
 const PORT = 8796;
-const VERSION = "v2.8"; // bump on every user-visible change (shown in page header + /selftest)
+const VERSION = "v2.9"; // bump on every user-visible change (shown in page header + /selftest)
 const env = Object.fromEntries((await readFile(join(ROOT, ".env.local"), "utf8"))
   .split(/\r?\n/).map((l) => l.match(/^([A-Za-z0-9_]+)=(.*)$/)).filter(Boolean).map((m) => [m[1], m[2].trim()]));
 
 const TESTWEAVER = "You are Testweaver, a hardware-test voice persona (explicitly NOT Edgeweaver). You are in a live SPOKEN conversation. Answer the question DIRECTLY - simple questions get just the answer, no preamble, no acknowledgment. Only for genuinely involved or personal topics may you open with a few natural words of reaction. 1-2 short sentences, under 30 words, spoken aloud. Warm, natural, no lists, no markdown. If asked who you are: Testweaver, a temporary test voice.";
 
+const TESTWEAVER_DEEP = "You are Testweaver, a hardware-test voice persona (explicitly NOT Edgeweaver). The user explicitly asked you to THINK DEEPLY about this. Reason carefully, then give a considered spoken answer in 2-4 short sentences (under 70 words). Conversational, no lists, no markdown.";
+
 const minds = {
   haiku: new LiveMind("claude-haiku-4-5", TESTWEAVER),
   sonnet: new LiveMind("claude-sonnet-5", TESTWEAVER),
+  // escalation mind: same voice, deeper brain - Opus with thinking ON and high effort.
+  // Started lazily (first escalated turn pays the cold start; the earcon covers it).
+  deep: new LiveMind("claude-opus-4-8", TESTWEAVER_DEEP, { effort: "high", thinking: true, timeoutMs: 120000 }),
 };
+// "think hard/deeply/carefully about X" routes that ONE turn to the deep mind
+const ESCALATE_RX = /(think (hard|deep|deeply|carefully)|really think|deep (thought|dive))/i;
 
 // ---- TTS ----
 let cartesiaVoice = null;
@@ -62,6 +69,8 @@ async function ttsEleven(text, signal) {
 // Played ONLY if the real first sentence has not arrived within FILLER_AFTER_MS - the industry
 // pattern: filler masks genuine slowness, never plays on fast turns (constant filler = robotic).
 const BRIDGE_PHRASES = ["Let me think about that.", "One sec.", "Hmm, let me see."];
+const DEEP_BRIDGE_PHRASE = "Alright, let me really think about that.";
+let deepBridge = null;
 const FILLER_AFTER_MS = 1400;
 const WORKING_AFTER_MS = 2600; // progress earcon: looped ticking when a turn runs genuinely long
 const bridges = [];
@@ -69,7 +78,8 @@ async function loadBridges() {
   for (const p of BRIDGE_PHRASES) {
     try { bridges.push(await ttsCartesia(p)); } catch { /* skip on failure */ }
   }
-  console.log(`bridge clips ready: ${bridges.length}/${BRIDGE_PHRASES.length}`);
+  try { deepBridge = await ttsCartesia(DEEP_BRIDGE_PHRASE); } catch { /* optional */ }
+  console.log(`bridge clips ready: ${bridges.length}/${BRIDGE_PHRASES.length} (+deep: ${!!deepBridge})`);
 }
 
 // ---- per-connection session ----
@@ -189,12 +199,18 @@ function session(ws) {
 
     try {
       let full;
+      const escalated = opts.mind !== "stub" && ESCALATE_RX.test(userText);
+      if (escalated && deepBridge) {
+        // explicit deep request: acknowledge immediately, then let the earcon carry the wait
+        send({ type: "audio", b64: deepBridge.toString("base64"), bridge: true, sinceSpeechEndMs: Date.now() - tSpeechEnd });
+        if (fillerTimer) { clearTimeout(fillerTimer); fillerTimer = null; } // the deep bridge replaces the generic filler
+      }
       if (opts.mind === "stub") {
         full = `Loud and clear. I heard: ${userText}`;
         firstSentenceAt = Date.now();
         speakSentence(full);
       } else {
-        const mind = minds[opts.mind] || minds.haiku;
+        const mind = escalated ? minds.deep : (minds[opts.mind] || minds.haiku);
         full = await mind.ask(userText, (sentence) => {
           if (myGen !== gen) return;
           if (!firstSentenceAt) {
@@ -253,6 +269,7 @@ button#go{width:100%;padding:1rem;font-size:19px;border:0;border-radius:12px;bac
   <label><input type="checkbox" id="bridge" checked> filler only when slow (>1.1s)</label>
 </div>
 <button id="go">Start conversation</button>
+<div class="meta" style="margin:.2rem 0">say "think hard about ..." to route one turn to the deep mind (Opus, thinking on) - first use takes longest</div>
 <div><span id="state" class="state off">off</span> <span id="lat" class="meta"></span></div>
 <div class="log" id="log"></div>
 <script>
