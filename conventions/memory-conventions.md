@@ -53,6 +53,9 @@ public}; public sees {public}.
 
 ```
 era:            "pre_birth" | "alive"
+generation:     0 | 1 | ...                    # substrate generation that wrote this
+                                               # (VERSIONS.md / D15): era is the life arc,
+                                               # generation is the substrate axis
 feelings:       { anger: 0-1, sadness: 0-1, fear: 0-1, joy: 0-1, purpose_notes }
                 # derived from computed signals (PLAN §2.4), never free introspection;
                 # per-wake readings = feelings tier; windowed aggregates = mood tier

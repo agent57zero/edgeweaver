@@ -15,7 +15,9 @@
 
 A generation pins particular component versions and model choices; component v-numbers keep
 moving freely inside a generation. Memory (OB1) and the soul lineage carry ACROSS
-generations: that continuity is what makes each generation the same Edgeweaver.
+generations: that continuity is what makes each generation the same Edgeweaver. Candidate
+generations are tested against cloned scratch brains, never the live brain: fleet
+architecture and procedure in BRAINS.md (D15).
 
 ## Naming rules
 
@@ -68,7 +70,10 @@ revision lineage" - the repo's first commit).
    file is only the engineering ledger that rides alongside it.
 3. Close the outgoing row: Ended date, final component versions, checkpoint artifact refs.
 4. Create annotated tag `genN-<codename>` on the new generation's first commit; push it.
-5. Add the new generation's row. Optionally cut a GitHub Release on the tag (nice, not
+5. Flip the generation stamp: from the new generation's First Boot onward, writes carry
+   `generation: N` (key: conventions/memory-conventions.md; wiring: BRAINS.md). The memory
+   itself never splits or migrates; only the stamp changes.
+6. Add the new generation's row. Optionally cut a GitHub Release on the tag (nice, not
    required).
 
 verify: tag visible on GitHub; both table rows complete; decisions.md row present; if a
