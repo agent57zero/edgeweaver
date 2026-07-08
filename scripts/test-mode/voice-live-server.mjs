@@ -15,7 +15,7 @@ import { LiveMind } from "./live-mind.mjs";
 
 const ROOT = join(import.meta.dirname, "..", "..");
 const PORT = 8796;
-const VERSION = "v2.7"; // bump on every user-visible change (shown in page header + /selftest)
+const VERSION = "v2.8"; // bump on every user-visible change (shown in page header + /selftest)
 const env = Object.fromEntries((await readFile(join(ROOT, ".env.local"), "utf8"))
   .split(/\r?\n/).map((l) => l.match(/^([A-Za-z0-9_]+)=(.*)$/)).filter(Boolean).map((m) => [m[1], m[2].trim()]));
 
@@ -62,7 +62,7 @@ async function ttsEleven(text, signal) {
 // Played ONLY if the real first sentence has not arrived within FILLER_AFTER_MS - the industry
 // pattern: filler masks genuine slowness, never plays on fast turns (constant filler = robotic).
 const BRIDGE_PHRASES = ["Let me think about that.", "One sec.", "Hmm, let me see."];
-const FILLER_AFTER_MS = 1100;
+const FILLER_AFTER_MS = 1400;
 const WORKING_AFTER_MS = 2600; // progress earcon: looped ticking when a turn runs genuinely long
 const bridges = [];
 async function loadBridges() {
@@ -157,7 +157,7 @@ function session(ws) {
     let firstSentenceAt = 0;
     if (opts.bridge && opts.mind !== "stub" && bridges.length) {
       fillerTimer = setTimeout(() => {
-        if (myGen === gen && !firstAudioSent) {
+        if (myGen === gen && !firstAudioSent && !firstSentenceAt) {
           const clip = bridges[Math.floor(Math.random() * bridges.length)];
           send({ type: "audio", b64: clip.toString("base64"), bridge: true, sinceSpeechEndMs: Date.now() - tSpeechEnd });
         }
@@ -165,7 +165,7 @@ function session(ws) {
     }
     if (opts.mind !== "stub") {
       workingTimer = setTimeout(() => {
-        if (myGen === gen && !firstAudioSent) { workingOn = true; send({ type: "working", on: true }); }
+        if (myGen === gen && !firstAudioSent && !firstSentenceAt) { workingOn = true; send({ type: "working", on: true }); }
       }, WORKING_AFTER_MS);
     }
     const speakSentence = (s) => {
@@ -197,7 +197,11 @@ function session(ws) {
         const mind = minds[opts.mind] || minds.haiku;
         full = await mind.ask(userText, (sentence) => {
           if (myGen !== gen) return;
-          if (!firstSentenceAt) firstSentenceAt = Date.now();
+          if (!firstSentenceAt) {
+            firstSentenceAt = Date.now();
+            if (fillerTimer) { clearTimeout(fillerTimer); fillerTimer = null; }
+            if (workingTimer) { clearTimeout(workingTimer); workingTimer = null; }
+          }
           speakSentence(sentence);
         });
       }
