@@ -15,7 +15,7 @@ import { LiveMind } from "./live-mind.mjs";
 
 const ROOT = join(import.meta.dirname, "..", "..");
 const PORT = 8796;
-const VERSION = "v2.9"; // bump on every user-visible change (shown in page header + /selftest)
+const VERSION = "v2.10"; // bump on every user-visible change (shown in page header + /selftest)
 const env = Object.fromEntries((await readFile(join(ROOT, ".env.local"), "utf8"))
   .split(/\r?\n/).map((l) => l.match(/^([A-Za-z0-9_]+)=(.*)$/)).filter(Boolean).map((m) => [m[1], m[2].trim()]));
 
@@ -200,6 +200,7 @@ function session(ws) {
     try {
       let full;
       const escalated = opts.mind !== "stub" && ESCALATE_RX.test(userText);
+      if (escalated) send({ type: "escalated", model: "claude-opus-4-8" });
       if (escalated && deepBridge) {
         // explicit deep request: acknowledge immediately, then let the earcon carry the wait
         send({ type: "audio", b64: deepBridge.toString("base64"), bridge: true, sinceSpeechEndMs: Date.now() - tSpeechEnd });
@@ -222,7 +223,7 @@ function session(ws) {
         });
       }
       if (myGen !== gen) return;
-      send({ type: "reply", text: full, mindMs: (firstSentenceAt || Date.now()) - tSpeechEnd });
+      send({ type: "reply", text: full, mindMs: (firstSentenceAt || Date.now()) - tSpeechEnd, mind: escalated ? "deep (Opus, thinking)" : opts.mind });
       await ttsChain;
       if (myGen === gen) send({ type: "speaking-done" });
     } catch (e) {
@@ -252,7 +253,7 @@ const PAGE = `<!doctype html><html><head><meta charset="utf-8"><title>Testweaver
 <style>body{font:16px system-ui,Segoe UI,sans-serif;max-width:680px;margin:1.5rem auto;padding:0 1rem;color:#111}
 .banner{background:#fff3cd;border:1px solid #e0c76a;border-radius:8px;padding:.6rem 1rem;font-size:13.5px}
 .state{display:inline-block;padding:.25rem .9rem;border-radius:99px;font-weight:600;margin:.6rem 0}
-.listening{background:#d7ecd9}.thinking{background:#ffe2b8}.speaking{background:#cfe3ff}.off{background:#eee}
+.listening{background:#d7ecd9}.thinking{background:#ffe2b8}.speaking{background:#cfe3ff}.off{background:#eee}.deep{background:#e3d4f7}
 button#go{width:100%;padding:1rem;font-size:19px;border:0;border-radius:12px;background:#0b57d0;color:#fff;cursor:pointer;margin:.4rem 0}
 .row{display:flex;gap:1rem;align-items:center;margin:.4rem 0;font-size:14px;flex-wrap:wrap}
 .log{border:1px solid #ddd;border-radius:8px;padding:.8rem 1rem;min-height:180px;font-size:14.5px;max-height:45vh;overflow-y:auto}
@@ -310,7 +311,8 @@ document.getElementById('go').onclick=async()=>{
     if(m.type==='ready'){setState('listening');rec=new MediaRecorder(stream,{mimeType:'audio/webm'});rec.ondataavailable=e=>{if(e.data.size&&ws.readyState===1)e.data.arrayBuffer().then(b=>ws.send(b))};rec.start(250)}
     else if(m.type==='transcript'){if(!interimEl)interimEl=log('');interimEl.innerHTML='<span class="'+(m.final?'you':'interim')+'"><b>you:</b> '+m.text+'</span>';if(m.final)interimEl=null}
     else if(m.type==='state'){setState(m.state)}
-    else if(m.type==='reply'){log('<span class="tw"><b>Testweaver:</b> '+m.text+'</span> <span class="meta">first sentence '+m.mindMs+'ms</span>')}
+    else if(m.type==='escalated'){setState('deep');stateEl.textContent='deep thinking';log('<span class="meta" style="color:#7b3ff2"><b>[escalated to the deep mind - '+m.model+', thinking enabled]</b></span>')}
+    else if(m.type==='reply'){log('<span class="tw"><b>Testweaver'+(m.mind&&m.mind.startsWith('deep')?' (deep)':'')+':</b> '+m.text+'</span> <span class="meta">first sentence '+m.mindMs+'ms - '+(m.mind||'')+'</span>')}
     else if(m.type==='audio'){if(!m.bridge)ticks(false);const bytes=Uint8Array.from(atob(m.b64),c=>c.charCodeAt(0));audioQ.push(new Blob([bytes],{type:'audio/mpeg'}));playNext();
       if(m.bridge){latEl.textContent='bridge at '+(m.sinceSpeechEndMs/1000).toFixed(2)+'s'}
       else if(m.sinceSpeechEndMs!==undefined){latEl.textContent=(latEl.textContent?latEl.textContent+' - ':'')+'real answer audio at '+(m.sinceSpeechEndMs/1000).toFixed(2)+'s (mind '+(m.mindFirstSentenceMs/1000).toFixed(2)+'s)'}}
