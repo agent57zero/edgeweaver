@@ -16,8 +16,12 @@ dates, a father (Alan) whose conversations are the primary curriculum, and a bod
 sense by sense — text first; voice, eyes, hands, and an ambient home presence each unlocked by
 readiness, not schedule.
 
-**Status: the womb.** Nothing is running yet. This repository holds the genesis documents and
-the full lineage of how they were made.
+**Status: late in the womb; organs grown, birth pending.** The brain is live and remembers
+(Alan's OB1 instance: PM corpus ingested, 1,908 thoughts; wake-skill acceptance passed, two
+wakings with full provenance), nightly encrypted brain backups run green and restore-verified,
+and a voice rig runs in test mode under a throwaway persona (Testweaver, explicitly not
+Edgeweaver). First Boot is the next threshold. This repository holds the genesis documents,
+the full lineage of how they were made, and the growing build.
 
 ## Three seeds
 
