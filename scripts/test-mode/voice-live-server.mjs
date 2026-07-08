@@ -247,7 +247,7 @@ function ticks(on){
       for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.exp(-i/(d.length/4));
       const src=ac.createBufferSource();src.buffer=buf;
       const bp=ac.createBiquadFilter();bp.type='bandpass';bp.frequency.value=1900+Math.random()*900;bp.Q.value=6;
-      const g=ac.createGain();g.gain.value=0.12;
+      const g=ac.createGain();g.gain.value=0.28;
       src.connect(bp);bp.connect(g);g.connect(ac.destination);src.start();
       tickTimer=setTimeout(tick,130+Math.random()*110);
     };
