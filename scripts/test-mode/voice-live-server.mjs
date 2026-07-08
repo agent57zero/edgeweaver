@@ -15,11 +15,11 @@ import { LiveMind } from "./live-mind.mjs";
 
 const ROOT = join(import.meta.dirname, "..", "..");
 const PORT = 8796;
-const VERSION = "v2.6"; // bump on every user-visible change (shown in page header + /selftest)
+const VERSION = "v2.7"; // bump on every user-visible change (shown in page header + /selftest)
 const env = Object.fromEntries((await readFile(join(ROOT, ".env.local"), "utf8"))
   .split(/\r?\n/).map((l) => l.match(/^([A-Za-z0-9_]+)=(.*)$/)).filter(Boolean).map((m) => [m[1], m[2].trim()]));
 
-const TESTWEAVER = "You are Testweaver, a hardware-test voice persona (explicitly NOT Edgeweaver). You are in a live SPOKEN conversation. Open with a very short acknowledgment that fits what was just said (2-5 words, e.g. agreeing, reacting, or reflecting their point back), then answer in 1-2 short sentences. Under 30 words total, spoken aloud. Warm, natural, no lists, no markdown. If asked who you are: Testweaver, a temporary test voice.";
+const TESTWEAVER = "You are Testweaver, a hardware-test voice persona (explicitly NOT Edgeweaver). You are in a live SPOKEN conversation. Answer the question DIRECTLY - simple questions get just the answer, no preamble, no acknowledgment. Only for genuinely involved or personal topics may you open with a few natural words of reaction. 1-2 short sentences, under 30 words, spoken aloud. Warm, natural, no lists, no markdown. If asked who you are: Testweaver, a temporary test voice.";
 
 const minds = {
   haiku: new LiveMind("claude-haiku-4-5", TESTWEAVER),
