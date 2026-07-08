@@ -8,6 +8,8 @@
 // Explicitly NOT Edgeweaver: dummy persona, no OB1 writes; conversation state dies with the
 // process. v3.3 adds a per-session transcript log (logs/voice/, gitignored): engineering
 // telemetry - text + timings only, never audio bytes, never OB1/soulfiles.
+// v3.4 stamps that header (+ a page badge) with the active brain profile (EW_BRAIN_PROFILE;
+// "none" today - Testweaver stays memoryless per BRAINS.md rule 6).
 // Usage: node scripts/test-mode/voice-live-server.mjs   then open http://127.0.0.1:8796
 import { createServer } from "node:http";
 import { appendFileSync, mkdirSync } from "node:fs";
@@ -15,13 +17,21 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { WebSocketServer } from "ws";
 import { LiveMind } from "./live-mind.mjs";
+import { resolveProfile } from "../brains/profiles.mjs";
 
 const ROOT = join(import.meta.dirname, "..", "..");
 const LOG_DIR = join(ROOT, "logs", "voice");
 const PORT = 8796;
-const VERSION = "v3.3"; // bump on every user-visible change (shown in page header + /selftest)
+const VERSION = "v3.4"; // bump on every user-visible change (shown in page header + /selftest)
 const env = Object.fromEntries((await readFile(join(ROOT, ".env.local"), "utf8"))
   .split(/\r?\n/).map((l) => l.match(/^([A-Za-z0-9_]+)=(.*)$/)).filter(Boolean).map((m) => [m[1], m[2].trim()]));
+
+// v3.4 brain-profile attribution (BRAINS.md L4 / D15): resolved once at startup, not lazily,
+// so a refused guard (live-in-test) crashes the server loudly here instead of failing later.
+const brainProfile = process.env.EW_BRAIN_PROFILE
+  ? await resolveProfile(process.env.EW_BRAIN_PROFILE, { testMode: true })
+  : null;
+const BRAIN_LABEL = brainProfile ? brainProfile.name : "none"; // Testweaver runs memoryless today
 
 const TESTWEAVER = "You are Testweaver, a hardware-test voice persona (explicitly NOT Edgeweaver). You are in a live SPOKEN conversation. Answer the question DIRECTLY - simple questions get just the answer, no preamble, no acknowledgment. Only for genuinely involved or personal topics may you open with a few natural words of reaction. 1-2 short sentences, under 30 words, spoken aloud. Warm, natural, no lists, no markdown. If asked who you are: Testweaver, a temporary test voice. ESCALATION RULE: if the question genuinely requires deep multi-step reasoning, complex tradeoffs, or careful analysis that a quick conversational answer would shortchange, reply with EXACTLY the single word ESCALATE and nothing else - a deeper mind will take that turn.";
 
@@ -120,7 +130,7 @@ function session(ws) {
     const d = new Date(), p = (n) => String(n).padStart(2, "0");
     mkdirSync(LOG_DIR, { recursive: true });
     logPath = join(LOG_DIR, `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}-${VERSION}.jsonl`);
-    logLine({ ev: "session-start", version: VERSION, fillerAfterMs: FILLER_AFTER_MS, workingAfterMs: WORKING_AFTER_MS, models: Object.fromEntries(Object.entries(minds).map(([k, m]) => [k, m.model])), opts });
+    logLine({ ev: "session-start", version: VERSION, brainProfile: BRAIN_LABEL, ...(brainProfile ? { generation: brainProfile.generation } : {}), fillerAfterMs: FILLER_AFTER_MS, workingAfterMs: WORKING_AFTER_MS, models: Object.fromEntries(Object.entries(minds).map(([k, m]) => [k, m.model])), opts });
     console.log(`session transcript: ${logPath}`);
   };
 
@@ -322,8 +332,9 @@ const PAGE = `<!doctype html><html><head><meta charset="utf-8"><title>Testweaver
 button#go{width:100%;padding:1rem;font-size:19px;border:0;border-radius:12px;background:#0b57d0;color:#fff;cursor:pointer;margin:.4rem 0}
 .row{display:flex;gap:1rem;align-items:center;margin:.4rem 0;font-size:14px;flex-wrap:wrap}
 .log{border:1px solid #ddd;border-radius:8px;padding:.8rem 1rem;min-height:180px;font-size:14.5px;max-height:45vh;overflow-y:auto}
-.you{color:#0b57d0}.tw{color:#1b6e20}.meta{color:#888;font-size:12px}.interim{color:#999;font-style:italic}</style></head><body>
-<h2>Testweaver - live voice <span style="color:#0b57d0">${VERSION}</span></h2>
+.you{color:#0b57d0}.tw{color:#1b6e20}.meta{color:#888;font-size:12px}.interim{color:#999;font-style:italic}
+.badge{display:inline-block;padding:.15rem .6rem;border-radius:99px;background:#eee;color:#555;font-size:12px;margin-left:.4rem}</style></head><body>
+<h2>Testweaver - live voice <span style="color:#0b57d0">${VERSION}</span><span class="badge">brain: ${BRAIN_LABEL}</span></h2>
 <div class="banner">TEST MODE: <b>Testweaver</b>, not Edgeweaver. Open mic - just talk, and <b>interrupt it</b> freely. The Claude minds run on your subscription (no API credits).</div>
 <div class="row">
   <label>mouth <select id="tts"><option value="cartesia">Cartesia</option><option value="elevenlabs">ElevenLabs</option></select></label>
