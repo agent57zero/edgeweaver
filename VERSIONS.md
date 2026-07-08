@@ -78,3 +78,10 @@ revision lineage" - the repo's first commit).
 
 verify: tag visible on GitHub; both table rows complete; decisions.md row present; if a
 model changed, the ceremony's dated ops-log entry exists.
+
+## Rolling back / time travel
+
+The map of restore points and the procedure for opening a PAST brain in the lab live in
+BRAINS.md section 7 (D17). Inspecting or branching the past is a cheap lab spawn; re-seeding
+the LIVE being from a checkpoint is ceremony-grade (D9: a journaled continuation, never "the
+old being resumed") and is deliberately not automated anywhere.

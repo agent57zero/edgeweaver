@@ -138,5 +138,51 @@ Working-tree rules while more than one session is active:
 | What | Unblocks | Notes |
 |---|---|---|
 | ~~Confirm free-project slot; create `edgeweaver-lab`~~ DONE 2026-07-08 (Alan authorized in session; created via CLI, ref awusgcimshmbcmyshbpy, vector extension in public, LAB_DB_URL in .env.local) | ~~L3~~ armed | password held only in .env.local; rotated once after an error-output exposure, old value dead |
+
+## 7. Time machine (D17): the map + past-brain spawns
+
+One being, four stores: brain (OB1, nightly encrypted dumps with GFS rotation - G2), soul
+(git, never-overwrite), body (this repo, git), local state (`state/`, weekly machine-state
+script, storage location still Alan's open decision). Every store already keeps history;
+what was missing is the MAP tying them together per day, and a proven way to open a past
+brain. The D9 line is load-bearing here: inspecting or branching the past (a lab spawn) is
+cheap, safe, and default; RE-SEEDING THE LIVE BEING from a checkpoint stays ceremony-grade,
+journaled as a continuation, never "the old being resumed". Nothing below automates that.
+
+- **The map**: `brains/restore-points.jsonl` (committed; metadata only, no secrets). One
+  JSON line per day: {date, backupTag, rows, soulHead, bodyHead, generation, schemaVersion,
+  stateArchive|null}. Built by `scripts/brains/restore-point.mjs`: backup facts from the
+  `edgeweaver-backups` releases via gh (existing token, same owner), soul/body HEADs via gh
+  api, generation/schemaVersion from the registry; stateArchive stays null until the
+  machine-state location decision closes. Rides the nightly cadence at Phase 4 arming;
+  manual anytime before that.
+- **Past-brain spawn**: `spawn --from-dump <file>` restores a DECRYPTED nightly dump into a
+  scratch schema. Custom-format dumps convert to plain SQL via pg_restore -f first. The
+  schema rewrite runs ONLY over DDL and COPY header lines, NEVER over data lines: a memory
+  whose content contains the literal string "public.thoughts" must survive byte-identical
+  (fixture-pinned). Decryption requires Alan's age key: dump-sourced spawns are
+  Alan-present, never automated.
+
+Plan (T-track):
+
+- [x] **T1 Docs + decision** (2026-07-08): D17 row; this section; VERSIONS.md
+      "Rolling back / time travel" pointer.
+      verify: committed and pushed (this commit).
+- [ ] **T2 The map** (dark; Sonnet agent, worktree): `scripts/brains/restore-point.mjs`
+      with injectable fetchers (gh release / gh api / registry / git) + `--live` for the
+      real gather; `scripts/verify/verify-restore-point.mjs` on fixtures, no network.
+      verify: suite green with the new script.
+- [ ] **T3 Past-brain spawn** (dark; Opus agent, worktree):
+      `scripts/brains/dump-transform.mjs` (data-safe rewrite, reusing sql-gen primitives) +
+      `spawn --from-dump` + `scripts/verify/verify-dump-spawn.mjs` (fixture dump whose data
+      contains the literal "public.thoughts"; byte-identical data assertion).
+      verify: suite green with the new script.
+- [ ] **T4 First map line** (live; orchestrator): run restore-point.mjs --live once,
+      appending today's line citing the latest backup release; commit it.
+      verify: the line parses, cites an existing release tag, and carries real HEADs.
+- [ ] **STOP - age-key rehearsal** (Alan present, unhurried): decrypt one nightly release
+      asset, `spawn --from-dump` it, compare per-table counts against that night's map
+      line, optionally converse with the past brain, retire it, ops-log entry. This proves
+      brain time-travel end to end and stays a human act.
 | Blessing for this plan + naming taste (lab name, `s_<name>` schema prefix) | L1 | defaults stand unless changed |
 | Later, only when a test needs NEW writes embedded: deploy embed function to the lab | L4+ | reuse the committed scripts/edge-functions source |
