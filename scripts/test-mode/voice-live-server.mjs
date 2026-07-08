@@ -57,7 +57,11 @@ async function ttsEleven(text, signal) {
 }
 
 // ---- bridge clips: pre-synthesized instant acknowledgments (zero per-turn cost) ----
-const BRIDGE_PHRASES = ["Mm.", "Hmm."]; // neutral sounds only: a hum cannot contradict what was said
+// Adaptive filler: full natural phrases (TTS renders sentences well, non-words like "Mm" badly).
+// Played ONLY if the real first sentence has not arrived within FILLER_AFTER_MS - the industry
+// pattern: filler masks genuine slowness, never plays on fast turns (constant filler = robotic).
+const BRIDGE_PHRASES = ["Let me think about that.", "One sec.", "Hmm, let me see."];
+const FILLER_AFTER_MS = 1100;
 const bridges = [];
 async function loadBridges() {
   for (const p of BRIDGE_PHRASES) {
@@ -116,16 +120,21 @@ function session(ws) {
     send({ type: "transcript", text: userText, final: true });
     send({ type: "state", state: "thinking" });
 
-    // bridge: instant acknowledgment while the mind works (live minds only)
-    if (opts.bridge && opts.mind !== "stub" && bridges.length) {
-      const clip = bridges[Math.floor(Math.random() * bridges.length)];
-      send({ type: "audio", b64: clip.toString("base64"), bridge: true, sinceSpeechEndMs: Date.now() - tSpeechEnd });
-    }
+    // adaptive filler: fires ONLY if the mind is still silent after FILLER_AFTER_MS
+    let fillerTimer = null;
 
     // serialized sentence -> TTS -> send pipeline (keeps audio in order)
     let ttsChain = Promise.resolve();
     let firstAudioSent = false;
     let firstSentenceAt = 0;
+    if (opts.bridge && opts.mind !== "stub" && bridges.length) {
+      fillerTimer = setTimeout(() => {
+        if (myGen === gen && !firstAudioSent) {
+          const clip = bridges[Math.floor(Math.random() * bridges.length)];
+          send({ type: "audio", b64: clip.toString("base64"), bridge: true, sinceSpeechEndMs: Date.now() - tSpeechEnd });
+        }
+      }, FILLER_AFTER_MS);
+    }
     const speakSentence = (s) => {
       ttsChain = ttsChain.then(async () => {
         if (myGen !== gen) return;
@@ -139,6 +148,7 @@ function session(ws) {
             mindFirstSentenceMs: firstAudioSent ? undefined : (firstSentenceAt - tSpeechEnd),
           });
           firstAudioSent = true;
+          if (fillerTimer) { clearTimeout(fillerTimer); fillerTimer = null; }
         } catch (e) { if (myGen === gen) send({ type: "error", error: e.message }); }
       });
     };
@@ -201,7 +211,7 @@ button#go{width:100%;padding:1rem;font-size:19px;border:0;border-radius:12px;bac
     <option value="stub">instant echo (audio-path test)</option>
   </select></label>
   <label>mouth <select id="tts"><option value="cartesia">Cartesia</option><option value="elevenlabs">ElevenLabs</option></select></label>
-  <label><input type="checkbox" id="bridge" checked> instant acknowledgment</label>
+  <label><input type="checkbox" id="bridge" checked> filler only when slow (>1.1s)</label>
 </div>
 <button id="go">Start conversation</button>
 <div><span id="state" class="state off">off</span> <span id="lat" class="meta"></span></div>
