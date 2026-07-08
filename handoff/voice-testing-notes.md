@@ -114,6 +114,7 @@ BUILT (v3.3, Alan's call on 2026-07-08): the harness writes one JSONL transcript
 to `logs/voice/<yyyymmdd-hhmmss>-<version>.jsonl` (gitignored; local only). Implementation is a
 tee on the server's `send()` choke point, so every server->client event lands in the file:
 - line 1 `session-start`: version, filler/earcon thresholds, the three mind models, opts.
+  v3.4 adds the brain profile here too (EW_BRAIN_PROFILE, resolved at startup; "none" today).
 - `mind-session` lines: each mind's Claude Code session id, cross-referencing the raw session
   files under `~/.claude/projects/C--Users-agent-Project-Edgeweaver/` (mind's-eye view, while
   Claude Code retention keeps them).
@@ -182,6 +183,7 @@ and this file log is not it:
 - v3.1: filler/earcon thresholds 2.5s/3.5s (Sonnet-only runs 2-3s; fillers were firing on normal turns).
 - v3.2: two live-testing bug fixes - (a) lazy-started deep minds returned the warmup "ok" as the answer (ask() now starts the session first so the real turn queues behind the warmup); (b) escalated minds were blind to the conversation ("answer that again" failed on a mind that never saw the question) - rolling transcript now prepended to deep/fable turns.
 - v3.3: per-session JSONL transcript logs in logs/voice/ (tee on send(): turns, replies + mind labels, timings, barges, escalations, errors; interims skipped, audio bytes stripped; mind Claude-session ids recorded for cross-reference). Page notes the logging; verified live with a WS probe.
+- v3.4: JSONL session header + page badge carry the active brain profile (EW_BRAIN_PROFILE resolved via scripts/brains/profiles.mjs, test-mode live-guard stays on; "none" while Testweaver runs memoryless) - completes the D15 attribution triple (code version, mind, brain) in the harness.
 
 ## HOW TO RESUME (from a cold session, months later)
 
