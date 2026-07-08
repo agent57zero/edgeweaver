@@ -78,6 +78,7 @@ function session(ws) {
   let turnBuf = [];
   let gen = 0;
   let opts = { mind: "stub", tts: "cartesia", bridge: true };
+  let candidateBarge = null; // pending noise-or-speech decision while agent is talking
   const send = (o) => { try { ws.send(JSON.stringify(o)); } catch { /* closed */ } };
 
   function connectDeepgram() {
@@ -90,7 +91,22 @@ function session(ws) {
       if (m.type === "Results") {
         const alt = m.channel?.alternatives?.[0];
         const text = (alt?.transcript || "").trim();
-        if (text && state !== "listening") bargeIn("voice detected");
+        if (text && state !== "listening") {
+          // two-stage barge: a brief sound (baby, cough) only DUCKS the volume; the reply
+          // dies only on sustained speech (3+ words at once, or a second voiced event while
+          // the duck window is open). A false alarm auto-restores volume after 900ms.
+          const words = text.split(/\s+/).filter(Boolean).length;
+          if (words >= 3 || candidateBarge) {
+            if (candidateBarge) { clearTimeout(candidateBarge); candidateBarge = null; }
+            bargeIn("voice detected");
+          } else {
+            send({ type: "duck" });
+            candidateBarge = setTimeout(() => { candidateBarge = null; send({ type: "unduck" }); }, 900);
+          }
+        }
+        // turn content only accumulates while LISTENING - noise finals during playback must
+        // not assemble into ghost turns that silently cancel the reply
+        if (state !== "listening") return;
         if (!text && !m.speech_final) return;
         if (m.is_final) {
           if (text) turnBuf.push(text);
@@ -106,6 +122,7 @@ function session(ws) {
   }
 
   function bargeIn(reason) {
+    if (candidateBarge) { clearTimeout(candidateBarge); candidateBarge = null; }
     gen++;
     state = "listening";
     // free the mind session immediately: without this, a barged Sonnet turn keeps generating
@@ -117,7 +134,7 @@ function session(ws) {
   async function endOfTurn() {
     const userText = turnBuf.join(" ").trim();
     turnBuf = [];
-    if (!userText) return;
+    if (userText.length < 2) return;
     const myGen = ++gen;
     state = "thinking";
     const tSpeechEnd = Date.now();
@@ -241,13 +258,13 @@ function ticks(on){
     if(tickTimer)return;
     ac=ac||new (window.AudioContext||window.webkitAudioContext)();
     const tick=()=>{
-      const dur=0.012+Math.random()*0.008;
+      const dur=0.018+Math.random()*0.01;
       const buf=ac.createBuffer(1,Math.floor(ac.sampleRate*dur),ac.sampleRate);
       const d=buf.getChannelData(0);
       for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.exp(-i/(d.length/4));
       const src=ac.createBufferSource();src.buffer=buf;
-      const bp=ac.createBiquadFilter();bp.type='bandpass';bp.frequency.value=1900+Math.random()*900;bp.Q.value=6;
-      const g=ac.createGain();g.gain.value=0.28;
+      const bp=ac.createBiquadFilter();bp.type='bandpass';bp.frequency.value=1300+Math.random()*700;bp.Q.value=6;
+      const g=ac.createGain();g.gain.value=0.5;
       src.connect(bp);bp.connect(g);g.connect(ac.destination);src.start();
       tickTimer=setTimeout(tick,130+Math.random()*110);
     };
@@ -276,6 +293,8 @@ document.getElementById('go').onclick=async()=>{
       if(m.bridge){latEl.textContent='bridge at '+(m.sinceSpeechEndMs/1000).toFixed(2)+'s'}
       else if(m.sinceSpeechEndMs!==undefined){latEl.textContent=(latEl.textContent?latEl.textContent+' - ':'')+'real answer audio at '+(m.sinceSpeechEndMs/1000).toFixed(2)+'s (mind '+(m.mindFirstSentenceMs/1000).toFixed(2)+'s)'}}
     else if(m.type==='working'){ticks(m.on)}
+    else if(m.type==='duck'){if(playing)playing.volume=0.25}
+    else if(m.type==='unduck'){if(playing)playing.volume=1}
     else if(m.type==='barge'){ticks(false);stopPlayback();log('<span class="meta">[interrupted - '+m.reason+']</span>')}
     else if(m.type==='error'){ticks(false);log('<b style="color:#b3261e">error:</b> '+m.error)}
   };
