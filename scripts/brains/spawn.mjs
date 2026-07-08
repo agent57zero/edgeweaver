@@ -55,6 +55,14 @@ if (reg.brains.some((b) => b.name === name && b.status === "active")) { console.
 const vector = query(labUrl, "SELECT 1 FROM pg_extension WHERE extname='vector';");
 if (!vector.length) { console.error("FAIL: lab project lacks the vector extension (run CREATE EXTENSION vector; once in the lab SQL editor)"); process.exit(1); }
 
+// a failed spawn leaves an UNREGISTERED partial schema that retire cannot see - detect it
+const residue = query(labUrl, "SELECT 1 FROM information_schema.schemata WHERE schema_name='" + schema + "';");
+if (residue.length) {
+  if (!has("force-clean")) { console.error("FAIL: lab schema " + schema + " already exists (residue of a failed spawn?). Re-run with --force-clean to drop it and respawn."); process.exit(1); }
+  console.log("  --force-clean: dropping existing " + schema + " ...");
+  runSqlText(labUrl, 'DROP SCHEMA "' + schema + '" CASCADE;', "clean-" + schema);
+}
+
 const spawnedAt = new Date().toISOString();
 console.log(`spawn "${name}" -> ${schema}: applying DDL (${tables.length} tables)...`);
 runSqlText(labUrl, transformed, "ddl-" + schema);

@@ -19,10 +19,18 @@ export function psqlPath() {
   throw new Error("psql not found (PATH or scoop shims). Install: scoop install postgresql");
 }
 
+// Connection URLs carry credentials: exec errors are rethrown with ONLY psql's own
+// stderr/stdout, never the command line, and any URL that slips through is redacted.
+const redact = (s) => String(s).replace(/postgres(ql)?:\/\/\S+/g, "postgresql://<redacted>");
 function run(dbUrl, args, opts = {}) {
-  return execFileSync(psqlPath(), ["-X", "-v", "ON_ERROR_STOP=1", "-d", dbUrl, ...args], {
-    encoding: "utf8", maxBuffer: 64 * 1024 * 1024, ...opts,
-  });
+  try {
+    return execFileSync(psqlPath(), ["-X", "-v", "ON_ERROR_STOP=1", "-d", dbUrl, ...args], {
+      encoding: "utf8", maxBuffer: 64 * 1024 * 1024, ...opts,
+    });
+  } catch (e) {
+    const detail = ((e.stderr || "") + (e.stdout || "")).trim() || "psql exited " + (e.status ?? "?");
+    throw new Error("psql failed: " + redact(detail));
+  }
 }
 
 export function runSqlFile(dbUrl, path) { return run(dbUrl, ["-q", "-f", path]); }

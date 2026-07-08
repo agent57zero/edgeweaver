@@ -61,6 +61,7 @@ OB1_MCP_URL=             # the deployed OB1 MCP edge-function endpoint
 TELEGRAM_BOT_TOKEN=      # Phase 3 (from BotFather, created by Alan)
 TELEGRAM_ALLOWED_USER_ID=# Phase 3 (Alan's numeric Telegram ID — the pinned sender)
 SOUL_REPO_PAT=           # Phase 2: fine-grained PAT, edgeweaver-soul only, contents:write
+LAB_DB_URL=              # brain lab (D15/BRAINS.md): edgeweaver-lab pooler string, scratch brains only
 ```
 
 ## 1. Status ledger

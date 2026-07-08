@@ -83,13 +83,18 @@ load in test-mode processes unless explicitly armed (`EW_ALLOW_LIVE=1`).
       schema (public.vector here), function search_path pins re-pinned per scratch.
       verify: hermetic spawn --dry-run + pure SQL generation pinned on a fixture DDL inside
       verify-brains.mjs; no credentials touched.
-- [ ] **STOP - lab gate**: Alan confirms a free-project slot and creates `edgeweaver-lab`
-      (or authorizes creation under the org). Credential tracker gains `LAB_DB_URL`
-      (name only).
-- [ ] **L3 Lab arm** (live): spawn a scratch from live read-only; verify row-count parity
-      per table against live counts taken at the spawn moment (~18 tables / ~1,946 rows);
-      retire it; confirm zero residue in the lab and zero writes to live. Dated ops-log
-      entry. (Dump-sourced spawn is exercised later, Alan present with the age key.)
+- [x] **STOP - lab gate** (2026-07-08): Alan's "finish it" in session authorized creation;
+      `edgeweaver-lab` created via CLI under the org (ref awusgcimshmbcmyshbpy, us-east-2,
+      free slot confirmed first), vector extension installed in its public schema,
+      `LAB_DB_URL` added to `.env.local` (name in the IMPLEMENTATION tracker).
+- [x] **L3 Lab arm** (2026-07-08, live): l3-drill spawned from live read-only: 18 tables,
+      exact per-table count parity (1,946 rows, thoughts 1931), then retired; registry keeps
+      the history row; zero residue in the lab, zero writes to live. Three real bugs found
+      by the drill and fixed in the tools (dump's CREATE SCHEMA collision - the G2 entry;
+      pgvector operator classes caught by the schema rewrite; connection URL leaking into
+      psql error output, now redacted). The lab DB password was rotated after that one
+      exposure (management API, PATCH 200, old credential dead). Dated ops-log entry.
+      (Dump-sourced spawn is exercised later, Alan present with the age key.)
 - [ ] **L4 Harness integration + first A/B**: brain profile in the JSONL session header and a
       page badge; two scratches, one 10-question set, two configs; findings to
       handoff/voice-testing-notes.md.
@@ -125,6 +130,6 @@ Working-tree rules while more than one session is active:
 
 | What | Unblocks | Notes |
 |---|---|---|
-| Confirm free-project slot; create `edgeweaver-lab` (or say "create it" and the agent does), then run `CREATE EXTENSION vector;` once in its SQL editor and put the pooler connection string in `.env.local` as `LAB_DB_URL` | L3 | Supabase dashboard shows the org's active projects; free tier allows 2; spawn checks the extension and refuses clearly if missing |
+| ~~Confirm free-project slot; create `edgeweaver-lab`~~ DONE 2026-07-08 (Alan authorized in session; created via CLI, ref awusgcimshmbcmyshbpy, vector extension in public, LAB_DB_URL in .env.local) | ~~L3~~ armed | password held only in .env.local; rotated once after an error-output exposure, old value dead |
 | Blessing for this plan + naming taste (lab name, `s_<name>` schema prefix) | L1 | defaults stand unless changed |
 | Later, only when a test needs NEW writes embedded: deploy embed function to the lab | L4+ | reuse the committed scripts/edge-functions source |

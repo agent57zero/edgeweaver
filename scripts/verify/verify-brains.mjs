@@ -15,6 +15,7 @@ const fails = [];
 const savedEnv = { EW_TEST_MODE: process.env.EW_TEST_MODE, EW_ALLOW_LIVE: process.env.EW_ALLOW_LIVE, EW_BRAIN_PROFILE: process.env.EW_BRAIN_PROFILE };
 
 const FIXTURE_DDL = `
+CREATE SCHEMA public;
 CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA extensions;
 COMMENT ON EXTENSION vector IS 'vector data type';
 CREATE TABLE public.thoughts (
@@ -30,6 +31,7 @@ CREATE TABLE public.thought_edges (
 );
 ALTER TABLE ONLY public.thought_edges
     ADD CONSTRAINT edges_to_fk FOREIGN KEY (to_id) REFERENCES public.thoughts(id);
+CREATE INDEX idx_emb ON public.thoughts USING hnsw (embedding public.vector_cosine_ops);
 CREATE POLICY read_all ON public.thoughts FOR SELECT USING (true);
 GRANT SELECT ON public.thoughts TO service_role;
 CREATE FUNCTION public.match_thoughts() RETURNS void
@@ -77,11 +79,14 @@ try {
   if (!threw) fails.push('schemaNameFor accepted "live"');
   const t = transformDdl(FIXTURE_DDL, "s_test");
   if (!t.startsWith('CREATE SCHEMA IF NOT EXISTS "s_test";')) fails.push("transformDdl missing CREATE SCHEMA header");
-  if (/\bpublic\.(?!vector\b)/.test(t)) fails.push("transformDdl left a non-extension public. reference");
+  if (/\bpublic\.(?!(?:vector|halfvec|sparsevec)[A-Za-z0-9_]*\b)/.test(t)) fails.push("transformDdl left a non-extension public. reference");
   if (/CREATE EXTENSION/i.test(t) || /COMMENT ON EXTENSION/i.test(t)) fails.push("transformDdl kept an extension statement");
   if (!/CREATE POLICY read_all ON "s_test"\.thoughts/.test(t)) fails.push("transformDdl lost or failed to rewrite the policy");
   if (!/public\.vector\(1536\)/.test(t) || /"s_test"\.vector\(/.test(t)) fails.push("extension type reference was schema-rewritten (must keep pointing at the extension's schema)");
+  if (!/ON "s_test"\.thoughts USING hnsw \(embedding public\.vector_cosine_ops\)/.test(t)) fails.push("hnsw operator class was schema-rewritten (extension prefix family must be protected)");
   if (!/SET search_path TO 's_test'/.test(t) || /SET search_path TO 'public'/.test(t)) fails.push("function search_path pin not re-pinned to the scratch schema");
+  const bareCreates = (t.match(/CREATE SCHEMA "s_test";/g) || []).length;
+  if (bareCreates !== 0) fails.push("dump's CREATE SCHEMA was rewritten without IF NOT EXISTS (collides with the header - the G2 lesson)");
   const tables = parseTables(FIXTURE_DDL);
   if (tables.join(",") !== "thoughts,thought_edges") fails.push("parseTables wrong: " + tables.join(","));
   const order = copyOrder(FIXTURE_DDL);

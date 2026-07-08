@@ -17,6 +17,22 @@
       "retired": null,
       "status": "active",
       "purpose": "the real brain (Genesis). Test-mode processes may not select this profile without EW_ALLOW_LIVE=1."
+    },
+    {
+      "name": "l3-drill",
+      "kind": "scratch",
+      "schema": "s_l3_drill",
+      "connEnv": "LAB_DB_URL",
+      "restUrlEnv": null,
+      "restKeyEnv": null,
+      "schemaVersion": 1,
+      "soulRef": "main",
+      "generation": 0,
+      "created": "2026-07-08",
+      "spawnedAt": "2026-07-08T23:21:18.439Z",
+      "retired": "2026-07-08",
+      "status": "retired",
+      "purpose": "L3 arm drill (BRAINS.md), disposable"
     }
   ]
 }
