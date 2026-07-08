@@ -15,7 +15,7 @@ import { LiveMind } from "./live-mind.mjs";
 
 const ROOT = join(import.meta.dirname, "..", "..");
 const PORT = 8796;
-const VERSION = "v2.10"; // bump on every user-visible change (shown in page header + /selftest)
+const VERSION = "v2.11"; // bump on every user-visible change (shown in page header + /selftest)
 const env = Object.fromEntries((await readFile(join(ROOT, ".env.local"), "utf8"))
   .split(/\r?\n/).map((l) => l.match(/^([A-Za-z0-9_]+)=(.*)$/)).filter(Boolean).map((m) => [m[1], m[2].trim()]));
 
@@ -267,7 +267,7 @@ button#go{width:100%;padding:1rem;font-size:19px;border:0;border-radius:12px;bac
     <option value="stub">instant echo (audio-path test)</option>
   </select></label>
   <label>mouth <select id="tts"><option value="cartesia">Cartesia</option><option value="elevenlabs">ElevenLabs</option></select></label>
-  <label><input type="checkbox" id="bridge" checked> filler only when slow (>1.1s)</label>
+  <label><input type="checkbox" id="bridge" checked> filler when slow (>${FILLER_AFTER_MS / 1000}s; earcon >${WORKING_AFTER_MS / 1000}s)</label>
 </div>
 <button id="go">Start conversation</button>
 <div class="meta" style="margin:.2rem 0">say "think hard about ..." to route one turn to the deep mind (Opus, thinking on) - first use takes longest</div>
