@@ -104,9 +104,13 @@ export class LiveMind {
   }
 
   // ask(text, onSentence) -> resolves with the full reply. FIFO-queued behind any in-flight turn.
+  // start() FIRST: on a cold (lazy-started) mind this makes the warmup the current turn so the real
+  // ask queues behind it. Without it, start()'s warmup and this turn were both written to the
+  // process at once and the warmup's "ok" was returned as the answer to the real question.
   ask(text, onSentence) {
     return new Promise((resolve, reject) => {
       const turn = { text, onSentence, resolve, reject };
+      this.start();
       if (this.current) this.queue.push(turn);
       else this.#fire(turn);
     });

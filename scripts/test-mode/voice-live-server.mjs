@@ -15,7 +15,7 @@ import { LiveMind } from "./live-mind.mjs";
 
 const ROOT = join(import.meta.dirname, "..", "..");
 const PORT = 8796;
-const VERSION = "v3.1"; // bump on every user-visible change (shown in page header + /selftest)
+const VERSION = "v3.2"; // bump on every user-visible change (shown in page header + /selftest)
 const env = Object.fromEntries((await readFile(join(ROOT, ".env.local"), "utf8"))
   .split(/\r?\n/).map((l) => l.match(/^([A-Za-z0-9_]+)=(.*)$/)).filter(Boolean).map((m) => [m[1], m[2].trim()]));
 
@@ -91,6 +91,7 @@ function session(ws) {
   let gen = 0;
   let opts = { tts: "cartesia", bridge: true };
   let candidateBarge = null; // pending noise-or-speech decision while agent is talking
+  const transcript = []; // rolling {user, reply} pairs - escalated minds are cold to the convo
   const send = (o) => { try { ws.send(JSON.stringify(o)); } catch { /* closed */ } };
 
   function connectDeepgram() {
@@ -213,7 +214,12 @@ function session(ws) {
         }, WORKING_AFTER_MS);
       };
 
-      const askAndSpeak = (mind, watchForEscalate) => mind.ask(userText, (sentence) => {
+      const contextFor = (t) => {
+        if (t === "sonnet" || !transcript.length) return userText; // Sonnet has its own session continuity
+        const recent = transcript.slice(-6).map((x) => "User: " + x.user + "\nYou: " + x.reply).join("\n");
+        return "Recent conversation (for context; you were just brought in to answer the final question):\n" + recent + "\n\nUser: " + userText;
+      };
+      const askAndSpeak = (mind, watchForEscalate) => mind.ask(contextFor(target), (sentence) => {
         if (myGen !== gen) return;
         if (watchForEscalate && !firstSentenceAt && sentence.length < 30 && /\bESCALATE\b/i.test(sentence)) {
           escalateToken = true; // swallow the token; the deep phase takes over
@@ -239,6 +245,8 @@ function session(ws) {
       }
       if (myGen !== gen) return;
       const mindLabel = target === "sonnet" ? "sonnet" : target === "fable" ? "fable (thinking)" : escalateToken ? "deep (Opus, auto)" : "deep (Opus, thinking)";
+      transcript.push({ user: userText, reply: full });
+      if (transcript.length > 12) transcript.shift();
       send({ type: "reply", text: full, mindMs: (firstSentenceAt || Date.now()) - tSpeechEnd, mind: mindLabel });
       await ttsChain;
       if (myGen === gen) send({ type: "speaking-done" });
