@@ -15,7 +15,7 @@ import { LiveMind } from "./live-mind.mjs";
 
 const ROOT = join(import.meta.dirname, "..", "..");
 const PORT = 8796;
-const VERSION = "v3.0"; // bump on every user-visible change (shown in page header + /selftest)
+const VERSION = "v3.1"; // bump on every user-visible change (shown in page header + /selftest)
 const env = Object.fromEntries((await readFile(join(ROOT, ".env.local"), "utf8"))
   .split(/\r?\n/).map((l) => l.match(/^([A-Za-z0-9_]+)=(.*)$/)).filter(Boolean).map((m) => [m[1], m[2].trim()]));
 
@@ -72,8 +72,8 @@ async function ttsEleven(text, signal) {
 const BRIDGE_PHRASES = ["Let me think about that.", "One sec.", "Hmm, let me see."];
 const DEEP_BRIDGE_PHRASE = "Alright, let me really think about that.";
 let deepBridge = null;
-const FILLER_AFTER_MS = 1400;
-const WORKING_AFTER_MS = 2600; // progress earcon: looped ticking when a turn runs genuinely long
+const FILLER_AFTER_MS = 2500;
+const WORKING_AFTER_MS = 3500; // progress earcon: looped ticking when a turn runs genuinely long
 const bridges = [];
 async function loadBridges() {
   for (const p of BRIDGE_PHRASES) {
