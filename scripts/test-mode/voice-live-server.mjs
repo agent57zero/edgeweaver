@@ -107,6 +107,9 @@ function session(ws) {
   function bargeIn(reason) {
     gen++;
     state = "listening";
+    // free the mind session immediately: without this, a barged Sonnet turn keeps generating
+    // invisibly and the NEXT question silently queues behind it (the "no response" symptom)
+    if (opts.mind !== "stub") (minds[opts.mind] || minds.haiku).interrupt();
     send({ type: "barge", reason });
   }
 

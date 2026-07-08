@@ -4,9 +4,14 @@
 // emitted SENTENCE BY SENTENCE so TTS can start on sentence one while the rest generates.
 // Latency levers (measured 2026-07-07, warm turns): --tools none + custom system prompt shrink the
 // prompt ~22k -> ~360 tokens; MAX_THINKING_TOKENS=0 removes the think-before-speak delay.
-// Result: first word ~0.9s (Haiku) / ~1.2s (Sonnet) on the subscription.
+// v2 (2026-07-08): real FIFO turn queue, true interrupt (control_request) so a barged turn frees
+// the session immediately instead of silently blocking the next question, error results surface
+// as rejections instead of empty silence, and a per-turn watchdog timeout.
 import { spawn } from "node:child_process";
+import { randomUUID } from "node:crypto";
 import { resolveClaude } from "../../voice/claude-backend.mjs";
+
+const TURN_TIMEOUT_MS = 45000;
 
 export class LiveMind {
   constructor(model, systemPrompt) {
@@ -14,7 +19,8 @@ export class LiveMind {
     this.systemPrompt = systemPrompt;
     this.proc = null;
     this.buf = "";
-    this.current = null; // { gen, onSentence, resolve, reject, pending, full }
+    this.current = null;   // { onSentence, resolve, reject, pending, full, warmup, timer }
+    this.queue = [];       // waiting turns: { text, onSentence, resolve, reject }
   }
 
   start() {
@@ -25,18 +31,43 @@ export class LiveMind {
       "--model", this.model,
       "--effort", "low",
       "--tools", "none",
+      "--exclude-dynamic-system-prompt-sections",
       "--system-prompt", this.systemPrompt,
     ], { shell: false, env: { ...process.env, MAX_THINKING_TOKENS: "0" } });
     this.proc.stdout.on("data", (d) => this.#onData(d));
-    this.proc.stderr.on("data", () => { /* keep quiet; errors surface via result events */ });
-    this.proc.on("exit", () => { this.proc = null; if (this.current) { this.current.reject(new Error("mind session exited")); this.current = null; } });
+    this.proc.stderr.on("data", () => { /* errors surface via result events */ });
+    this.proc.on("exit", () => {
+      this.proc = null;
+      const err = new Error("mind session exited");
+      if (this.current) { this.#finish("reject", err); }
+      for (const q of this.queue.splice(0)) q.reject(err);
+    });
     // warmup turn: pays the cold-start cost now so the first real turn is warm
-    this.#send("(warmup) Reply with just: ok");
     this.current = { warmup: true, resolve: () => {}, reject: () => {}, onSentence: () => {}, pending: "", full: "" };
+    this.#send("(warmup) Reply with just: ok");
   }
 
   #send(text) {
     this.proc.stdin.write(JSON.stringify({ type: "user", message: { role: "user", content: [{ type: "text", text }] } }) + "\n");
+  }
+
+  // finish the current turn (resolve/reject), then start the next queued one
+  #finish(kind, value) {
+    const cur = this.current;
+    if (!cur) return;
+    if (cur.timer) clearTimeout(cur.timer);
+    this.current = null;
+    try { kind === "resolve" ? cur.resolve(value) : cur.reject(value); } catch { /* consumer gone */ }
+    const next = this.queue.shift();
+    if (next) this.#fire(next);
+  }
+
+  #fire(turn) {
+    this.start();
+    turn.pending = ""; turn.full = "";
+    turn.timer = setTimeout(() => this.#finish("reject", new Error(`mind timeout after ${TURN_TIMEOUT_MS / 1000}s`)), TURN_TIMEOUT_MS);
+    this.current = turn;
+    this.#send(turn.text);
   }
 
   #onData(d) {
@@ -52,38 +83,43 @@ export class LiveMind {
       if (e.type === "stream_event" && e.event?.type === "content_block_delta" && e.event?.delta?.type === "text_delta") {
         cur.pending += e.event.delta.text;
         cur.full += e.event.delta.text;
-        // flush complete sentences as they form
         let m;
         while ((m = cur.pending.match(/^(.*?[.!?])(\s+|$)/s))) {
           const sentence = m[1].trim();
           cur.pending = cur.pending.slice(m[0].length);
-          if (sentence && !cur.warmup) cur.onSentence(sentence);
+          if (sentence && !cur.warmup && !cur.interrupted) cur.onSentence(sentence);
         }
       } else if (e.type === "result") {
-        const tail = cur.pending.trim();
-        if (tail && !cur.warmup) cur.onSentence(tail);
-        cur.resolve(cur.full.trim());
-        this.current = null;
+        const failed = e.is_error || (e.subtype && e.subtype !== "success");
+        if (failed && !cur.warmup && !cur.interrupted) {
+          this.#finish("reject", new Error(`mind result: ${e.subtype || "error"}${e.result ? " - " + String(e.result).slice(0, 120) : ""}`));
+        } else {
+          const tail = cur.pending.trim();
+          if (tail && !cur.warmup && !cur.interrupted) cur.onSentence(tail);
+          this.#finish("resolve", cur.full.trim());
+        }
       }
     }
   }
 
-  // ask(text, onSentence) -> resolves with the full reply text. One turn in flight at a time; a new
-  // ask while busy queues behind the CLI's own turn handling (the caller barge-guards with gen).
+  // ask(text, onSentence) -> resolves with the full reply. FIFO-queued behind any in-flight turn.
   ask(text, onSentence) {
-    this.start();
     return new Promise((resolve, reject) => {
-      const fire = () => {
-        this.current = { onSentence, resolve, reject, pending: "", full: "" };
-        this.#send(text);
-      };
-      if (this.current) {
-        // wait for the in-flight turn (incl. warmup) to finish, then fire
-        const prevResolve = this.current.resolve, prevReject = this.current.reject;
-        this.current.resolve = (v) => { prevResolve(v); fire(); };
-        this.current.reject = (err) => { prevReject(err); fire(); };
-      } else fire();
+      const turn = { text, onSentence, resolve, reject };
+      if (this.current) this.queue.push(turn);
+      else this.#fire(turn);
     });
+  }
+
+  // interrupt(): a barge makes EVERYTHING stale - flush queued turns and abort the in-flight one.
+  // Uses the CLI's control_request; the interrupted turn still emits a result, which #finish eats.
+  interrupt() {
+    for (const q of this.queue.splice(0)) { try { q.reject(new Error("interrupted")); } catch { /* consumer gone */ } }
+    if (!this.proc || !this.current || this.current.warmup) return;
+    this.current.interrupted = true; // stop emitting its sentences either way
+    try {
+      this.proc.stdin.write(JSON.stringify({ type: "control_request", request_id: randomUUID(), request: { subtype: "interrupt" } }) + "\n");
+    } catch { /* session may be mid-exit; watchdog will clean up */ }
   }
 
   stop() { try { this.proc?.kill(); } catch { /* fine */ } this.proc = null; }
