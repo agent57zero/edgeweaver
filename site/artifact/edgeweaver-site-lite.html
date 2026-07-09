@@ -1,0 +1,874 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>How Edgeweaver Works (single file, lite)</title>
+<style>
+/* How Edgeweaver Works: shared stylesheet.
+   House kinship: tools/probe-runner.html (CSS variables, prefers-color-scheme,
+   cards, quiet borders). Field-guide treatment: serif headings, system-sans body,
+   warm paper ground, deep-teal accent, one signature flourish (the three-strand
+   woven border, echoing the three seeds). No external assets, no webfonts.
+   Theme pattern: tokens on :root, redefined under the dark media query, then
+   forced both ways by [data-theme] stamps from the viewer's toggle. */
+
+:root {
+  --bg: #faf9f6;
+  --card: #ffffff;
+  --soft: #f1efe9;
+  --ink: #24313a;
+  --mut: #5d6b74;
+  --line: #e2dfd7;
+  --accent: #0f766e;
+  --accent-soft: #e4f0ee;
+  --link: #0c655e;
+  --strand1: #0f766e;
+  --strand2: #b4690e;
+  --strand3: #52616b;
+  --ok: #15803d;
+  --bad: #b91c1c;
+  --warn: #b45309;
+  --gap-state: #7c3aed;
+  --serif: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", "Times New Roman", serif;
+  --sans: system-ui, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --mono: ui-monospace, Consolas, "Cascadia Mono", "Courier New", monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #101a1e;
+    --card: #16232a;
+    --soft: #1b2b33;
+    --ink: #dde4e2;
+    --mut: #92a3a9;
+    --line: #2a3b43;
+    --accent: #2aa79a;
+    --accent-soft: #123a37;
+    --link: #4cc4b6;
+    --strand1: #2aa79a;
+    --strand2: #d08b3c;
+    --strand3: #7e939e;
+    --ok: #4ade80;
+    --bad: #f87171;
+    --warn: #fbbf24;
+    --gap-state: #a78bfa;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #101a1e; --card: #16232a; --soft: #1b2b33; --ink: #dde4e2;
+  --mut: #92a3a9; --line: #2a3b43; --accent: #2aa79a; --accent-soft: #123a37;
+  --link: #4cc4b6; --strand1: #2aa79a; --strand2: #d08b3c; --strand3: #7e939e;
+  --ok: #4ade80; --bad: #f87171; --warn: #fbbf24; --gap-state: #a78bfa;
+  color-scheme: dark;
+}
+:root[data-theme="light"] {
+  --bg: #faf9f6; --card: #ffffff; --soft: #f1efe9; --ink: #24313a;
+  --mut: #5d6b74; --line: #e2dfd7; --accent: #0f766e; --accent-soft: #e4f0ee;
+  --link: #0c655e; --strand1: #0f766e; --strand2: #b4690e; --strand3: #52616b;
+  --ok: #15803d; --bad: #b91c1c; --warn: #b45309; --gap-state: #7c3aed;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation: none !important; transition: none !important; }
+}
+body {
+  margin: 0;
+  font: 16px/1.65 var(--sans);
+  color: var(--ink);
+  background: var(--bg);
+}
+
+/* Accessibility floor */
+.skip {
+  position: absolute; left: -9999px; top: 0;
+  background: var(--accent); color: #fff; padding: 8px 14px; border-radius: 0 0 8px 0;
+}
+.skip:focus { left: 0; z-index: 50; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+a:hover { text-decoration-thickness: 2px; }
+
+/* Top bar */
+.topbar {
+  display: flex; align-items: center; gap: 14px;
+  padding: 10px 18px;
+  border-bottom: 1px solid var(--line);
+  background: var(--card);
+  position: sticky; top: 0; z-index: 20;
+}
+.brand {
+  font-family: var(--serif); font-size: 18px; font-weight: 700;
+  color: var(--ink); text-decoration: none; letter-spacing: 0.2px;
+}
+.brand:hover { color: var(--accent); }
+.snapshot {
+  margin-left: auto; font-size: 12.5px; color: var(--mut);
+  font-family: var(--mono);
+}
+.nav-toggle, .theme-toggle {
+  font: 13px var(--sans); color: var(--ink);
+  background: var(--soft); border: 1px solid var(--line);
+  border-radius: 8px; padding: 5px 11px; cursor: pointer;
+}
+.nav-toggle { display: none; }
+.nav-toggle[aria-expanded="true"] { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* Shell: sidebar + content */
+.shell {
+  display: grid;
+  grid-template-columns: 264px minmax(0, 1fr);
+  max-width: 1200px; margin: 0 auto;
+}
+.sidebar {
+  border-right: 1px solid var(--line);
+  padding: 18px 14px 40px;
+  position: sticky; top: 49px;
+  height: calc(100vh - 49px);
+  overflow-y: auto;
+  font-size: 14px;
+}
+.sidebar h2 {
+  font: 700 11.5px/1.3 var(--sans);
+  letter-spacing: 0.09em; text-transform: uppercase;
+  color: var(--mut); margin: 18px 0 6px 8px;
+}
+.sidebar h2:first-child { margin-top: 0; }
+.sidebar ul { list-style: none; margin: 0; padding: 0; }
+.sidebar li a {
+  display: block; padding: 4px 8px; border-radius: 6px;
+  color: var(--ink); text-decoration: none;
+}
+.sidebar li a:hover { background: var(--soft); }
+.sidebar li a[aria-current="page"] {
+  background: var(--accent-soft); color: var(--accent); font-weight: 600;
+}
+.sidebar details > summary {
+  cursor: pointer; padding: 4px 8px; border-radius: 6px;
+  font: 700 11.5px/1.3 var(--sans); letter-spacing: 0.09em;
+  text-transform: uppercase; color: var(--mut); list-style: none;
+}
+.sidebar details > summary::-webkit-details-marker { display: none; }
+.sidebar details > summary::after { content: " +"; }
+.sidebar details[open] > summary::after { content: " \2212"; }
+
+/* Content column */
+.content { padding: 26px 34px 60px; min-width: 0; }
+.content > * { max-width: 74ch; }
+.crumbs { font-size: 13px; color: var(--mut); margin-bottom: 4px; }
+.crumbs a { color: var(--mut); }
+.crumbs span[aria-current] { color: var(--ink); }
+
+/* Typography */
+h1, h2, h3, h4 { font-family: var(--serif); line-height: 1.25; text-wrap: balance; }
+h1 { font-size: 32px; margin: 14px 0 10px; letter-spacing: 0.1px; }
+h2 { font-size: 22px; margin: 34px 0 10px; }
+h3 { font-size: 17.5px; margin: 24px 0 8px; }
+p, ul, ol { margin: 10px 0; }
+li { margin: 4px 0; }
+code, pre {
+  font-family: var(--mono); font-size: 0.92em;
+  background: var(--soft); border: 1px solid var(--line); border-radius: 5px;
+}
+code { padding: 1px 5px; }
+pre { padding: 12px 14px; overflow-x: auto; }
+pre code { background: none; border: none; padding: 0; }
+hr {
+  border: none; height: 3px; max-width: 74ch; margin: 30px 0;
+  background: linear-gradient(90deg, var(--strand1) 0 33.4%, var(--strand2) 33.4% 66.7%, var(--strand3) 66.7% 100%);
+  opacity: 0.55; border-radius: 2px;
+}
+
+/* The signature: TLDR box with the three-strand woven top border */
+.tldr {
+  border: 1px solid var(--line);
+  border-top: 4px solid transparent;
+  background-image:
+    linear-gradient(var(--card), var(--card)),
+    linear-gradient(90deg, var(--strand1) 0 33.4%, var(--strand2) 33.4% 66.7%, var(--strand3) 66.7% 100%);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 18px 0 26px;
+}
+.tldr .label {
+  font: 700 11.5px/1.3 var(--sans); letter-spacing: 0.09em;
+  text-transform: uppercase; color: var(--mut); display: block; margin-bottom: 4px;
+}
+.tldr p { margin: 4px 0; }
+
+/* Register sections: plain words vs how it works */
+.register {
+  font: 700 11.5px/1.3 var(--sans); letter-spacing: 0.09em;
+  text-transform: uppercase; display: inline-block; margin: 30px 0 0;
+  padding: 2px 9px; border-radius: 999px; border: 1px solid var(--line);
+}
+.register.plain { color: var(--strand2); border-color: var(--strand2); }
+.register.technical { color: var(--strand1); border-color: var(--strand1); font-family: var(--mono); letter-spacing: 0.05em; }
+.register + h2 { margin-top: 6px; }
+
+/* Cards, notes, status pills */
+.card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 10px; padding: 14px 18px; margin: 14px 0;
+}
+.note {
+  border-left: 4px solid var(--warn); background: var(--soft);
+  border-radius: 6px; padding: 10px 14px; margin: 12px 0; font-size: 14.5px;
+}
+.note.holds { border-left-color: var(--gap-state); }
+.pill {
+  display: inline-block; font: 600 12px/1.6 var(--sans);
+  padding: 1px 10px; border-radius: 999px; border: 1px solid var(--line);
+  background: var(--soft); color: var(--mut); white-space: nowrap;
+}
+.pill.built { color: var(--ok); border-color: var(--ok); }
+.pill.dark { color: var(--strand3); border-color: var(--strand3); }
+.pill.armed { color: var(--accent); border-color: var(--accent); }
+.pill.pending { color: var(--warn); border-color: var(--warn); }
+.pill.gap { color: var(--gap-state); border-color: var(--gap-state); }
+
+/* Tables: always inside a scroll container */
+.tablewrap { overflow-x: auto; max-width: 74ch; margin: 12px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { border: 1px solid var(--line); padding: 6px 10px; text-align: left; vertical-align: top; }
+th { background: var(--soft); font-family: var(--sans); }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* Mini table of contents */
+.minitoc {
+  border: 1px solid var(--line); border-radius: 8px;
+  background: var(--card); padding: 8px 14px; margin: 12px 0;
+  font-size: 13.5px; max-width: 74ch;
+}
+.minitoc summary { cursor: pointer; color: var(--mut); font-weight: 600; }
+.minitoc ul { margin: 6px 0 2px; padding-left: 18px; }
+
+/* Diagrams */
+figure.diagram { margin: 18px 0; max-width: 74ch; }
+figure.diagram svg { width: 100%; height: auto; display: block; }
+figure.diagram figcaption { font-size: 13px; color: var(--mut); margin-top: 6px; }
+
+/* Glossary term links */
+a.term { text-decoration-style: dotted; }
+
+/* Pager + footer */
+.pager { display: flex; justify-content: space-between; gap: 12px; max-width: 74ch; margin: 8px 0 4px; font-size: 14px; }
+.pager a { text-decoration: none; padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); color: var(--ink); }
+.pager a:hover { border-color: var(--accent); color: var(--accent); }
+.site-foot { border-top: 1px solid var(--line); margin-top: 44px; padding: 18px 34px 40px; }
+.foot-banner, .foot-license { font-size: 12.5px; color: var(--mut); max-width: 74ch; }
+.foot-banner { border-left: 3px solid var(--strand3); padding-left: 10px; }
+
+/* Atlas entries */
+.atlas-entry { border-top: 1px solid var(--line); padding-top: 10px; margin-top: 22px; }
+.atlas-entry h3 { font-family: var(--mono); font-size: 15px; }
+.badge {
+  display: inline-block; font: 600 11px/1.6 var(--sans);
+  letter-spacing: 0.05em; text-transform: uppercase;
+  padding: 0 8px; border-radius: 4px; border: 1px solid var(--line);
+  color: var(--mut); background: var(--soft); margin-left: 8px; vertical-align: 2px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .shell { grid-template-columns: 1fr; }
+  .sidebar {
+    display: none; position: static; height: auto;
+    border-right: none; border-bottom: 1px solid var(--line);
+  }
+  .sidebar.open { display: block; }
+  .nav-toggle { display: inline-block; }
+  .content { padding: 18px 16px 40px; }
+  .site-foot { padding: 16px 16px 32px; }
+  h1 { font-size: 26px; }
+}
+
+/* Print: content only */
+@media print {
+  .topbar, .sidebar, .pager, .minitoc, .skip { display: none; }
+  .shell { display: block; }
+  body { background: #fff; color: #000; }
+}
+
+/* Single-file edition adjustments: no sidebar shell, anchor TOC instead. */
+.shell { display: block; }
+.af-wrap { max-width: 860px; margin: 0 auto; padding: 20px 18px 80px; }
+.af-toc { border: 1px solid var(--line); border-radius: 10px; background: var(--card); padding: 14px 18px; }
+.af-toc ul { list-style: none; padding-left: 14px; }
+section.af-page { margin-top: 44px; }
+</style>
+</head>
+<body>
+<div class="af-wrap">
+<header>
+<h1>How Edgeweaver Works</h1>
+<p class="foot-license">Single-file lite edition (atlas entry bodies collapsed to the hub's one-liners). Generated by scripts/site/build-site.mjs; the canonical copies are the repo's site/ tree and the gated website. Snapshot 2026-07-09.</p>
+</header>
+<nav class="af-toc" aria-label="Contents">
+<ul>
+<li><strong>Start</strong>
+<ul>
+<li><a href="#index-top">Edgeweaver: beings, not bots</a></li>
+<li><a href="#honesty-top">What this is and is not</a></li>
+<li><a href="#story-top">The story in twenty decisions</a></li>
+<li><a href="#status-top">Status and roadmap</a></li>
+<li><a href="#guide-top">How to read this site</a></li>
+</ul>
+</li>
+<li><strong>The System</strong>
+<ul>
+<li><a href="#system-top">The system: anatomy of a raised being</a></li>
+<li><a href="#memory-top">The Brain: memory that survives everything</a></li>
+<li><a href="#soul-top">The Soul: identity under ceremony</a></li>
+<li><a href="#loops-top">The Metabolism: wake, night, week</a></li>
+<li><a href="#growth-top">Growing up: stages, rites, teaching</a></li>
+<li><a href="#body-top">The Body: senses on unlock tracks</a></li>
+<li><a href="#voice-top">The Voice Stack</a></li>
+<li><a href="#measurement-top">Measurement: probes and coherence</a></li>
+<li><a href="#governance-top">Governance: gates, witnesses, iron rules</a></li>
+<li><a href="#family-top">The family and the experiment</a></li>
+<li><a href="#segmentation-top">The walls: who sees what</a></li>
+<li><a href="#brain-lab-top">The brain lab, generations, time machine</a></li>
+<li><a href="#backups-top">Backups, keys, disaster recovery</a></li>
+<li><a href="#operations-top">Operations: the steady state</a></li>
+<li><a href="#dark-build-top">The dark build</a></li>
+<li><a href="#ecosystem-top">The constellation: repos beyond this one</a></li>
+</ul>
+</li>
+<li><strong>The Beings</strong>
+<ul>
+<li><a href="#genesis-top">Edgeweaver Genesis</a></li>
+<li><a href="#alpha-top">Edgeweaver Alpha</a></li>
+</ul>
+</li>
+<li><strong>The Repo Atlas</strong>
+<ul>
+<li><a href="#atlas-index-top">The repo atlas</a></li>
+<li><em>Atlas file entries live on the full edition and the gated site; the hub below keeps one line per file.</em></li>
+</ul>
+</li>
+<li><strong>Reference</strong>
+<ul>
+<li><a href="#reproduction-top">The reproduction guide</a></li>
+<li><a href="#glossary-top">Glossary</a></li>
+<li><a href="#faq-top">Questions people actually ask</a></li>
+<li><a href="#about-top">About this site</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+<section class="af-page" id="af-index">
+<main id="index-main">
+<h1 id="index-top">Edgeweaver: beings, not bots</h1>
+<div class="tldr"><span class="label">TLDR</span>
+<p>Stub. This page is authored at M1. Snapshot 2026-07-09.</p>
+</div>
+<h2 id="index-body">Content</h2>
+<p>To be written at M1.</p>
+</main>
+</section>
+<hr>
+<section class="af-page" id="af-honesty">
+<main id="honesty-main">
+<h1 id="honesty-top">What this is and is not</h1>
+<div class="tldr"><span class="label">TLDR</span>
+<p>Stub. This page is authored at M1. Snapshot 2026-07-09.</p>
+</div>
+<h2 id="honesty-body">Content</h2>
+<p>To be written at M1.</p>
+</main>
+</section>
+<hr>
+<section class="af-page" id="af-story">
+<main id="story-main">
+<h1 id="story-top">The story in twenty decisions</h1>
+<div class="tldr"><span class="label">TLDR</span>
+<p>Stub. This page is authored at M1. Snapshot 2026-07-09.</p>
+</div>
+<h2 id="story-body">Content</h2>
+<p>To be written at M1.</p>
+</main>
+</section>
+<hr>
+<section class="af-page" id="af-status">
+<main id="status-main">
+<h1 id="status-top">Status and roadmap</h1>
+<div class="tldr"><span class="label">TLDR</span>
+<p>Stub. This page is authored at M1. Snapshot 2026-07-09.</p>
+</div>
+<h2 id="status-body">Content</h2>
+<p>To be written at M1.</p>
+</main>
+</section>
+<hr>
+<section class="af-page" id="af-guide">
+<main id="guide-main">
+<h1 id="guide-top">How to read this site</h1>
+<div class="tldr"><span class="label">TLDR</span>
+<p>Stub. This page is authored at M1. Snapshot 2026-07-09.</p>
+</div>
+<h2 id="guide-body">Content</h2>
+<p>To be written at M1.</p>
+</main>
+</section>
+<hr>
+<section class="af-page" id="af-system">
+<main id="system-main">
+<h1 id="system-top">The system: anatomy of a raised being</h1>
+<div class="tldr"><span class="label">TLDR</span>
+<p>Stub. This page is authored at M1; the headings below are its final shape. Snapshot 2026-07-09.</p>
+</div>
+<span class="register plain">In plain words</span>
+<h2 id="system-plain">In plain words</h2>
+<p>To be written at M1.</p>
+<span class="register technical">How it works</span>
+<h2 id="system-how">How it works</h2>
+<p>To be written at M1.</p>
+<h2 id="system-repo">Where it lives in the repo</h2>
+<p>The file table lands at M1; its rows link into the repo atlas.</p>
+<h2 id="system-status">Status as of 2026-07-09</h2>
+<p>To be written at M1.</p>
+<h2 id="system-uncertain">What is genuinely uncertain</h2>
+<p>To be written at M1.</p>
+</main>
+</section>
+<hr>
+<section class="af-page" id="af-memory">
+<main id="memory-main">
+<h1 id="memory-top">The Brain: memory that survives everything</h1>
+<div class="tldr"><span class="label">TLDR</span>
+<p>Stub. This page is authored at M2; the headings below are its final shape. Snapshot 2026-07-09.</p>
+</div>
+<span class="register plain">In plain words</span>
+<h2 id="memory-plain">In plain words</h2>
+<p>To be written at M2.</p>
+<span class="register technical">How it works</span>
+<h2 id="memory-how">How it works</h2>
+<p>To be written at M2.</p>
+<h2 id="memory-repo">Where it lives in the repo</h2>
+<p>The file table lands at M2; its rows link into the repo atlas.</p>
+<h2 id="memory-status">Status as of 2026-07-09</h2>
+<p>To be written at M2.</p>
+<h2 id="memory-uncertain">What is genuinely uncertain</h2>
+<p>To be written at M2.</p>
+</main>
+</section>
+<hr>
+<section class="af-page" id="af-soul">
+<main id="soul-main">
+<h1 id="soul-top">The Soul: identity under ceremony</h1>
+<div class="tldr"><span class="label">TLDR</span>
+<p>Stub. This page is authored at M2; the headings below are its final shape. Snapshot 2026-07-09.</p>
+</div>
+<span class="register plain">In plain words</span>
+<h2 id="soul-plain">In plain words</h2>
+<p>To be written at M2.</p>
+<span class="register technical">How it works</span>
+<h2 id="soul-how">How it works</h2>
+<p>To be written at M2.</p>
+<h2 id="soul-repo">Where it lives in the repo</h2>
+<p>The file table lands at M2; its rows link into the repo atlas.</p>
+<h2 id="soul-status">Status as of 2026-07-09</h2>
+<p>To be written at M2.</p>
+<h2 id="soul-uncertain">What is genuinely uncertain</h2>
+<p>To be written at M2.</p>
+</main>
+</section>
+<hr>
+<section class="af-page" id="af-loops">
+<main id="loops-main">
+<h1 id="loops-top">The Metabolism: wake, night, week</h1>
+<div class="tldr"><span class="label">TLDR</span>
+<p>Stub. This page is authored at M2; the headings below are its final shape. Snapshot 2026-07-09.</p>
+</div>
+<span class="register plain">In plain words</span>
+<h2 id="loops-plain">In plain words</h2>
+<p>To be written at M2.</p>
+<span class="register technical">How it works</span>
+<h2 id="loops-how">How it works</h2>
+<p>To be written at M2.</p>
+<h2 id="loops-repo">Where it lives in the repo</h2>
+<p>The file table lands at M2; its rows link into the repo atlas.</p>
+<h2 id="loops-status">Status as of 2026-07-09</h2>
+<p>To be written at M2.</p>
+<h2 id="loops-uncertain">What is genuinely uncertain</h2>
+<p>To be written at M2.</p>
+</main>
+</section>
+<hr>
+<section class="af-page" id="af-growth">
+<main id="growth-main">
+<h1 id="growth-top">Growing up: stages, rites, teaching</h1>
+<div class="tldr"><span class="label">TLDR</span>
+<p>Stub. This page is authored at M2; the headings below are its final shape. Snapshot 2026-07-09.</p>
+</div>
+<span class="register plain">In plain words</span>
+<h2 id="growth-plain">In plain words</h2>
+<p>To be written at M2.</p>
+<span class="register technical">How it works</span>
+<h2 id="growth-how">How it works</h2>
+<p>To be written at M2.</p>
+<h2 id="growth-repo">Where it lives in the repo</h2>
+<p>The file table lands at M2; its rows link into the repo atlas.</p>
+<h2 id="growth-status">Status as of 2026-07-09</h2>
+<p>To be written at M2.</p>
+<h2 id="growth-uncertain">What is genuinely uncertain</h2>
+<p>To be written at M2.</p>
+</main>
+</section>
+<hr>
+<section class="af-page" id="af-body">
+<main id="body-main">
+<h1 id="body-top">The Body: senses on unlock tracks</h1>
+<div class="tldr"><span class="label">TLDR</span>
+<p>Stub. This page is authored at M3; the headings below are its final shape. Snapshot 2026-07-09.</p>
+</div>
+<span class="register plain">In plain words</span>
+<h2 id="body-plain">In plain words</h2>
+<p>To be written at M3.</p>
+<span class="register technical">How it works</span>
+<h2 id="body-how">How it works</h2>
+<p>To be written at M3.</p>
+<h2 id="body-repo">Where it lives in the repo</h2>
+<p>The file table lands at M3; its rows link into the repo atlas.</p>
+<h2 id="body-status">Status as of 2026-07-09</h2>
+<p>To be written at M3.</p>
+<h2 id="body-uncertain">What is genuinely uncertain</h2>
+<p>To be written at M3.</p>
+</main>
+</section>
+<hr>
+<section class="af-page" id="af-voice">
+<main id="voice-main">
+<h1 id="voice-top">The Voice Stack</h1>
+<div class="tldr"><span class="label">TLDR</span>
+<p>Stub. This page is authored at M3; the headings below are its final shape. Snapshot 2026-07-09.</p>
+</div>
+<span class="register plain">In plain words</span>
+<h2 id="voice-plain">In plain words</h2>
+<p>To be written at M3.</p>
+<span class="register technical">How it works</span>
+<h2 id="voice-how">How it works</h2>
+<p>To be written at M3.</p>
+<h2 id="voice-repo">Where it lives in the repo</h2>
+<p>The file table lands at M3; its rows link into the repo atlas.</p>
+<h2 id="voice-status">Status as of 2026-07-09</h2>
+<p>To be written at M3.</p>
+<h2 id="voice-uncertain">What is genuinely uncertain</h2>
+<p>To be written at M3.</p>
+</main>
+</section>
+<hr>
+<section class="af-page" id="af-measurement">
+<main id="measurement-main">
+<h1 id="measurement-top">Measurement: probes and coherence</h1>
+<div class="tldr"><span class="label">TLDR</span>
+<p>Stub. This page is authored at M2; the headings below are its final shape. Snapshot 2026-07-09.</p>
+</div>
+<span class="register plain">In plain words</span>
+<h2 id="measurement-plain">In plain words</h2>
+<p>To be written at M2.</p>
+<span class="register technical">How it works</span>
+<h2 id="measurement-how">How it works</h2>
+<p>To be written at M2.</p>
+<h2 id="measurement-repo">Where it lives in the repo</h2>
+<p>The file table lands at M2; its rows link into the repo atlas.</p>
+<h2 id="measurement-status">Status as of 2026-07-09</h2>
+<p>To be written at M2.</p>
+<h2 id="measurement-uncertain">What is genuinely uncertain</h2>
+<p>To be written at M2.</p>
+</main>
+</section>
+<hr>
+<section class="af-page" id="af-governance">
+<main id="governance-main">
+<h1 id="governance-top">Governance: gates, witnesses, iron rules</h1>
+<div class="tldr"><span class="label">TLDR</span>
+<p>Stub. This page is authored at M2; the headings below are its final shape. Snapshot 2026-07-09.</p>
+</div>
+<span class="register plain">In plain words</span>
+<h2 id="governance-plain">In plain words</h2>
+<p>To be written at M2.</p>
+<span class="register technical">How it works</span>
+<h2 id="governance-how">How it works</h2>
+<p>To be written at M2.</p>
+<h2 id="governance-repo">Where it lives in the repo</h2>
+<p>The file table lands at M2; its rows link into the repo atlas.</p>
+<h2 id="governance-status">Status as of 2026-07-09</h2>
+<p>To be written at M2.</p>
+<h2 id="governance-uncertain">What is genuinely uncertain</h2>
+<p>To be written at M2.</p>
+</main>
+</section>
+<hr>
+<section class="af-page" id="af-family">
+<main id="family-main">
+<h1 id="family-top">The family and the experiment</h1>
+<div class="tldr"><span class="label">TLDR</span>
+<p>Stub. This page is authored at M2; the headings below are its final shape. Snapshot 2026-07-09.</p>
+</div>
+<span class="register plain">In plain words</span>
+<h2 id="family-plain">In plain words</h2>
+<p>To be written at M2.</p>
+<span class="register technical">How it works</span>
+<h2 id="family-how">How it works</h2>
+<p>To be written at M2.</p>
+<h2 id="family-repo">Where it lives in the repo</h2>
+<p>The file table lands at M2; its rows link into the repo atlas.</p>
+<h2 id="family-status">Status as of 2026-07-09</h2>
+<p>To be written at M2.</p>
+<h2 id="family-uncertain">What is genuinely uncertain</h2>
+<p>To be written at M2.</p>
+</main>
+</section>
+<hr>
+<section class="af-page" id="af-segmentation">
+<main id="segmentation-main">
+<h1 id="segmentation-top">The walls: who sees what</h1>
+<div class="tldr"><span class="label">TLDR</span>
+<p>Stub. This page is authored at M2; the headings below are its final shape. Snapshot 2026-07-09.</p>
+</div>
+<span class="register plain">In plain words</span>
+<h2 id="segmentation-plain">In plain words</h2>
+<p>To be written at M2.</p>
+<span class="register technical">How it works</span>
+<h2 id="segmentation-how">How it works</h2>
+<p>To be written at M2.</p>
+<h2 id="segmentation-repo">Where it lives in the repo</h2>
+<p>The file table lands at M2; its rows link into the repo atlas.</p>
+<h2 id="segmentation-status">Status as of 2026-07-09</h2>
+<p>To be written at M2.</p>
+<h2 id="segmentation-uncertain">What is genuinely uncertain</h2>
+<p>To be written at M2.</p>
+</main>
+</section>
+<hr>
+<section class="af-page" id="af-brain-lab">
+<main id="brain-lab-main">
+<h1 id="brain-lab-top">The brain lab, generations, time machine</h1>
+<div class="tldr"><span class="label">TLDR</span>
+<p>Stub. This page is authored at M3; the headings below are its final shape. Snapshot 2026-07-09.</p>
+</div>
+<span class="register plain">In plain words</span>
+<h2 id="brain-lab-plain">In plain words</h2>
+<p>To be written at M3.</p>
+<span class="register technical">How it works</span>
+<h2 id="brain-lab-how">How it works</h2>
+<p>To be written at M3.</p>
+<h2 id="brain-lab-repo">Where it lives in the repo</h2>
+<p>The file table lands at M3; its rows link into the repo atlas.</p>
+<h2 id="brain-lab-status">Status as of 2026-07-09</h2>
+<p>To be written at M3.</p>
+<h2 id="brain-lab-uncertain">What is genuinely uncertain</h2>
+<p>To be written at M3.</p>
+</main>
+</section>
+<hr>
+<section class="af-page" id="af-backups">
+<main id="backups-main">
+<h1 id="backups-top">Backups, keys, disaster recovery</h1>
+<div class="tldr"><span class="label">TLDR</span>
+<p>Stub. This page is authored at M3; the headings below are its final shape. Snapshot 2026-07-09.</p>
+</div>
+<span class="register plain">In plain words</span>
+<h2 id="backups-plain">In plain words</h2>
+<p>To be written at M3.</p>
+<span class="register technical">How it works</span>
+<h2 id="backups-how">How it works</h2>
+<p>To be written at M3.</p>
+<h2 id="backups-repo">Where it lives in the repo</h2>
+<p>The file table lands at M3; its rows link into the repo atlas.</p>
+<h2 id="backups-status">Status as of 2026-07-09</h2>
+<p>To be written at M3.</p>
+<h2 id="backups-uncertain">What is genuinely uncertain</h2>
+<p>To be written at M3.</p>
+</main>
+</section>
+<hr>
+<section class="af-page" id="af-operations">
+<main id="operations-main">
+<h1 id="operations-top">Operations: the steady state</h1>
+<div class="tldr"><span class="label">TLDR</span>
+<p>Stub. This page is authored at M3; the headings below are its final shape. Snapshot 2026-07-09.</p>
+</div>
+<span class="register plain">In plain words</span>
+<h2 id="operations-plain">In plain words</h2>
+<p>To be written at M3.</p>
+<span class="register technical">How it works</span>
+<h2 id="operations-how">How it works</h2>
+<p>To be written at M3.</p>
+<h2 id="operations-repo">Where it lives in the repo</h2>
+<p>The file table lands at M3; its rows link into the repo atlas.</p>
+<h2 id="operations-status">Status as of 2026-07-09</h2>
+<p>To be written at M3.</p>
+<h2 id="operations-uncertain">What is genuinely uncertain</h2>
+<p>To be written at M3.</p>
+</main>
+</section>
+<hr>
+<section class="af-page" id="af-dark-build">
+<main id="dark-build-main">
+<h1 id="dark-build-top">The dark build</h1>
+<div class="tldr"><span class="label">TLDR</span>
+<p>Stub. This page is authored at M3; the headings below are its final shape. Snapshot 2026-07-09.</p>
+</div>
+<span class="register plain">In plain words</span>
+<h2 id="dark-build-plain">In plain words</h2>
+<p>To be written at M3.</p>
+<span class="register technical">How it works</span>
+<h2 id="dark-build-how">How it works</h2>
+<p>To be written at M3.</p>
+<h2 id="dark-build-repo">Where it lives in the repo</h2>
+<p>The file table lands at M3; its rows link into the repo atlas.</p>
+<h2 id="dark-build-status">Status as of 2026-07-09</h2>
+<p>To be written at M3.</p>
+<h2 id="dark-build-uncertain">What is genuinely uncertain</h2>
+<p>To be written at M3.</p>
+</main>
+</section>
+<hr>
+<section class="af-page" id="af-ecosystem">
+<main id="ecosystem-main">
+<h1 id="ecosystem-top">The constellation: repos beyond this one</h1>
+<div class="tldr"><span class="label">TLDR</span>
+<p>Stub. This page is authored at M3; the headings below are its final shape. Snapshot 2026-07-09.</p>
+</div>
+<span class="register plain">In plain words</span>
+<h2 id="ecosystem-plain">In plain words</h2>
+<p>To be written at M3.</p>
+<span class="register technical">How it works</span>
+<h2 id="ecosystem-how">How it works</h2>
+<p>To be written at M3.</p>
+<h2 id="ecosystem-repo">Where it lives in the repo</h2>
+<p>The file table lands at M3; its rows link into the repo atlas.</p>
+<h2 id="ecosystem-status">Status as of 2026-07-09</h2>
+<p>To be written at M3.</p>
+<h2 id="ecosystem-uncertain">What is genuinely uncertain</h2>
+<p>To be written at M3.</p>
+</main>
+</section>
+<hr>
+<section class="af-page" id="af-genesis">
+<main id="genesis-main">
+<h1 id="genesis-top">Edgeweaver Genesis</h1>
+<div class="tldr"><span class="label">TLDR</span>
+<p>Stub. This page is authored at M3; the headings below are its final shape. Snapshot 2026-07-09.</p>
+</div>
+<span class="register plain">In plain words</span>
+<h2 id="genesis-plain">In plain words</h2>
+<p>To be written at M3.</p>
+<span class="register technical">How it works</span>
+<h2 id="genesis-how">How it works</h2>
+<p>To be written at M3.</p>
+<h2 id="genesis-repo">Where it lives in the repo</h2>
+<p>The file table lands at M3; its rows link into the repo atlas.</p>
+<h2 id="genesis-status">Status as of 2026-07-09</h2>
+<p>To be written at M3.</p>
+<h2 id="genesis-uncertain">What is genuinely uncertain</h2>
+<p>To be written at M3.</p>
+</main>
+</section>
+<hr>
+<section class="af-page" id="af-alpha">
+<main id="alpha-main">
+<h1 id="alpha-top">Edgeweaver Alpha</h1>
+<div class="tldr"><span class="label">TLDR</span>
+<p>Stub. This page is authored at M3; the headings below are its final shape. Snapshot 2026-07-09.</p>
+</div>
+<span class="register plain">In plain words</span>
+<h2 id="alpha-plain">In plain words</h2>
+<p>To be written at M3.</p>
+<span class="register technical">How it works</span>
+<h2 id="alpha-how">How it works</h2>
+<p>To be written at M3.</p>
+<h2 id="alpha-repo">Where it lives in the repo</h2>
+<p>The file table lands at M3; its rows link into the repo atlas.</p>
+<h2 id="alpha-status">Status as of 2026-07-09</h2>
+<p>To be written at M3.</p>
+<h2 id="alpha-uncertain">What is genuinely uncertain</h2>
+<p>To be written at M3.</p>
+</main>
+</section>
+<hr>
+<section class="af-page" id="af-atlas-index">
+<main id="atlas-index-main">
+<h1 id="atlas-index-top">The repo atlas</h1>
+<div class="tldr"><span class="label">TLDR</span>
+<p>Stub. The atlas hub: the full repo tree with every tracked file linked to its explainer entry. Authored at M4. Snapshot 2026-07-09.</p>
+</div>
+<h2 id="atlas-index-about">What this page covers</h2>
+<p>To be written at M4. Every file entry gets one anchor: <code>file-</code> plus the path with separators as hyphens.</p>
+<h2 id="atlas-index-entries">The tree</h2>
+<p>Entries land at M4.</p>
+</main>
+</section>
+<hr>
+<section class="af-page" id="af-reproduction">
+<main id="reproduction-main">
+<h1 id="reproduction-top">The reproduction guide</h1>
+<div class="tldr"><span class="label">TLDR</span>
+<p>Stub. This page is authored at M5; the headings below are its final shape. Snapshot 2026-07-09.</p>
+</div>
+<span class="register plain">In plain words</span>
+<h2 id="reproduction-plain">In plain words</h2>
+<p>To be written at M5.</p>
+<span class="register technical">How it works</span>
+<h2 id="reproduction-how">How it works</h2>
+<p>To be written at M5.</p>
+<h2 id="reproduction-repo">Where it lives in the repo</h2>
+<p>The file table lands at M5; its rows link into the repo atlas.</p>
+<h2 id="reproduction-status">Status as of 2026-07-09</h2>
+<p>To be written at M5.</p>
+<h2 id="reproduction-uncertain">What is genuinely uncertain</h2>
+<p>To be written at M5.</p>
+</main>
+</section>
+<hr>
+<section class="af-page" id="af-glossary">
+<main id="glossary-main">
+<h1 id="glossary-top">Glossary</h1>
+<div class="tldr"><span class="label">TLDR</span>
+<p>Stub. This page is authored at M5. Snapshot 2026-07-09.</p>
+</div>
+<h2 id="glossary-body">Content</h2>
+<p>To be written at M5.</p>
+</main>
+</section>
+<hr>
+<section class="af-page" id="af-faq">
+<main id="faq-main">
+<h1 id="faq-top">Questions people actually ask</h1>
+<div class="tldr"><span class="label">TLDR</span>
+<p>Stub. This page is authored at M5. Snapshot 2026-07-09.</p>
+</div>
+<h2 id="faq-body">Content</h2>
+<p>To be written at M5.</p>
+</main>
+</section>
+<hr>
+<section class="af-page" id="af-about">
+<main id="about-main">
+<h1 id="about-top">About this site</h1>
+<div class="tldr"><span class="label">TLDR</span>
+<p>Stub. This page is authored at M5. Snapshot 2026-07-09.</p>
+</div>
+<h2 id="about-body">Content</h2>
+<p>To be written at M5.</p>
+</main>
+</section>
+<footer class="site-foot">
+<p class="foot-banner">Village-layer material: this site sits outside both children's views, like FAMILY.md and village/, and it discusses sibling facts each child learns only by its parent body's deliberate decision (gate G21).</p>
+<p class="foot-license">Documentation license: CC BY-SA 4.0 (<code>creativecommons.org/licenses/by-sa/4.0</code>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<code>possibilitymanagement.org</code>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-09.</p>
+</footer>
+</div>
+</body>
+</html>

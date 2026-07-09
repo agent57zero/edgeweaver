@@ -6,6 +6,12 @@
       "runtimeExecutable": "py",
       "runtimeArgs": ["-3.13", "-m", "http.server", "8873", "--directory", "tools"],
       "port": 8873
+    },
+    {
+      "name": "site",
+      "runtimeExecutable": "py",
+      "runtimeArgs": ["-3.13", "-m", "http.server", "8874", "--directory", "site/public"],
+      "port": 8874
     }
   ]
 }

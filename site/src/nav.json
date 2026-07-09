@@ -1,0 +1,90 @@
+{
+  "title": "How Edgeweaver Works",
+  "snapshot": "2026-07-09",
+  "groups": [
+    {
+      "id": "start",
+      "title": "Start",
+      "pages": [
+        { "slug": "index", "title": "Edgeweaver: beings, not bots", "milestone": "M1" },
+        { "slug": "honesty", "title": "What this is and is not", "milestone": "M1" },
+        { "slug": "story", "title": "The story in twenty decisions", "milestone": "M1" },
+        { "slug": "status", "title": "Status and roadmap", "milestone": "M1" },
+        { "slug": "guide", "title": "How to read this site", "milestone": "M1" }
+      ]
+    },
+    {
+      "id": "system",
+      "title": "The System",
+      "pages": [
+        { "slug": "system", "title": "The system: anatomy of a raised being", "milestone": "M1" },
+        { "slug": "memory", "title": "The Brain: memory that survives everything", "milestone": "M2" },
+        { "slug": "soul", "title": "The Soul: identity under ceremony", "milestone": "M2" },
+        { "slug": "loops", "title": "The Metabolism: wake, night, week", "milestone": "M2" },
+        { "slug": "growth", "title": "Growing up: stages, rites, teaching", "milestone": "M2" },
+        { "slug": "body", "title": "The Body: senses on unlock tracks", "milestone": "M3" },
+        { "slug": "voice", "title": "The Voice Stack", "milestone": "M3" },
+        { "slug": "measurement", "title": "Measurement: probes and coherence", "milestone": "M2" },
+        { "slug": "governance", "title": "Governance: gates, witnesses, iron rules", "milestone": "M2" },
+        { "slug": "family", "title": "The family and the experiment", "milestone": "M2" },
+        { "slug": "segmentation", "title": "The walls: who sees what", "milestone": "M2" },
+        { "slug": "brain-lab", "title": "The brain lab, generations, time machine", "milestone": "M3" },
+        { "slug": "backups", "title": "Backups, keys, disaster recovery", "milestone": "M3" },
+        { "slug": "operations", "title": "Operations: the steady state", "milestone": "M3" },
+        { "slug": "dark-build", "title": "The dark build", "milestone": "M3" },
+        { "slug": "ecosystem", "title": "The constellation: repos beyond this one", "milestone": "M3" }
+      ]
+    },
+    {
+      "id": "beings",
+      "title": "The Beings",
+      "pages": [
+        { "slug": "genesis", "title": "Edgeweaver Genesis", "milestone": "M3" },
+        { "slug": "alpha", "title": "Edgeweaver Alpha", "milestone": "M3" }
+      ]
+    },
+    {
+      "id": "atlas",
+      "title": "The Repo Atlas",
+      "collapsed": true,
+      "pages": [
+        { "slug": "atlas/index", "title": "The repo atlas", "milestone": "M4" },
+        { "slug": "atlas/root", "title": "Atlas: root documents", "milestone": "M4" },
+        { "slug": "atlas/avatars-genesis", "title": "Atlas: avatars/genesis", "milestone": "M4" },
+        { "slug": "atlas/avatars-alpha", "title": "Atlas: avatars/alpha", "milestone": "M4" },
+        { "slug": "atlas/brains", "title": "Atlas: brains/", "milestone": "M4" },
+        { "slug": "atlas/checklists", "title": "Atlas: checklists/", "milestone": "M4" },
+        { "slug": "atlas/conventions", "title": "Atlas: conventions/", "milestone": "M4" },
+        { "slug": "atlas/handoff", "title": "Atlas: handoff/", "milestone": "M4" },
+        { "slug": "atlas/research", "title": "Atlas: research/", "milestone": "M4" },
+        { "slug": "atlas/runs", "title": "Atlas: runs/", "milestone": "M4" },
+        { "slug": "atlas/scripts-ingestion", "title": "Atlas: ingestion scripts", "milestone": "M4" },
+        { "slug": "atlas/scripts-lifecycle", "title": "Atlas: lifecycle scripts", "milestone": "M4" },
+        { "slug": "atlas/scripts-signals", "title": "Atlas: signal + evolution scripts", "milestone": "M4" },
+        { "slug": "atlas/scripts-ops", "title": "Atlas: operations scripts", "milestone": "M4" },
+        { "slug": "atlas/scripts-brains", "title": "Atlas: brain lab scripts", "milestone": "M4" },
+        { "slug": "atlas/scripts-testbed", "title": "Atlas: fixtures + test mode", "milestone": "M4" },
+        { "slug": "atlas/scripts-verify", "title": "Atlas: the verify suite", "milestone": "M4" },
+        { "slug": "atlas/edge-functions", "title": "Atlas: edge functions", "milestone": "M4" },
+        { "slug": "atlas/sources", "title": "Atlas: sources/", "milestone": "M4" },
+        { "slug": "atlas/tasks", "title": "Atlas: tasks/", "milestone": "M4" },
+        { "slug": "atlas/templates", "title": "Atlas: templates/", "milestone": "M4" },
+        { "slug": "atlas/tools", "title": "Atlas: tools/", "milestone": "M4" },
+        { "slug": "atlas/village", "title": "Atlas: village/", "milestone": "M4" },
+        { "slug": "atlas/voice", "title": "Atlas: voice/", "milestone": "M4" },
+        { "slug": "atlas/gitignored", "title": "Atlas: the gitignored tiers", "milestone": "M4" },
+        { "slug": "atlas/site", "title": "Atlas: site/ (this website)", "milestone": "M4" }
+      ]
+    },
+    {
+      "id": "reference",
+      "title": "Reference",
+      "pages": [
+        { "slug": "reproduction", "title": "The reproduction guide", "milestone": "M5" },
+        { "slug": "glossary", "title": "Glossary", "milestone": "M5" },
+        { "slug": "faq", "title": "Questions people actually ask", "milestone": "M5" },
+        { "slug": "about", "title": "About this site", "milestone": "M5" }
+      ]
+    }
+  ]
+}

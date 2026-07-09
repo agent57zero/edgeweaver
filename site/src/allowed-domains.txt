@@ -1,0 +1,7 @@
+github.com
+claude.ai
+vercel.com
+supabase.com
+anthropic.com
+possibilitymanagement.org
+creativecommons.org
