@@ -9,7 +9,7 @@ corpus/
 
 # Daemon state (operational memory, never identity)
 state/
-soul-source/*.json
+avatars/genesis/soul-source/*.json
 logs/
 
 # OS noise
@@ -21,6 +21,5 @@ node_modules/
 __pycache__/
 *.pyc
 
-# Supabase CLI local state
+# Supabase CLI local state (function SOURCES are committed; only CLI state is ignored)
 supabase/.temp/
-supabase/
