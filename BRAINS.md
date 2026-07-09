@@ -172,11 +172,16 @@ Plan (T-track):
       restore-point.mjs` with injectable fetchers + `--live`; `scripts/verify/
       verify-restore-point.mjs` hermetic (no network, PATH-blanked child checks).
       verify PASSED: suite green with the new script (25 scripts at merge time).
-- [ ] **T3 Past-brain spawn** (dark; Opus agent, worktree):
-      `scripts/brains/dump-transform.mjs` (data-safe rewrite, reusing sql-gen primitives) +
-      `spawn --from-dump` + `scripts/verify/verify-dump-spawn.mjs` (fixture dump whose data
-      contains the literal "public.thoughts"; byte-identical data assertion).
-      verify: suite green with the new script.
+- [x] **T3 Past-brain spawn** (2026-07-08, dark; Opus agent, worktree):
+      `scripts/brains/dump-transform.mjs` (EOL-exact segmentation; data blocks byte-identical
+      including the "public.thoughts CREATE POLICY SCHEMA public" trap row) + `spawn
+      --from-dump` (PGDMP sniff -> pg_restore conversion; plain dry-run fully hermetic; no
+      live parity by design, counts compared to the map line at the rehearsal; registry rows
+      carry sourceDump) + sql-gen refactored to a shared rewriteDdl with transformDdl
+      behavior proven unchanged (verify-brains green untouched).
+      verify PASSED: suite 26/26 at merge (includes the parallel session's verify-orient).
+      Ops-log row deferred to a clean window: the parallel session holds ops-log.md dirty;
+      this section is the record meanwhile.
 - [x] **T4 First map line** (2026-07-09 UTC, live; orchestrator): brains/
       restore-points.jsonl born with one real line: backupTag backup-2026-07-08 (last
       night's actual release, found via gh), soulHead 0116260 (soul repo main via API),
