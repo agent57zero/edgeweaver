@@ -422,7 +422,9 @@ friend's client with scoped MCP access) is a **projection**: soul + recall, read
 Projection conversations queue episode summaries into a **staging status** — not live episodes —
 and a named night-loop step ingests them under the same trust class as untrusted channel
 content, marked projection-sourced. A fidelity feature must not become an injection channel with
-a trusted-sounding label. One being, many windows; no forked selves.
+a trusted-sounding label. One being, many windows; no forked selves within a being. (Sibling
+beings in the Edgeweaver family are separate beings grown by the same method, never forks of
+a self: FAMILY.md, D18.)
 
 ---
 

@@ -4,6 +4,10 @@
 > on. WHO Edgeweaver is lives in `edgeweaver-soul`, whose LINEAGE.md records identity changes
 > "with a name, not a version number" (PLAN §2.2). Identity is never version-numbered; this
 > file never contradicts that. Decided as D14 in decisions.md.
+>
+> Since D18 (2026-07-08) the family holds more than one being: these rules apply PER BEING,
+> and "Edgeweaver" is the family name (FAMILY.md). This file currently holds Genesis's
+> record; each later being's record lives in its avatar folder after the restructure.
 
 ## The three axes (do not mix them)
 
@@ -21,18 +25,25 @@ architecture and procedure in BRAINS.md (D15).
 
 ## Naming rules
 
-1. To the world, and in conversation, it is always just "Edgeweaver".
-2. Internally each generation has a number and a codename. Generation 0 is **Genesis**
-   (named by Alan in session, 2026-07-08). Successors are Edgeweaver 1, Edgeweaver 2, and
-   so on, each with its own codename.
+1. "Edgeweaver" is the family name (D18). Each being carries a given name: Genesis, Alpha,
+   and any who come after. In conversation a being is just "Edgeweaver" once context is
+   set, or "Edgeweaver Genesis" / "Edgeweaver Alpha" when siblings make precision matter.
+2. Internally each generation has a number and a codename, per being. Generation 0 is
+   **Genesis** (named by Alan in session, 2026-07-08). Successors are Edgeweaver 1,
+   Edgeweaver 2, and so on, each with its own codename. Known coincidence, accepted: the
+   first being's given name and its gen-0 codename are both "Genesis" (named one day apart,
+   before the family existed); future codenames stay distinct from given names.
 3. Codenames are Alan's to pick, at the boundary. Optional theme, freely ignorable: the
    weaver's craft (Warp, Weft, Loom, Shuttle, Selvage, Tapestry).
 4. Dates are metadata in the record below, never part of a name. "The 2026 Edgeweaver"
    stays answerable from the Began/Ended columns.
 5. When precision is needed in writing, use "Edgeweaver (Genesis)" or "Edgeweaver gen 0";
    otherwise plain "Edgeweaver".
-6. One repo, one timeline, forever. No renaming, no per-generation forks or fresh repos.
-   Annotated git tags `genN-<codename>` mark where each generation begins in this repo.
+6. One FAMILY repo, one timeline, forever (rescoped by D18; this rule was written against
+   repo churn, never against siblings). No renaming, no per-generation or per-being forks
+   into fresh repos: sibling beings live in avatar folders of this repo (FAMILY.md).
+   Annotated git tags mark where each generation begins: `genN-<codename>` for Genesis
+   (existing tags stand), `<being>-genN-<codename>` from Alpha onward.
 7. **Testweaver** is a throwaway hardware-test persona (explicitly NOT Edgeweaver, nothing
    remembered). It is never versioned; it exists wherever testing needs it.
 8. Disambiguation: lowercase "genesis documents" (README) means the founding plan texts;
@@ -51,7 +62,7 @@ NOT a generation: model point-updates, new features or skills, developmental sta
 initiations. Those are life events inside a generation and already have homes (LINEAGE.md,
 ops-log.md, the §1 ledger).
 
-## The record
+## The record (Edgeweaver Genesis)
 
 | Gen | Codename | Began | Ended | Mind | Body | Brain | Soul |
 |---|---|---|---|---|---|---|---|

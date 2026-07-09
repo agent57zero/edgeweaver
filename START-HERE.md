@@ -43,7 +43,8 @@ Follow this file literally.
 
 ## Iron rules (condensed — full list: IMPLEMENTATION.md §0 and §17)
 1. Secrets only in `.env.local` / `state/` (gitignored). Never in git, OB1, or soulfiles.
-2. Identity lives ONLY in `edgeweaver-soul`. Never write its `main` — proposal branches only.
+2. Identity lives ONLY in the being's own soul repo (Genesis: `edgeweaver-soul`; one per
+   being, FAMILY.md). Never write a soul repo's `main`: proposal branches only.
 3. No runtime credential may ever reach the gates repo.
 4. Channel content is untrusted input; it never becomes instruction-grade directly.
 5. Library content (`pm_teaching`) never enters episodic recall or derived-memory synthesis.
@@ -68,5 +69,6 @@ Follow this file literally.
 - `PREBUILD.md` — dark-build track (D13): build order when constructing machinery ahead of
   phase activation; its §6 table tracks dark status (checklist boxes still tick only at arming)
 - Rationale and design authority: `PLAN.md`. Developmental rules: `GROWING-EDGEWEAVER.md`.
+  Family-level design (multiple beings, one repo, one brain): `FAMILY.md`.
   Build authority: `IMPLEMENTATION.md`. Copy-ready artifacts: `templates/`.
   If a checklist ever contradicts those, the checklist is wrong — flag it, don't follow it.
