@@ -51,7 +51,7 @@ name + seat; published authors cited.
 |---|---|---|
 | Pre-M0 | D21 + D22 rows, LICENSE.md fix, plan committed to runs/ | ☑ 2026-07-09 |
 | M0 | Skeleton: tree, stubs, builder, verifier green, first push | ☑ 2026-07-09 |
-| M0.5 | Gate spike: stub deploy behind throwaway password, smoke test | ☐ |
+| M0.5 | Gate spike: stub deploy behind throwaway password, smoke test | ☑ 2026-07-09 (prod alias live, gate 401s every path, wrong-pw 401, cookie flow green; middleware attaches on framework-less static, risk 1 retired) |
 | M1 | Spine: index, honesty, guide, system, story, status + D1 D2 D3 D17 D18; Alan checkpoint | ☐ |
 | M2 | System core: memory, soul, loops, growth, measurement, governance, family, segmentation + D4-D11 D15 D20; digest | ☐ |
 | M3 | Beings + infrastructure: genesis, alpha, body, voice, brain-lab, backups, operations, dark-build, ecosystem + D12-D14 D16; digest | ☐ |
