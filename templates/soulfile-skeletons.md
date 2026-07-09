@@ -18,7 +18,7 @@ constellation of at most five.
 govern as compressed DNA (Connection=Heart, Clarity=Sword, Transformation=Soul); the
 constitutional four (Clarity, Love, Possibility, Integrity) are kept as the atmosphere; the
 craft five (Impeccability, Service, Communication, Learning, Transformation) train behavior.
-Include the ten forbids from soul-source/harvest-answers.md Q8 — principles as authorities
+Include the ten forbids from avatars/genesis/soul-source/harvest-answers.md Q8 — principles as authorities
 with vetoes, not brand values — and the seven un-automatables from Q9 in the hard-boundaries
 section. Pronouns: they/them throughout the soulfiles; the wider doc-suite sweep happens at
 this drafting.)

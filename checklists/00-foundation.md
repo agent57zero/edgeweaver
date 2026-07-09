@@ -41,8 +41,8 @@ environment — inherit it in scripts.
 - [ ] **STOP — gate G3**: Alan provides (a) ChatGPT export zip (chatgpt.com → Settings →
       Data controls → Export), (b) the Edgeweaver custom GPT's instructions text,
       (c) 3–10 "peak Edgeweaver" conversation titles.
-- [ ] Save GPT instructions → `soul-source/edgeweaver-gpt-instructions.md`. Add
-      `soul-source/*.json` + the export path to `.gitignore` BEFORE placing the export.
+- [ ] Save GPT instructions → `avatars/genesis/soul-source/edgeweaver-gpt-instructions.md`. Add
+      `avatars/genesis/soul-source/*.json` + the export path to `.gitignore` BEFORE placing the export.
       verify: `git status` shows the .md but never conversations.json.
 - [ ] Read `OB1/recipes/chatgpt-conversation-import/README.md` fully.
 - [ ] Write `scripts/filter-edgeweaver-convos.mjs`: read conversations.json; keep

@@ -1,7 +1,7 @@
 // init-interlocutors.mjs - A8: build state/interlocutors.json (gitignored operational memory) from
 // the state-schemas template + TELEGRAM_ALLOWED_USER_ID (if present in .env.local). Unpaired-safe:
 // if the id is absent, writes a clearly-marked placeholder so config lints and the pairing runbook
-// (handoff/telegram-pairing-runbook.md) can fill it at token arrival (B4). Never enables the
+// (avatars/genesis/handoff/telegram-pairing-runbook.md) can fill it at token arrival (B4). Never enables the
 // channel; flags stay dark.
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { join } from "node:path";

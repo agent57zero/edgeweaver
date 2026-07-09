@@ -5,7 +5,7 @@ Follow this file literally.
 
 ## Your first-ever session (once)
 0. Preflight (30 seconds — six checklist steps depend on these existing): verify
-   `templates/` has 7 files, `checklists/` has 9, and the OB1 source tree exists at
+   `templates/` has 9 files, `checklists/` has 9, and the OB1 source tree exists at
    `C:\Users\agent\Project\alanshurafa-ob1\OB1`. Anything missing → stop and ask Alan.
 1. Read `README.md` (5 min).
 2. Read `IMPLEMENTATION.md` §0 (ground rules) and §17 (what NOT to do).

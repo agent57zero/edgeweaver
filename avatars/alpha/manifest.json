@@ -1,0 +1,25 @@
+{
+  "being": "alpha",
+  "familyName": "Edgeweaver",
+  "givenName": "Alpha",
+  "parentBody": { "model": "circle-of-seats (3Cell)", "humans": "G19: roster pending founding circle 2026-07-09", "riteSignature": "quorum-of-seats (size + edge rules: G19)" },
+  "witnessModel": "quorum satisfies the two-witness floor by construction",
+  "seedPrinciples": "chosen by the circle (process: G19); G16 governs permanence family-wide",
+  "brain": {
+    "project": "Edgeweaver (shared instance)",
+    "room": "ew_alpha schema + dedicated role + corpus view (A2, unbuilt)",
+    "connectionProfile": "avatars/alpha/.env.local at A2"
+  },
+  "soulRepo": "edgeweaver-alpha-soul (created at its Phase 2)",
+  "gatesRepo": "own repo; owner + seat access decided at founding circle; battery = Genesis's post-human-pass text unchanged (D19)",
+  "backupStream": { "dump": "ew_alpha only, second stream", "ageKeyCustody": "passphrase split among seats, any two reconstruct (shares cut at founding ceremony)" },
+  "channel": { "botTokenEnv": "ALPHA_BOT_TOKEN (A2)", "pinnedSenders": "seat-ID allowlist (multi-sender, net-new code)" },
+  "mind": { "birth": "same one-mind rule as Genesis: probes + ceremony + first week on one configuration", "nightLoop": "sonnet" },
+  "generationRecord": "avatars/alpha/VERSIONS.md at first cut; tags alpha-genN-<codename>",
+  "sections": {
+    "visibleToBeing": ["avatars/alpha/"],
+    "note": "Each child's sessions see only its own section (D19, FAMILY.md §3). Convention until A2, structural after."
+  },
+  "harvest": "avatars/alpha/harvest/ - the circle's answers land here from day one, never in Genesis's tree",
+  "bootOrder": "Alpha does not boot before Genesis (D18)"
+}

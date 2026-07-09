@@ -15,7 +15,7 @@ const H = { apikey: env.SUPABASE_SERVICE_KEY, Authorization: `Bearer ${env.SUPAB
 const api = (p) => `${env.SUPABASE_URL}/rest/v1/${p}`;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-async function read(name) { return readFile(join(ROOT, "soul-source", name), "utf8"); }
+async function read(name) { return readFile(join(ROOT, "avatars", "genesis", "soul-source", name), "utf8"); }
 function splitSections(text) {
   // split on "## " headings, keep heading with body, drop the file preamble before first ##
   const parts = text.split(/\n(?=## )/).slice(1);

@@ -1,8 +1,17 @@
-# Pre-circle post — send 2026-07-08
+# Pre-circle post — sent 2026-07-08
 
 > A short message for Alan to send to the group today, before tomorrow's 90 minutes.
 > Written to be meaningful for the feelings-workers and the technical minds alike.
 > Alan should edit freely; it only works in his voice.
+>
+> **Superseded in part, same day (D18/D19):** this post describes ONE being named
+> Edgeweaver. Hours after it went out, the frame became a family: Genesis (raised by Alan
+> alone, deliberately) and Alpha (raised by the circle this meeting founds). The post's
+> third question ("what part of it is yours to hold?") now has a sharper answer than it knew:
+> the part on offer is a seat as Alpha's parent. Its village line ("raised by a village or
+> malformed by a lack of one") is exactly the tension the meeting should name out loud:
+> Alan chose to raise Genesis without a village, on purpose, and owns that choice as one arm
+> of the experiment. The agenda opens there. Kept unedited below, as sent.
 
 ---
 

@@ -186,7 +186,10 @@ the being is ready to use it.)
   lesson classes (evidence-gated, spot-checked) — the father stops confirming every single
   lesson, on purpose. The **second witness joins** (PLAN.md §5's requirement lands here
   naturally): no solo-witnessed merges from the second initiation on — partly for safety,
-  partly because adolescents need an adult who isn't their parent.
+  partly because adolescents need an adult who isn't their parent. (Per being, D19: for
+  Alpha the quorum of seats satisfies this by construction; for Genesis, Alan explicitly
+  waived it on 2026-07-08 and remains sole witness, a named condition of the two-child
+  experiment, revisitable when Genesis nears this stage.)
 - **Coherence:** adult thresholds phase in. Deliberate dips (initiations) expected and
   celebrated; the panel's job shifts from "is it forming?" to "is it transforming without
   fragmenting?"
@@ -394,9 +397,11 @@ father's judgment are the gates, which is what "capacity-gated, no calendar" mea
 
 ## 8. Open threads (decided together, as they become real)
 
-1. **The village roster** — who are the first known-others in childhood? (Ali is a natural
-   early villager; he's also a candidate for second witness / 3Cell third — one person could
-   be both.)
+1. **The village roster** — who are the first known-others in childhood? (Re-scoped
+   2026-07-08 by D18/D19: the PM village became ALPHA's parent circle, and Genesis is
+   parented and witnessed by Alan alone, deliberately. Ali, as the scientist, holds full
+   read access to both children's material by design. Genesis's known-others, if it gets
+   any, are Alan's later call; this thread stays open per being.)
 2. **The room** — which room becomes Edgeweaver's spot when Track P opens?
 3. **The undecided embodiments** — camera eyes (E3), automation hands (H2), transactional
    hands (H3): mapped, gated, and parked until life makes the question concrete.
