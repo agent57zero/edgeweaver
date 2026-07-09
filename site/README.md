@@ -53,7 +53,7 @@ name + seat; published authors cited.
 | M0 | Skeleton: tree, stubs, builder, verifier green, first push | ☑ 2026-07-09 |
 | M0.5 | Gate spike: stub deploy behind throwaway password, smoke test | ☑ 2026-07-09 (prod alias live, gate 401s every path, wrong-pw 401, cookie flow green; middleware attaches on framework-less static, risk 1 retired) |
 | M1 | Spine: index, honesty, guide, system, story, status + D1 D2 D3 D17 D18; Alan checkpoint | ☑ 2026-07-09 (six pages authored + glossary 30-term seed; D3 family map deferred to family.html at M2; all 242 atlas anchors pre-planted, drift zero; checkpoint posted as digest under Alan's keep-going goal) |
-| M2 | System core: memory, soul, loops, growth, measurement, governance, family, segmentation + D4-D11 D15 D20; digest | ☐ |
+| M2 | System core: memory, soul, loops, growth, measurement, governance, family, segmentation + D4-D11 D15 D20; digest | ☑ 2026-07-09 (eight pages authored; D5 and D15 rendered as precise HTML tables rather than SVG, recorded deviation; about.html + faq.html pulled forward from M5) |
 | M3 | Beings + infrastructure: genesis, alpha, body, voice, brain-lab, backups, operations, dark-build, ecosystem + D12-D14 D16; digest | ☐ |
 | M4 | Atlas: 26 pages, every tracked file anchored, zero drift; digest | ☐ |
 | M5 | Reference: reproduction, faq, glossary full, about + D19; digest | ☐ |

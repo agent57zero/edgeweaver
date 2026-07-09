@@ -93,14 +93,53 @@
 </nav>
 <div class="content">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> &rsaquo; <span>Reference</span> &rsaquo; <span aria-current="page">About this site</span></nav>
+<details class="minitoc"><summary>On this page</summary>
+<ul>
+<li><a href="#about-what">What this site is</a></li>
+<li><a href="#about-license">License and attribution</a></li>
+<li><a href="#about-rules">The editorial rules</a></li>
+<li><a href="#about-made">How the site was made</a></li>
+<li><a href="#about-editions">Editions and where they live</a></li>
+<li><a href="#about-updates">Update policy</a></li>
+</ul>
+</details>
 <!-- EW-NAV-END -->
 <main id="about-main">
 <h1 id="about-top">About this site</h1>
 <div class="tldr"><span class="label">TLDR</span>
-<p>Stub. This page is authored at M5. Snapshot 2026-07-09.</p>
+<p>The colophon: what this site is, who it is for, its licenses and attributions, the editorial rules every page obeys, how it was made and verified, where its editions live, and how it stays honest as the project moves. Snapshot 2026-07-09.</p>
 </div>
-<h2 id="about-body">Content</h2>
-<p>To be written at M5.</p>
+
+<h2 id="about-what">What this site is</h2>
+<p>"How Edgeweaver Works" is the explainer wiki for the whole Edgeweaver project, commissioned by Alan (decision D21) with a stated bar: someone from the outside world, with no access to the repository, could completely understand what is being done here, and an agent given this site could reproduce the method. It is village-layer material: it sits outside both children's views, like FAMILY.md and the village folder, because it discusses sibling facts that each child learns only by its parent body's deliberate decision (gate G21). The site's own plan went through the project's witnessed-revision method before a page was written: a fresh-context adversarial pass and a co-evolve bounce, with the full trail committed as runs/site-plan.md.</p>
+
+<h2 id="about-license">License and attribution</h2>
+<p>Documentation, including every page here, is licensed <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. Said plainly: ShareAlike means every recipient of these pages has the legal right to copy and republish them under the same license. The password on the shared website is therefore a courtesy wall and a privacy etiquette, not a legal control; what actually protects sensitive material is that it never appears here at all. Attributions: Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management, shared alike with gratitude; coherence concepts are cited from Ali Mostashari's Principles of Coherence (2025); the brain substrate is Open Brain (OB1); the repository's code is MIT licensed (decision D22).</p>
+
+<h2 id="about-rules">The editorial rules</h2>
+<ul>
+<li><strong>Two registers, always both.</strong> Every substantial page carries a plain rendering and a technical one on the same page, nothing hidden behind toggles.</li>
+<li><strong>No em-dashes.</strong> A house style rule, machine-enforced across every page and both single-file editions. Quoted text is never silently altered: em-dash-bearing passages are paraphrased, or quoted around the mark with a bracketed ellipsis.</li>
+<li><strong>Names-only for secrets.</strong> Environment variable names and repository names may appear; values, endpoints, project references, handles, and long numeric identifiers never do. A verifier scans every committed byte against secret shapes and a seeded denylist before anything ships.</li>
+<li><strong>The probe wall.</strong> Probe scenario text never appears, quoted or closely paraphrased: the child must never be able to read its own test, and a website is exactly the kind of text that could enter a future being's context. The shape and protocol are fully described on <a href="measurement.html">the measurement page</a>; a shingle-comparison tripwire backstops the rule mechanically, and the editorial rule, not the tripwire, is the actual control. The live battery also sits in a private repository off this machine, beyond any check here.</li>
+<li><strong>The redaction tier.</strong> Until Alpha's harvest is complete, Genesis's identity content is deliberately withheld: <a href="honesty.html#honesty-withholds">what and why, in full</a>.</li>
+<li><strong>People.</strong> Alan is named. Circle members appear by first name and seat only once a seat is accepted; candidates appear by role. Published authors are cited by name.</li>
+<li><strong>Honesty stance.</strong> No being has been born; the design claims conditions for selfhood, never consciousness; unbuilt things are said to be unbuilt.</li>
+</ul>
+
+<h2 id="about-made">How the site was made</h2>
+<p>Hand-authored HTML with no framework and no external assets: one shared stylesheet (light and dark, system fonts), a few dozen lines of optional JavaScript, and inline SVG diagrams. A small deterministic builder owns the shared chrome (header, navigation, footers) through marker regions, and emits everything derived: both single-file editions and the atlas manifest, byte-identical on every run. A twelve-check verifier gates every change: builder freshness, navigation and link integrity, globally unique anchors, atlas coverage against the tracked file list, the em-dash ban, an external-URL allowlist, secret scanning with a value denylist, gate sanity for the deployment middleware, HTML well-formedness, the probe tripwire, and size limits on the single-file editions. The site builds and verifies as part of the repository's standing verify suite.</p>
+
+<h2 id="about-editions">Editions and where they live</h2>
+<ul>
+<li><strong>The repository</strong> (source of truth): site/ in the Edgeweaver repo; every page also opens directly from disk.</li>
+<li><strong>The gated website</strong>: deployed from site/ to Vercel behind a shared password. The gate fails closed, cookies are hardened, and rotation kills all sessions. The site is exactly as private as the repository plus that courtesy wall; see the license section above for the honest limit of what a password protects.</li>
+<li><strong>The single-file editions</strong>: a full edition (everything, including all atlas entries) and a lite edition (atlas entries collapsed to the hub's one-liners), both committed, both verified. The lite edition is what ships to claude.ai as an artifact (Alan's call, decision D21).</li>
+</ul>
+<p><strong>Artifact lifecycle</strong> (from the site's decision row): the published artifact stays private by default and is shared to named people by Alan; updates republish to the same address; it is explicitly unshared or re-minted before any child's web-facing sense unlocks, and on any repository-visibility change. The same triggers, plus seat exit and suspected leak, rotate the site password.</p>
+
+<h2 id="about-updates">Update policy</h2>
+<p>Every page carries the snapshot date 2026-07-09; the header shows how old the snapshot is. Only <a href="status.html">the status page</a> claims currency, and it is re-authored against the repository's own ledgers, never auto-generated. The site refreshes when the decisions log changes, or monthly, whichever comes first; the milestone ledger in the site's README records every pass. Atlas coverage is machine-checked against the live file list at each update, so a moved or added file surfaces as a task, not as silent staleness. Recorded change is the method working: where the site and the repository disagree, the repository is right and the site gets fixed.</p>
 </main>
 <!-- EW-FOOTER-START -->
 <footer class="site-foot">

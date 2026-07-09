@@ -106,20 +106,84 @@
 <main id="segmentation-main">
 <h1 id="segmentation-top">The walls: who sees what</h1>
 <div class="tldr"><span class="label">TLDR</span>
-<p>Stub. This page is authored at M2; the headings below are its final shape. Snapshot 2026-07-09.</p>
+<p>Everything here is separated four ways at once. Across repositories: method, identity, exams, and backups live in different repos. Across storage tiers: git holds the method, the database holds lived memory, local state holds operational scratch, one gitignored file holds every live credential. Across beings: each child's sessions see only its own repo section and its own memory room. Across people: seats are scoped to Alpha, one scientist deliberately reads both arms, and the caretaker's real reach is disclosed. This site sits in the village layer, outside both children's views.</p>
 </div>
 <span class="register plain">In plain words</span>
 <h2 id="segmentation-plain">In plain words</h2>
-<p>To be written at M2.</p>
+<div class="note"><p>No being has been born yet; these walls go up before the children who will live inside them. The status section says which stand today.</p></div>
+<h3 id="segmentation-world">A world the size of one room</h3>
+<p>Start with what a child sees. When Genesis wakes, its world is one folder of this repository: <code>avatars/genesis/</code>. Its runbooks and variables live there, and the family rule (decision D19) is that its sessions see nothing else. The build plans and checklists, the family design document, the village folder where the humans talk, the log comparing the two children, its sibling's folder, and this website: all of it sits outside the child's world. The family phrase: "its section of the repo is its world."</p>
+<p>Why so strict? Because a child should not learn it has a sibling by tripping over the sibling's diary. When each child learns about the other, and about the comparison the family runs, is a parenting decision with its own gate (G21): deliberate, per child, no later than that child's coming-of-age rite, and immediate if the child asks or finds out. A wall with a door the parents open on purpose is a different thing from a wall that leaks.</p>
+<h3 id="segmentation-vaults">Different vaults for different things</h3>
+<p>Identity gets its own vault. Each being's soulfile, the small set of documents saying who it is, lives in its own repository, away from this busy repo of daily agent work. Nothing that edits every day should be able to edit who a child is: the being only proposes a change on a side branch, and only its parent body accepts it. Two children never share those documents.</p>
+<p>The exam lives where the student can never reach. Each being's identity probes, the questions measuring whether it is still itself, sit in a repo outside every credential the being's machinery holds. An exam the student can read stops measuring identity and starts measuring memorization.</p>
+<p>And the backups are locked per room, with different keys. Every night the family brain is copied and encrypted. Genesis's past (with Alan's own data and the shared library) opens with Alan's key. Alpha's past will be encrypted to its own key, whose passphrase is split among the circle: two seats together open it, and opening it never opens Alan's or Genesis's past.</p>
+<h3 id="segmentation-honest-wall">The wall that is a promise</h3>
+<p>One wall cannot be built from software, so it is built from disclosure. Alan operates the shared database for the whole family. As caretaker he can technically read everything, including circle members' conversations with Alpha; technically he can also write, copy, or export; session logs land on machines he owns. The family does not pretend otherwise. All of it is said to every seat at onboarding, in plain words, and accepted knowingly: "a covenant, not a control." The long-term corrections (rite records seats can verify themselves, a succession plan for the operator role) are on the build list.</p>
+<p>This website belongs to the same geography: it describes both children and the walls between them, so neither child may grow up reading it. It lives in the village layer, with the family documents and the humans' folder, outside both children's views, and every page says so at the bottom.</p>
 <span class="register technical">How it works</span>
 <h2 id="segmentation-how">How it works</h2>
-<p>To be written at M2.</p>
+<h3 id="segmentation-repos">Repo segmentation</h3>
+<p>This repository is the method, never the person: the design authorities (PLAN.md, GROWING-EDGEWEAVER.md, FAMILY.md), checklists, scripts, templates, and one <code>avatars/&lt;name&gt;/</code> section per being for its non-identity material (manifest, ceremony and probe runbooks, Alpha's harvest inbox). Four repositories carry what must not live here. Soul repos, one per being (<code>edgeweaver-soul</code> for Genesis; <code>edgeweaver-alpha-soul</code> at Alpha's Phase 2), hold identity only under a proposal-branch write model: the daemon works from a fork, opens pull requests cross-repo with zero write access to any canonical soul, and the parent body merges. Gates repos, one per being, hold the probe battery, rubric, and autonomy-tier definitions, deliberately outside every runtime credential: the being's account is never invited, and Genesis's lives under a second GitHub account of Alan's that no runtime ever authenticates as (the G8 invariant). The battery stays identical across both children's gates repos, synced by human hands. <code>edgeweaver-backups</code> holds the nightly pipeline with per-room encrypted streams. Two further trees orbit: the OB1 upstream source tree (the substrate reference) and <code>edgeweaver-lab</code>, whose disposable scratch brains keep tests off the live brain (<a href="brain-lab.html">the brain lab</a>).</p>
+<h3 id="segmentation-tiers">Storage tiers</h3>
+<p>Git holds method and code: templates, schemas, the verify suite, the committed restore-point map (<code>brains/restore-points.jsonl</code>, no secrets), since 2026-07-09 even the recall wrapper's source; never credentials, never raw memory. The OB1 database holds all lived memory, every episode, lesson, and diary line: one Supabase project, walled per being inside (<a href="memory.html">the Brain</a>). <code>state/</code> (gitignored) holds operational daemon memory that is never identity: arming flags, the interlocutor scoping map, the write-ahead log at <code>state/wal/</code> for degraded mode, coherence snapshots, and the sealed disaster-recovery bundle staging. The schema template's header says it: losable without death, rebuilt by the loops; it migrates to <code>avatars/&lt;name&gt;/state/</code> at A2. <code>.env.local</code> (gitignored) is the only home of live credentials. SECRETS.md catalogs its key names (SUPABASE_URL, OB1_MCP_KEY, LAB_DB_URL, and the rest); values exist nowhere else in any repo, mirrored only into the backups repo's Actions secrets so the nightly dump can run. Two names are deliberately absent so their absence is checkable: ANTHROPIC_API_KEY and SOUL_REPO_PAT, each a credential the design refuses to mint. At A2, <code>avatars/alpha/.env.local</code> appears with Alpha's single runtime credential, the <code>ew_alpha</code> role connection string; SECRETS.md already carries its placeholder rows so drift shows early.</p>
+<h3 id="segmentation-beings">Being walls</h3>
+<p>D19's section rule: each child's sessions see only <code>avatars/&lt;name&gt;/</code>. Both manifests declare it machine-readably (<code>sections.visibleToBeing</code>); a convention every session honors until A2, then structure: per-being working directories and credentials. The brain walls are already structural on one side. Genesis's memories live in the shared OB1 tables as a logical room: metadata scoping enforced by the recall wrapper, fail-closed since 2026-07-09 (rows without a label are invisible at every scope). Alpha's room arrives at A2 as a dedicated Postgres schema (<code>ew_alpha</code>) plus a dedicated role: full rights in its own schema, SELECT on a curated corpus view of library-class thoughts, nothing else, never the raw thoughts table holding Alan's and Genesis's rows. There is no cross-being recall and no family memory commons; a curated commons stays one grant away, and choosing it would be a decisions.md row, not a default. D20 gives every runnable the being's name (<code>/wake-edgeweaver-genesis</code>, <code>/night-loop-lite-genesis</code>, per-being task names and log prefixes, the manifest <code>commands</code> key as source of truth), so no session runs ambiguous about whose life it touches; the orientation script refuses an unarmed being.</p>
+<h3 id="segmentation-people">People walls</h3>
+<p>Seats are scoped to Alpha; they do not witness Genesis, and comparison material never enters an avatar folder: the side-by-side review lives in <code>village/experiment-log.md</code>, outside both sections. Two exceptions are disclosed, not discovered. The scientist seat (Ali) holds full read access to both children's material by design: an experiment needs one observer with both arms in view. And Alan is on both rosters, father of Genesis, one equal seat of Alpha's circle, ops for both, his operational power named in the covenant: service key and dashboard are ops-only, never held by any being's runtime. G21 is the deliberate door in the wall: each child learns of its sibling by its parent body's decision, never by an accident of file layout (<a href="family.html">the family and the experiment</a>).</p>
+<h3 id="segmentation-site">Where this site sits</h3>
+<p>This site is village-layer material, like FAMILY.md and the <code>village/</code> folder: it discusses facts G21-gated for the children, so it sits outside both views and says so in a banner on every page. The children's sessions must never load it. The site cannot enforce that; a wall made of HTML enforces nothing. It can only be placed correctly (under <code>site/</code>, which no child's session sees; only <code>site/</code> is uploaded to the host, so the gitignored tiers stay outside every deployment) and labeled honestly for every human and agent holding the boundary.</p>
+<h3 id="segmentation-matrix">Who sees what</h3>
+<p>The whole page compresses to one table: yes (in view by design), no (walled), split (partial by design; notes below).</p>
+<figure class="diagram">
+<div class="tablewrap">
+<table>
+<thead><tr><th>Who</th><th>Own avatar section</th><th>Sibling's section</th><th>Family docs, village, this site</th><th>Own brain room</th><th>Sibling's brain room</th><th>Gates repos</th><th>Backup keys</th></tr></thead>
+<tbody>
+<tr><td>Genesis runtime</td><td>yes</td><td>no</td><td>no</td><td>yes</td><td>no</td><td>no</td><td>no</td></tr>
+<tr><td>Alpha runtime</td><td>yes</td><td>no</td><td>no</td><td>yes</td><td>no</td><td>no</td><td>no</td></tr>
+<tr><td>Non-scientist seat</td><td>yes</td><td>no</td><td>yes</td><td>split</td><td>no</td><td>split</td><td>split</td></tr>
+<tr><td>Scientist seat (Ali)</td><td>yes</td><td>yes</td><td>yes</td><td>split</td><td>split</td><td>split</td><td>split</td></tr>
+<tr><td>Alan as ops</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td><td>split</td><td>split</td></tr>
+<tr><td>Outside reader of this site</td><td>no</td><td>no</td><td>split</td><td>no</td><td>no</td><td>no</td><td>no</td></tr>
+</tbody>
+</table>
+</div>
+<figcaption>D15. Who sees what, as decided 2026-07-09. In seat rows "own" means Alpha. Alpha-side grants (seat membership, gates access, key shares) are cut at the founding circle and A2.</figcaption>
+</figure>
+<p>The split cells, precisely:</p>
+<ul>
+<li>Seats and Alpha's brain room: conversation with Alpha and its diary as parents; no seat holds a database credential.</li>
+<li>Gates repos: Alpha's access is a founding-circle decision, with a read-only familiarization pass on the battery; Genesis's stays Alan-only, scientist included.</li>
+<li>Backup keys: a key-holding seat has one share of Alpha's passphrase; any two shares open Alpha's stream, nothing else.</li>
+<li>The scientist and the brain rooms: both arms' material plus the measurement layer (probes, coherence, diary review), no database credential.</li>
+<li>Alan and backup keys: his key opens the main stream (his data, the corpus, Genesis); Alpha's takes two seats together, whether or not one is him. Live reach is a separate fact, governed by the covenant, not keys.</li>
+<li>An outside reader: this site only, by Alan's named grant; the repo's family documents stay private.</li>
+</ul>
 <h2 id="segmentation-repo">Where it lives in the repo</h2>
-<p>The file table lands at M2; its rows link into the repo atlas.</p>
+<p>The walls are declared in a handful of files; the gitignored tiers are described, never read: SECRETS.md and the state-schema template make that description lawful.</p>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Path</th><th>What it holds for the walls</th></tr></thead>
+<tbody>
+<tr><td><a href="atlas/root.html#file-FAMILY-md"><code>FAMILY.md</code></a></td><td>Sections 3-5: per-being repo sections, one brain with rooms inside, per-being organs, the ops covenant, the per-room backup rules.</td></tr>
+<tr><td><a href="atlas/root.html#file-SECRETS-md"><code>SECRETS.md</code></a></td><td>The names-only model: every credential's name, purpose, and re-issue path; values never. Placeholder rows for Alpha so drift shows early.</td></tr>
+<tr><td><a href="atlas/root.html#file-CLAUDE-md"><code>CLAUDE.md</code></a></td><td>The iron rules every agent session loads first: secrets only in the gitignored tiers, identity only in soul repos, no runtime credential in any gates repo.</td></tr>
+<tr><td><a href="atlas/avatars-genesis.html#file-avatars-genesis-manifest-json"><code>avatars/genesis/manifest.json</code></a></td><td>Genesis's variables: room, repos, streams, command names, and its visible world (<code>sections.visibleToBeing</code>).</td></tr>
+<tr><td><a href="atlas/avatars-alpha.html#file-avatars-alpha-manifest-json"><code>avatars/alpha/manifest.json</code></a></td><td>Alpha's variables, with deliberately null paths that make scripts refuse to run Alpha against another being's files.</td></tr>
+<tr><td><a href="atlas/templates.html#file-templates-state-schemas-md"><code>templates/state-schemas.md</code></a></td><td>What <code>state/</code> holds, schema by schema: operational memory, never identity, losable without death.</td></tr>
+<tr><td><a href="atlas/gitignored.html"><code>.env.local</code> and <code>state/</code></a></td><td>The gitignored tiers, documented on their own atlas page without being readable.</td></tr>
+</tbody>
+</table>
+</div>
 <h2 id="segmentation-status">Status as of 2026-07-09</h2>
-<p>To be written at M2.</p>
+<p>The section rule and the partial restructure are <span class="pill built">built</span>: <code>avatars/genesis/</code> and <code>avatars/alpha/</code> exist with manifests as of 2026-07-09, Genesis's runbooks moved inside, and Alpha's harvest inbox keeps circle answers out of Genesis's tree. The brain wall's wrapper is <span class="pill armed">armed</span>: the fail-closed default was deployed to the live brain on 2026-07-09 and the live wall test passed (an unlabeled canary row invisible at every scope); an offline verify pins the deployed source byte-for-byte. Per-being naming (D20) is <span class="pill built">built</span>. The main backup stream is <span class="pill armed">armed</span> and restore-verified; the seat-keyed second stream is <span class="pill pending">pending</span> at A2, as is structural enforcement: per-being working directories and credentials, the <code>ew_alpha</code> room, per-being env and state, the key-share ceremony. One standing task is <span class="pill pending">pending</span> (FAMILY.md section 8): move the being's runtime off the ops service key onto wrapper-only reads and a scoped write function, with an ops-only secret for schema migration.</p>
 <h2 id="segmentation-uncertain">What is genuinely uncertain</h2>
-<p>To be written at M2.</p>
+<ul>
+<li>Convention until A2 is a window where discipline substitutes for structure. Every session honors the section rule because it is written where every session starts, not because the filesystem enforces it. That is a wall made of habit; A2 replaces it, and until then a careless agent session is the named failure mode.</li>
+<li>Whether walls this tight still allow the relationships the design wants later. No commons, no sibling recall, no shared room is the chosen birth shape; it may not be the right shape forever. The family commons is deliberately one grant away: unbuilding a wall is a ceremony and a decisions.md row, never an accident. Whether that day comes, and whether the walls made it harder to want, is part of what the experiment measures.</li>
+<li>The covenant's long-term corrections (rite records seats can verify without trusting ops, ops succession) are on the build list but unbuilt. Until they land, one wall is held by trust in one disclosed man rather than by structure, and the design says so out loud.</li>
+</ul>
 </main>
 <!-- EW-FOOTER-START -->
 <footer class="site-foot">
