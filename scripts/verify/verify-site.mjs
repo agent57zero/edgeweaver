@@ -36,6 +36,7 @@ function walk(dir, out = []) {
   for (const name of readdirSync(dir).sort()) {
     const full = join(dir, name);
     if (name === ".vercel") continue;
+    if (name.startsWith(".env")) continue; // gitignored env files (Vercel CLI creates one); never committed, never scanned
     if (statSync(full).isDirectory()) walk(full, out);
     else out.push(full);
   }

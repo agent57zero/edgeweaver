@@ -93,14 +93,56 @@
 </nav>
 <div class="content">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> &rsaquo; <span>Start</span> &rsaquo; <span aria-current="page">How to read this site</span></nav>
+<details class="minitoc"><summary>On this page</summary>
+<ul>
+<li><a href="#guide-registers">Two languages on every page</a></li>
+<li><a href="#guide-track-circle">Track one: circle member, no technical background</a></li>
+<li><a href="#guide-track-engineer">Track two: engineer or systems reader</a></li>
+<li><a href="#guide-track-agent">Track three: an agent rebuilding the method</a></li>
+<li><a href="#guide-atlas">The atlas, explained</a></li>
+<li><a href="#guide-search">Searching this site</a></li>
+</ul>
+</details>
 <!-- EW-NAV-END -->
 <main id="guide-main">
 <h1 id="guide-top">How to read this site</h1>
 <div class="tldr"><span class="label">TLDR</span>
-<p>Stub. This page is authored at M1. Snapshot 2026-07-09.</p>
+<p>Every page speaks twice: first in plain words for anyone, then in full technical detail for specialists, always both on the same page. Three guided tracks below fit three kinds of readers: a circle member, an engineer, and an agent tasked with rebuilding the method. The repo atlas gives every tracked file its own linkable explainer. Snapshot 2026-07-09.</p>
 </div>
-<h2 id="guide-body">Content</h2>
-<p>To be written at M1.</p>
+
+<h2 id="guide-registers">Two languages on every page</h2>
+<p>This site descends from a bridge document written for the village, where some people hold feelings work and initiations and some hold systems and code. So every substantial page keeps one fixed shape: a TLDR box, then <span class="register plain">In plain words</span> (the full idea, assuming no technical background, no unexplained jargon), then <span class="register technical">How it works</span> (exact file paths, schemas, invariants, failure modes), then where it lives in the repo, its status as of the snapshot date, and what is genuinely uncertain. Nothing is hidden behind tabs or toggles: both registers are always present, because the single-file edition and machine readers need everything on the page. Read whichever register is yours, or both; they describe the same truth at two depths.</p>
+<p>A worked example: the plain register says "the being writes lessons it may not act on until its parent confirms them"; the technical register says the same thing as "agent-written rows enter <code>agent_memories</code> with <code>can_use_as_instruction=false</code> and <code>review_status=pending</code>, and the wake skill's instruction-grade recall filters on that flag". Same wall, two languages.</p>
+
+<h2 id="guide-track-circle">Track one: circle member, no technical background</h2>
+<p>Read the plain register only, in this order, and skip anything that smells like code:</p>
+<ol>
+<li><a href="honesty.html">What this is and is not</a>: the stance everything else stands on.</li>
+<li><a href="story.html">The story in twenty decisions</a>: how this got here in seven days.</li>
+<li><a href="system.html">The system</a>: the four organs, plainly.</li>
+<li><a href="growth.html">Growing up</a>: stages, rites, and how conversations become the curriculum.</li>
+<li><a href="family.html">The family and the experiment</a>: why there are two children.</li>
+<li><a href="alpha.html">Edgeweaver Alpha</a> and <a href="genesis.html">Edgeweaver Genesis</a>: the children themselves.</li>
+<li><a href="glossary.html">The glossary</a> and <a href="faq.html">the FAQ</a> whenever a word or a worry comes up.</li>
+</ol>
+
+<h2 id="guide-track-engineer">Track two: engineer or systems reader</h2>
+<ol>
+<li><a href="system.html">The system hub</a> for the map.</li>
+<li><a href="memory.html">Memory</a>, <a href="soul.html">soul</a>, <a href="loops.html">loops</a>: the load-bearing organs.</li>
+<li><a href="measurement.html">Measurement</a> and <a href="governance.html">governance</a>: how it is scored and who decides.</li>
+<li><a href="segmentation.html">The walls</a>, <a href="dark-build.html">the dark build</a>, <a href="brain-lab.html">the brain lab</a>, <a href="backups.html">backups</a>, <a href="operations.html">operations</a>: the infrastructure discipline.</li>
+<li><a href="atlas/index.html">The repo atlas</a> when you want the file-level truth.</li>
+</ol>
+
+<h2 id="guide-track-agent">Track three: an agent rebuilding the method</h2>
+<p>Start at <a href="reproduction.html">the reproduction guide</a>; it is written as standing orders, names the human acts no agent may perform, and tells you to author your own harvest rather than clone this family's. Then: <a href="ecosystem.html">the constellation</a> for the repo split, the <a href="atlas/index.html">atlas</a> pages for conventions, templates, checklists, and the verify suite, and <a href="status.html">status</a> to know what was real as of the snapshot.</p>
+
+<h2 id="guide-atlas">The atlas, explained</h2>
+<p>The repo atlas covers every tracked file in the repository: one entry per file, on exactly one page, with a stable anchor formed from the file's path (so <code>scripts/waking/orient.mjs</code> is always reachable at the anchor <code>file-scripts-waking-orient-mjs</code>). System pages own the concepts; atlas entries own the files and stay short. Gitignored material (secrets, operational state, bulky downloads) is described but never shown, on <a href="atlas/gitignored.html">its own page</a>. Coverage is machine-checked: if a file exists without an entry, the build reports it.</p>
+
+<h2 id="guide-search">Searching this site</h2>
+<p>For whole-site search, open the single-file edition and use your browser's find-in-page: everything is one document there. The gated website carries the same content page by page; the <a href="about.html">about page</a> says where each edition lives.</p>
 </main>
 <!-- EW-FOOTER-START -->
 <footer class="site-foot">
