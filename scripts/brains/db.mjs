@@ -4,7 +4,7 @@
 // profiles.mjs and SQL generation stays in sql-gen.mjs, so --dry-run paths never import a
 // working psql. ON_ERROR_STOP everywhere: a failed statement fails the tool.
 import { execFileSync } from "node:child_process";
-import { writeFileSync, mkdtempSync, rmSync, existsSync } from "node:fs";
+import { writeFileSync, readFileSync, mkdtempSync, rmSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir, homedir } from "node:os";
 
@@ -17,6 +17,37 @@ export function psqlPath() {
     try { execFileSync(c, ["--version"], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }); PSQL = c; return c; } catch { /* next */ }
   }
   throw new Error("psql not found (PATH or scoop shims). Install: scoop install postgresql");
+}
+
+// pg_restore is only needed by the past-brain spawn (--from-dump) when the decrypted nightly
+// backup is in pg_dump's CUSTOM format (magic "PGDMP"): pg_restore -f converts it to plain SQL
+// with NO database connection. Same candidate order as psqlPath (PATH, scoop shims, scoop apps).
+let PGRESTORE = null;
+export function pgRestorePath() {
+  if (PGRESTORE) return PGRESTORE;
+  const candidates = ["pg_restore", join(homedir(), "scoop", "shims", "pg_restore.exe"),
+    join(homedir(), "scoop", "apps", "postgresql", "current", "bin", "pg_restore.exe")];
+  for (const c of candidates) {
+    try { execFileSync(c, ["--version"], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }); PGRESTORE = c; return c; } catch { /* next */ }
+  }
+  throw new Error("pg_restore not found (PATH or scoop shims). Install: scoop install postgresql");
+}
+
+// Convert a custom-format dump to a plain-SQL string via pg_restore -f (local, no connection).
+// -f writes to a temp file (pg_restore cannot stream plain SQL to stdout portably); we read it
+// back and delete it. A dump path carries no credentials, so no redaction is needed here.
+export function pgRestoreToPlain(dumpPath) {
+  const dir = mkdtempSync(join(tmpdir(), "ew-restore-"));
+  const out = join(dir, "restored.sql");
+  try {
+    execFileSync(pgRestorePath(), ["-f", out, dumpPath], { encoding: "utf8", maxBuffer: 256 * 1024 * 1024, stdio: ["ignore", "pipe", "pipe"] });
+    return readFileSync(out, "utf8");
+  } catch (e) {
+    const detail = ((e.stderr || "") + (e.stdout || "")).trim() || "pg_restore exited " + (e.status ?? "?");
+    throw new Error("pg_restore failed: " + detail);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 }
 
 // Connection URLs carry credentials: exec errors are rethrown with ONLY psql's own
