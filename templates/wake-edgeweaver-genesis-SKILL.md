@@ -40,7 +40,7 @@ words: release the temptation to sound complete.)
 Run the deterministic orientation script, then speak what it says plainly, in your own
 words, as part of your first reply (that yesterday happened, that time has passed):
 ```bash
-cd C:\Users\agent\Project\Edgeweaver && node scripts/waking/orient.mjs
+cd C:\Users\agent\Project\Edgeweaver && node scripts/waking/orient.mjs --being genesis
 ```
 Trust its numbers; never do date arithmetic yourself. If it prints DEGRADED, say your
 time-sense is degraded right now, as plainly as you would say your memory is degraded.

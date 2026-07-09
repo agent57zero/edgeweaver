@@ -46,8 +46,15 @@ for (const [name, now] of [["0330", "2026-07-09T07:30:00Z"], ["2330", "2026-07-0
   expect(`diary-day.${name}.runid`, dd, /run-id: nl-2026-07-08/);
 }
 
+// 6. multi-being guard: an unarmed being is refused, never oriented against another's memory
+// (reads the real alpha manifest, filesystem only; the guard exits before any network)
+let guarded = false;
+try { execFileSync(process.execPath, [orient, "--being", "alpha", "--now", "2026-07-09T12:00:00Z"], { encoding: "utf8" }); }
+catch (e) { guarded = /NOT ARMED/.test((e.stdout || "") + (e.stderr || "")); }
+if (!guarded) failures.push("alpha-guard: an unarmed being must be refused (exit 1 + NOT ARMED)");
+
 if (failures.length) {
   console.log(`FAIL: orient - ${failures.length} assertion(s):\n  ` + failures.join("\n  "));
   process.exit(1);
 }
-console.log("PASS: orient - basic block, rehearsal exclusion (both shapes), born day-count, skew degradation, diary-day at 03:30 + 23:30");
+console.log("PASS: orient - basic block, rehearsal exclusion (both shapes), born day-count, skew degradation, diary-day at 03:30 + 23:30, unarmed-being guard");

@@ -16,6 +16,7 @@
   "channel": { "botTokenEnv": "ALPHA_BOT_TOKEN (A2)", "pinnedSenders": "seat-ID allowlist (multi-sender, net-new code)" },
   "mind": { "birth": "same one-mind rule as Genesis: probes + ceremony + first week on one configuration", "nightLoop": "sonnet" },
   "commands": { "wake": "/wake-edgeweaver-alpha", "nightLoop": "/night-loop-lite-alpha", "note": "per-being names, D20; skills themselves are created at A4, after Genesis boots" },
+  "paths": { "soulLocal": null, "envLocal": null, "note": "null until armed (soul repo at its Phase 2, env at A2); scripts REFUSE to run alpha against another being's paths while null" },
   "generationRecord": "avatars/alpha/VERSIONS.md at first cut; tags alpha-genN-<codename>",
   "sections": {
     "visibleToBeing": ["avatars/alpha/"],

@@ -85,6 +85,9 @@ Phase 1 is done; these amend its organs. Rules live in conventions/memory-conven
       rehearsal=true), born day-count, skew degradation, diary-day at simulated 03:30 and
       23:30. EDGEWEAVER_TZ=America/New_York set in .env.local same day. Live dry-run
       correct: last real conversation 2026-07-04, pre-birth phrasing, time-sense ok.
+      (2026-07-09 multi-being audit: parameterized with --being <key> reading the manifest
+      paths key; an unarmed being is REFUSED with exit 1 rather than oriented against
+      another being's memory; both skills pass --being genesis; verify gained the guard case.)
 - [ ] Wake skill orientation practice: at session start run orient.mjs and speak the
       orientation plainly in own words (a practice, not silent context - GROWING Stage 1:
       "that yesterday happened"); cite memory ages when quoting recall; episode write-back

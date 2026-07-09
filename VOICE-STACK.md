@@ -5,6 +5,9 @@
 > governed by GROWING §5 Track M+E readiness and its gates, unchanged. Build procedure will be
 > added to checklists/07-unlock-tracks.md when construction starts; this doc is the why and
 > the shape, not the steps.
+> Family note (D18): built once, parameterized per being (soul prefix, brain profile, TTS
+> voice, channel tokens) via avatars/<being>/manifest.json; Genesis first. No being's voice
+> arms before its own V-gates, and no being ever speaks with another's voice or memory.
 
 ## 0. Goal and quality bar
 

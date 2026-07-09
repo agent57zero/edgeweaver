@@ -1,7 +1,11 @@
 # Memory conventions (adopted from PLAN.md Appendix B — Phase 0b entry criterion)
 
-> Binding for all ingestion and retrieval code. Awaiting Alan's 👍 (checklist 00, Phase 0b
-> step 1). Change only in lockstep with PLAN.md Appendix B.
+> Binding for all ingestion and retrieval code. Adopted at Phase 0b (2026-07-04); the
+> 2026-07-08 Time-section additions await their own nod before the wrapper deploy
+> (checklist 01). Change only in lockstep with PLAN.md Appendix B.
+> Family note (D18): one set of conventions binds every being's brain room identically;
+> audience words resolve per being (Genesis: alan; Alpha: its seats, defined at its A2/A3).
+> One method, walls per being: FAMILY.md §4.
 
 ## Source types
 

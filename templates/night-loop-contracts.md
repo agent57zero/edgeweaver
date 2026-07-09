@@ -48,7 +48,7 @@ schtasks /Create /SC DAILY /ST 03:30 /TN "EdgeweaverGenesisNightLoopLite" ^
 (The infancy arming, avatars/genesis/handoff/first-boot-ceremony.md step 10, uses exactly
 this; Sonnet per the 08 operating ladder; per-being command, task, and log names per D20.
 The skill takes diary-day, UTC window, and run-id verbatim from
-`node scripts/waking/orient.mjs --diary-day`, never from its own arithmetic. At Phase 4
+`node scripts/waking/orient.mjs --diary-day --being genesis`, never from its own arithmetic. At Phase 4
 arming the full loop replaces the lite task under its own task name. Alpha's loop arrives at
 its A4 as /night-loop-lite-alpha with its own task and log names.)
 Unattended permissions: configure per `OB1/recipes/life-engine/README.md` Step 6

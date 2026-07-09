@@ -5,6 +5,9 @@
 > gates remain the gates: this document reorders *construction* only. Iron rule 7 stands in
 > full force: machinery-ready is never stage-ready. Every STOP parks exactly where the
 > checklists put it. First Boot, rites, and stage advancement are untouched by anything here.
+> Family note (D18): the dark machinery is built once and serves every being; ARMING is per
+> being, through that being's own checklist pass with its manifest's variables (FAMILY
+> §5/§7). Alpha arms nothing before Genesis boots.
 
 ## 0. The five rules of the dark build
 

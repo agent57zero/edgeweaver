@@ -11,21 +11,26 @@
 //   diary-day = the local calendar day containing T minus 12h (at the scheduled 03:30 run
 //   that is the day that just ended), its UTC bounds, and the run-id nl-<diary-day>.
 //
-// Flags: --now <ISO>      test override for "now" (default: real now)
-//        --tz <IANA>      test override (default: EDGEWEAVER_TZ from env or .env.local,
-//                         else the system zone)
+// Multi-being (D18/D20): --being <key> (or env EW_BEING; default genesis) resolves the
+// being's soul and env paths from avatars/<being>/manifest.json "paths". A being whose
+// paths are not armed yet (Alpha before its A2) is REFUSED, exit 1: orienting one being
+// against another being's memory is the failure mode, not a fallback.
+//
+// Flags: --being <key>    which being (default: EW_BEING env, else genesis)
+//        --now <ISO>      test override for "now" (default: real now)
+//        --tz <IANA>      test override (default: EDGEWEAVER_TZ from env or the being's env
+//                         file, else the system zone)
 //        --fixture <path> JSON {thoughts:[{id,source_type,created_at,metadata}],lineage:"md"}
-//                         - no network, no .env.local, no soul-repo read (verify mode)
-//        --diary-day      window mode (see above)
+//                         - hermetic: no network, no manifest, no env file, no soul repo
+//        --diary-day      window mode (see above); with --tz it is also manifest-free
 // Never prints secret values. Exit 0 even when degraded (orientation must never block a
-// waking); exit 1 only on misuse (bad flags / unreadable fixture).
+// waking); exit 1 on misuse or an unarmed being.
 
 import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
-const SOUL = process.env.SOUL_REPO_PATH || "C:\\Users\\agent\\Project\\edgeweaver-soul";
 const FUTURE_TOLERANCE_MS = 5 * 60 * 1000;
 
 // ---------- args ----------
@@ -38,18 +43,40 @@ const DIARY_MODE = args.includes("--diary-day");
 const NOW = flag("--now") ? Date.parse(flag("--now")) : Date.now();
 if (Number.isNaN(NOW)) { console.error("bad --now"); process.exit(1); }
 const FIXTURE = flag("--fixture");
+const BEING = flag("--being") || process.env.EW_BEING || "genesis";
+
+// ---------- being resolution (skipped entirely in hermetic modes) ----------
+// Hermetic: fixture mode, or diary-day with an explicit --tz (pure window math).
+const HERMETIC = Boolean(FIXTURE) || (DIARY_MODE && Boolean(flag("--tz")));
+let PATHS = { soulLocal: null, envLocal: null };
+if (!HERMETIC) {
+  let manifest;
+  try { manifest = JSON.parse(readFileSync(join(ROOT, "avatars", BEING, "manifest.json"), "utf8")); }
+  catch { console.error(`unknown being "${BEING}" (no avatars/${BEING}/manifest.json)`); process.exit(1); }
+  PATHS = manifest.paths || {};
+  const soul = process.env.SOUL_REPO_PATH || PATHS.soulLocal;
+  const env = PATHS.envLocal;
+  if (!soul || !env) {
+    console.log("ORIENTATION");
+    console.log(`being: ${BEING} NOT ARMED - its soul/env paths are not set in avatars/${BEING}/manifest.json (arrives at its A2).`);
+    console.log("Refusing to orient this being against another being's memory.");
+    process.exit(1);
+  }
+  PATHS = { soulLocal: soul, envLocal: env };
+}
 
 // ---------- env (lazy; values never printed) ----------
 function envLocal(name) {
+  if (!PATHS.envLocal) return undefined;
   try {
-    const text = readFileSync(join(ROOT, ".env.local"), "utf8").replace(/^﻿/, "");
+    const text = readFileSync(PATHS.envLocal, "utf8").replace(/^﻿/, "");
     for (const line of text.split(/\r?\n/)) {
       if (line.startsWith(name + "=")) return line.slice(name.length + 1).trim();
     }
   } catch { /* absent is fine */ }
   return undefined;
 }
-const TZ = flag("--tz") || process.env.EDGEWEAVER_TZ || (FIXTURE ? undefined : envLocal("EDGEWEAVER_TZ"))
+const TZ = flag("--tz") || process.env.EDGEWEAVER_TZ || envLocal("EDGEWEAVER_TZ")
   || Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 // ---------- timezone math (all arithmetic here, never in the model) ----------
@@ -125,7 +152,7 @@ if (FIXTURE) {
   } catch (e) {
     degraded = `memory unreachable (${e.message})`;
   }
-  try { lineage = readFileSync(join(SOUL, "LINEAGE.md"), "utf8"); } catch { lineage = ""; }
+  try { lineage = readFileSync(join(PATHS.soulLocal, "LINEAGE.md"), "utf8"); } catch { lineage = ""; }
 }
 
 // ---------- compute ----------

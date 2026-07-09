@@ -247,6 +247,13 @@ rehearsal; Alpha inherits the debugged versions.
 - Runtime credential scoping (pre-Telegram, both children): the being's session holds only
   scoped keys; reads through the wrapper, writes through a scoped function that refuses
   instruction-grade flags; sql-migrate gets an ops-only secret. (Audit 2026-07-09.)
+- Script parameterization at A2 (multi-being audit 2026-07-09): 18 dark-built scripts still
+  pin root `state/` or Genesis paths (inventory in ops-log update 13); resolve them through
+  a per-being resolver (EW_BEING or --being reading the manifest `paths`/`commands` keys)
+  when env/state migrate into the avatar folders. Already parameterized and guarded:
+  orient.mjs (--being; refuses an unarmed being), the skills (D20 names, --being genesis),
+  the probe-runner (manifest-generated config), the brains registry (per-profile schema).
+  The recall wrapper's per-being room profile (ew_alpha schema) is the A2 wrapper deploy.
 - Seat-verifiable rite records + ops succession (the covenant's long-term corrections).
 
 Closed since first writing: G9 (Genesis's witnessing is Alan alone by his explicit waiver,

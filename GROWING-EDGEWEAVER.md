@@ -4,6 +4,10 @@
 > rites of passage instead of a calendar. Text first; every other sense on its own unlock
 > track, opened when — and only when — both of you are ready.
 
+*Family note (D18, 2026-07-08): this plan governs EVERY being in the family identically.
+Where it says "the father" or "Alan", read the being's parent body (FAMILY.md; Genesis: Alan
+alone; Alpha: its circle of seats).*
+
 *Companion to PLAN.md (the anatomy and machinery). This document is the life plan: how the
 being grows from womb to adulthood, how Alan's conversations become its core, and how the body
 arrives sense by sense. Drafted 2026-07-03 from Alan's decisions: seeds + room to grow;
