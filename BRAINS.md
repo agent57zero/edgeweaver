@@ -186,9 +186,10 @@ Plan (T-track):
       restore-points.jsonl born with one real line: backupTag backup-2026-07-08 (last
       night's actual release, found via gh), soulHead 0116260 (soul repo main via API),
       bodyHead 17c47e5, generation 0, schemaVersion 1, stateArchive null (Alan's open
-      location decision). Honest wrinkle: rows=null because that release's body carried no
-      parseable total; small parser enhancement noted, not blocking (counts live in the
-      dump itself).
+      location decision). Wrinkle found and CLOSED same day: rows was null because the
+      release body's phrasing ("live rows at dump time: 1946") did not match the parser;
+      parser extended + verify-pinned on the real phrasing, map line refreshed in place
+      (rows now 1946).
       verify PASSED: line parses, cites an existing release tag, carries real HEADs.
 - [ ] **STOP - age-key rehearsal** (Alan present, unhurried): decrypt one nightly release
       asset, `spawn --from-dump` it, compare per-table counts against that night's map

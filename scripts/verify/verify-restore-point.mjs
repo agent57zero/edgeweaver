@@ -88,6 +88,8 @@ try {
   if (recNoRows.rows !== null) fails.push(`rows should be null with no "<N> rows" phrase in the body, got ${recNoRows.rows}`);
   if (parseRowsFromBody("no figure here") !== null) fails.push("parseRowsFromBody did not return null for a figure-free body");
   if (parseRowsFromBody("18 tables, 1,946 rows dumped") !== 1946) fails.push("parseRowsFromBody did not parse a comma-thousands figure");
+  if (parseRowsFromBody("- tables: 18 · live rows at dump time: 1946 · dump size: 15M") !== 1946) fails.push("parseRowsFromBody did not parse the pipeline's actual body phrasing (rows ...: N)");
+  if (parseRowsFromBody("rows were not counted") !== null) fails.push("parseRowsFromBody guessed a number from a rows phrase with no figure");
 
   // --- 3. append-then-replace idempotency + JSON.parse round trip, in a temp dir ---
   const idemDir = mkdtempSync(join(tmpdir(), "ew-verify-restore-idem-"));

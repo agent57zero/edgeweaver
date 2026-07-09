@@ -10,9 +10,10 @@
 // line is written later, live, by the orchestrator (BRAINS.md section 7, plan box T4).
 //
 // Sharp edges:
-//   - rows is best-effort: parsed from the backup release body's own "<N> rows" phrasing (the
-//     edgeweaver-backups pipeline writes this today, e.g. "18 tables, 1,946 rows dumped"). A
-//     body without that phrase yields null, never a guess.
+//   - rows is best-effort: parsed from the backup release body's own phrasing, either
+//     "<N> rows" ("18 tables, 1,946 rows dumped") or "rows ...: <N>" (the pipeline's actual
+//     current body reads "live rows at dump time: 1946"). A body with neither phrasing yields
+//     null, never a guess.
 //   - soulHead: `gh api .../commits/main --jq .sha` returns the FULL commit sha; the 7-char
 //     truncation happens here in JS (not inside the gh call), so it stays testable without a
 //     network call and without depending on gh/jq quoting behavior.
@@ -29,11 +30,12 @@ import { loadRegistry } from "./profiles.mjs";
 
 const ROOT = join(import.meta.dirname, "..", "..");
 
-// Parse a total row count out of free-form release-body text, e.g. "18 tables, 1,946 rows
-// dumped" -> 1946. Returns null when no "<number> rows" phrase is present (never guesses).
+// Parse a total row count out of free-form release-body text. Two phrasings are recognized:
+// "18 tables, 1,946 rows dumped" -> 1946, and the pipeline's actual current body
+// "live rows at dump time: 1946" -> 1946. Returns null otherwise (never guesses).
 export function parseRowsFromBody(body) {
   if (typeof body !== "string") return null;
-  const m = body.match(/([0-9][0-9,]*)\s+rows\b/i);
+  const m = body.match(/([0-9][0-9,]*)\s+rows\b/i) || body.match(/\brows\b[^:\r\n]*:\s*([0-9][0-9,]*)/i);
   if (!m) return null;
   const n = Number(m[1].replace(/,/g, ""));
   return Number.isFinite(n) ? n : null;
