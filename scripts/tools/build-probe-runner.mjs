@@ -108,7 +108,10 @@ if (!re.test(html)) throw new Error("EW-CONFIG markers not found in " + HTML);
 const next = html.replace(re, (_, a, _b, c) => a + "\n" + JSON.stringify(config, null, 2) + "\n" + c);
 
 if (CHECK) {
-  if (next !== html) { console.log("FAIL: probe-runner.html is stale vs manifests/extras - run the builder"); process.exit(1); }
+  // newline-agnostic: a fresh clone on Windows checks files out with CRLF (autocrlf), and
+  // the DR drill runs this check inside such a clone; content equality is what matters.
+  const norm = (s) => s.replace(/\r\n/g, "\n");
+  if (norm(next) !== norm(html)) { console.log("FAIL: probe-runner.html is stale vs manifests/extras - run the builder"); process.exit(1); }
   console.log("PASS: probe-runner.html config is current");
 } else {
   writeFileSync(HTML, next);
