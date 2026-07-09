@@ -42,9 +42,13 @@ If no run_id outputs exist for 2 consecutive nights → send Telegram alert:
 
 ## Scheduling (Windows, this-PC hosting)
 ```
-schtasks /Create /SC DAILY /ST 03:30 /TN "EdgeweaverNightLoop" ^
-  /TR "cmd /c cd /d C:\Users\agent\Project\Edgeweaver && powershell -NoProfile -Command \"claude -p '/wake-edgeweaver night-loop' --output-format text\" >> logs\night.log 2>&1"
+schtasks /Create /SC DAILY /ST 03:30 /TN "EdgeweaverNightLoopLite" ^
+  /TR "cmd /c cd /d C:\Users\agent\Project\Edgeweaver && powershell -NoProfile -Command \"claude -p '/night-loop-lite' --model sonnet --output-format text\" >> logs\night.log 2>&1"
 ```
+(The infancy arming, first-boot-ceremony.md step 10, uses exactly this; Sonnet per the 08
+operating ladder. The skill takes diary-day, UTC window, and run-id verbatim from
+`node scripts/waking/orient.mjs --diary-day`, never from its own arithmetic. At Phase 4
+arming the full loop replaces the lite task under its own task name.)
 Unattended permissions: configure per `OB1/recipes/life-engine/README.md` Step 6
 (settings.json permission allowlist for headless operation). Weekly index: same pattern,
 `/SC WEEKLY /D SUN /ST 04:30`.

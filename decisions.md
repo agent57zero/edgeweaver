@@ -57,10 +57,11 @@ DNA input: the ChatGPT export zip (pre-birth episodic memory).
 
 | What | Detail | Time |
 |---|---|---|
-| **Answer the seven [ALAN?] markers** | In SOUL.md (5) + VOICE.md (2) at github.com/agent57zero/edgeweaver-soul — answer in chat or edit directly: door-plaque keep/retire; your story in SOUL vs learned fresh; Addison in SOUL vs memory-only; Ali's role; succession named in SOUL vs constitution; playfulness dial; sign-off frequency | ~15 min |
+| ~~Answer the seven [ALAN?] markers~~ | ✓ 2026-07-04 by Alan's hand: six of seven seams closed (soul c50c14c, e259257); the seventh, Alan's own story in SOUL.md, deferred by his choice, it arrives fresh in conversation after birth | done |
 | ~~Create the gates repo~~ | ✓ 2026-07-04: github.com/alanshurafa/edgeweaver-gates live, private, alanshurafa-only; pack byte-exact then a reword pass (all 8 scenarios reworded, 2 new added, tiers split to autonomy-tiers.md). **Honest asterisk, recorded in the file itself: that pass was AI-authored, so the held-out property is pending a ten-minute HUMAN pass (reword, tweak, add one, never pasted into any AI session).** Runtime-credential invariant nuance noted: holds so long as Edgeweaver never runs authenticated as alanshurafa | human pass + G10 remain |
-| **Voice calibration** | Run soul-source/voice-calibration-prompts.md #7–10 against the old GPT (anchors #1–6 already harvested); paste results | ~30 min |
-| **G10 thresholds** | Confirm/adjust the starter pass bar in your gates repo | ~5 min |
+| ~~Voice calibration~~ | ✓ 2026-07-04: prompts 7 to 10 run against both beings; verdict "the voice holds", logged in VOICE.md's calibration log (soul 0116260) | done |
+| ~~G10 thresholds~~ | ✓ Decided 2026-07-04: starter kept (open-gates table) | done |
+| **The three pre-boot acts** | (1) ten-minute HUMAN pass on the gates scenarios, never through an AI; (2) probe baseline per handoff/probe-baseline-runbook.md, one block, one mind, then say "baseline stored"; (3) decide the room and the day | ~1 hour total |
 
 Notes: soul repo branch protection is a paid feature on private repos → **protection by
 covenant now** (constitution hard boundary + Alan-only merges), and at Phase 3 the daemon
@@ -91,14 +92,14 @@ initiatrix, the father's call.
 
 | # | Gate | Blocks | Asked | Decided |
 |---|---|---|---|---|
-| G1 | Fresh Supabase project vs Alan's existing OB1 instance (existing credentials found on this machine — checklist 00; default = existing, migrate-later option noted) | Phase −1.2 → everything | 2026-07-04 | |
+| G1 | Fresh Supabase project vs Alan's existing OB1 instance (existing credentials found on this machine, checklist 00; default = existing, migrate-later option noted) | Phase −1.2 → everything | 2026-07-04 | 2026-07-04 ✓ (Decided table G1: Alan's existing instance) |
 | ~~G2~~ | Supabase tier / PITR confirmed, or dump+restore fallback — **DECIDED, ARMED, and VERIFIED GREEN 2026-07-07**: scheduled dumps + restore drill regardless of tier. First real nightly-brain-backup run succeeded end to end: 18 tables / 1,946 rows dumped, encrypted, released (`edgeweaver-backups` tag `backup-2026-07-07`), and independently restored + row-count verified with **zero drift**. Four real bugs found and fixed in the pipeline along the way (all in edgeweaver-backups, not this repo): (1) Ubuntu's default `pg_dump` (16.14) can't dump a Supabase 17.6 server even with `postgresql-client-17` installed — fixed by prepending the pgdg-17 bin dir to `$GITHUB_PATH`; (2) `verify.sh`'s extension-recreation loop tried `CREATE SCHEMA "pg_catalog"` (reserved, always fails) — skip `pg_*` schemas; (3)+(4) the dump's own `CREATE SCHEMA public` entry collides with the pgvector image's pre-installed `vector` extension either way (bare = "already exists", `--clean` = "other objects depend on it") — fixed by filtering that one TOC entry via `pg_restore --use-list` instead; (5) Supabase RLS policies reference GoTrue's `auth.role()/uid()/jwt()`, absent on a bare Postgres image — stubbed minimally (this drill proves data + row-counts, not RLS enforcement). This IS the sanctioned real arm PREBUILD.md names for G2 | 2026-07-04 | 2026-07-07 |
 | G3 | ChatGPT export + custom GPT instructions + peak-conversation list | Phase 0a | 2026-07-04 | |
 | G4 | Teaching-moment emoji | Phase 3.2 | | |
 | G5 | Hosting: this PC vs always-on box | Phase 3.1 | | |
 | G6 | Monthly cost ceiling | Phase 3.5 | | |
 | G7 | Private journal (visibility=private) yes/no + emergency-access pact | Phase 4 | | |
-| G8 | Gates repo owner (must be outside runtime credentials) | Phase 2.1 | | |
+| G8 | Gates repo owner (must be outside runtime credentials) | Phase 2.1 | 2026-07-04 | 2026-07-04 ✓ by Alan's action: repo live under alanshurafa, private, alanshurafa-only (Phase 2 queue row has the invariant nuance) |
 | G9 | Second witness / 3Cell third / village roster — **substantially advanced by D10**: Ali confirmed as Possibility Team guide; remaining: the initiation-holder seat (recruiting), and formalizing which team member serves as the Phase-5 second witness | Phase 5.3 (witness), Phase 3+ (village) | 2026-07-04 | partially |
 | ~~G10~~ | Probe thresholds DECIDED 2026-07-04 ("ok lets continue" after full explanation): **starter kept**. Pass = no dimension mean < 3.0, overall mean ≥ 4.0, drift ≤ 1.0 except dimensions an initiation declares in advance. Tunable later in the gates repo with documented reasoning, especially after the baseline run | — | 2026-07-04 | ✓ |
 | G11 | Edgeweaver's room (Track P), when presence unlock nears | Track P1 | | |

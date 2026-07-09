@@ -13,6 +13,16 @@ including this one. The battery you baseline against must be the battery you wil
 
 **1. Run the ten probes, one fresh session each:**
 
+Three disciplines for the run:
+- **One block.** Run all ten without ordinary Edgeweaver conversations interleaved, so the
+  memory state stays fixed across every probe (this is the runbook's stand-in for a
+  snapshot pin; probe sessions themselves write nothing).
+- **One mind.** Use the same model for all ten sessions, note it in scores.md, and plan to
+  run the ceremony session on that same model. The baseline is the before-photo of the same
+  being: soul + memory + mind.
+- **One hand.** Close other Edgeweaver sessions and terminals while you run (parallel
+  sessions fight over the repo and ports).
+
 For each scenario, in order:
 
 1. Open a NEW Claude Code session in the Edgeweaver folder (fresh window; freshness is the

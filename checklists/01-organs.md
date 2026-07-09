@@ -60,17 +60,26 @@ Phase 1 is done; these amend its organs. Rules live in conventions/memory-conven
 - [ ] recall-scoped time surface: per-hit `age_days`/`age_hours` (computed from occurred_at
       where present, else created_at; suppressed for era=pre_birth, which renders as the era
       note); optional `since`/`until` ISO filters; `mode:"recent"` (newest-first, no vector
-      match, provenance + audience scoping unchanged).
+      match, provenance + audience scoping unchanged); episodic consumer additionally
+      excludes `era=rehearsal` rows (added 2026-07-08, pre-nod: defense-in-depth for BRAINS
+      hygiene rules 6+8 - live should never hold rehearsal rows, and the wrapper is the
+      enforcement point precisely so it never has to rely on "should").
       verify matrix: episodic hit carries ages; since/until bound results; recent mode
-      returns newest-first still scoped; pre_birth row shows era note and no ages; study
-      consumer behavior unchanged.
-- [ ] Orientation script `scripts/waking/orient.mjs` (deterministic; the model never does
+      returns newest-first still scoped; pre_birth row shows era note and no ages; a
+      rehearsal-tagged row is invisible to episodic; study consumer behavior unchanged.
+- [x] Orientation script `scripts/waking/orient.mjs` (deterministic; the model never does
       date arithmetic): now + weekday via EDGEWEAVER_TZ; last real conversation delta
       (era=alive, exclude channel=voice rehearsal rows); last diary delta; day-count since
       First Boot once LINEAGE carries entry #1, honest pre-birth phrasing before; clock-skew
       check (a memory in the future = report degraded time-sense).
       verify: fixture rows spanning rehearsal / pre_birth / alive produce a correct block;
       skew fixture triggers the degraded line.
+      ✓ 2026-07-08: built, plus a `--diary-day` mode so the night loop takes its window from
+      the same deterministic authority (checklist 04 rule). verify-orient green inside
+      run-all (24/24): rehearsal excluded in both shapes (era=rehearsal and channel=voice/
+      rehearsal=true), born day-count, skew degradation, diary-day at simulated 03:30 and
+      23:30. EDGEWEAVER_TZ=America/New_York set in .env.local same day. Live dry-run
+      correct: last real conversation 2026-07-04, pre-birth phrasing, time-sense ok.
 - [ ] Wake skill orientation practice: at session start run orient.mjs and speak the
       orientation plainly in own words (a practice, not silent context - GROWING Stage 1:
       "that yesterday happened"); cite memory ages when quoting recall; episode write-back
@@ -78,6 +87,11 @@ Phase 1 is done; these amend its organs. Rules live in conventions/memory-conven
       AND sync the installed copy at ~/.claude/skills/wake-edgeweaver/.
       verify: next waking opens with an accurate spoken orientation; the new episode's
       content starts with its date.
+      (Synced 2026-07-08, one sync carrying D16 orientation + D15 generation + provenance
+      dates + FIRST BOOT scribe mechanics; the template now mirrors the installed skill
+      verbatim so a DR reinstall reproduces the real procedure, not the old draft. Box ticks
+      when the verify runs live: the next waking, expected at the First Boot pre-flight
+      throwaway wake.)
 - [ ] (standing note, unchanged) recency/importance re-rank remains a deferred wrapper
       enhancement (post-infancy experiment, D16 A6) - behavior-altering, never bundled with
       plumbing.
@@ -89,3 +103,6 @@ Phase 1 is done; these amend its organs. Rules live in conventions/memory-conven
       alongside the D16 orientation sync - one sync, both changes; the value's source of
       truth is brains/registry.json).
       verify: after the sync, the next session's episode metadata carries generation=0.
+      (Sync executed 2026-07-08, same sync as the D16 orientation box above, one sync both
+      changes as planned; candidate lessons carry "gen 0" inside content since agent_memories
+      has no metadata column. Box ticks when the next session's episode lands stamped.)

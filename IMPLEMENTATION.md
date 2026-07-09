@@ -70,8 +70,11 @@ Mark `[x]` with date + one-line note as steps complete. (Everything below Phase 
 unstarted at the time of writing, 2026-07-03.)
 
 - [x] Phase −1.1 Repo exists, pushed, alanshurafa invited as admin (2026-07-03)
-- [ ] Phase −1.2 Environment + credentials assembled
-- [ ] Phase −1.3 Open decisions logged
+- [x] Phase −1.2 Environment + credentials assembled (2026-07-04; ANTHROPIC_API_KEY stays
+      deliberately empty per D6, the claude CLI path; voice/lab keys added later; ledger tick
+      backfilled 2026-07-08)
+- [x] Phase −1.3 Open decisions logged (2026-07-03, decisions.md live from genesis; ledger
+      tick backfilled 2026-07-08)
 - [ ] Phase 0a ChatGPT pre-birth import
 - [x] Phase 0b corpus ingestion (2026-07-04 — 1,908 thoughts, 100% embedded: 363 SPARKs,
       456 distinctions, Mostashari book + Persistence essay; embed-backfill function is now

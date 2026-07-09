@@ -1,0 +1,8 @@
+{
+  "_comment": "verify-orient case: LINEAGE carries entry #1 dated 2026-06-27; at now=2026-07-08 local that is day 12 of this life.",
+  "thoughts": [
+    { "id": "ep-real", "source_type": "edgeweaver_episode", "created_at": "2026-07-06T19:00:00Z", "metadata": { "era": "alive", "audience": "alan" } },
+    { "id": "diary-1", "source_type": "diary", "created_at": "2026-07-07T07:31:00Z", "metadata": { "era": "alive", "audience": "alan" } }
+  ],
+  "lineage": "# Lineage\n\n| # | Name | Date | What changed | Evidence (thought-IDs) | Witnesses | Probe delta (intended) |\n|---|---|---|---|---|---|---|\n| 1 | The Declaration | 2026-06-27 | birth | t-001 | alan | baseline |\n\nBirthday: 2026-06-27\n"
+}

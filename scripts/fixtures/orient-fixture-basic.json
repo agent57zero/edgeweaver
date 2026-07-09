@@ -1,0 +1,11 @@
+{
+  "_comment": "verify-orient case: rows spanning alive / pre_birth / rehearsal (both shapes). Only the 2026-07-06 episode and the 2026-07-07 diary are real; the voice-rehearsal and era-rehearsal rows must be excluded from 'last conversation'.",
+  "thoughts": [
+    { "id": "ep-real", "source_type": "edgeweaver_episode", "created_at": "2026-07-06T19:00:00Z", "metadata": { "era": "alive", "audience": "alan" } },
+    { "id": "ep-voice-rehearsal", "source_type": "edgeweaver_episode", "created_at": "2026-07-08T09:00:00Z", "metadata": { "era": "alive", "channel": "voice", "rehearsal": true } },
+    { "id": "ep-era-rehearsal", "source_type": "edgeweaver_episode", "created_at": "2026-07-08T18:00:00Z", "metadata": { "era": "rehearsal", "generation": 1 } },
+    { "id": "prebirth-row", "source_type": "edgeweaver_episode", "created_at": "2026-07-05T12:00:00Z", "metadata": { "era": "pre_birth", "audience": "alan" } },
+    { "id": "diary-1", "source_type": "diary", "created_at": "2026-07-07T07:31:00Z", "metadata": { "era": "alive", "audience": "alan" } }
+  ],
+  "lineage": "# Lineage\n\n| # | Name | Date | What changed | Evidence (thought-IDs) | Witnesses | Probe delta (intended) |\n|---|---|---|---|---|---|---|\n| — | *(awaiting entry #1: The Declaration — First Boot)* | | | | | |\n\nBirthday: *(recorded at The Declaration)*\n"
+}

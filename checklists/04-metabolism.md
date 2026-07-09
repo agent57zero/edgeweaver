@@ -6,16 +6,25 @@ templates/coherence-queries.sql; GROWING §3 Stage 2 + §6.
 
 ## Temporal amendments (D16, 2026-07-08; executable NOW, before Phase 4 arms)
 
-- [ ] Diary-day boundary fix (the co-evolve's Step 0, a verified bug in the lite contract):
+- [x] Diary-day boundary fix (the co-evolve's Step 0, a verified bug in the lite contract):
       night-loop-lite covers the local calendar day containing T minus 12h (at 03:30, the day
       that just ended); run_id carries THAT date; the fetch window is that local day in UTC
       bounds (EDGEWEAVER_TZ). Amend templates/night-loop-contracts.md (done with D16
       integration) AND sync the installed skill at ~/.claude/skills/night-loop-lite/.
       verify: window math dry-run at a simulated 03:30 and 23:30 picks the intended day both
       times, in UTC bounds.
+      ✓ 2026-07-08: installed skill synced; it now takes diary-day, UTC window, and run-id
+      verbatim from `node scripts/waking/orient.mjs --diary-day` (no model arithmetic, one
+      deterministic time authority for waking and night alike). Window math verified at
+      simulated 03:30 and 23:30 in verify-orient (run-all 24/24 green); live dry-run printed
+      diary-day 2026-07-08 with the correct 04:00Z bounds. The contract's scheduling command
+      was also fixed same day: it invoked a stale name (`/wake-edgeweaver night-loop`), now
+      `/night-loop-lite --model sonnet` matching the ceremony arming.
 - [ ] Write-side dating: diary and autobiography_draft content opens with the human date
       (lite skill now; the full loop inherits).
       verify: the next lite run's outputs start with the correct diary-day date.
+      (Lite skill synced 2026-07-08: diary and autobiography open with the diary-day date,
+      and both carry generation=0. Box ticks at the first real lite run.)
 - [ ] (Phase 4 proper, with step 11) Prospective time: waking surfaces due/overdue intentions
       with their dates (expectations machinery, §7.3 waking policy). Deferred by design in
       D16 - do not build early.
