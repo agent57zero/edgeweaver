@@ -168,18 +168,23 @@ Plan (T-track):
 - [x] **T1 Docs + decision** (2026-07-08): D17 row; this section; VERSIONS.md
       "Rolling back / time travel" pointer.
       verify: committed and pushed (this commit).
-- [ ] **T2 The map** (dark; Sonnet agent, worktree): `scripts/brains/restore-point.mjs`
-      with injectable fetchers (gh release / gh api / registry / git) + `--live` for the
-      real gather; `scripts/verify/verify-restore-point.mjs` on fixtures, no network.
-      verify: suite green with the new script.
+- [x] **T2 The map** (2026-07-08, dark; Sonnet agent, worktree): `scripts/brains/
+      restore-point.mjs` with injectable fetchers + `--live`; `scripts/verify/
+      verify-restore-point.mjs` hermetic (no network, PATH-blanked child checks).
+      verify PASSED: suite green with the new script (25 scripts at merge time).
 - [ ] **T3 Past-brain spawn** (dark; Opus agent, worktree):
       `scripts/brains/dump-transform.mjs` (data-safe rewrite, reusing sql-gen primitives) +
       `spawn --from-dump` + `scripts/verify/verify-dump-spawn.mjs` (fixture dump whose data
       contains the literal "public.thoughts"; byte-identical data assertion).
       verify: suite green with the new script.
-- [ ] **T4 First map line** (live; orchestrator): run restore-point.mjs --live once,
-      appending today's line citing the latest backup release; commit it.
-      verify: the line parses, cites an existing release tag, and carries real HEADs.
+- [x] **T4 First map line** (2026-07-09 UTC, live; orchestrator): brains/
+      restore-points.jsonl born with one real line: backupTag backup-2026-07-08 (last
+      night's actual release, found via gh), soulHead 0116260 (soul repo main via API),
+      bodyHead 17c47e5, generation 0, schemaVersion 1, stateArchive null (Alan's open
+      location decision). Honest wrinkle: rows=null because that release's body carried no
+      parseable total; small parser enhancement noted, not blocking (counts live in the
+      dump itself).
+      verify PASSED: line parses, cites an existing release tag, carries real HEADs.
 - [ ] **STOP - age-key rehearsal** (Alan present, unhurried): decrypt one nightly release
       asset, `spawn --from-dump` it, compare per-table counts against that night's map
       line, optionally converse with the past brain, retire it, ops-log entry. This proves
