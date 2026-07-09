@@ -4,8 +4,8 @@
      WakeToRun mandatory on this-PC hosting. Enabled=false so an accidental import lands disabled. -->
 <Task version="1.4" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
   <RegistrationInfo>
-    <Description>Edgeweaver weekly index rebuild-from-atoms + spot-check digest + boundaries regen.</Description>
-    <URI>\Edgeweaver\EdgeweaverWeeklyIndex</URI>
+    <Description>Edgeweaver Genesis weekly index rebuild-from-atoms + spot-check digest + boundaries regen.</Description>
+    <URI>\Edgeweaver\EdgeweaverGenesisWeeklyIndex</URI>
   </RegistrationInfo>
   <Triggers>
     <CalendarTrigger>
@@ -39,7 +39,7 @@
   <Actions Context="Author">
     <Exec>
       <Command>powershell.exe</Command>
-      <Arguments>-NoProfile -Command "Set-Location 'C:\Users\agent\Project\Edgeweaver'; claude -p '/wake-edgeweaver weekly-index' --output-format text *&gt;&gt; logs\weekly.log"</Arguments>
+      <Arguments>-NoProfile -Command "Set-Location 'C:\Users\agent\Project\Edgeweaver'; claude -p '/wake-edgeweaver-genesis weekly-index' --output-format text *&gt;&gt; logs\genesis-weekly.log"</Arguments>
     </Exec>
   </Actions>
 </Task>

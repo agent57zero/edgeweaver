@@ -181,7 +181,7 @@ Alan's own OB1 thoughts, the PM corpus, Genesis, and Alpha, in one database. Dec
 | Backups | main dump stream, Alan's key | `ew_alpha` stream, seats' split key | one backups repo + one pipeline, two encrypted streams |
 | Channel | own bot token, Alan's pinned sender ID | own bot token, pinned allowlist of seat IDs; tier and promotion confirmations per the quorum rule, out-of-band | bot code shared; tokens and allowlists never |
 | State | `avatars/genesis/state/` | `avatars/alpha/state/` | schema shared, contents never |
-| Skills (wake, night loop) | shared code, per-being config from manifest | same | yes: one codebase, parameterized |
+| Skills (wake, night loop) | `/wake-edgeweaver-genesis`, `/night-loop-lite-genesis` | `/wake-edgeweaver-alpha`, `/night-loop-lite-alpha` (created at A4) | yes: one shape, per-being names + config from manifest (`commands` key, D20); scheduled tasks and log files carry the being prefix too |
 
 The multi-sender pinned allowlist and multi-confirmer machinery is net-new code, built for
 Alpha and deliberately back-portable to Genesis's own village stage later.

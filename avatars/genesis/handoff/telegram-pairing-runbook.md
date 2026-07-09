@@ -23,7 +23,7 @@
    flip `channels.telegram.enabled` in `state/flags.json`, set `paired:true` after step 4.
 4. **Single pairing round-trip** (the one sanctioned live test, then close the session):
    - Connect per the Life Engine recipe: `claude --channels plugin:telegram@claude-plugins-official`
-     with the wake-edgeweaver skill active.
+     with the wake-edgeweaver-genesis skill active.
    - From Alan's account: a message gets an in-persona reply.
    - From ANY other account: only the brief deferral (`channel-policy.js` `DEFERRAL_MESSAGE`),
      sender id logged, Alan notified, never treated as Alan.

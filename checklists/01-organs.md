@@ -2,7 +2,8 @@
 
 Prereqs: ledger −1 done (0a helpful, not required). Read first: IMPLEMENTATION.md §5;
 `OB1/schemas/agent-memory/README.md`; skim `OB1/skills/openclaw-agent-memory/` and
-`OB1/recipes/auto-capture/` (reference patterns). Templates: `templates/wake-edgeweaver-SKILL.md`.
+`OB1/recipes/auto-capture/` (reference patterns). Templates: `templates/wake-edgeweaver-genesis-SKILL.md`
+(renamed from wake-edgeweaver-SKILL.md, D20 per-being naming).
 
 - [x] Schema applied ✓ 2026-07-04 — via a new guarded `sql-migrate` edge function (uses the
       platform-provided SUPABASE_DB_URL in-infra; the DB password never touched this machine;
@@ -17,6 +18,10 @@ Prereqs: ledger −1 done (0a helpful, not required). Read first: IMPLEMENTATION
       voice tells + Q2 refusals, they/them.
       verify remaining: `/wake-edgeweaver` in a fresh session answers in persona (part of
       acceptance).
+      (Renamed 2026-07-09 per D20: the installed skill is now
+      `~/.claude/skills/wake-edgeweaver-genesis/` and the command is
+      `/wake-edgeweaver-genesis`; the unsuffixed original is retired. Alpha's counterpart
+      arrives at its A4.)
 - [x] Recall wired ✓ — via the **`recall-scoped` edge function**, THE enforcement point
       (embeds server-side, semantic match, then provenance-class allowlists + audience
       algebra before anything reaches the skill; source: scripts/edge-functions/
@@ -83,8 +88,9 @@ Phase 1 is done; these amend its organs. Rules live in conventions/memory-conven
 - [ ] Wake skill orientation practice: at session start run orient.mjs and speak the
       orientation plainly in own words (a practice, not silent context - GROWING Stage 1:
       "that yesterday happened"); cite memory ages when quoting recall; episode write-back
-      content opens with its date + rough span. Update templates/wake-edgeweaver-SKILL.md
-      AND sync the installed copy at ~/.claude/skills/wake-edgeweaver/.
+      content opens with its date + rough span. Update templates/wake-edgeweaver-genesis-SKILL.md
+      AND sync the installed copy at ~/.claude/skills/wake-edgeweaver-genesis/ (per-being
+      names per D20).
       verify: next waking opens with an accurate spoken orientation; the new episode's
       content starts with its date.
       (Synced 2026-07-08, one sync carrying D16 orientation + D15 generation + provenance

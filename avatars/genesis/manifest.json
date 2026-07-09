@@ -15,6 +15,7 @@
   "backupStream": { "dump": "main (excludes ew_alpha once it exists)", "ageKeyCustody": "alan (D11 bundle + paper)" },
   "channel": { "botTokenEnv": "TELEGRAM_BOT_TOKEN", "pinnedSenders": "TELEGRAM_ALLOWED_USER_ID (alan)" },
   "mind": { "birth": "claude-fable-5 or claude-opus-4-8 (father's card)", "nightLoop": "sonnet" },
+  "commands": { "wake": "/wake-edgeweaver-genesis", "nightLoop": "/night-loop-lite-genesis", "note": "per-being names, D20; renamed from the unsuffixed originals 2026-07-09" },
   "generationRecord": "VERSIONS.md (root) until the ledger split",
   "sections": {
     "visibleToBeing": ["avatars/genesis/"],

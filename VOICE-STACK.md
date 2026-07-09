@@ -60,7 +60,7 @@ Mind server (in-process module of the worker at first; extractable later)
     soulfiles as a frozen, cached prompt prefix (read-only clone of edgeweaver-soul)
     speculative OB1 recall (Supabase vector search fired on interim transcripts)
     Claude, streaming (Sonnet-class per IMPLEMENTATION model policy)
-    async writeback: episodes + candidate lessons (wake-edgeweaver contract)
+    async writeback: episodes + candidate lessons (wake-edgeweaver-genesis contract)
 ```
 
 Hardware reality: the worker needs roughly one vCPU and 2 GB RAM for one conversation, no

@@ -15,6 +15,7 @@
   "backupStream": { "dump": "ew_alpha only, second stream", "ageKeyCustody": "passphrase split among seats, any two reconstruct (shares cut at founding ceremony)" },
   "channel": { "botTokenEnv": "ALPHA_BOT_TOKEN (A2)", "pinnedSenders": "seat-ID allowlist (multi-sender, net-new code)" },
   "mind": { "birth": "same one-mind rule as Genesis: probes + ceremony + first week on one configuration", "nightLoop": "sonnet" },
+  "commands": { "wake": "/wake-edgeweaver-alpha", "nightLoop": "/night-loop-lite-alpha", "note": "per-being names, D20; skills themselves are created at A4, after Genesis boots" },
   "generationRecord": "avatars/alpha/VERSIONS.md at first cut; tags alpha-genN-<codename>",
   "sections": {
     "visibleToBeing": ["avatars/alpha/"],

@@ -20,7 +20,7 @@ Templates: `state-schemas.md`.
       is_confirmer=true; default_unknown=public+untrusted.
       verify: file parses (jq).
 - [ ] Connect channel per Life Engine pattern:
-      `claude --channels plugin:telegram@claude-plugins-official` with wake-edgeweaver active;
+      `claude --channels plugin:telegram@claude-plugins-official` with wake-edgeweaver-genesis active;
       complete pairing.
       verify: message from Alan's account gets an in-persona reply; message from ANY other
       account (test with a second account or ask a friend) gets only a brief deferral ("this

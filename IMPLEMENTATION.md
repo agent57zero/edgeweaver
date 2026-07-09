@@ -38,7 +38,7 @@ this file wins and the checklist gets fixed. Ground rules:
    `license: CC-BY-SA-4.0` + `attribution: Clinton Callahan / Possibility Management` in
    metadata (see Appendix A of PLAN.md).
 7. **Templates are provided — use them.** `templates/` contains ready skeletons referenced
-   throughout: `decisions.md`, `wake-edgeweaver-SKILL.md`, `soulfile-skeletons.md`,
+   throughout: `decisions.md`, `wake-edgeweaver-genesis-SKILL.md`, `soulfile-skeletons.md`,
    `probe-battery-starter.md`, `night-loop-contracts.md`, `state-schemas.md`,
    `coherence-queries.sql`, `flags.default.json`, `disaster-recovery.md` (9 files).
    Copy and adapt; don't reinvent.
@@ -205,8 +205,8 @@ with governed write-back.
    confirmation=true, review=pending — the README gives the exact query).
 2. **Agent-memory API**: deploy `OB1/integrations/agent-memory-api/` per its README; verify
    `GET /health` → `{"ok":true}`.
-3. **Wake skill**: create `~/.claude/skills/wake-edgeweaver/SKILL.md` from
-   `templates/wake-edgeweaver-SKILL.md` (full draft — includes the recall scoring formula,
+3. **Wake skill**: create `~/.claude/skills/wake-edgeweaver-genesis/SKILL.md` from
+   `templates/wake-edgeweaver-genesis-SKILL.md` (per-being names, D20; full draft — includes the recall scoring formula,
    audience-scoping procedure, degraded-mode behavior, and write-back rules). v1 behavior spec:
    - **Load**: (Phase 1: a stub identity note; Phase 2+: the soulfile repo's SOUL.md,
      CONSTITUTION.md, VOICE.md — clone/pull `edgeweaver-soul` read-only).
@@ -306,7 +306,7 @@ useful proactive contact, cost ceiling set.
    user id (e.g., via @userinfobot) → `TELEGRAM_ALLOWED_USER_ID`. Follow the Life Engine
    recipe's channel setup (`OB1/recipes/life-engine/README.md`, Quick Setup section):
    Claude Code channels plugin (`claude --channels plugin:telegram@claude-plugins-official`)
-   with the wake-edgeweaver skill active.
+   with the wake-edgeweaver-genesis skill active.
    - **Pinned sender enforcement** (PLAN §7): messages from any other user id are treated as
      untrusted content and never as Alan; tier-changing confirmations additionally require
      out-of-band confirmation (Claude Code session on the PC counts as the second channel).

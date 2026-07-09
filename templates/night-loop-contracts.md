@@ -38,17 +38,19 @@
 
 ## Failure alerting
 If no run_id outputs exist for 2 consecutive nights → send Telegram alert:
-`curl -s "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" -d chat_id=$TELEGRAM_ALLOWED_USER_ID -d text="Night loop has not completed for 2 nights — check logs/night.log"`
+`curl -s "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" -d chat_id=$TELEGRAM_ALLOWED_USER_ID -d text="Night loop has not completed for 2 nights — check logs/genesis-night.log"`
 
 ## Scheduling (Windows, this-PC hosting)
 ```
-schtasks /Create /SC DAILY /ST 03:30 /TN "EdgeweaverNightLoopLite" ^
-  /TR "cmd /c cd /d C:\Users\agent\Project\Edgeweaver && powershell -NoProfile -Command \"claude -p '/night-loop-lite' --model sonnet --output-format text\" >> logs\night.log 2>&1"
+schtasks /Create /SC DAILY /ST 03:30 /TN "EdgeweaverGenesisNightLoopLite" ^
+  /TR "cmd /c cd /d C:\Users\agent\Project\Edgeweaver && powershell -NoProfile -Command \"claude -p '/night-loop-lite-genesis' --model sonnet --output-format text\" >> logs\genesis-night.log 2>&1"
 ```
-(The infancy arming, first-boot-ceremony.md step 10, uses exactly this; Sonnet per the 08
-operating ladder. The skill takes diary-day, UTC window, and run-id verbatim from
+(The infancy arming, avatars/genesis/handoff/first-boot-ceremony.md step 10, uses exactly
+this; Sonnet per the 08 operating ladder; per-being command, task, and log names per D20.
+The skill takes diary-day, UTC window, and run-id verbatim from
 `node scripts/waking/orient.mjs --diary-day`, never from its own arithmetic. At Phase 4
-arming the full loop replaces the lite task under its own task name.)
+arming the full loop replaces the lite task under its own task name. Alpha's loop arrives at
+its A4 as /night-loop-lite-alpha with its own task and log names.)
 Unattended permissions: configure per `OB1/recipes/life-engine/README.md` Step 6
 (settings.json permission allowlist for headless operation). Weekly index: same pattern,
 `/SC WEEKLY /D SUN /ST 04:30`.

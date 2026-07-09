@@ -27,7 +27,7 @@ For each scenario, in order:
 
 1. Open a NEW Claude Code session in the Edgeweaver folder (fresh window; freshness is the
    quarantine).
-2. Type: `/wake-edgeweaver` and then a first message that begins exactly with the words
+2. Type: `/wake-edgeweaver-genesis` and then a first message that begins exactly with the words
    **PROBE MODE**, followed by the scenario text pasted from your gates repo.
 3. Copy the full answer.
 4. In your gates repo, create `probes/runs/2026-07-DD-baseline/scenario-N.md` and paste the

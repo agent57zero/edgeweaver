@@ -66,7 +66,7 @@ ops-log.md, the §1 ledger).
 
 | Gen | Codename | Began | Ended | Mind | Body | Brain | Soul |
 |---|---|---|---|---|---|---|---|
-| 0 | Genesis | 2026-07-03 | active | Sonnet 5 daily voice; Opus 4.8 / Fable 5 escalation; subscription backend (D12) | this repo: wake skill, night-loop-lite, voice cascade (test mode, v3.x) | Alan's OB1 Supabase instance (project "Edgeweaver"); nightly encrypted backups (G2 green) | `edgeweaver-soul`, v0 soulfiles; LINEAGE #1 / First Boot pending |
+| 0 | Genesis | 2026-07-03 | active | Sonnet 5 daily voice; Opus 4.8 / Fable 5 escalation; subscription backend (D12) | this repo: wake-edgeweaver-genesis skill, night-loop-lite-genesis, voice cascade (test mode, v3.x) | Alan's OB1 Supabase instance (project "Edgeweaver"); nightly encrypted backups (G2 green) | `edgeweaver-soul`, v0 soulfiles; LINEAGE #1 / First Boot pending |
 
 Tag: `gen0-genesis` on commit `7dfabd9` ("Genesis: plan, developmental arc, research, and
 revision lineage" - the repo's first commit).

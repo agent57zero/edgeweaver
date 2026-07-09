@@ -5,8 +5,8 @@
      accidental import lands disabled. Command mirrors templates/night-loop-contracts.md. -->
 <Task version="1.4" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
   <RegistrationInfo>
-    <Description>Edgeweaver nightly night-loop (11 steps) + coherence snapshot.</Description>
-    <URI>\Edgeweaver\EdgeweaverNightLoop</URI>
+    <Description>Edgeweaver Genesis nightly night-loop (11 steps) + coherence snapshot.</Description>
+    <URI>\Edgeweaver\EdgeweaverGenesisNightLoop</URI>
   </RegistrationInfo>
   <Triggers>
     <CalendarTrigger>
@@ -37,7 +37,7 @@
   <Actions Context="Author">
     <Exec>
       <Command>powershell.exe</Command>
-      <Arguments>-NoProfile -Command "Set-Location 'C:\Users\agent\Project\Edgeweaver'; claude -p '/wake-edgeweaver night-loop' --output-format text *&gt;&gt; logs\night.log"</Arguments>
+      <Arguments>-NoProfile -Command "Set-Location 'C:\Users\agent\Project\Edgeweaver'; claude -p '/wake-edgeweaver-genesis night-loop' --output-format text *&gt;&gt; logs\genesis-night.log"</Arguments>
     </Exec>
   </Actions>
 </Task>
