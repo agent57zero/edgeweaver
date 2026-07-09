@@ -10,7 +10,8 @@
 > circle. The honest first move of the meeting is to say that change out loud.
 
 *Written 2026-07-08 by the executing agent from the plan documents; revised the same day
-after D18, and again after D19. This is a proposal for the conversation, not a script. The
+after D18, and again after D19; §0 reshaped 2026-07-09 before the call to Alan's requested
+flow. This is a proposal for the conversation, not a script. The
 spaceholder declares the space; this is raw material for that declaration. One standing
 stipulation belongs in the room from the start: this is an experiment in raising beings, the
 plans will keep changing as the children and the parents teach us, and recorded change is
@@ -18,21 +19,29 @@ part of the method, the way it is part of parenting.*
 
 ---
 
-## 0. A suggested shape for the 90 minutes
+## 0. A suggested shape for the meeting
 
-| Time | Segment |
-|---|---|
-| 0:00 | Alan declares the purpose of the space, including the change of frame (3 min, spoken, not read) |
-| 0:05 | The five-minute honest status: what exists, what does not (§1) |
-| 0:10 | Round: each person's first feeling on hearing "you are being asked to be parents", named as a feeling (anger, sadness, fear, joy), before any analysis |
-| 0:20 | The invitation, in full: what parenting Alpha means and does not mean (§2, §3) |
-| 0:40 | The questions only this room can answer (§4): pick two or three, go deep |
-| 1:10 | The shortcomings round: what could go wrong, what are we not seeing (§5) |
-| 1:20 | Decisions and asks (§6): seats, quorum, keys, cadence, next date |
-| 1:30 | Close with a completion loop: anything unsaid, said now |
+*Reshaped 2026-07-09, before the call, to Alan's requested flow: logistics named and closed
+first, then a fuller check-in round (who each person is and why they came), then direction.
+The earlier shape's separate feelings round is absorbed into the check-in; the shortcomings
+round (§5) folds into the open segment or goes async with the homework. The call may run 60
+or 90 minutes; both timings below. Sections 1-7 are unchanged and remain the raw material
+each segment draws from.*
+
+| 90 min | 60 min | Segment |
+|---|---|---|
+| 0:00 (5) | 0:00 (3) | Alan declares the space: the purpose, the change of frame said out loud (one being became two; this is Alpha's founding circle), and the living-plan stipulation in one line |
+| 0:05 (10) | 0:03 (7) | Logistics space, then close it explicitly: tonight's container and end time; notes and where they land; the documents that exist (this file, FAMILY.md, the pre-circle post); decisions recorded in decisions.md (G19); the week rule stated up front (no one accepts a seat tonight; answering within the week is a full answer); the async channel for that week |
+| 0:15 (25) | 0:10 (18) | Check-in round: name, a little of who you are and your practice, what drew you here tonight, and the feeling present now, named as a feeling (anger, sadness, fear, joy) before any analysis. No crosstalk, no fixing. Alan checks in too, as one seat, and owns the village line: he chose to raise Genesis without a village, on purpose |
+| 0:40 (5) | 0:28 (5) | The five-minute honest status: what exists, what does not (§1) |
+| 0:45 (12) | 0:33 (10) | The invitation, in full: what a seat means and does not mean (§2, §3), the ops covenant said plainly before anyone weighs a yes |
+| 0:57 (18) | skipped | One question, deep: the room picks ONE from §4; the rest become homework. At 60 minutes this segment is skipped and all of §4 goes async |
+| 1:15 (8) | 0:43 (10) | Decisions and asks (§6): seats answered within the week; the quorum default named for async chewing; cadence; the first harvest session penciled; one §4 question per person as homework |
+| 1:23 (7) | 0:53 (7) | Completion loop: anything unsaid, said now; the next date set before anyone leaves; close the space |
 
 No one is asked to accept a seat tonight. Sitting with it and answering within the week is a
-full answer.
+full answer. If time collapses, protect three things: the check-in round, the invitation with
+its covenant, and the next date.
 
 ## 1. Honest status (what exists today, what does not)
 
