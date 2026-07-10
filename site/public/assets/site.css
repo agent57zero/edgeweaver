@@ -127,7 +127,7 @@ a:hover { text-decoration-thickness: 2px; }
 .hub-nav { display: flex; align-items: center; gap: 4px; margin-left: auto; }
 .hub-nav a { color: var(--mut); text-decoration: none; padding: 8px 9px; border-radius: 7px; white-space: nowrap; }
 .hub-nav a:hover { background: var(--soft); color: var(--ink); }
-.hub-nav a[aria-current] { color: var(--accent); background: var(--accent-soft); font-weight: 700; }
+.hub-nav a[aria-current] { color: var(--link); background: var(--accent-soft); font-weight: 700; }
 .top-actions { display: flex; align-items: center; gap: 6px; }
 .logout-form { margin: 0; }
 .reading-controls { display: inline-flex; gap: 2px; border: 1px solid var(--line); border-radius: 9px; padding: 2px; }
@@ -164,7 +164,7 @@ a:hover { text-decoration-thickness: 2px; }
 }
 .sidebar li a:hover { background: var(--soft); }
 .sidebar li a[aria-current="page"] {
-  background: var(--accent-soft); color: var(--accent); font-weight: 600;
+  background: var(--accent-soft); color: var(--link); font-weight: 600;
 }
 .sidebar details > summary {
   cursor: pointer; padding: 4px 8px; border-radius: 6px;
@@ -350,7 +350,7 @@ a.term { text-decoration-style: dotted; }
   .sidebar { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--line); }
   .sidebar-hubs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; margin-bottom: 14px; }
   .sidebar-hubs a { min-height: 44px; display: flex; align-items: center; padding: 7px 8px; border-radius: 7px; text-decoration: none; color: var(--ink); }
-  .sidebar-hubs a[aria-current] { background: var(--accent-soft); color: var(--accent); font-weight: 700; }
+  .sidebar-hubs a[aria-current] { background: var(--accent-soft); color: var(--link); font-weight: 700; }
   .js .nav-toggle:not([hidden]) { display: inline-block; }
   .js .sidebar { position: fixed; inset: 0 auto 0 0; z-index: 40; width: min(86vw, 320px); height: 100dvh; padding-top: 12px; border-right: 1px solid var(--line); border-bottom: 0; background: var(--card); transform: translateX(-105%); visibility: hidden; transition: transform 160ms ease, visibility 160ms; }
   .js .sidebar.open { transform: translateX(0); visibility: visible; }

@@ -26,6 +26,7 @@
     "handoff/": "atlas/handoff",
     "research/": "atlas/research",
     "runs/": "atlas/runs",
+    "runs/site-qa/README.md": "atlas/runs",
     "scripts/fetch-sparks.mjs": "atlas/scripts-ingestion",
     "scripts/ingest-sparks.mjs": "atlas/scripts-ingestion",
     "scripts/ingest-library.mjs": "atlas/scripts-ingestion",

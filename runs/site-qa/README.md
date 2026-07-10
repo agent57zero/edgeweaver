@@ -8,9 +8,9 @@ HTTP server; no password, account, or private endpoint was used.
 
 - Release ID: `ew-20260710-rc1`
 - Candidate commit: recorded at the release freeze (S2 approval is still pending)
-- Full artifact SHA-256: `9007A7298EDCDE7372C8A0C6246DA02F49880080B46EAC241FC8E66B1F3E6576`
-- Lite artifact SHA-256: `6610B1CFB41B3D9A4B3EB886BF337E33502291EFD21DB3C0D796B9EB488E5167`
-- Public-byte manifest SHA-256 (58 sorted `site/public/` paths): `567FE25542C25453FBDAE48AC6CF40E5B3A606D07828B40ADF9D2186FC50E5A6`
+- Full artifact SHA-256: `541CC8E9206939AA2AE22394C54A7AFDBF9BEAB81B8E2315D20890D2024E4120`
+- Lite artifact SHA-256: `FEA2085B5590E0A191E1673775ABA8360F11891DAE50577249449B59DDFD9304`
+- Public-byte manifest SHA-256 (58 sorted `site/public/` paths): `941F9524F20E38CDC20F03A62CB3C0E25F8ECCD64C3BBD793A59347BF7F7CF84`
 - Deployed-byte hashes: not applicable until the inspected RC is manually promoted under F7.
 
 ## Automated and browser checks
@@ -33,12 +33,12 @@ HTTP server; no password, account, or private endpoint was used.
   `scripts/site/build-site.mjs`; artifact search returned 37 results for `waking`.
   Plain, Technical, Both, and dark-theme controls changed their visible state.
 - Full and lite artifacts each had one main landmark, the expected toolbar, local
-  search behavior, and no extra-high horizontal overflow. Full contained 244 Atlas
+  search behavior, and no extra-high horizontal overflow. Full contained 246 Atlas
   entries; lite contained the one-line mapped destinations.
 - No-JS sandbox checks on Home, System, and the full artifact showed no `.js` class,
   hidden Search/Lens/Menu enhancements, and both registers visible where paired.
-- Headless Edge print checks produced valid PDFs: Home 111,227 bytes and 4 pages,
-  System 194,672 bytes and 8 pages, full artifact 4,708,509 bytes and 272 pages.
+- Headless Edge print checks produced valid PDFs: Home 130,397 bytes and 4 pages,
+  System 194,561 bytes and 8 pages, full artifact 4,723,386 bytes and 274 pages.
 
 ## Screenshot evidence
 
@@ -46,12 +46,12 @@ Screenshots are cropped viewport captures in ignored `state/site-qa/`:
 
 | Capture | SHA-256 |
 |---|---|
-| `extra-high-index-light.png` | `670811D142203586B885F8F845C9C317EFD21A27212936C758EF5A9A5473DEE5` |
-| `extra-high-index-dark.png` | `6E4279C9C87D4FD03EEA82C4A75494A47E422ECCCE99FB17D6D75FF4B6CC82BF` |
-| `zoom200-index-light.png` | `F9D34F4F35DB41965D22EBB304B8DBB132B4824F0670E04E6BFEB9A358973706` |
-| `zoom200-index-dark.png` | `0E9B97DE495FFF20CDBDD69C79A0CCC14B696E76FAFE71D66C6638CA7465EB1F` |
-| `mobile-index-light.png` | `D52F706F1F6A3BB3016E1BBB16202065E3C3618B6F758342E4E3EB7758035685` |
-| `mobile-index-dark.png` | `9DA1632B6EBBD50FDCB4884763E6E16305A4C7BD4344E21F6F9B3B0DD468707F` |
+| `extra-high-index-light.png` | `2E7DDB05B87CAF179E1D847B073B3C2FF0E0A76C061E82E1F44D9124FEC16858` |
+| `extra-high-index-dark.png` | `9BF9E20641817934E37827744A3076B3D7B725788632FEA7B5DF5854DD1D5318` |
+| `zoom200-index-light.png` | `46BA8FD135398028B7C9D6207FE07921A086CE35F65311B1959C16F290FE4D59` |
+| `zoom200-index-dark.png` | `5900919CC8E383BEFE7F0D49407D0C0C5263B4EA0C29596554A102A116D9DD09` |
+| `mobile-index-light.png` | `39C111E3E285A382040EA1AD1CBBFED9E73C8CF845A5AC346B60F761CDC66196` |
+| `mobile-index-dark.png` | `1B30BBEC326FE29DC818B252EA9E94581D21B0193BD51CA9ABF15128AF1AC268` |
 
 ## Remaining human evidence
 

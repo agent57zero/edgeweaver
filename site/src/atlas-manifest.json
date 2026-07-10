@@ -106,6 +106,7 @@
     "file-runs-exec-pack-evolved-md": "atlas/runs",
     "file-runs-fable-adversarial-pass-md": "atlas/runs",
     "file-runs-site-plan-md": "atlas/runs",
+    "file-runs-site-qa-README-md": "atlas/runs",
     "file-runs-temporal-awareness-coevolve-md": "atlas/runs",
     "file-scripts-brains-ab-run-mjs": "atlas/scripts-brains",
     "file-scripts-brains-db-mjs": "atlas/scripts-brains",

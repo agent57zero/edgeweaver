@@ -18,7 +18,7 @@ review, including Windows Narrator smoke evidence and approval against the candi
 
 The 27 non-Atlas pages and all 26 Atlas pages now have authored content in the
 working tree; the generated search index, artifacts, and Atlas manifest are rebuilt
-by the M4 checkpoint. The Repo Atlas covers 244 individually mapped tracked paths
+by the M4 checkpoint. The Repo Atlas covers 246 individually mapped tracked paths
 plus 59 paths represented by named exclusion classes.
 Root `AGENTS.md` is unrelated and remains unstaged unless Alan separately decides
 to track and map it.

@@ -9,8 +9,9 @@
 > and release. V3 governs everything else. PLAN.md, GROWING-EDGEWEAVER.md, and
 > FAMILY.md remain higher authority.
 
-Version: v4, EXECUTION HANDOFF. Audit date: 2026-07-09. Content snapshot remains
-2026-07-09 until the M6 reconciliation deliberately changes it.
+Version: v4, EXECUTION HANDOFF. Audit date: 2026-07-09. The M6 reconciliation set
+the site-wide content snapshot to 2026-07-10; historical event dates remain dated
+where they occurred.
 
 ## How Luna must use this plan
 
