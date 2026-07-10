@@ -9,13 +9,15 @@ both children's views, like FAMILY.md and village/. Snapshot date for all conten
 
 The current execution handoff is `runs/site-plan.md` v4, from **How Luna must use
 this plan** through **Definition of done**. Its F0-F7 sequence supersedes the
-historical M0-M6 build sequence retained later in that file.
+historical M0-M6 build sequence retained later in that file. S0 and S1 closed on
+2026-07-10; approved candidate `cc31144` is the M3 safety/content baseline. F2 is
+next: freeze the shared navigation, search, reading-lens, and accessibility contract.
 
-Do not discard the current working tree. It contains all nine M3 pages plus
-Reproduction and the expanded Glossary as uncommitted drafts, together with their
-fresh generated artifacts. The Repo Atlas anchors are wired but all 26 Atlas pages
-still need their explanatory content. Root `AGENTS.md` is unrelated and remains
-unstaged unless Alan separately decides to track and map it.
+The nine M3 pages, Reproduction draft, expanded Glossary, generated artifacts, and
+release redaction wall are committed on `codex/finish-edgeweaver-site`. The Repo
+Atlas anchors are wired but all 26 Atlas pages still need explanatory content.
+Root `AGENTS.md` is unrelated and remains unstaged unless Alan separately decides
+to track and map it.
 
 Parallel execution uses one orchestrator, Luna as lead/integrator, and two balanced
 Atlas authors. Only Luna may touch shared/generated site surfaces; only the
@@ -71,7 +73,7 @@ name + seat; published authors cited.
 | M0.5 | Gate spike: stub deploy behind throwaway password, smoke test | ☑ 2026-07-09 (prod alias live, gate 401s every path, wrong-pw 401, cookie flow green; middleware attaches on framework-less static, risk 1 retired) |
 | M1 | Spine: index, honesty, guide, system, story, status + D1 D2 D3 D17 D18; Alan checkpoint | ☑ 2026-07-09 (six pages authored + glossary 30-term seed; D3 family map deferred to family.html at M2; all 242 atlas anchors pre-planted, drift zero; checkpoint posted as digest under Alan's keep-going goal) |
 | M2 | System core: memory, soul, loops, growth, measurement, governance, family, segmentation + D4-D11 D15 D20; digest | ☑ 2026-07-09 (eight pages authored; D5 and D15 rendered as precise HTML tables rather than SVG, recorded deviation; about.html + faq.html pulled forward from M5) |
-| M3 | Beings + infrastructure: genesis, alpha, body, voice, brain-lab, backups, operations, dark-build, ecosystem + D12-D14 D16; digest | ☐ |
+| M3 | Beings + infrastructure: genesis, alpha, body, voice, brain-lab, backups, operations, dark-build, ecosystem + D12-D14 D16; digest | ☑ 2026-07-10 (candidate `cc31144` approved by Alan; G3/Alpha/status truth repaired; identity and operational disclosure redacted; `--redaction` + full suite green) |
 | M4 | Atlas: 26 pages, every tracked file anchored, zero drift; digest | ☐ |
 | M5 | Reference: reproduction, faq, glossary full, about + D19; digest | ☐ |
 | M6 | Editions + QA + TLDR reconciliation; Alan checkpoint | ☐ |

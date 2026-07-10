@@ -81,6 +81,11 @@ never committed, uploaded, quoted, or used as the final source.
 
 ### STOP S0: contain deployment before the first push
 
+**Closed 2026-07-10.** The authenticated Vercel CLI reported that no Git
+repository is connected to the project. Unauthenticated checks of the root, a
+served asset, a nested Atlas path, and a missing path each returned the password
+gate with HTTP 401. Manual CLI deployment remains the only approved release path.
+
 Alan checks Vercel Project Settings > Git. If the repository is connected, he
 disconnects it or disables deployment for all branches. Vercel creates deployments
 for pushes to connected repositories by default, so no finish-branch or `main`
@@ -119,6 +124,12 @@ Luna alone performs this pass before other authors fan out:
    denylist categories are missing.
 
 ### STOP S1: retrospective M1 approval
+
+**Closed 2026-07-10.** Alan approved candidate
+`cc3114402d3421e9b39d70d86b113e2a8d4d9cb1` after the corrected Honesty, Voice,
+known-gap, G3, Alpha A1, canonical-identity, and coordinate-redaction pass.
+Default, live, redaction, and the full repository suite were green. Decision D23
+records the D21 amendments and the repository-private rule.
 
 After the corrected Honesty, Voice, known-gap, status, and redaction material is
 ready, Luna builds, passes `verify-site --redaction`, and creates a local candidate
