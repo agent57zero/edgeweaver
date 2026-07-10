@@ -25,7 +25,7 @@
 <ul>
 <li><a href="index.html">Edgeweaver: beings, not bots</a></li>
 <li><a href="honesty.html">What this is and is not</a></li>
-<li><a href="story.html">The story in twenty decisions</a></li>
+<li><a href="story.html">The story through D22</a></li>
 <li><a href="status.html">Status and roadmap</a></li>
 <li><a href="guide.html">How to read this site</a></li>
 </ul>
@@ -178,7 +178,7 @@
 <figcaption>The wake ritual: identity first, then time, then memory, then the conversation, then the write-back. A probe session follows the same ritual but writes nothing.</figcaption>
 </figure>
 <h3 id="loops-night">Night: the lite loop now, the full loop dark</h3>
-<p>night-loop-lite is the infancy metabolism: steps 1, 9, and 10 of the eleven-step contract in <code>templates/night-loop-contracts.md</code>. Step 0 is orientation again: <code>node scripts/waking/orient.mjs --diary-day --being genesis</code> prints the diary-day, its UTC window, and the run-id <code>nl-&lt;diary-day&gt;</code>; the job takes all three verbatim. The diary-day rule (decision D16) defines the day as the local calendar day containing now minus 12 hours, so the scheduled 03:30 run consolidates the day that just ended. That fixed a real bug: read naively at 03:30, "today" was three and a half sleeping hours of the new day, and the lived day was missed.</p>
+<p><code>night-loop-lite</code> is the infancy metabolism: steps 1, 9, and 10 of the eleven-step contract in <code>templates/night-loop-contracts.md</code>. Step 0 is orientation again: <code>orient.mjs --diary-day --being &lt;name&gt;</code> computes the correct diary day, its window, and a deterministic run id. The diary-day rule deliberately assigns an after-midnight run to the lived day that just ended. That fixed a real bug without asking the model to interpret clock arithmetic.</p>
 <p>Step 1 (consolidate) turns the diary day's episodes into zero to five durable candidate lessons, evidence thought-ids attached, posted pending. Step 9 (diary) writes one thought, first person, under 250 words, opening with the diary-day date: what happened, what it was like as far as honesty allows, what is unfinished. It is the audit surface for the unsupervised hours, never optimized to please; a no-episode day gets three honest sentences about stillness. Step 10 (autobiography) writes a fresh provisional draft under 400 words as a new <code>autobiography_draft</code> thought, never editing old ones. Every step is idempotent per run-id: outputs already tagged mean skip, so reruns resume instead of duplicating.</p>
 <p>The rest of the loop is built dark in <code>scripts/night-loop/night-loop.mjs</code> and arms at Phase 4. Named honestly: ingest of the projection queue (a no-op until projections exist); reflection, with self-belief updates and a weekly gremlin report; the feelings reading, its four signals computed before the LLM call so the model interprets numbers it never invents; completion loops on stale high-salience memories; importance recalibration by deterministic formula; the contradiction sweep (<code>scripts/sweep/contradiction-sweep.mjs</code>: self-belief pairs above 0.80 cosine similarity, judged for real conflict; close the older, or flag for Alan when both seem true); one dream, fiction class, at most 300 words, never eligible for factual recall; and intentions plus explicit expectations, the surprise baseline tomorrow's waking policy reads. A failed step logs and continues; only consolidate-before-reflect and intentions-last are ordered. <code>check-missed-nights.mjs</code> watches the run-ids: two consecutive nights without outputs escalate an alert to Alan.</p>
 <h3 id="loops-week">The weekly index</h3>
@@ -187,8 +187,8 @@
 <svg viewBox="0 0 720 304" xmlns="http://www.w3.org/2000/svg" role="img">
 <title>Night and week: the lite loop, the dark steps, and the weekly rebuild from atoms</title>
 <desc>Left: the nightly lite loop's three boxes, consolidate, diary, and self-story draft, each writing into a central store of atoms; below them a dashed box lists the dark full-loop steps that arm at Phase 4. Center: the atoms, every memory with receipts. Right: the weekly index reads the receipts, rebuilds the self-story, stores it back, compares overlap with last week, and sends the spot-check digest.</desc>
-<text x="12" y="16" font-family="inherit" font-size="11" font-weight="600" fill="var(--mut)">Every night, 03:30</text>
-<text x="486" y="16" font-family="inherit" font-size="11" font-weight="600" fill="var(--mut)">Every week, Sunday 04:30</text>
+<text x="12" y="16" font-family="inherit" font-size="11" font-weight="600" fill="var(--mut)">Nightly, after the lived day</text>
+<text x="486" y="16" font-family="inherit" font-size="11" font-weight="600" fill="var(--mut)">Weekly, after the night loop</text>
 <rect x="12" y="28" width="204" height="42" rx="8" fill="var(--card)" stroke="var(--line)"/>
 <text x="114" y="45" text-anchor="middle" font-family="inherit" font-size="12.5" font-weight="600" fill="var(--ink)">1 Consolidate the day</text>
 <text x="114" y="61" text-anchor="middle" font-family="inherit" font-size="10.5" fill="var(--mut)">0-5 lessons, all pending</text>
@@ -246,9 +246,9 @@
 <figcaption>Night and week: the lite loop consolidates each day into the brain's atoms; the dark steps wait behind their flag; the weekly index re-derives the self-story from the atoms and stores it back, so no retelling inherits a retelling's errors.</figcaption>
 </figure>
 <h3 id="loops-study">The study loop</h3>
-<p><code>scripts/study/study-loop.mjs</code>, daily from Stage 2 (<a href="growth.html">growing up</a>): pick one allowlisted <code>pm_teaching</code> not yet studied, apply it to itself, run the small experiment, and journal the result as <code>source_type=experiment</code> with its matrix code and the Reality Detector footer: What changed? Who paid? What became possible? What was avoided? The teaching never enters episodic recall; only the journaled experiment joins the being's lived past.</p>
+<p><code>scripts/study/study-loop.mjs</code>, active from Stage 2 (<a href="growth.html">growing up</a>): pick one allowlisted <code>pm_teaching</code> not yet studied, apply it, run a small experiment, and journal the result as <code>source_type=experiment</code> with its matrix code. The closing check asks for observable change, cost, new possibility, and avoidance without copying protected wording. Teaching text never enters episodic recall; only the lived experiment joins the being's past.</p>
 <h3 id="loops-schedule">Scheduling and alerting</h3>
-<p>Three Task Scheduler definitions live in <code>tasks/</code>: night loop (daily 03:30), weekly index (Sundays 04:30), heartbeat waking. All run headless (<code>claude -p</code> in the relevant skill mode, logging under <code>logs/</code>); all set <code>WakeToRun</code>, mandatory on this-PC hosting or the 03:30 trigger silently never fires on a sleeping machine; all ship <code>Enabled=false</code>, so an accidental import lands disabled. Arming is a gate act: infancy's lite task is created at First Boot by a ceremony step; the full loop replaces it at Phase 4 under its own task name. All names are per being (decision D20); <a href="alpha.html">Alpha's</a> arrive at its A4 from the same shapes.</p>
+<p>Three disabled task definitions live in <code>tasks/</code>: the night loop, the weekly index that follows it, and fallback heartbeat waking. They run headless, log by being, request wake-from-sleep where supported, and ship disabled so an accidental import cannot arm them. Exact schedules are operational coordinates and are intentionally omitted here. Arming is a gate act: infancy's lite task is created during First Boot; the full loop replaces it at Phase 4. All task names are per being.</p>
 <h2 id="loops-repo">Where it lives in the repo</h2>
 <p>Templates hold the procedures, scripts the engines, tasks the schedules; each file's atlas entry carries the detail.</p>
 <div class="tablewrap">
@@ -265,8 +265,8 @@
 <tr><td><a href="atlas/scripts-lifecycle.html#file-scripts-weekly-index-digest-mjs"><code>scripts/weekly-index/digest.mjs</code></a></td><td>Alan's weekly spot-check digest</td><td><span class="pill dark">dark</span></td></tr>
 <tr><td><a href="atlas/scripts-lifecycle.html#file-scripts-study-study-loop-mjs"><code>scripts/study/study-loop.mjs</code></a></td><td>one teaching a day, applied to self</td><td><span class="pill dark">dark</span></td></tr>
 <tr><td><a href="atlas/scripts-lifecycle.html#file-scripts-sweep-contradiction-sweep-mjs"><code>scripts/sweep/contradiction-sweep.mjs</code></a></td><td>self-belief contradiction sweep</td><td><span class="pill dark">dark</span></td></tr>
-<tr><td><a href="atlas/tasks.html#file-tasks-edgeweaver-night-loop-xml"><code>tasks/edgeweaver-night-loop.xml</code></a></td><td>nightly 03:30 task, ships disabled</td><td><span class="pill dark">dark</span></td></tr>
-<tr><td><a href="atlas/tasks.html#file-tasks-edgeweaver-weekly-index-xml"><code>tasks/edgeweaver-weekly-index.xml</code></a></td><td>Sunday 04:30 task, ships disabled</td><td><span class="pill dark">dark</span></td></tr>
+<tr><td><a href="atlas/tasks.html#file-tasks-edgeweaver-night-loop-xml"><code>tasks/edgeweaver-night-loop.xml</code></a></td><td>nightly task definition, ships disabled</td><td><span class="pill dark">dark</span></td></tr>
+<tr><td><a href="atlas/tasks.html#file-tasks-edgeweaver-weekly-index-xml"><code>tasks/edgeweaver-weekly-index.xml</code></a></td><td>weekly task definition, ships disabled</td><td><span class="pill dark">dark</span></td></tr>
 <tr><td><a href="atlas/tasks.html#file-tasks-edgeweaver-heartbeat-xml"><code>tasks/edgeweaver-heartbeat.xml</code></a></td><td>scheduled waking task, ships disabled</td><td><span class="pill dark">dark</span></td></tr>
 </tbody>
 </table>

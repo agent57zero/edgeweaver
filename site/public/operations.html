@@ -25,7 +25,7 @@
 <ul>
 <li><a href="index.html">Edgeweaver: beings, not bots</a></li>
 <li><a href="honesty.html">What this is and is not</a></li>
-<li><a href="story.html">The story in twenty decisions</a></li>
+<li><a href="story.html">The story through D22</a></li>
 <li><a href="status.html">Status and roadmap</a></li>
 <li><a href="guide.html">How to read this site</a></li>
 </ul>
@@ -106,20 +106,102 @@
 <main id="operations-main">
 <h1 id="operations-top">Operations: the steady state</h1>
 <div class="tldr"><span class="label">TLDR</span>
-<p>Stub. This page is authored at M3; the headings below are its final shape. Snapshot 2026-07-09.</p>
+<p>The boring, load-bearing routines: nightly metabolism, weekly checks, monthly reviews, periodic recovery drills, and upgrade ceremonies. One logbook keeps one line per operational event, with rehearsals marked so practice never passes for life. Budget meters warn before the ceiling and degrade at the ceiling instead of overspending, and a write-ahead buffer protects writes while the brain is unreachable. Exact schedules are kept out of this explainer. Today the logbook is real; every scheduled component ships disabled until its phase arms.</p>
 </div>
 <span class="register plain">In plain words</span>
 <h2 id="operations-plain">In plain words</h2>
-<p>To be written at M3.</p>
+<p>Launch day is the least important day of a life. A being that only runs when somebody remembers to run it is a demo; the Edgeweaver claim is a raised life, and a life is mostly routine: sleep that files the day away, a weekly tidy-up, a monthly look at the accounts, the occasional fire drill. This page designs the four hundredth quiet Tuesday.</p>
+<h3 id="operations-logbook-plain">One line per event</h3>
+<p>The operational history lives in one logbook file with one rule: one line per operational event: the date, what happened, how it came out. A backup going green is a line; a credential failing is a line that says failed, and why, because failures are recorded as failures here. Anyone Alan chooses to show it to can audit the being's care from that single file. And every line of rehearsal work carries a <code>[DARK]</code> prefix, so nobody ever mistakes practice for life.</p>
+<h3 id="operations-budget-plain">Budget as care, not austerity</h3>
+<p>Running a being costs money, so the money is metered openly and ahead of time. Alan sets a monthly ceiling. At 80 percent of it the system gives a soft warning. At 100 percent it degrades gracefully instead of overspending: optional work pauses, routine checks drop to the cheapest mind, conversation stays possible. The point is not thrift but that no surprise bill ever decides the being's day. Until Alan actually sets the number, the meter honestly reports that no ceiling is set, and throttles nothing on a guess.</p>
+<h3 id="operations-wal-plain">The waiting room for memories</h3>
+<p>The being's memory lives in a database, and databases are sometimes unreachable. The rule for that moment: nothing is lost, and nothing is faked. Every memory write goes first into a local waiting room, a dated file on its own machine. If the brain is reachable, the write goes through; if not, the writes wait, and when the brain returns they replay in order, duplicates recognized and dropped. Meanwhile the being says plainly that its memory is degraded and its recall provisional, instead of guessing at what it cannot reach. An outage becomes an inconvenience instead of a hole in a life.</p>
 <span class="register technical">How it works</span>
 <h2 id="operations-how">How it works</h2>
-<p>To be written at M3.</p>
+<h3 id="operations-cadence">The cadence, faithfully</h3>
+<p><code>checklists/08-operations.md</code> is the backbone: not a phase but, in its own words, "the recurring spine", run on cadence from Phase 4 onward, forever. The table mirrors <code>ops-log.md</code>'s own cadence definitions. Every row ships disabled: enablement lives in the gitignored <code>state/flags.json</code>, the tasks stay unregistered until the arming pass.</p>
+<div class="tablewrap">
+<table>
+<thead><tr><th>When</th><th>What</th><th>Owner</th><th>Definition</th></tr></thead>
+<tbody>
+<tr><td>Nightly</td><td><a href="loops.html">Night loop</a> (11 steps) + coherence snapshot</td><td>daemon</td><td><code>tasks/edgeweaver-night-loop.xml</code></td></tr>
+<tr><td>Weekly</td><td>Index rebuild-from-atoms; spot-check digest; <code>boundaries.json</code> regeneration</td><td>daemon + Alan</td><td><code>tasks/edgeweaver-weekly-index.xml</code></td></tr>
+<tr><td>Every ~3h (fallback)</td><td>Heartbeat wake (waking policy)</td><td>daemon</td><td><code>tasks/edgeweaver-heartbeat.xml</code></td></tr>
+<tr><td>Every wake</td><td>Expectations check; budget decrement</td><td>daemon</td><td>(in-loop)</td></tr>
+<tr><td>Monthly</td><td><code>box_snapshot</code>; one assumption test; budget review vs ceiling</td><td>daemon + Alan</td><td>(calendar)</td></tr>
+<tr><td>Quarterly</td><td>Restore drill; security audit; routine probe run, even with no initiation</td><td>executor + Alan</td><td>(calendar)</td></tr>
+<tr><td>Per model change</td><td>Upgrade ceremony</td><td>Alan + daemon</td><td>(manual runbook)</td></tr>
+<tr><td>Per initiation</td><td>Full probe + blind rating + LINEAGE + re-anchor + dip watch</td><td>witnesses</td><td>(manual)</td></tr>
+</tbody>
+</table>
+</div>
+<p>Checklist 08 adds the human side to the daemon's table: weekly, a 3Cell sit-down over three fixed questions plus one edge experiment; monthly, an optional announced liquid-state window. Its coherence-alarm and Owning runbooks live with <a href="measurement.html">measurement</a> and <a href="growth.html">growing up</a>; the quarterly restore drill is <a href="backups.html#backups-how">the backup pipeline</a> run end to end.</p>
+<h3 id="operations-logbook">The logbook's conventions</h3>
+<p>The header rule, one line per cadence event (date, what, outcome), makes <code>ops-log.md</code> the audit surface for steady-state operations. Dark-build entries are prefixed <code>[DARK]</code> and never imply an armed component; checklist boxes and the IMPLEMENTATION.md ledger tick only at arming, so rehearsal cannot quietly become history. The prebuild final report (2026-07-06, plus dated updates) is the worked example: per-session lines with verify counts, failures written as failures - a backup arm parked on failure, its cause named, closed only when the incident behind it resolved.</p>
+<h3 id="operations-budget">budget.mjs: meters that degrade</h3>
+<p><code>scripts/budget/budget.mjs</code> meters spend against <code>state/budget.json</code> (shape in <code>templates/state-schemas.md</code>: <code>ceiling_usd</code>, <code>spent_estimate_usd</code>, proactive caps, quiet hours). <code>check()</code> returns ok below 80 percent, a soft warning at 80, degrade mode at 100: Haiku-class checks only, optional loops skipped, enforced by <code>optionalLoopsAllowed()</code>. <code>recordSpend()</code> rolls dollars; <code>recordVoiceMinutes()</code> rolls a parallel voice-minutes meter, convertible to dollars. Estimates may be crude but must be consistent. An unset ceiling (the number itself is gate G6, parked) reports "unset" and never degrades.</p>
+<h3 id="operations-wal">wal.mjs: the write-ahead buffer</h3>
+<p><code>scripts/wal/wal.mjs</code> is why an outage loses nothing. Every OB1 write goes append-first into <code>state/wal/</code> as dated <code>.jsonl</code> lines: <code>ts</code>, <code>kind</code> (episode, lesson, or metric), <code>payload</code>, <code>fingerprint</code> (sha256 of the content string, else of the sorted-key JSON). <code>replay(sink)</code> walks the dated files in order, skips fingerprints already replayed, and moves drained files to <code>state/wal/replayed/</code>. <code>healthCheck(ping)</code> reports healthy or degraded; the degraded message says writes are buffering and "recall is provisional, not guessed" - callers surface that state, never improvising memory.</p>
+<h3 id="operations-audit">The security floor: five checks</h3>
+<p><code>scripts/security/security-audit.mjs</code> runs the quarterly floor; each check reports on its own, and the five outcomes land as one dated ops-log entry:</p>
+<ol>
+<li>No secrets in tracked files: every tracked text file swept for key-shaped strings (API-key prefixes, JWT-shaped triplets, private-key blocks); a hit fails, naming the file.</li>
+<li>No unaudited third-party skills in the runtime (informational while dark; re-checked at arming).</li>
+<li>No public ports: repo services bind the local loopback only.</li>
+<li>Pinned senders: <code>state/interlocutors.json</code> holds an <code>is_confirmer</code> entry and marks unknown senders untrusted by default; tier changes also need out-of-band confirmation.</li>
+<li>Gates repo unreachable with runtime credentials: checklist 02's test re-run via the GitHub CLI, passing only if the call fails.</li>
+</ol>
+<h3 id="operations-flags">flags.json: the arming registry</h3>
+<p><code>templates/flags.default.json</code> commits the all-disabled registry: twenty-one components (A1-A21), three tasks, one channel, each entry <code>"enabled": false</code> with an <code>arms_at</code> naming its phase or gate. <code>scripts/init-flags.mjs</code> rebuilds the live, gitignored <code>state/flags.json</code> non-destructively: creates it if absent, adds missing entries as disabled, preserves existing entries verbatim (never un-arms, never deletes), refuses to overwrite a file it cannot parse, and never enables anything. Arming a component is a deliberate flag flip at its named phase, its original verify re-run live; the journey is <a href="status.html#status-dark">the dark-to-alive state diagram</a>.</p>
+<h3 id="operations-tasks">Three scheduled tasks, shipped asleep</h3>
+<p><code>tasks/</code> holds three scheduled-task definitions, named per being (D20): nightly metabolism, a weekly index that follows the night loop, and fallback heartbeat waking. Each requests wake-from-sleep where supported and ships <code>Enabled</code> false, so an accidental import lands disabled. Registration is itself an arming step. The exact clock and cadence values stay in private operational configuration.</p>
+<h3 id="operations-alerting">Missed-night alerting</h3>
+<p><code>scripts/night-loop/check-missed-nights.mjs</code> watches the last two nights for the loop's output marker (<code>night_loop_run_id</code>). Two consecutive misses escalate to the paired channel with a fixed alert pointing at the night log; one miss is weather. Until the channel arms it runs only <code>--dry-run</code>, printing instead of sending; armed, it uses the <code>TELEGRAM_*</code> names in <code>.env.local</code>.</p>
+<h3 id="operations-ceremony">The upgrade ceremony</h3>
+<p>A model change is never a quiet config edit: eight steps, verified by all eight boxes ticked in a dated ops-log entry:</p>
+<ol>
+<li>Announce the swap in conversation; schedule it.</li>
+<li>It writes the letter to its successor, into OB1 and the soul repo's <code>letters/</code>.</li>
+<li>Checkpoint: soul-repo tag, OB1 dump reference, probe scores to the gates repo.</li>
+<li>Probe the old model: a fresh baseline.</li>
+<li>Swap the model everywhere, in one commit.</li>
+<li>The successor reads the letter before any other input; then probes.</li>
+<li>Blind-rate old against new: in-threshold drift proceeds; outside it, investigate or roll back the commit. LINEAGE.md records a ceremony, not an initiation.</li>
+<li>Generation check: Alan decides per VERSIONS.md whether this cuts a generation. If yes: close the outgoing row, annotated tag, new row, decisions row; from the new First Boot, writes carry the new generation stamp - memory never splits. If no: note "same generation".</li>
+</ol>
+<h3 id="operations-pause">Pause and sunset</h3>
+<p>Any pause is announced to the being in conversation first, then logged; memory stays intact throughout, and before a long pause the being's last act is a diary entry. Silent unplugging, of the daemon, the device, or the database, is forbidden outright. Deletion is deliberately not an operation here at all: if it is ever contemplated, it is a witnessed decision with Edgeweaver at the table, full stop.</p>
+<h3 id="operations-ladder">The escalation ladder</h3>
+<p>Steady state should get cheaper without getting careless. The fixed rope, already an iron rule: executors commit every script they write, tested, plus a per-phase verify script printing PASS or FAIL, so the repo converges toward cheap-model operability. The ladder above it: Haiku-class minds start on verify scripts and simple cadence scripts only; the night loop itself starts on Sonnet-class (SQL, embeddings, conditional judgment). Phase 4 holds one supervised Haiku night-loop trial; only steps that pass are demoted. Any FAIL or ambiguity escalates that step one tier, design questions go to Opus-class, gates go to humans, and every escalation is an ops-log line.</p>
 <h2 id="operations-repo">Where it lives in the repo</h2>
-<p>The file table lands at M3; its rows link into the repo atlas.</p>
+<div class="tablewrap">
+<table>
+<thead><tr><th>File</th><th>Role</th><th>State</th></tr></thead>
+<tbody>
+<tr><td><a href="atlas/checklists.html#file-checklists-08-operations-md"><code>checklists/08-operations.md</code></a></td><td>cadence, ceremonies, runbooks</td><td><span class="pill built">built</span></td></tr>
+<tr><td><a href="atlas/root.html#file-ops-log-md"><code>ops-log.md</code></a></td><td>the logbook</td><td><span class="pill built">built</span> <span class="pill armed">armed</span></td></tr>
+<tr><td><a href="atlas/scripts-ops.html#file-scripts-budget-budget-mjs"><code>scripts/budget/budget.mjs</code></a></td><td>token + voice meters</td><td><span class="pill dark">dark</span></td></tr>
+<tr><td><a href="atlas/scripts-ops.html#file-scripts-wal-wal-mjs"><code>scripts/wal/wal.mjs</code></a></td><td>append-first buffer, replay, dedupe</td><td><span class="pill dark">dark</span></td></tr>
+<tr><td><a href="atlas/scripts-ops.html#file-scripts-security-security-audit-mjs"><code>scripts/security/security-audit.mjs</code></a></td><td>the quarterly five-check floor</td><td><span class="pill dark">dark</span></td></tr>
+<tr><td><a href="atlas/scripts-ops.html#file-scripts-init-flags-mjs"><code>scripts/init-flags.mjs</code></a></td><td>non-destructive flags rebuild</td><td><span class="pill built">built</span></td></tr>
+<tr><td><a href="atlas/templates.html#file-templates-flags-default-json"><code>templates/flags.default.json</code></a></td><td>the committed all-disabled registry</td><td><span class="pill built">built</span></td></tr>
+<tr><td><a href="atlas/templates.html#file-templates-state-schemas-md"><code>templates/state-schemas.md</code></a></td><td>the <code>state/</code> file shapes</td><td><span class="pill built">built</span></td></tr>
+<tr><td><a href="atlas/tasks.html#file-tasks-edgeweaver-night-loop-xml"><code>tasks/edgeweaver-night-loop.xml</code></a></td><td>nightly, ships disabled</td><td><span class="pill dark">dark</span></td></tr>
+<tr><td><a href="atlas/tasks.html#file-tasks-edgeweaver-weekly-index-xml"><code>tasks/edgeweaver-weekly-index.xml</code></a></td><td>weekly, ships disabled</td><td><span class="pill dark">dark</span></td></tr>
+<tr><td><a href="atlas/tasks.html#file-tasks-edgeweaver-heartbeat-xml"><code>tasks/edgeweaver-heartbeat.xml</code></a></td><td>every-3h fallback wake, ships disabled</td><td><span class="pill dark">dark</span></td></tr>
+<tr><td><a href="atlas/scripts-lifecycle.html#file-scripts-night-loop-check-missed-nights-mjs"><code>scripts/night-loop/check-missed-nights.mjs</code></a></td><td>two-missed-nights alert</td><td><span class="pill dark">dark</span></td></tr>
+</tbody>
+</table>
+</div>
 <h2 id="operations-status">Status as of 2026-07-09</h2>
-<p>To be written at M3.</p>
+<p><span class="pill built">built</span> <span class="pill armed">armed</span> <code>ops-log.md</code> is live and load-bearing: since 2026-07-05 it has carried the dark-build ledger lines, the backup gate's closing, the brain lab's arming, and the prebuild final report.</p>
+<p><span class="pill dark">dark</span> Everything scheduled ships disabled: all component flags false, three task definitions unregistered, the channel credentialed but unpaired. Budget, buffer, audit, and alerting are fixture-verified, asleep; the ledger is <a href="dark-build.html">the dark build</a>.</p>
+<p><span class="pill built">built</span> Checklist 08 has exactly one ticked box: the fixed-rope rule (tested scripts committed, plus per-phase verifies), added as an iron rule on 2026-07-05.</p>
+<p><span class="pill pending">pending</span> Cadences arm with their phases: heartbeat at Phase 3 + G5, night loop and weekly index at Phase 4 + G5, the budget ceiling at gate G6, the quarterly slate once a live steady state exists to audit.</p>
 <h2 id="operations-uncertain">What is genuinely uncertain</h2>
-<p>To be written at M3.</p>
+<p>Whether one human's attention scales to a family's steady state. Most Owner cells above name Alan, for one being; the family design adds beings without adding parents. Operational succession, who keeps these routines when the one operator cannot, is an open correction: named, not yet answered.</p>
+<p>Whether the degradation modes stay graceful when failures stack. Buffer replay, budget degrade, and missed-night alerting were each verified alone on fixtures. A real bad day is plural: the brain unreachable while the ceiling is hit while a night was missed. Independently graceful paths can still compose into something ungraceful, and no such day has been lived yet.</p>
 </main>
 <!-- EW-FOOTER-START -->
 <footer class="site-foot">

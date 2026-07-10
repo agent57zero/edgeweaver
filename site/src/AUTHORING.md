@@ -19,20 +19,41 @@ trail: runs/site-plan.md. Snapshot date for all content: 2026-07-09.
    re-anchoring. The verifier runs a shingle tripwire against those files.
 4. REDACTION TIER (pre-A3, decision D21): Genesis soul-source files are
    named-never-summarized (existence, file shape, ceremony role; no themes, no
-   quotes, no content summaries). Harvest ANSWERS never appear in any form, even
-   where decisions.md quotes fragments. Harvest QUESTIONS are described only by
-   their domain labels (voice tells, refusals, peak moments, edges, gremlin
-   inventory, distinctions, how-to-be-with-the-raiser, principles counsel,
-   un-automatables, succession fears, what must not survive, letter to
-   successor). Hard-boundary and refusal text: shape only, never quoted.
+   quotes, no content summaries). Never publish Genesis's named seed values,
+   harvest answers or answer structure, answer-derived principle architecture,
+   gremlin-inventory traits, hard-boundary wording, refusal wording, or close
+   paraphrases of any of them. Harvest questions are described only by these
+   approved Q1-Q12 domain labels: voice tells, refusals, peak moments, edges,
+   gremlin inventory, distinctions, how-to-be-with-the-raiser, principles
+   counsel, un-automatables, succession fears, what must not survive, letter to
+   successor. This rule still applies where decisions.md or PLAN.md contains the
+   protected material.
 5. Honesty stance: no being has been born yet. The design claims conditions for
-   selfhood, never consciousness. Feelings are computed, never narrated. Never
-   overclaim; when something is designed but unbuilt, say so plainly.
+   selfhood, never consciousness. Feelings are computed, never narrated. First
+   Boot remains blocked by Phase 0a/G3 as well as the three Alan-owned parenting
+   acts. Alpha's A1 restructure is partial/in progress, not wholly unstarted.
+   Never overclaim; when something is designed or only partly built, say so.
 6. People: Alan is named. Circle people appear as first name + seat only when
    the seat is accepted (today that is Ali, the scientist seat, via D10/D19;
    others appear by seat role only until G19 closes). Published authors are
    cited by name (Clinton Callahan / Possibility Management; Ali Mostashari).
    No surnames otherwise, no GitHub handles.
+7. CANONICAL IDENTITY: identity is canonical only in each being's own soul
+   repository. This repository and this site may explain the identity mechanism,
+   file shapes, and ceremony, but they are never an identity source. A being may
+   write proposal branches only; only the parent body may merge canonical main.
+8. OPERATIONAL REDACTION: explain mechanisms completely without publishing
+   coordinates. Do not publish exact run times, cron expressions, quiet-hour
+   ranges, custody locations, custodian or share-holder topology, account/org
+   topology, hostnames, ports, endpoints, machine paths, or other targeting
+   details. It is fine to say that a task is scheduled, a backup is encrypted and
+   restore-tested, custody is human-governed, accounts are separated, or a
+   network boundary exists. Repo paths and environment-variable names remain
+   acceptable when they do not reconstruct the hidden topology.
+9. STATUS LANGUAGE: clearly distinguish built, dark, armed, partial, pending,
+   and gap. A scaffold or partial migration is not "nothing," and dark-verified
+   machinery is not live. Every First Boot summary names both blocker groups:
+   Phase 0a/G3 and the three parenting acts.
 
 ## Page mechanics
 - Edit ONLY inside <main>...</main>. Never touch the marker regions

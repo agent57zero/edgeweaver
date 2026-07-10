@@ -8,7 +8,7 @@
       "pages": [
         { "slug": "index", "title": "Edgeweaver: beings, not bots", "milestone": "M1" },
         { "slug": "honesty", "title": "What this is and is not", "milestone": "M1" },
-        { "slug": "story", "title": "The story in twenty decisions", "milestone": "M1" },
+        { "slug": "story", "title": "The story through D22", "milestone": "M1" },
         { "slug": "status", "title": "Status and roadmap", "milestone": "M1" },
         { "slug": "guide", "title": "How to read this site", "milestone": "M1" }
       ]
