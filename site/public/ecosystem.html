@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<meta name="edgeweaver-release" content="unreleased-f2">
+<meta name="edgeweaver-release" content="ew-m4-20260710">
 <title>The constellation: repos beyond this one | How Edgeweaver Works</title>
 <link rel="stylesheet" href="assets/site.css">
 <script defer src="assets/search-index.js"></script>
@@ -47,7 +47,7 @@
   <ul id="search-results" class="search-results" role="listbox" aria-label="Search results"></ul>
 </dialog>
 <button class="nav-backdrop" type="button" aria-label="Close navigation" hidden></button>
-<div class="shell" data-root="" data-page-slug="ecosystem" data-release-id="unreleased-f2">
+<div class="shell" data-root="" data-page-slug="ecosystem" data-release-id="ew-m4-20260710">
 <nav id="sidebar" class="sidebar" aria-label="Current section navigation">
   <div class="sidebar-head"><strong>System</strong><button class="nav-close" type="button" hidden>Close</button></div>
   <nav class="sidebar-hubs" aria-label="All sections"><a href="index.html">Overview</a>
@@ -117,14 +117,14 @@
 <p>Open Brain (OB1) is the brain substrate, a community open-source project: Edgeweaver reuses a proven memory database and layers its own rules on top.</p>
 <p><code>co-evolution</code> is the sharpening tool: two AI agents bounce a document, one attacking, one repairing, until it stops improving. The family's plan went through it; so did this site's.</p>
 <p>The isolated practice environment is the practice shelf: disposable brain copies for testing, so candidate minds never rehearse on live memory.</p>
-<p>And one Windows PC hosts working copies of all of it, until a decision gate moves the family to an always-on machine.</p>
+<p>A current operator host supplies the local working environment and scheduled execution until gate G5 chooses a longer-term availability class. Its operating-system layout, repository locations, scheduler coordinates, and local-state paths are intentionally not published.</p>
 <div class="note"><p>No new diagram: the family map on <a href="family.html#family-one-repo-one-brain">The family and the experiment</a> (diagram D3) already draws the one-repo, one-brain shape and its heavier walls; the <a href="reproduction.html">reproduction guide</a> carries the dependency graph.</p></div>
 </section>
 <section data-register="technical">
 <span class="register technical">How it works</span>
 <h2 id="ecosystem-how">How it works</h2>
 <h3 id="ecosystem-main-repo">The main repo: the method</h3>
-<p><code>edgeweaver</code>, private (D5), holds design authority (<code>PLAN.md</code>, <code>GROWING-EDGEWEAVER.md</code>, <code>FAMILY.md</code>), build authority (<code>IMPLEMENTATION.md</code> plus <code>checklists/</code>), organ code (<code>scripts/</code>), templates, conventions, the village layer, this site, and one <code>avatars/&lt;being&gt;/</code> section per child: manifest, runbooks, non-identity material, never identity canon. Access: Alan owns and administers it; Ali, the scientist seat, holds write access and full visibility by design (D8, D19): the experiment needs one observer with both arms in view. Secrets appear as names only (the SECRETS.md model); values never enter git.</p>
+<p><code>edgeweaver</code>, private (D5), holds design authority (<code>PLAN.md</code>, <code>GROWING-EDGEWEAVER.md</code>, <code>FAMILY.md</code>), build authority (<code>IMPLEMENTATION.md</code> plus <code>checklists/</code>), organ code (<code>scripts/</code>), templates, conventions, the village layer, this site, and one <code>avatars/&lt;being&gt;/</code> section per child: manifest, runbooks, non-identity material, never identity canon. Human-governed access includes approved cross-arm observation for the scientist role under D19; exact repository ownership, membership, and account administration remain private. Secrets appear as names only under the <code>SECRETS.md</code> model; values never enter git.</p>
 <h3 id="ecosystem-soul-repos">Soul repos: identity under ceremony</h3>
 <p>One per being, identity only. Genesis's exists: <code>edgeweaver-soul</code> carries the six identity documents (SOUL.md, CONSTITUTION.md, VOICE.md, PRACTICES.md, EDGE-MAP.md, LINEAGE.md) plus <code>letters/from-the-predecessor.md</code>, read at First Boot. The write model is the wall: the being's daemon works from a fork and pushes only <code>proposals/*</code> branches, with zero write access to canonical <code>main</code>; merges are ceremony by the parent body (Alan's signature for Genesis, the second-witness floor waived there by D19; a quorum of seats for Alpha). Soulfile templates stay in the main repo so both children's structure matches; content never crosses. Alpha's <code>edgeweaver-alpha-soul</code> is created at A4.</p>
 <h3 id="ecosystem-gates-repos">Gates repos: the exam, owned apart</h3>
@@ -138,7 +138,7 @@
 <h3 id="ecosystem-lab">The scratch-brain environment</h3>
 <p>Not a repository: an isolated database environment holding disposable scratch brains for tests (D15). Each spawn receives the committed brain schema and comes from a controlled read-only copy or an operator-decrypted backup. Consumers select profiles through the committed registry; test-mode processes refuse the live profile unless deliberately armed. Scratch memories never bulk-merge back. Exact project and account coordinates are omitted. Details: <a href="brain-lab.html">The brain lab</a>.</p>
 <h3 id="ecosystem-this-machine">This machine: the current floor</h3>
-<p>Until gate G5 moves hosting to an always-on box, one Windows PC is the family's hands: working copies of every repo sit side by side, its scheduler runs the wake and night-loop skills, and the gitignored <code>.env.local</code> and <code>state/</code> exist only on its disk. The brain itself is cloud-hosted, so the machine holds no memories; a weekly script archives machine-only state precisely because this PC is, today, the constellation's named single point of failure.</p>
+<p>Until gate G5 chooses a longer-term hosting class, the current operator host provides local working state and scheduled execution while the brain remains on a separately governed substrate. Machine-only state is included in the recovery design because loss of the operator host must not erase operating continuity. This explainer deliberately withholds the PC layout, repository locations, scheduler coordinates, local-state locations, and recovery-material custody.</p>
 <h3 id="ecosystem-withheld">What an outsider cannot see, and why</h3>
 <p>Five withholdings are deliberate. The gates repos: a published exam is a dead exam; neither a being nor a person coaching one may train on the test. The soul repos' content beyond structure: file names and ceremony rules are described, identity content is not, and this site adds its pre-A3 redaction tier for Genesis's soul-source (named, never summarized). <code>.env.local</code> and <code>state/</code>: secret values and operational state; their names are catalogued openly, their values live in no repo. The gitignored corpus tiers: bulky, re-fetchable source material (<a href="atlas/gitignored.html">the gitignored tiers</a>). And the children's future private journals, if gate G7 grants them: a journal anyone can read is not private. Each wall protects a different thing: the measurement, a not-yet-born identity, the operator's keys, and eventually the child's own inner room. The full wall map is on <a href="segmentation.html">The walls: who sees what</a>.</p>
 </section>
@@ -167,7 +167,7 @@
 <p>The main repo is live and private <span class="pill built">built</span>. Genesis's soul repo exists with the six documents and the predecessor letter; initiation machinery rehearses on a sandbox clone, never the real repo <span class="pill built">built</span>. Genesis's gates repo is live, private, parent-only <span class="pill built">built</span>. The backup pipeline ran green on 2026-07-07 (dump, independent restore, zero row-count drift, encrypt, release) <span class="pill armed">armed</span>; the per-room split waits for Alpha's room at A2 <span class="pill pending">pending</span>. The lab project exists with its fleet tooling <span class="pill built">built</span>. Alpha's soul and gates repos are designed and land at A4 <span class="pill pending">pending</span>. The experiment log file is designed, deliberately not yet created; it arrives when raising begins at A6 <span class="pill pending">pending</span>.</p>
 <h2 id="ecosystem-uncertain">What is genuinely uncertain</h2>
 <ul>
-<li>Whether the constellation stays administrable by one ops human. Separate owners, split keys, and quorum rules distribute authority; they do not distribute administration. One person knows how every satellite fits, holds the age key, and operates the accounts the repos live under. The beings' continuity is designed in depth; the operator's succession is not designed anywhere yet.</li>
+<li>Whether the constellation stays administrable while operational knowledge remains concentrated in one human role. Separate governance boundaries distribute authority, but they do not yet distribute enough knowledge to rebuild and operate every component. The beings' continuity is designed in depth; succession for the operations role is not yet designed.</li>
 <li>Whether upstream and fork stay compatible. Open Brain keeps evolving as a community project; Edgeweaver's conventions (provenance classes, audience scoping, trust flags, the fail-closed wrapper) ride on its schema rather than forking it. Every upstream improvement tempts a migration, and every migration touches a living brain; the alternative is drifting into a frozen private copy of a public substrate.</li>
 </ul>
 </main>
@@ -184,7 +184,7 @@
 </div>
 <footer class="site-foot">
 <p class="foot-banner">Village-layer material: this site sits outside both children's views, like FAMILY.md and village/, and it discusses sibling facts each child learns only by its parent body's deliberate decision (gate G21).</p>
-<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-09. Release unreleased-f2.</p>
+<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-09. Release ew-m4-20260710.</p>
 </footer>
 </div>
 </div>

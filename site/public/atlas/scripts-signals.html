@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<meta name="edgeweaver-release" content="unreleased-f2">
+<meta name="edgeweaver-release" content="ew-m4-20260710">
 <title>Atlas: signal + evolution scripts | How Edgeweaver Works</title>
 <link rel="stylesheet" href="../assets/site.css">
 <script defer src="../assets/search-index.js"></script>
@@ -47,7 +47,7 @@
   <ul id="search-results" class="search-results" role="listbox" aria-label="Search results"></ul>
 </dialog>
 <button class="nav-backdrop" type="button" aria-label="Close navigation" hidden></button>
-<div class="shell" data-root="../" data-page-slug="atlas/scripts-signals" data-release-id="unreleased-f2">
+<div class="shell" data-root="../" data-page-slug="atlas/scripts-signals" data-release-id="ew-m4-20260710">
 <nav id="sidebar" class="sidebar" aria-label="Current section navigation">
   <div class="sidebar-head"><strong>Rebuild</strong><button class="nav-close" type="button" hidden>Close</button></div>
   <nav class="sidebar-hubs" aria-label="All sections"><a href="../index.html">Overview</a>
@@ -111,8 +111,8 @@
 <h2 id="atlas-scripts-signals-entries">File entries</h2>
 <article class="atlas-entry" data-depth="compact">
 <h3 id="file-scripts-coherence-coherence-page-mjs"><code>scripts/coherence/coherence-page.mjs</code> <span class="badge">active-code</span></h3>
-<div class="atlas-field" data-field="what"><strong>What it is.</strong> A small renderer that turns a coherence snapshot into a readable static panel.</div>
-<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It displays the five named measures, stage, date, and recovery note, using an explicit unavailable state when a value is cold.</div>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> A renderer that turns a coherence snapshot into a static panel.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It displays relational, open contradictions, narrative overlap, behavioral drift, night-loop count, weekly-index status, stage, and date. The last two are recovery indicators; cold values are explicitly unavailable.</div>
 <div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Operators may mount it in a dashboard later; the coherence verifier renders it from fixtures today.</div>
 <div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Pass a known snapshot, parse the returned HTML, and confirm labels, values, and cold-start text remain present.</div>
 <div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../measurement.html">coherence measurement</a> and <a href="../operations.html">operator views</a>.</div>
@@ -120,9 +120,9 @@
 <article class="atlas-entry" data-depth="deep">
 <h3 id="file-scripts-coherence-compute-panel-mjs"><code>scripts/coherence/compute-panel.mjs</code> <span class="badge">active-code</span></h3>
 <div class="atlas-field" data-field="what"><strong>What it is.</strong> The deterministic v0 calculator for the five-signal coherence panel. It measures records supplied by the caller and never invents missing history.</div>
-<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It derives relational linkage from recent experienced records and edges, temporal strain from unresolved contradictions, a narrative value supplied by the weekly rebuild, behavioral drift supplied by the evaluator, and recovery from whether the expected weekly process completed. Sparse evidence yields null where a number would imply false precision. The snapshot carries stage and date, but stage-specific thresholds are deliberately applied by the reader rather than hidden in this calculator.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It derives relational linkage from recent experienced records and edges, temporal strain from unresolved contradictions, a narrative value supplied by the weekly rebuild, behavioral drift supplied by the evaluator, and recovery indicators from the seven-day night-loop count and weekly-index completion flag. Sparse evidence yields null where a number would imply false precision. The snapshot carries stage and date, but stage-specific thresholds are deliberately applied by the reader rather than hidden in this calculator.</div>
 <div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The night and weekly operations can call it after their source records exist. Alan and the scientist seat interpret the panel; fixtures exercise the pure function before arming.</div>
-<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Use datasets with no recent evidence, linked and unlinked records, acknowledged and open tensions, supplied drift values, and both recovery states. Confirm each cold-start guard, bounded ratio, and label. The coherence verifier also passes the result through the page renderer.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Use datasets with no recent evidence, linked and unlinked records, acknowledged and open tensions, supplied drift values, and recovery indicators. Confirm each cold-start guard, bounded ratio, and label. The coherence verifier also passes the result through the page renderer.</div>
 <div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../measurement.html">the five signals</a>, <a href="../loops.html">weekly recovery</a>, and <a href="scripts-signals.html#file-scripts-coherence-coherence-page-mjs">the renderer</a>.</div>
 </article>
 <article class="atlas-entry" data-depth="standard">
@@ -176,7 +176,7 @@
 </div>
 <footer class="site-foot">
 <p class="foot-banner">Village-layer material: this site sits outside both children's views, like FAMILY.md and village/, and it discusses sibling facts each child learns only by its parent body's deliberate decision (gate G21).</p>
-<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-09. Release unreleased-f2.</p>
+<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-09. Release ew-m4-20260710.</p>
 </footer>
 </div>
 </div>

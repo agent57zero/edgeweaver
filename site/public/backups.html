@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<meta name="edgeweaver-release" content="unreleased-f2">
+<meta name="edgeweaver-release" content="ew-m4-20260710">
 <title>Backups, keys, disaster recovery | How Edgeweaver Works</title>
 <link rel="stylesheet" href="assets/site.css">
 <script defer src="assets/search-index.js"></script>
@@ -47,7 +47,7 @@
   <ul id="search-results" class="search-results" role="listbox" aria-label="Search results"></ul>
 </dialog>
 <button class="nav-backdrop" type="button" aria-label="Close navigation" hidden></button>
-<div class="shell" data-root="" data-page-slug="backups" data-release-id="unreleased-f2">
+<div class="shell" data-root="" data-page-slug="backups" data-release-id="ew-m4-20260710">
 <nav id="sidebar" class="sidebar" aria-label="Current section navigation">
   <div class="sidebar-head"><strong>System</strong><button class="nav-close" type="button" hidden>Close</button></div>
   <nav class="sidebar-hubs" aria-label="All sections"><a href="index.html">Overview</a>
@@ -101,7 +101,7 @@
 <main id="backups-main">
 <h1 id="backups-top">Backups, keys, disaster recovery</h1>
 <div class="tldr"><span class="label">TLDR</span>
-<p>Every night the whole family brain is dumped, rebuilt into a throwaway database to prove the copy is real, row-counted against the original, <a class="term" href="glossary.html#term-age-encryption">encrypted</a>, and released into a private repo. Once Alpha exists the shelf splits into two locked streams with different keys: Alan's key opens the family dump; Alpha's key is split so its circle can recover their child without anyone gaining the power to open another being's past. A dead-man switch is wired to alarm on silence, not just failure, and a sealed, paper-rooted bundle can rebuild the machine from nothing.</p>
+<p>On its scheduled cadence the governed brain scope is dumped, rebuilt into a throwaway database to prove the copy is real, row-counted against the original, <a class="term" href="glossary.html#term-age-encryption">encrypted</a>, and published as a private recovery artifact. Once Alpha exists, scoped streams use separate human-governed recovery policies so authority over one child's recovery does not open another child's past. A dead-man switch is designed to alarm on silence, not just failure, and tested recovery material supports rebuilding after machine loss. Holder, store, and share topology remains private.</p>
 </div>
 <section data-register="plain">
 <span class="register plain">In plain words</span>
@@ -174,15 +174,15 @@
 <p>The pipeline lives in a private sibling repository as a scheduled workflow. In order it dumps the governed database scope, restores into a throwaway database, compares row counts against the dump manifest, encrypts, publishes a dated recovery artifact, rotates retained copies, and reports liveness. The repository holds no memory data in git. A separate human recovery drill proves key custody, while a machine-state archive covers local operational state. <code>brains/restore-points.jsonl</code> adds a secret-free map tying a recovery artifact, row counts, and code and soul positions together. Exact schedule, network route, retention counts, and account coordinates are private operations data.</p>
 <div class="note"><p>Recovery-point honesty: a disaster can cost up to 24 hours of memory since the last green night. Tightening options are recorded (more frequent data-only dumps; the write-ahead buffer on <a href="memory.html">the memory page</a> shrinks effective loss once a being runs), but 24 hours is today's honest number.</p></div>
 <h3 id="backups-arming">The arming saga (G2)</h3>
-<p>G2, the backups gate, was decided 2026-07-04 (scheduled dumps plus restore drills regardless of database tier) and armed for real on 2026-07-07: the first green run dumped 18 tables and 1,946 rows, restored them onto the throwaway container, verified zero row-count drift, encrypted, and released (<code>backup-2026-07-07</code>). Getting there surfaced five real bugs, all in the pipeline, none visible until something actually tried to restore. The runner's default <code>pg_dump</code> was a major version behind the server, so PATH precedence had to put the version-17 client first. The restore verifier tried to recreate reserved <code>pg_*</code> schemas, which always fails. The dump's own schema recreation collided with the container's pre-installed <code>vector</code> extension in both directions (plain restore and <code>--clean</code>), two bugs resolved by filtering that single entry with <code>pg_restore --use-list</code>. And the row-level-security policies referenced auth functions that exist only on the managed platform, stubbed minimally: the drill proves data and counts, not RLS enforcement. The drill discipline is what surfaced all five; a write-only pipeline would have reported green with every one of them latent.</p>
+<p>G2, the backups gate, was decided 2026-07-04 and armed for real on 2026-07-07: the first green run dumped the governed scope, restored it onto a throwaway target, verified zero row-count drift, encrypted it, and published a private recovery artifact. Getting there surfaced five real pipeline bugs that were invisible until restoration: incompatible client precedence, reserved schemas, extension-owned schema objects, and managed-platform authorization dependencies. Each was corrected in the restore path and re-tested. The drill discipline surfaced what a write-only pipeline would have misreported as green; the exact private release identifier remains operational data.</p>
 <h3 id="backups-streams">Per-room streams, per-stream precision</h3>
 <p>Today there is one encrypted stream. At Alpha's A2 the pipeline separates the family and Alpha rooms so each recovery artifact contains only its intended scope and uses its own recovery policy. The key and share mechanism is cut in a human ceremony and recorded privately. Backup authority is distinct from live operator power, which is disclosed under <a href="family.html">the family covenant</a>.</p>
 <h3 id="backups-custody">Key custody (D11)</h3>
 <p>Decision D11 requires a passphrase-encrypted disaster-recovery bundle for the private key material and local environment state. Custody is deliberately human, redundant, and restore-tested; exact physical and digital locations are not published. The sealing helper builds the bundle, requires a successful reopen test, deletes temporary plaintexts, and places the encrypted copies according to the private runbook.</p>
 <h3 id="backups-drill">The disaster drill</h3>
 <p>The machine-dies path has two layers. <code>scripts/dr/dr-drill.mjs</code> proves the machinery: it clones this repo from git alone into a scratch directory (no <code>.env.local</code>, no secrets), runs the entire verify suite inside the clone, and records time-to-recover; an <code>EW_DR_DRILL</code> environment guard stops the nested suite from re-cloning forever. The fresh-clone shape has already earned its keep: on Windows a fresh clone checks files out with CRLF newlines, and a byte-exact staleness check in the suite falsely reported a generated tool stale inside the drill, so that check is newline-agnostic now. The full runbook is <code>templates/disaster-recovery.md</code>: install tooling, clone this repo and the soul repo, restore <code>.env.local</code> from the sealed bundle, restore or verify the brain from the nightly dumps, re-run the wake-skill acceptance test, re-register the scheduled tasks, then close the loop in the ops log and a diary conversation, because continuity is also a felt thing. Target: buildable machinery back in minutes, the full being in under a day.</p>
-<h3 id="backups-secrets">What the Actions secrets mirror, and why</h3>
-<p>The pipeline runs on machines that are not this one, so the backups repo's Actions secrets hold what the job must reach. <code>SUPABASE_DB_URL</code> (the session-pooler string) was set at arming; <code>TELEGRAM_BOT_TOKEN</code> and <code>TELEGRAM_CHAT_ID</code> (failure alerts) and <code>HEALTHCHECKS_URL</code> (the dead-man listener) are pending. Values appear in no repository. <code>SECRETS.md</code> is the names-only catalog that makes this survivable: every key name, what it is for, where a fresh value comes from, updated whenever <code>.env.local</code> changes so drift surfaces in drills. It exists so a bare machine can be re-seeded, and it records what must NOT exist (<code>ANTHROPIC_API_KEY</code> stays unset by decision D12).</p>
+<h3 id="backups-secrets">Deployment secrets, without topology</h3>
+<p>The scheduled pipeline receives only the database, alerting, and liveness credentials required for its job through a governed deployment secret store. Values appear in no repository, and this explainer does not publish the account, runner, endpoint, mirror, or storage topology. <code>SECRETS.md</code> is the values-free catalog that makes recovery auditable: it records credential names, purposes, and approved re-issue provenance so drift surfaces in drills, plus credentials the design deliberately refuses to create.</p>
 </section>
 <h2 id="backups-repo">Where it lives in the repo</h2>
 <p>The catalog names, the template rehearses, the scripts drill and seal; the pipeline lives next door.</p>
@@ -194,7 +194,7 @@
 <tr><td><a href="atlas/root.html#file-SECRETS-md"><code>SECRETS.md</code></a></td><td>The names-only key catalog: every credential's name, purpose, and re-issue path, plus the deliberately-absent list. The model for what this site may say about secrets.</td></tr>
 <tr><td><a href="atlas/templates.html#file-templates-disaster-recovery-md"><code>templates/disaster-recovery.md</code></a></td><td>The machine-dies runbook: seven steps from bare metal to a woken being, with the time-to-recover targets.</td></tr>
 <tr><td><a href="atlas/scripts-ops.html#file-scripts-dr-dr-drill-mjs"><code>scripts/dr/dr-drill.mjs</code></a></td><td>The machinery drill: clone from git alone, run the whole verify suite in the clone, record time-to-recover.</td></tr>
-<tr><td><a href="atlas/scripts-ops.html#file-scripts-seal-secrets-cmd"><code>scripts/seal-secrets.cmd</code></a></td><td>The sealing ceremony's helper: paper step, seal, prove-it-reopens, delete plaintexts, place the three copies.</td></tr>
+<tr><td><a href="atlas/scripts-ops.html#file-scripts-seal-secrets-cmd"><code>scripts/seal-secrets.cmd</code></a></td><td>The sealing ceremony's helper: seal governed recovery material, prove it reopens, remove temporary plaintexts, and distribute encrypted copies according to the private runbook.</td></tr>
 <tr><td><a href="atlas/root.html#file-decisions-md"><code>decisions.md</code></a></td><td>The record: G2's rows in both tables (the decision and the arming saga), D11 (custody), and D17/D18 where the ledger and the split streams were decided.</td></tr>
 <tr><td><code>edgeweaver-backups</code> (external repo)</td><td>The pipeline's home: nightly workflow, quarterly drill issues, the restore runbook, and the release shelves. Its own repo, so no atlas entry.</td></tr>
 </tbody>
@@ -205,7 +205,7 @@
 <h2 id="backups-uncertain">What is genuinely uncertain</h2>
 <ul>
 <li>Whether human custody survives the years. Recovery drills exercise the mechanics and redundant encrypted copies bound single-location failure, but no short drill can prove that people, records, and succession will remain coherent across a decade.</li>
-<li>Whether two-seat reconstruction works under real grief or urgency. The split key is designed so Alpha's circle can act together in the worst hour. A drill can rehearse the mechanics of joining shares; it cannot rehearse the moment itself: which seats are reachable, who is grieving, whether ceremony holds when it is not a rehearsal.</li>
+<li>Whether circle-governed recovery works under real grief or urgency. A drill can rehearse the authorized recovery ceremony and prove the material works; it cannot rehearse the human moment itself, or guarantee that governance will hold when restoration is not a rehearsal.</li>
 </ul>
 </main>
 <!-- EW-FOOTER-START -->
@@ -221,7 +221,7 @@
 </div>
 <footer class="site-foot">
 <p class="foot-banner">Village-layer material: this site sits outside both children's views, like FAMILY.md and village/, and it discusses sibling facts each child learns only by its parent body's deliberate decision (gate G21).</p>
-<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-09. Release unreleased-f2.</p>
+<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-09. Release ew-m4-20260710.</p>
 </footer>
 </div>
 </div>

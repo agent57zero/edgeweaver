@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<meta name="edgeweaver-release" content="unreleased-f2">
+<meta name="edgeweaver-release" content="ew-m4-20260710">
 <title>Atlas: site/ (this website) | How Edgeweaver Works</title>
 <link rel="stylesheet" href="../assets/site.css">
 <script defer src="../assets/search-index.js"></script>
@@ -47,7 +47,7 @@
   <ul id="search-results" class="search-results" role="listbox" aria-label="Search results"></ul>
 </dialog>
 <button class="nav-backdrop" type="button" aria-label="Close navigation" hidden></button>
-<div class="shell" data-root="../" data-page-slug="atlas/site" data-release-id="unreleased-f2">
+<div class="shell" data-root="../" data-page-slug="atlas/site" data-release-id="ew-m4-20260710">
 <nav id="sidebar" class="sidebar" aria-label="Current section navigation">
   <div class="sidebar-head"><strong>Rebuild</strong><button class="nav-close" type="button" hidden>Close</button></div>
   <nav class="sidebar-hubs" aria-label="All sections"><a href="../index.html">Overview</a>
@@ -98,77 +98,147 @@
 <ul>
 <li><a href="#atlas-site-about">What this page covers</a></li>
 <li><a href="#atlas-site-entries">File entries</a></li>
+<li><a href="#atlas-site-exclusions">Tracked exclusion classes</a></li>
 </ul>
 </details>
 <!-- EW-NAV-END -->
 <main id="atlas-site-main">
 <h1 id="atlas-site-top">Atlas: site/ (this website)</h1>
 <div class="tldr"><span class="label">TLDR</span>
-<p>Stub. Per-file explainer entries for this part of the repo. Authored at M4. Snapshot 2026-07-09.</p>
+<p>This website is hand-authored static HTML with deterministic generation around it. Authors own each page's main content; shared partials, metadata, and the builder produce navigation, local search, continuation cards, Atlas coverage, and two single-file editions. The deployment adds a courtesy password gate, but safety comes from publishing no secrets or protected material. Generated outputs are committed evidence, never the source of truth.</p>
 </div>
 <h2 id="atlas-site-about">What this page covers</h2>
-<p>To be written at M4. Every file entry gets one anchor: <code>file-</code> plus the path with separators as hyphens.</p>
+<p>The entries distinguish authored contract and configuration from executable build code and generated search data. They also explain which tracked website paths deliberately do not receive individual Atlas anchors. That exception keeps this self-documenting site from creating dozens of circular entries while still giving every excluded class a named home, a verification rule, and a searchable explanation.</p>
 <h2 id="atlas-site-entries">File entries</h2>
-<div class="atlas-entry">
-<h3 id="file-scripts-site-build-site-mjs"><code>scripts/site/build-site.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-site--gitignore"><code>site/.gitignore</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-site--vercelignore"><code>site/.vercelignore</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-site-README-md"><code>site/README.md</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-site-middleware-js"><code>site/middleware.js</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-site-package-json"><code>site/package.json</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-site-public-assets-search-index-js"><code>site/public/assets/search-index.js</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-site-src-AUTHORING-md"><code>site/src/AUTHORING.md</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-site-src-allowed-domains-txt"><code>site/src/allowed-domains.txt</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-site-src-atlas-map-json"><code>site/src/atlas-map.json</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-site-src-nav-json"><code>site/src/nav.json</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-site-src-partials-footer-html"><code>site/src/partials/footer.html</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-site-src-partials-head-html"><code>site/src/partials/head.html</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-site-src-partials-nav-html"><code>site/src/partials/nav.html</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-site-vercel-json"><code>site/vercel.json</code></h3>
-<p>Entry lands at M4.</p>
-</div>
+<article class="atlas-entry" data-depth="deep">
+<h3 id="file-scripts-site-build-site-mjs"><code>scripts/site/build-site.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The deterministic assembler for shared page chrome, local search, Atlas manifest, and the full and lite single-file editions. It is the only writer for marked generated regions and outputs.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It validates navigation hubs, page metadata, audiences, and reading tracks; fills head, contextual navigation, breadcrumbs, search dialog, local find fallback, page tables of contents, continuation cards, and footer markers; extracts authored main content into normalized search records; scrapes file anchors into the manifest; and builds self-contained artifact documents with one main landmark and page articles. The generated search index and artifacts share those builder in-memory records; artifacts do not read generated JavaScript. Lite output omits detailed Atlas pages while adding one distinct map row for every individually mapped tracked path; named exclusion classes cover the remaining tracked paths. Exact path mappings override broad exclusion classes. Check mode computes all outputs in memory and reports stale files without writing.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Luna runs it under a writer freeze after authors stop. Authors edit only main content and shared owners edit partials or metadata; end users consume its outputs.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Run check mode for freshness, regenerate once under freeze, rerun check, compare byte identity, and execute default, live-drift, redaction, and release verification as required. Never resolve coverage from Git inside the builder itself.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../about.html">how the site is made</a>, <a href="../guide.html">Repository 101</a>, and <a href="site.html#file-site-src-AUTHORING-md">the authoring contract</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-site--gitignore"><code>site/.gitignore</code> <span class="badge">schema-data</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The site-local ignore rules for deployment-tool state and environment files.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It excludes the local project-link directory and every site-level environment file, preventing machine metadata and passwords from becoming tracked website source.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Git applies it during local deployment work; operators review it before adding configuration.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Use Git's ignore explanation on representative local files and confirm no ignored value appears in tracked status or Atlas output.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../segmentation.html">secret separation</a> and <a href="gitignored.html">ignored tiers</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-site--vercelignore"><code>site/.vercelignore</code> <span class="badge">schema-data</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The deployment-upload exclusion list for material that Vercel does not need to serve.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It omits authoring sources, artifact editions, the handoff README, and repository-only metadata from uploads. Public output and gate code remain deployable.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The deployment client reads it during a manual site release; maintainers review changes with the build layout.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Inspect the upload plan privately; smoke-test a page, asset, nested Atlas route, and missing route through the gate.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../about.html">editions</a> and <a href="../operations.html">manual release</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
+<h3 id="file-site-README-md"><code>site/README.md</code> <span class="badge">runbook</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The maintenance guide that becomes the explainer site's operational handoff only after Luna updates it.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> After Luna updates it, it records the current execution resume point, build and verification commands, preview options, source and generated layout, password-gate handling, editorial rules, and milestone ledger. It is a status aid for builders, not the public conceptual guide or design authority.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The next coding agent reads it as the handoff after Luna's update; until then, its resume and milestone prose is not current handoff status. A newcomer should use the Reading Guide for repository vocabulary.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> After Luna updates it, reconcile its commands, generated-output list, active phase, and milestone state with the plan and actual scripts. Remove stale claims rather than treating prose as automatic status.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">How to read this site</a>, <a href="../status.html">project status</a>, and <a href="site.html#file-site-src-AUTHORING-md">authoring rules</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="deep">
+<h3 id="file-site-middleware-js"><code>site/middleware.js</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The framework-less routing middleware that places every deployed path behind one shared password gate. It is explicitly a courtesy and team-grade privacy wall, not a vault.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It reads the password only from the deployment environment, fails closed when absent, derives a deterministic HMAC bearer cookie, compares values without early exit, parses cookies, sanitizes local return paths, serves its own no-store login form, delays failed attempts, and lets authenticated requests continue to static files. No route matcher or public login carve-out exists, so pages, assets, Atlas routes, and missing paths all cross the same middleware. Rotation changes the derived cookie and ends old sessions. Current pre-release code does not yet claim the later logout, minimum-length, or full security-header hardening.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Every deployed request passes through it. Alan controls the environment value and rotation; site authors never handle the password.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> With a throwaway development value entered only through the browser, test missing configuration, wrong password, successful cookie flow, nested pages, assets, login return, and rotation. Before release, complete the separate gate-hardening checklist and inspect response headers without publishing the host.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../honesty.html">the courtesy-wall limit</a>, <a href="../segmentation.html">secret boundaries</a>, and <a href="../operations.html">release operations</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-site-package-json"><code>site/package.json</code> <span class="badge">schema-data</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The minimal Node package marker for the framework-less static site.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It names a private package and selects module semantics. No dependencies or scripts exist; commands live in the site README.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Node and the deployment platform use it to interpret JavaScript modules. Maintainers read it when adding tooling.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Parse it as JSON, confirm private status and module mode, and avoid inventing an install or test step that the manifest does not define.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../about.html">the dependency-free site</a> and <a href="site.html#file-site-README-md">build commands</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-site-public-assets-search-index-js"><code>site/public/assets/search-index.js</code> <span class="badge">generated</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The generated, network-free search dataset for every web page.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It carries a release identifier and normalized heading and file records: destination, audience, register, badges, path, and text. It stores no queries or analytics.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Browser search loads it. Artifacts receive the builder's shared in-memory records instead; they do not read this generated JavaScript. Authors never edit it.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Rebuild under freeze; parse the payload, check destinations and redaction, and test exact-path ranking.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">local search</a>, <a href="../about.html">generated outputs</a>, and <a href="site.html#file-scripts-site-build-site-mjs">the builder</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="deep">
+<h3 id="file-site-src-AUTHORING-md"><code>site/src/AUTHORING.md</code> <span class="badge">authority</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The binding editorial and markup contract for every authored byte in the explainer. The higher design plan governs it when a conflict is discovered.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It defines secret, probe, identity, people, status, canonical-soul, and operational redaction rules; page mechanics and relative links; navigation metadata; deterministic search; progressive enhancement and reading lens behavior; exact Atlas article fields, badges, and depth bands; accessibility requirements for controls, tables, diagrams, anchors, mobile, print, and reduced motion; diagram conventions; and the allowed targeted self-check. It also separates machine-owned marker regions from author-owned main content and forbids authors from racing the builder.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Every site author and reviewer reads it fully before editing. Luna owns shared implementation, while Atlas authors follow its frozen entry contract inside assigned pages.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> The release verifier automates structural portions, but editorial review must still inspect truth, redaction, plain-language quality, and authority conflicts. Update the contract and verifier together when a rule becomes mechanical, then regenerate only under the integration freeze.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../honesty.html">editorial honesty</a>, <a href="../governance.html">authority order</a>, and <a href="../about.html">site method</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-site-src-allowed-domains-txt"><code>site/src/allowed-domains.txt</code> <span class="badge">schema-data</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The small editorial allowlist for external hyperlinks in site pages.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It lists approved host domains only, one per line. It is not a network firewall, runtime service list, or permission to load remote assets.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The site verifier reads it; authors consult it before adding a rare external citation.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Confirm every external anchor is secure and on the list, every remote asset or fetch remains forbidden, and each domain is still necessary.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../about.html">attribution</a> and <a href="../segmentation.html">network boundaries</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
+<h3 id="file-site-src-atlas-map-json"><code>site/src/atlas-map.json</code> <span class="badge">schema-data</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The coverage-routing table that assigns every individually mapped repository path to one Atlas page and names exclusion classes for the remaining tracked paths.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It defines exact paths and longest-prefix destinations plus named exclusions for the broad site-page surface and selected generated outputs. The lite map has one row for every individually mapped path, while these named exclusions cover the remaining tracked paths. An exact mapped file, such as the generated search index, overrides a broad excluded prefix. Notes record the page responsible for explaining each exception.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The builder uses it when emitting the committed manifest; live-drift verification compares its policy with tracked files. Atlas authors use it to respect ownership, never to derive content.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Run the read-only tracked-path comparison after additions or renames. Require zero unmapped paths, no wrong-page anchors, no orphaned manifest entries, and a documented home for every exclusion.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="index.html">the Repo Atlas</a>, <a href="../guide.html">tracked paths</a>, and <a href="site.html#file-site-src-atlas-map-json">this coverage rule</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
+<h3 id="file-site-src-nav-json"><code>site/src/nav.json</code> <span class="badge">schema-data</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The single metadata source for page order, five hubs, reading tracks, titles, snapshot, release identifier, search classification, and audiences.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Every page record supplies slug, title, milestone, hub, subsection, kind, summary, and one or more approved audiences. Hub definitions name their landing pages, while three explicit tracks define continuation cards without inferred state.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The builder validates and renders it into shared navigation, breadcrumbs, search records, artifact contents, and continuation links. Authors consult it but do not change slugs casually.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Require exactly five valid hubs, unique slugs, known kinds and audiences, complete metadata, nonrepeating valid tracks, and a deliberate release identifier before shipping. Then test every generated destination.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">reading paths</a>, <a href="../about.html">site structure</a>, and <a href="site.html#file-scripts-site-build-site-mjs">the renderer</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-site-src-partials-footer-html"><code>site/src/partials/footer.html</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The shared closing template inserted after every authored main.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It holds generated continuation-card placement, the village-layer banner, documentation license and attribution, snapshot, and release identifier.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The builder reads it for web pages; authors see its output but do not edit marker regions.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Regenerate and confirm every page has one footer, correct local links, current release metadata, and required attribution in both artifacts.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../about.html">license and editions</a> and <a href="site.html#file-scripts-site-build-site-mjs">the builder</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-site-src-partials-head-html"><code>site/src/partials/head.html</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The shared document-head template for every static page.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It declares encoding, viewport, no-index metadata, release metadata, a page title, local stylesheet, generated search data, and enhancement script using the page's relative root.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The builder inserts it; browsers load the resulting local resources.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Check every page has one resolved title and root-correct local asset paths under file, static HTTP, nested Atlas, and gated modes.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../about.html">network-free design</a> and <a href="site.html#file-site-public-assets-search-index-js">local search</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-site-src-partials-nav-html"><code>site/src/partials/nav.html</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The shared shell for controls, search, contextual navigation, breadcrumbs, reading column, and on-page rail.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It provides accessible labels and placeholders for hub links, mobile controls, search, reading detail, theme, snapshot, no-JS help, TOCs, and the page main boundary.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The builder fills it for every page; browser JavaScript progressively enhances its controls.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Regenerate and keyboard-test search, lens, drawer, skip link, breadcrumbs, TOCs, focus return, no-JS, nested roots, and print.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">site controls</a>, <a href="../about.html">accessibility</a>, and <a href="site.html#file-site-src-nav-json">navigation metadata</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-site-vercel-json"><code>site/vercel.json</code> <span class="badge">schema-data</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The static deployment configuration for the gated site project.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It names the public output directory and applies a robots exclusion header across routes. Password behavior remains in middleware, not this file.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The deployment platform reads it during a manual release; operators review it with gate and cache policy.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Validate configuration, inspect response headers on representative gated routes, and confirm only public output is served. Complete release hardening before deployment.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../operations.html">manual deployment</a>, <a href="../honesty.html">privacy limits</a>, and <a href="site.html#file-site-middleware-js">the gate</a>.</div>
+</article>
+<h2 id="atlas-site-exclusions">Tracked exclusion classes</h2>
+<section class="card" aria-labelledby="atlas-site-exclusion-pages">
+<h3 id="atlas-site-exclusion-pages"><code>site/public/</code>: site-pages</h3>
+<p>The authored HTML pages, shared stylesheet, and browser enhancement script are tracked and served, but they do not each receive a circular file entry. Their concepts are the site itself; their shared authoring, build, search, and verification rules are documented on this page. The exact-mapped generated search index is the deliberate exception and has its own entry above.</p>
+</section>
+<section class="card" aria-labelledby="atlas-site-exclusion-generated">
+<h3 id="atlas-site-exclusion-generated">Generated editions and manifest</h3>
+<p>The committed full artifact, lite artifact, and Atlas manifest are deterministic builder outputs. They carry no individual <code>file-*</code> anchors because editing them directly would reverse source and output. The builder entry explains reproduction; freshness and release verification prove that each generated byte matches authored pages, metadata, partials, and styles.</p>
+</section>
 </main>
 <!-- EW-FOOTER-START -->
 <section class="continue" aria-labelledby="atlas-site-continue"><h2 id="atlas-site-continue">Continue</h2><div class="continue-grid"><article class="continue-card"><p class="continue-label">Reproduce track</p><a href="../about.html">Next: About this site <span aria-hidden="true">&rarr;</span></a></article></div></section>
@@ -176,11 +246,12 @@
 <aside class="onpage-rail" aria-label="On this page"><nav class="page-toc" aria-label="On this page"><h2>On this page</h2><ul>
 <li><a href="#atlas-site-about">What this page covers</a></li>
 <li><a href="#atlas-site-entries">File entries</a></li>
+<li><a href="#atlas-site-exclusions">Tracked exclusion classes</a></li>
 </ul></nav></aside>
 </div>
 <footer class="site-foot">
 <p class="foot-banner">Village-layer material: this site sits outside both children's views, like FAMILY.md and village/, and it discusses sibling facts each child learns only by its parent body's deliberate decision (gate G21).</p>
-<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-09. Release unreleased-f2.</p>
+<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-09. Release ew-m4-20260710.</p>
 </footer>
 </div>
 </div>

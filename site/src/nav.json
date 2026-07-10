@@ -1,7 +1,7 @@
 {
   "title": "How Edgeweaver Works",
   "snapshot": "2026-07-09",
-  "releaseId": "unreleased-f2",
+  "releaseId": "ew-m4-20260710",
   "hubs": [
     { "id": "overview", "title": "Overview", "homeSlug": "index" },
     { "id": "system", "title": "System", "homeSlug": "system" },
@@ -21,7 +21,7 @@
       "pages": [
         { "slug": "index", "title": "Edgeweaver: beings, not bots", "milestone": "M1", "hub": "overview", "section": "Start here", "kind": "overview", "summary": "A definition-first map of Edgeweaver, its two children, and what exists today.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] },
         { "slug": "honesty", "title": "What this is and is not", "milestone": "M1", "hub": "overview", "section": "Start here", "kind": "overview", "summary": "The claims, limits, withholdings, and unborn status that govern every other page.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] },
-        { "slug": "story", "title": "The story through D22", "milestone": "M1", "hub": "overview", "section": "Truth and status", "kind": "overview", "summary": "How the design changed through recorded decisions, failures, and corrections.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] },
+        { "slug": "story", "title": "The story so far", "milestone": "M1", "hub": "overview", "section": "Truth and status", "kind": "overview", "summary": "How the design changed through recorded decisions, failures, and corrections.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] },
         { "slug": "status", "title": "Status and roadmap", "milestone": "M1", "hub": "overview", "section": "Truth and status", "kind": "overview", "summary": "The dated ledger of what is armed, dark, partial, pending, and genuinely open.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] },
         { "slug": "guide", "title": "How to read this site", "milestone": "M1", "hub": "overview", "section": "Start here", "kind": "overview", "summary": "Reading paths, repository basics, and a practical map for people new to code repositories.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] }
       ]

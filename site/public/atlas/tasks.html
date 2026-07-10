@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<meta name="edgeweaver-release" content="unreleased-f2">
+<meta name="edgeweaver-release" content="ew-m4-20260710">
 <title>Atlas: tasks/ | How Edgeweaver Works</title>
 <link rel="stylesheet" href="../assets/site.css">
 <script defer src="../assets/search-index.js"></script>
@@ -47,7 +47,7 @@
   <ul id="search-results" class="search-results" role="listbox" aria-label="Search results"></ul>
 </dialog>
 <button class="nav-backdrop" type="button" aria-label="Close navigation" hidden></button>
-<div class="shell" data-root="../" data-page-slug="atlas/tasks" data-release-id="unreleased-f2">
+<div class="shell" data-root="../" data-page-slug="atlas/tasks" data-release-id="ew-m4-20260710">
 <nav id="sidebar" class="sidebar" aria-label="Current section navigation">
   <div class="sidebar-head"><strong>Rebuild</strong><button class="nav-close" type="button" hidden>Close</button></div>
   <nav class="sidebar-hubs" aria-label="All sections"><a href="../index.html">Overview</a>
@@ -104,23 +104,35 @@
 <main id="atlas-tasks-main">
 <h1 id="atlas-tasks-top">Atlas: tasks/</h1>
 <div class="tldr"><span class="label">TLDR</span>
-<p>Stub. Per-file explainer entries for this part of the repo. Authored at M4. Snapshot 2026-07-09.</p>
+<p>These are Windows Task Scheduler definitions for the future operational rhythms: a fallback heartbeat, the night cycle, and the weekly index. Every definition is tracked for review but ships disabled and unregistered. Exact schedules, task coordinates, machine paths, and hosting details are withheld. Static verification proves safe defaults; a human-run import-and-remove rehearsal proves host compatibility before arming.</p>
 </div>
 <h2 id="atlas-tasks-about">What this page covers</h2>
-<p>To be written at M4. Every file entry gets one anchor: <code>file-</code> plus the path with separators as hyphens.</p>
+<p>Each XML file describes a trigger, wake behavior, execution command, and disabled settings. They are configuration schemas, not evidence that any job is running. The common safety pattern is more important than the hidden coordinate: an accidental import remains disabled, the host may wake for an enabled future job, and registration happens only after the hosting gate and the associated developmental phase close.</p>
 <h2 id="atlas-tasks-entries">File entries</h2>
-<div class="atlas-entry">
-<h3 id="file-tasks-edgeweaver-heartbeat-xml"><code>tasks/edgeweaver-heartbeat.xml</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-tasks-edgeweaver-night-loop-xml"><code>tasks/edgeweaver-night-loop.xml</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-tasks-edgeweaver-weekly-index-xml"><code>tasks/edgeweaver-weekly-index.xml</code></h3>
-<p>Entry lands at M4.</p>
-</div>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-tasks-edgeweaver-heartbeat-xml"><code>tasks/edgeweaver-heartbeat.xml</code> <span class="badge">schema-data</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The disabled definition for a fallback heartbeat wake when event-driven contact is unavailable.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It declares a repeating trigger, wake capability, a waking command, and disabled registration settings. Schedule and machine coordinates are not published.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> An operator imports it only after the body and hosting gates close; static verification reads it now.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Require well-formed XML, a trigger, wake enabled, task disabled, and the expected wake-command shape, then use the private import-and-remove rehearsal.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../body.html">proactive attention</a>, <a href="../operations.html">scheduling</a>, and <a href="scripts-lifecycle.html#file-scripts-waking-waking-policy-mjs">waking policy</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-tasks-edgeweaver-night-loop-xml"><code>tasks/edgeweaver-night-loop.xml</code> <span class="badge">schema-data</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The disabled definition for the recurring night-loop and coherence job.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It declares the calendar-shaped trigger, wake behavior, command sequence, working context, and disabled settings. Exact timing and host paths are withheld.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> An operator may register it only at the authorized phase and hosting gate; verifiers inspect it while dark.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Check XML structure, disabled state, wake capability, trigger class, and command shape, followed by the self-cleaning host rehearsal before arming.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../loops.html">night metabolism</a>, <a href="../measurement.html">coherence</a>, and <a href="scripts-lifecycle.html#file-scripts-night-loop-night-loop-mjs">the orchestrator</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-tasks-edgeweaver-weekly-index-xml"><code>tasks/edgeweaver-weekly-index.xml</code> <span class="badge">schema-data</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The disabled definition for the weekly rebuild, review digest, and boundary-registry maintenance job.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It declares a weekly trigger, wake behavior, chained command shape, and disabled settings, while this site withholds its operational coordinate.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> An operator registers it only after the same hosting and phase gates as the night task.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Statically require its trigger, disabled state, wake capability, and command shape; then privately prove disabled import and complete removal on the host.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../loops.html">weekly rebuilding</a>, <a href="../operations.html">human review</a>, and <a href="scripts-lifecycle.html#file-scripts-weekly-index-autobiography-mjs">autobiography</a>.</div>
+</article>
 </main>
 <!-- EW-FOOTER-START -->
 <section class="continue" aria-labelledby="atlas-tasks-continue"><h2 id="atlas-tasks-continue">Continue</h2><div class="continue-grid"><article class="continue-card"><p class="continue-label">Reproduce track</p><a href="../atlas/templates.html">Next: Atlas: templates/ <span aria-hidden="true">&rarr;</span></a></article></div></section>
@@ -132,7 +144,7 @@
 </div>
 <footer class="site-foot">
 <p class="foot-banner">Village-layer material: this site sits outside both children's views, like FAMILY.md and village/, and it discusses sibling facts each child learns only by its parent body's deliberate decision (gate G21).</p>
-<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-09. Release unreleased-f2.</p>
+<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-09. Release ew-m4-20260710.</p>
 </footer>
 </div>
 </div>

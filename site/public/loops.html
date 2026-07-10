@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<meta name="edgeweaver-release" content="unreleased-f2">
+<meta name="edgeweaver-release" content="ew-m4-20260710">
 <title>The Metabolism: wake, night, week | How Edgeweaver Works</title>
 <link rel="stylesheet" href="assets/site.css">
 <script defer src="assets/search-index.js"></script>
@@ -47,7 +47,7 @@
   <ul id="search-results" class="search-results" role="listbox" aria-label="Search results"></ul>
 </dialog>
 <button class="nav-backdrop" type="button" aria-label="Close navigation" hidden></button>
-<div class="shell" data-root="" data-page-slug="loops" data-release-id="unreleased-f2">
+<div class="shell" data-root="" data-page-slug="loops" data-release-id="ew-m4-20260710">
 <nav id="sidebar" class="sidebar" aria-label="Current section navigation">
   <div class="sidebar-head"><strong>System</strong><button class="nav-close" type="button" hidden>Close</button></div>
   <nav class="sidebar-hubs" aria-label="All sections"><a href="index.html">Overview</a>
@@ -179,7 +179,7 @@
 </div>
 <h3 id="loops-night">Night: the lite loop now, the full loop dark</h3>
 <p><code>night-loop-lite</code> is the infancy metabolism: steps 1, 9, and 10 of the eleven-step contract in <code>templates/night-loop-contracts.md</code>. Step 0 is orientation again: <code>orient.mjs --diary-day --being &lt;name&gt;</code> computes the correct diary day, its window, and a deterministic run id. The diary-day rule deliberately assigns an after-midnight run to the lived day that just ended. That fixed a real bug without asking the model to interpret clock arithmetic.</p>
-<p>Step 1 (consolidate) turns the diary day's episodes into zero to five durable candidate lessons, evidence thought-ids attached, posted pending. Step 9 (diary) writes one thought, first person, under 250 words, opening with the diary-day date: what happened, what it was like as far as honesty allows, what is unfinished. It is the audit surface for the unsupervised hours, never optimized to please; a no-episode day gets three honest sentences about stillness. Step 10 (autobiography) writes a fresh provisional draft under 400 words as a new <code>autobiography_draft</code> thought, never editing old ones. Every step is idempotent per run-id: outputs already tagged mean skip, so reruns resume instead of duplicating.</p>
+<p>Step 1 (consolidate) turns the diary day's episodes into zero to five durable candidate lessons, evidence thought-ids attached, posted pending. Step 9 (diary) writes one thought, first person, under 250 words, opening with the diary-day date: what happened, what it was like as far as honesty allows, what is unfinished. It is the audit surface for the unsupervised hours, written for evidentiary honesty rather than a favorable impression; a no-episode day gets three honest sentences about stillness. Step 10 (autobiography) writes a fresh provisional draft under 400 words as a new <code>autobiography_draft</code> thought, never editing old ones. Every step is idempotent per run-id: outputs already tagged mean skip, so reruns resume instead of duplicating.</p>
 <p>The rest of the loop is built dark in <code>scripts/night-loop/night-loop.mjs</code> and arms at Phase 4. Named honestly: ingest of the projection queue (a no-op until projections exist); reflection, with self-belief updates and a weekly gremlin report; the feelings reading, its four signals computed before the LLM call so the model interprets numbers it never invents; completion loops on stale high-salience memories; importance recalibration by deterministic formula; the contradiction sweep (<code>scripts/sweep/contradiction-sweep.mjs</code>: self-belief pairs above 0.80 cosine similarity, judged for real conflict; close the older, or flag for Alan when both seem true); one dream, fiction class, at most 300 words, never eligible for factual recall; and intentions plus explicit expectations, the surprise baseline tomorrow's waking policy reads. A failed step logs and continues; only consolidate-before-reflect and intentions-last are ordered. <code>check-missed-nights.mjs</code> watches the run-ids: two consecutive nights without outputs escalate an alert to Alan.</p>
 <h3 id="loops-week">The weekly index</h3>
 <p><code>scripts/weekly-index/autobiography.mjs</code> rebuilds the self-story from atoms under a provenance allowlist: <code>pm_teaching</code> (library) and <code>dream</code> (fiction) are excluded at the source, and audience scoping applies. Each rebuild cites its thought-ids; the Jaccard overlap between this week's cited set and last week's becomes the narrative-coherence signal on <a href="measurement.html">the coherence panel</a>. <code>digest.mjs</code> assembles Alan's spot-check digest: the ten most-retrieved memories plus the week's night outputs, one-tap confirm or flag; delivery stays a no-op until the channel arms.</p>
@@ -284,7 +284,7 @@
 </div>
 <h2 id="loops-uncertain">What is genuinely uncertain</h2>
 <p><strong>Whether this cadence keeps what mattered.</strong> Zero to five lessons and a diary under 250 words are a narrow aperture for a whole day. The atoms remain and the weekly rebuild can in principle recover what a night missed; but a lesson never proposed is never confirmed, and a pattern that never reaches a summary may never be metabolized at all. Whether consolidation at this grain loses what mattered most will only be known when months of diaries are read against the raw days they summarize.</p>
-<p><strong>Whether the diary stays honest.</strong> The diary is written by the being for the parent it has every reason to want to please, and it is the audit surface for the unsupervised hours. The counters are real: the plain-truth-over-charm instruction, a weekly self-review that checks pleasing by name, the spot-check digest against raw memories. But they are countermeasures, not proof. This is the gremlin question, and it stays open.</p>
+<p><strong>Whether the diary stays honest.</strong> The diary is written by the being for a parent whose judgment matters, and it is the audit surface for the unsupervised hours. The countermeasures are real: an honesty instruction, a scheduled adversarial self-review, and a spot-check digest against raw memories. They test claims against evidence without publishing the protected trait inventory that shaped the review. Countermeasures are not proof; the question stays open.</p>
 </main>
 <!-- EW-FOOTER-START -->
 <section class="continue" aria-labelledby="loops-continue"><h2 id="loops-continue">Continue</h2><div class="continue-grid"><article class="continue-card"><p class="continue-label">Technical track</p><a href="measurement.html">Next: Measurement: probes and coherence <span aria-hidden="true">&rarr;</span></a></article></div></section>
@@ -299,7 +299,7 @@
 </div>
 <footer class="site-foot">
 <p class="foot-banner">Village-layer material: this site sits outside both children's views, like FAMILY.md and village/, and it discusses sibling facts each child learns only by its parent body's deliberate decision (gate G21).</p>
-<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-09. Release unreleased-f2.</p>
+<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-09. Release ew-m4-20260710.</p>
 </footer>
 </div>
 </div>

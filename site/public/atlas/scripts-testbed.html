@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<meta name="edgeweaver-release" content="unreleased-f2">
+<meta name="edgeweaver-release" content="ew-m4-20260710">
 <title>Atlas: fixtures + test mode | How Edgeweaver Works</title>
 <link rel="stylesheet" href="../assets/site.css">
 <script defer src="../assets/search-index.js"></script>
@@ -47,7 +47,7 @@
   <ul id="search-results" class="search-results" role="listbox" aria-label="Search results"></ul>
 </dialog>
 <button class="nav-backdrop" type="button" aria-label="Close navigation" hidden></button>
-<div class="shell" data-root="../" data-page-slug="atlas/scripts-testbed" data-release-id="unreleased-f2">
+<div class="shell" data-root="../" data-page-slug="atlas/scripts-testbed" data-release-id="ew-m4-20260710">
 <nav id="sidebar" class="sidebar" aria-label="Current section navigation">
   <div class="sidebar-head"><strong>Rebuild</strong><button class="nav-close" type="button" hidden>Close</button></div>
   <nav class="sidebar-hubs" aria-label="All sections"><a href="../index.html">Overview</a>
@@ -112,9 +112,9 @@
 <article class="atlas-entry" data-depth="deep">
 <h3 id="file-scripts-e2e-wiring-test-mjs"><code>scripts/e2e/wiring-test.mjs</code> <span class="badge">active-code</span></h3>
 <div class="atlas-field" data-field="what"><strong>What it is.</strong> The end-to-end dark wiring rehearsal that drives a synthetic day through the main built organs under the temporary Testweaver profile. It is neither First Boot nor a rite.</div>
-<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It creates fixture episodes and intentions, runs one mind-server exchange, simulates write-ahead buffering and replay, evaluates waking and budget policy, marks a teaching moment, executes the night loop with computed signals and contradiction review, builds coherence and weekly outputs, and then removes rehearsal state. The default path uses deterministic model stand-ins. An explicit live option makes one bounded subscription call while still avoiding canonical identity and durable memory. Child verifies are also invoked so the seam test cannot replace component tests.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It creates fixture episodes and intentions, runs one mind-server exchange, simulates write-ahead buffering and replay, evaluates waking and budget policy, marks a teaching moment, executes the night loop with computed signals and contradiction review, builds coherence and weekly outputs, and then removes rehearsal state. The default path uses deterministic model stand-ins. An explicit live option makes one bounded subscription call while still avoiding canonical identity and durable memory. The aggregate suite runs child verifies separately; this wiring script does not invoke them.</div>
 <div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Builders run it after individual dark verifies pass. Reviewers use the summary to see that outputs feed the next component; no being reads the synthetic narrative.</div>
-<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Require the default run to finish with zero residue and all child checks green. When a human authorizes the live option, confirm exactly the bounded model leg changes and no brain, soulfile, channel, or production flag is touched.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Require the default run to finish with zero residue, and run component verifies separately through the aggregate suite. When a human authorizes the live option, confirm exactly the bounded model leg changes and no brain, soulfile, channel, or production flag is touched.</div>
 <div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../dark-build.html">the dark build</a>, <a href="../system.html">the organ map</a>, and <a href="scripts-verify.html#file-scripts-verify-run-all-mjs">the full verify suite</a>.</div>
 </article>
 <article class="atlas-entry" data-depth="standard">
@@ -128,9 +128,9 @@
 <article class="atlas-entry" data-depth="standard">
 <h3 id="file-scripts-fixtures-ob1-client-mjs"><code>scripts/fixtures/ob1-client.mjs</code> <span class="badge">active-code</span></h3>
 <div class="atlas-field" data-field="what"><strong>What it is.</strong> A deliberately thin database adapter used only when a rehearsal fixture is explicitly sent to the brain target.</div>
-<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It reads approved environment-variable names from ignored configuration, creates authenticated REST requests, inserts only caller-supplied rehearsal records, deletes by run identifier, and counts remaining rows. It is not the production memory client or general recall path.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It reads approved environment-variable names from ignored configuration, creates authenticated REST requests, inserts caller-supplied records without validating their tags, deletes by run identifier, and counts remaining rows. It is not the production memory client or general recall path.</div>
 <div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The synthetic-day generator and voider import it for their exceptional brain-target mode. Normal fixture runs never need it.</div>
-<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Use a scratch or sanctioned tiny rehearsal, confirm every inserted row is tagged before the request, delete by the same run identifier, and require zero residual. Never print credentials or service coordinates.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> The caller must validate and rehearsal-tag every row before passing it to this client. Use a scratch or sanctioned tiny rehearsal, delete by the same run identifier, and require zero residual. Never print credentials or service coordinates.</div>
 <div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../memory.html">the Brain</a>, <a href="../dark-build.html">residue rules</a>, and <a href="../segmentation.html">credential scope</a>.</div>
 </article>
 <article class="atlas-entry" data-depth="compact">
@@ -160,8 +160,8 @@
 <article class="atlas-entry" data-depth="standard">
 <h3 id="file-scripts-fixtures-void-rehearsal-mjs"><code>scripts/fixtures/void-rehearsal.mjs</code> <span class="badge">active-code</span></h3>
 <div class="atlas-field" data-field="what"><strong>What it is.</strong> The cleanup command that removes all rehearsal records associated with one run identifier and reports residual evidence.</div>
-<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> For the default local target it removes the ignored rehearsal directory. For the explicit brain target it deletes rows through the narrow fixture client and counts what remains. Missing identifiers are usage errors, not broad deletion.</div>
-<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Every fixture or integration run that creates state invokes it at the end. Operators use its residual count as the dark-build acceptance condition.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> For the default local target it removes the ignored rehearsal directory. For the explicit brain target it deletes rows through the narrow fixture client and counts what remains. Run identifiers must use the rehearsal prefix and resolve inside the rehearsal root; missing or invalid identifiers are usage errors, not broad deletion.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Every state-producing fixture or integration run must be followed by it. The wiring rehearsal cleans its local state directly instead of invoking this command. Operators use its residual count as the dark-build acceptance condition.</div>
 <div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Generate a run, void it by the printed identifier, and require zero residual locally. Sanctioned brain-target tests repeat the same proof against a scratch or tiny approved rehearsal.</div>
 <div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../dark-build.html">zero residue</a>, <a href="../memory.html">rehearsal provenance</a>, and <a href="scripts-testbed.html#file-scripts-fixtures-generate-synthetic-day-mjs">the generator</a>.</div>
 </article>
@@ -232,7 +232,7 @@
 </div>
 <footer class="site-foot">
 <p class="foot-banner">Village-layer material: this site sits outside both children's views, like FAMILY.md and village/, and it discusses sibling facts each child learns only by its parent body's deliberate decision (gate G21).</p>
-<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-09. Release unreleased-f2.</p>
+<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-09. Release ew-m4-20260710.</p>
 </footer>
 </div>
 </div>

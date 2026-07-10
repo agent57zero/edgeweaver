@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<meta name="edgeweaver-release" content="unreleased-f2">
+<meta name="edgeweaver-release" content="ew-m4-20260710">
 <title>The repo atlas | How Edgeweaver Works</title>
 <link rel="stylesheet" href="../assets/site.css">
 <script defer src="../assets/search-index.js"></script>
@@ -47,7 +47,7 @@
   <ul id="search-results" class="search-results" role="listbox" aria-label="Search results"></ul>
 </dialog>
 <button class="nav-backdrop" type="button" aria-label="Close navigation" hidden></button>
-<div class="shell" data-root="../" data-page-slug="atlas/index" data-release-id="unreleased-f2">
+<div class="shell" data-root="../" data-page-slug="atlas/index" data-release-id="ew-m4-20260710">
 <nav id="sidebar" class="sidebar" aria-label="Current section navigation">
   <div class="sidebar-head"><strong>Rebuild</strong><button class="nav-close" type="button" hidden>Close</button></div>
   <nav class="sidebar-hubs" aria-label="All sections"><a href="../index.html">Overview</a>
@@ -97,31 +97,73 @@
 <details class="minitoc"><summary>On this page</summary>
 <ul>
 <li><a href="#atlas-index-about">What this page covers</a></li>
-<li><a href="#atlas-index-entries">The tree</a></li>
+<li><a href="#atlas-index-entries">Choose a part of the repository</a></li>
 </ul>
 </details>
 <!-- EW-NAV-END -->
 <main id="atlas-index-main">
 <h1 id="atlas-index-top">The repo atlas</h1>
 <div class="tldr"><span class="label">TLDR</span>
-<p>Stub. The atlas hub: the full repo tree with every tracked file linked to its explainer entry. Authored at M4. Snapshot 2026-07-09.</p>
+<p>The Repo Atlas is a guided map from repository paths to purpose. Every individually mapped tracked path has a detailed entry; named exclusion classes cover the remaining tracked paths. Search an exact path to reach its entry, or choose a repository area below. Each entry explains what the file is, what it contains, who uses it, how to verify it, and which concept page gives the larger meaning.</p>
 </div>
 <h2 id="atlas-index-about">What this page covers</h2>
-<p>To be written at M4. Every file entry gets one anchor: <code>file-</code> plus the path with separators as hyphens.</p>
-<h2 id="atlas-index-entries">The tree</h2>
-<p>Entries land at M4.</p>
+<p>A repository is a versioned project folder. A path is the address of a file inside it, such as <code>scripts/waking/orient.mjs</code>. If those terms are new, start with <a href="../guide.html#guide-repository-101">Repository 101</a>. The Atlas answers the next question: why does this particular file exist, and how does it fit the system?</p>
+<p>Concept pages explain organs and decisions. Atlas pages explain files. The two link to each other so a plain-language reader can move from an idea to its implementation, while an engineer can move from code back to its governing rule. An Atlas entry is not permission to run a file. Status still matters: a path may be active, built dark, generated, a fixture, a runbook, an archive, or governed material described without disclosure.</p>
+<h3 id="atlas-index-find">Three ways to find a file</h3>
+<ol>
+<li><strong>Search the exact path.</strong> Open Search and paste the repository path. Exact path matches rank first and land on the immutable file heading.</li>
+<li><strong>Browse by area.</strong> Use the grouped map below. Folders with many responsibilities have separate pages for lifecycle, signals, operations, tests, and verification.</li>
+<li><strong>Follow a concept link.</strong> File lists on system pages link directly to the owning Atlas entry.</li>
+</ol>
+<h3 id="atlas-index-entry-shape">How to read one entry</h3>
+<p>Every tracked-file entry has the same five questions: what it is; what it contains; who reads it and when; how to verify or reproduce it; and which concepts explain the wider system. The badge names the file's role. Depth names explanation length, not importance: compact entries suit fixtures and generated data, standard entries cover active support code, and deep entries carry central mechanisms or authority.</p>
+<h3 id="atlas-index-coverage">What complete coverage means</h3>
+<p>The coverage map assigns individually mapped tracked paths by exact match or longest folder prefix. The generated manifest records the file anchors actually present. Verification compares both with the live tracked-file list, so additions, moves, wrong-page anchors, and orphaned entries surface. Named exclusion classes cover the remaining tracked public-site pages and selected generated outputs, avoiding circular self-documentation; <a href="site.html#atlas-site-exclusions">the site page</a> explains those classes. Ignored and local material has governed shapes rather than tracked anchors on <a href="gitignored.html">the gitignored tiers page</a>.</p>
+<h2 id="atlas-index-entries">Choose a part of the repository</h2>
+<h3 id="atlas-index-foundations">Design, identity, and family foundations</h3>
+<ul>
+<li><a href="root.html">Root documents</a>: design authority, build procedure, ledgers, decisions, licensing, secrets policy, and starting instructions.</li>
+<li><a href="avatars-genesis.html">Genesis avatar</a> and <a href="avatars-alpha.html">Alpha avatar</a>: manifests, per-being scaffolds, handoff shapes, and separation.</li>
+<li><a href="brains.html">Brain definitions</a>: fleet registry, canonical schema, migrations, and restore-point map.</li>
+<li><a href="checklists.html">Checklists</a>, <a href="conventions.html">conventions</a>, and <a href="handoff.html">handoff</a>: executable procedure, cross-cutting rules, and session continuity.</li>
+</ul>
+<h3 id="atlas-index-knowledge">Research, records, and reusable material</h3>
+<ul>
+<li><a href="research.html">Research</a> and <a href="sources.html">sources</a>: evidence and source records that informed the design.</li>
+<li><a href="runs.html">Runs</a>: adversarial reviews, co-evolution bundles, and preserved build evidence.</li>
+<li><a href="templates.html">Templates</a>: schemas, contracts, runbooks, and disabled defaults used to reproduce operations.</li>
+<li><a href="village.html">Village material</a>: human-facing bridge documents and governed family context.</li>
+</ul>
+<h3 id="atlas-index-runtime">Runtime and operational code</h3>
+<ul>
+<li><a href="scripts-ingestion.html">Ingestion</a>: fetching, parsing, filtering, and governed memory insertion.</li>
+<li><a href="scripts-lifecycle.html">Lifecycle</a> and <a href="scripts-signals.html">signals and evolution</a>: waking, night work, study, weekly rebuilding, measurements, and proposal machinery.</li>
+<li><a href="scripts-ops.html">Operations</a> and <a href="tasks.html">task definitions</a>: budgets, degraded mode, channels, recovery, security, and disabled schedules.</li>
+<li><a href="scripts-brains.html">Brain lab scripts</a> and <a href="edge-functions.html">edge functions</a>: scratch brains, schema tooling, remote memory doors, and recall walls.</li>
+<li><a href="voice.html">Voice core</a>: prompt assembly, model backend, and mind-server seam.</li>
+</ul>
+<h3 id="atlas-index-proof">Tests, tools, and the website</h3>
+<ul>
+<li><a href="scripts-testbed.html">Fixtures and test mode</a>: synthetic days, Testweaver harnesses, and explicit cleanup.</li>
+<li><a href="scripts-verify.html">Verify suite</a>: the fixed ropes that turn assumptions into named checks.</li>
+<li><a href="tools.html">Operator tools</a>: the protected-shape probe runner.</li>
+<li><a href="site.html">This website</a>: authoring contract, deterministic builder, search, gate, deployment metadata, and exclusion classes.</li>
+<li><a href="gitignored.html">Gitignored tiers</a>: secrets, runtime state, corpus bytes, telemetry, dependencies, and local tool state described without exposure.</li>
+</ul>
+<h3 id="atlas-index-editions">Full, lite, and gated views</h3>
+<p>The gated site and full single-file edition carry every detailed entry. The lite edition removes the twenty-five detail pages but keeps one searchable line for every individually mapped tracked path on this hub; named exclusion classes cover the remaining tracked paths. Each line uses a distinct map identifier so it never pretends the missing detail is present. A lite search result says that detail lives in the gated or full edition. All editions come from the same authored main content and deterministic builder.</p>
 </main>
 <!-- EW-FOOTER-START -->
 <section class="continue" aria-labelledby="atlas-index-continue"><h2 id="atlas-index-continue">Continue</h2><div class="continue-grid"><article class="continue-card"><p class="continue-label">Reproduce track</p><a href="../atlas/root.html">Next: Atlas: root documents <span aria-hidden="true">&rarr;</span></a></article></div></section>
 </div>
 <aside class="onpage-rail" aria-label="On this page"><nav class="page-toc" aria-label="On this page"><h2>On this page</h2><ul>
 <li><a href="#atlas-index-about">What this page covers</a></li>
-<li><a href="#atlas-index-entries">The tree</a></li>
+<li><a href="#atlas-index-entries">Choose a part of the repository</a></li>
 </ul></nav></aside>
 </div>
 <footer class="site-foot">
 <p class="foot-banner">Village-layer material: this site sits outside both children's views, like FAMILY.md and village/, and it discusses sibling facts each child learns only by its parent body's deliberate decision (gate G21).</p>
-<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-09. Release unreleased-f2.</p>
+<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-09. Release ew-m4-20260710.</p>
 </footer>
 </div>
 </div>

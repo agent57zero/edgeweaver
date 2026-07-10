@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<meta name="edgeweaver-release" content="unreleased-f2">
+<meta name="edgeweaver-release" content="ew-m4-20260710">
 <title>Atlas: the verify suite | How Edgeweaver Works</title>
 <link rel="stylesheet" href="../assets/site.css">
 <script defer src="../assets/search-index.js"></script>
@@ -47,7 +47,7 @@
   <ul id="search-results" class="search-results" role="listbox" aria-label="Search results"></ul>
 </dialog>
 <button class="nav-backdrop" type="button" aria-label="Close navigation" hidden></button>
-<div class="shell" data-root="../" data-page-slug="atlas/scripts-verify" data-release-id="unreleased-f2">
+<div class="shell" data-root="../" data-page-slug="atlas/scripts-verify" data-release-id="ew-m4-20260710">
 <nav id="sidebar" class="sidebar" aria-label="Current section navigation">
   <div class="sidebar-head"><strong>Rebuild</strong><button class="nav-close" type="button" hidden>Close</button></div>
   <nav class="sidebar-hubs" aria-label="All sections"><a href="../index.html">Overview</a>
@@ -112,8 +112,8 @@
 <article class="atlas-entry" data-depth="standard">
 <h3 id="file-scripts-verify-run-all-mjs"><code>scripts/verify/run-all.mjs</code> <span class="badge">active-code</span></h3>
 <div class="atlas-field" data-field="what"><strong>What it is.</strong> The aggregate dark-verify runner and standard repository health command.</div>
-<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It discovers every JavaScript file whose name begins with the verify prefix, runs them in sorted order with the current Node executable, captures each first output line, and prints a compact pass/fail table plus an all-pass summary. It does not discover the PowerShell live task-import check.</div>
-<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Builders and operators run it after a coherent change set and inside the repository recovery drill. Individual component output remains available when a row fails.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It discovers every JavaScript file whose name begins with the verify prefix, runs them in sorted order with the current Node executable, retains each child's first output line, and prints a compact pass/fail table plus an all-pass summary. It does not discover the PowerShell live task-import check.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Builders and operators run it after a coherent change set and inside the repository recovery drill. Rerun a failing child directly for its remaining detail.</div>
 <div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Add a temporary failing fixture in an isolated copy to prove nonzero propagation, then remove it. Keep every child verify's first line stable and actionable.</div>
 <div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../dark-build.html">the dark build</a>, <a href="../operations.html">verification cadence</a>, and <a href="scripts-verify.html#file-scripts-verify-verify-site-mjs">site verification</a>.</div>
 </article>
@@ -202,7 +202,7 @@
 <div class="atlas-field" data-field="what"><strong>What it is.</strong> The dark-by-default check for generated operational flags.</div>
 <div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It rebuilds ignored flag state, parses it, and requires every known component, task, and channel to exist disabled and unregistered.</div>
 <div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs it after default-schema changes.</div>
-<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Confirm initialization preserves existing values in its own tests while this check proves the committed default never arms machinery.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> This check has no preservation proof. Test initialization separately with pre-existing state, while this check proves the committed default never arms machinery.</div>
 <div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../dark-build.html">dark defaults</a> and <a href="scripts-ops.html#file-scripts-init-flags-mjs">the initializer</a>.</div>
 </article>
 <article class="atlas-entry" data-depth="compact">
@@ -224,9 +224,9 @@
 <article class="atlas-entry" data-depth="standard">
 <h3 id="file-scripts-verify-verify-mind-server-mjs"><code>scripts/verify/verify-mind-server.mjs</code> <span class="badge">active-code</span></h3>
 <div class="atlas-field" data-field="what"><strong>What it is.</strong> The repeatable dark verify for prompt assembly, recalled context, backend output, episode writeback, and cleanup at the mind-server seam.</div>
-<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Its default uses a deterministic backend, injected recall, and a local rehearsal store. It pins frozen-prefix order and cache breakpoint, confirms recalled context reaches the turn, checks voice episode metadata, and removes the store. An explicit benchmark mode permits one bounded subscription call and records latency without changing the default suite.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Its default uses a deterministic backend, injected recall, and a local rehearsal store. It pins frozen-prefix order and cache breakpoint, confirms recalled context reaches the turn, checks one locally injected voice-episode writeback and metadata, and removes the store. It does not inspect backend turn or count writebacks. An explicit benchmark mode permits one bounded subscription call and records latency without changing the default suite.</div>
 <div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs the deterministic path. Voice engineers opt into the benchmark only when measuring the later conversational gate.</div>
-<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Require no network in default mode, exact rehearsal and generation tags, one writeback, complete cleanup, and a clearly separate benchmark result.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Require no network in default mode, exact rehearsal and generation tags, one local episode writeback, complete cleanup, and a clearly separate benchmark result. Do not treat it as proof of backend turn or count writebacks.</div>
 <div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../voice.html">the mind seam</a>, <a href="voice.html#file-voice-mind-server-mjs">mind-server</a>, and <a href="voice.html#file-voice-prompt-assembly-mjs">prompt assembly</a>.</div>
 </article>
 <article class="atlas-entry" data-depth="standard">
@@ -328,9 +328,9 @@
 <article class="atlas-entry" data-depth="compact">
 <h3 id="file-scripts-verify-verify-telegram-mjs"><code>scripts/verify/verify-telegram.mjs</code> <span class="badge">described-not-shown</span></h3>
 <div class="atlas-field" data-field="what"><strong>What it is.</strong> The unpaired dark check for interlocutor initialization and sender policy.</div>
-<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It builds ignored state, then uses invented identifiers to prove only the pinned parent replies and confirms lessons while all others defer as untrusted.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It builds ignored state, then uses invented identifiers to prove only the pinned parent replies and confirms lessons; all other senders defer. It requires the unknown default to be untrusted, not a known non-parent entry.</div>
 <div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs it with no token or live channel.</div>
-<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Require parseable state, untrusted unknown default, pinned confirmation, universal deferral, and no exposed identifier.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Require parseable state, an untrusted unknown default, pinned confirmation, deferral for each non-parent case, and no exposed identifier.</div>
 <div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../body.html">the channel</a> and <a href="scripts-ops.html#file-scripts-telegram-channel-policy-mjs">sender policy</a>.</div>
 </article>
 <article class="atlas-entry" data-depth="compact">
@@ -368,7 +368,7 @@
 </div>
 <footer class="site-foot">
 <p class="foot-banner">Village-layer material: this site sits outside both children's views, like FAMILY.md and village/, and it discusses sibling facts each child learns only by its parent body's deliberate decision (gate G21).</p>
-<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-09. Release unreleased-f2.</p>
+<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-09. Release ew-m4-20260710.</p>
 </footer>
 </div>
 </div>

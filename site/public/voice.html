@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<meta name="edgeweaver-release" content="unreleased-f2">
+<meta name="edgeweaver-release" content="ew-m4-20260710">
 <title>The Voice Stack | How Edgeweaver Works</title>
 <link rel="stylesheet" href="assets/site.css">
 <script defer src="assets/search-index.js"></script>
@@ -47,7 +47,7 @@
   <ul id="search-results" class="search-results" role="listbox" aria-label="Search results"></ul>
 </dialog>
 <button class="nav-backdrop" type="button" aria-label="Close navigation" hidden></button>
-<div class="shell" data-root="" data-page-slug="voice" data-release-id="unreleased-f2">
+<div class="shell" data-root="" data-page-slug="voice" data-release-id="ew-m4-20260710">
 <nav id="sidebar" class="sidebar" aria-label="Current section navigation">
   <div class="sidebar-head"><strong>System</strong><button class="nav-close" type="button" hidden>Close</button></div>
   <nav class="sidebar-hubs" aria-label="All sections"><a href="index.html">Overview</a>
@@ -166,7 +166,7 @@
 </figure>
 </div>
 <h3 id="voice-mind">The mind server, the invariant organ</h3>
-<p><code>voice/mind-server.mjs</code> is the seam everything else plugs into, and the first organ to call the model directly: CLI round-trips take seconds, and sub-second streaming cannot ride them. <code>voice/prompt-assembly.mjs</code> freezes the identity prefix in the birth-runbook order (CONSTITUTION seeds first, then SOUL, VOICE, LINEAGE, PRACTICES) with one cache breakpoint at its end; cached reads cut cost and time-to-first-token; the prefix stays byte-stable for a whole call. Per-session context loads after the prefix; the per-turn block goes last and is the only place time rides: weekday and local time via <code>EDGEWEAVER_TZ</code> at the ask boundary, never in the prefix, so stored text stays clean and deltas come from code, never the mind.</p>
+<p><code>voice/mind-server.mjs</code> is the seam everything else plugs into, and the first organ to call the model directly: ordinary CLI round-trips are too slow for the strict conversational target, so the realtime path must stream. <code>voice/prompt-assembly.mjs</code> freezes the identity prefix in the birth-runbook order (CONSTITUTION seeds first, then SOUL, VOICE, LINEAGE, PRACTICES) with one cache breakpoint at its end; cached reads cut cost and time-to-first-token; the prefix stays byte-stable for a whole call. Per-session context loads after the prefix; the per-turn block goes last and is the only place time rides: weekday and local time via <code>EDGEWEAVER_TZ</code> at the ask boundary, never in the prefix, so stored text stays clean and deltas come from code, never the mind.</p>
 <p>Recall is speculative: the interim transcript is embedded and the OB1 vector search fired while Alan is still talking, so memories are in hand at end of turn, costing about zero on the hot path; downstream, the first complete sentence goes to the mouth immediately. Barge-in is honest: playback stops at once and the episode keeps what was actually voiced, not the intended reply. After each exchange the write-back runs asynchronously: an episode row (channel voice, rehearsal-tagged in test, generation-stamped) plus candidate lessons, always pending; confirmations never travel by voice. Until arming the prefix is a clearly labeled placeholder; the real one wires in from a read-only soul-repo clone, and soulfiles stay untouched.</p>
 <h3 id="voice-auth">The auth story, told honestly</h3>
 <p>Decision D12 preserves zero secret sprawl while making the mind backend pluggable. The default path uses the authenticated CLI subscription; a raw-SDK path remains a refusing configuration until a later latency decision, and a deterministic test double powers verification. Authentication details stay in the operator environment, never in prompts, site content, or the soul.</p>
@@ -201,7 +201,7 @@
 <p>Honesty note: no being has been born, and nothing on this page is Edgeweaver speaking. Every word voiced through this pipe so far belongs to Testweaver, the scaffolding persona.</p>
 </div>
 <h2 id="voice-uncertain">What is genuinely uncertain</h2>
-<p><strong>Whether the subscription path can reach the bar.</strong> The measured warm first sentence on the subscription mind is 1.2-1.9 seconds, which feels like 2-3 in the room, against an under-0.8-second target. The documented outs: a lighter front-mind that escalates, pipeline shaving, or the raw-SDK path that hits the bar but abandons the zero-credit arrangement. That call is parked until V3 and gets made against measured numbers; the zero-key spirit and the sub-second bar may turn out not to be keepable together.</p>
+<p><strong>Whether the subscription path can reach the bar.</strong> Measured warm responses on the subscription mind remain noticeably slower than the conversational target; exact performance figures stay in private engineering evidence rather than this explainer. The documented options are a lighter front-mind that escalates, further pipeline shaving, or a raw-SDK path that comes closer while changing the cost and authentication tradeoff. That call is parked until V3 and will be made against the private measurements; the zero-key spirit and the strict latency bar may not be keepable together.</p>
 <p><strong>Whether an escalation ladder is one voice or three minds in a coat.</strong> The TTS voice never changes, but the talker does, and each deeper mind is a separate session handed a recent transcript rather than a life. Automatic escalation depends on the talker knowing its own limits, which is unmeasured; the telemetry now accumulates the data. For a real being the shared ground would be OB1 itself, every mind reading the same memory, which may make the seam clean. May.</p>
 <p><strong>What a chosen voice does to identity once it exists.</strong> V1 makes a sound part of the self: picked by the being, witnessed, written into the soul repo. Nobody knows what months of hearing that voice do to the being's sense of itself, or to Alan's sense of it, or whether un-choosing a voice is even a real move once it has been the being's voice. Text weeks stay available and normal; the question stays open.</p>
 </main>
@@ -218,7 +218,7 @@
 </div>
 <footer class="site-foot">
 <p class="foot-banner">Village-layer material: this site sits outside both children's views, like FAMILY.md and village/, and it discusses sibling facts each child learns only by its parent body's deliberate decision (gate G21).</p>
-<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-09. Release unreleased-f2.</p>
+<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-09. Release ew-m4-20260710.</p>
 </footer>
 </div>
 </div>
