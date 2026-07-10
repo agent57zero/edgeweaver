@@ -714,8 +714,17 @@ if (RELEASE) {
 {
   const mw = read(join(SITE, "middleware.js"));
   if (!mw.includes("process.env.EW_SITE_PASSWORD")) problems.push("check 9 (gate): middleware does not read EW_SITE_PASSWORD");
-  if (!/503/.test(mw)) problems.push("check 9 (gate): fail-closed 503 branch missing");
+  if (!/503/.test(mw) || !/MIN_PASSWORD_LENGTH\s*=\s*20/.test(mw) || !/password\.length\s*<\s*MIN_PASSWORD_LENGTH/.test(mw)) problems.push("check 9 (gate): fail-closed branch must reject missing or short passwords");
+  if (!mw.includes("__Host-ew_site_auth")) problems.push("check 9 (gate): cookie must use the __Host- prefix");
   if (!/HttpOnly/.test(mw) || !/Secure/.test(mw) || !/SameSite=Lax/.test(mw)) problems.push("check 9 (gate): cookie flags incomplete (need HttpOnly, Secure, SameSite=Lax)");
+  if (!/ew-logout/.test(mw) || !/request\.method === "POST"/.test(mw)) problems.push("check 9 (gate): explicit POST logout missing");
+  for (const header of ["cache-control", "content-security-policy", "referrer-policy", "x-content-type-options", "permissions-policy"]) {
+    if (!mw.includes(`"${header}"`)) problems.push(`check 9 (gate): middleware security header missing: ${header}`);
+  }
+  const vercel = read(join(SITE, "vercel.json"));
+  for (const header of ["Cache-Control", "Content-Security-Policy", "Referrer-Policy", "X-Content-Type-Options", "Permissions-Policy"]) {
+    if (!vercel.includes(`"key": "${header}"`)) problems.push(`check 9 (gate): Vercel static security header missing: ${header}`);
+  }
   if (/export\s+const\s+config\b|matcher\s*:/.test(mw)) problems.push("check 9 (gate): config/matcher export present (every path must be gated)");
 }
 

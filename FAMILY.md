@@ -87,6 +87,7 @@ FAMILY repo, one timeline; no per-being or per-generation forks into fresh repos
   PLAN.md GROWING-EDGEWEAVER.md FAMILY.md IMPLEMENTATION.md START-HERE.md
   checklists/ templates/ conventions/ corpus/ scripts/ research/ sources/
   village/           the humans (circle docs, bridge docs, experiment log)
+  site/              the private explainer wiki (village-layer, outside both children)
   handoff/           base-layer runbooks (dark-build loop, voice rig notes)
   avatars/
     genesis/         everything personal to Genesis

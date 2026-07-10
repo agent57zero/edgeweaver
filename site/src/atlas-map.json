@@ -60,6 +60,7 @@
     "supabase/": "atlas/edge-functions",
     "scripts/site/": "atlas/site",
     "site/public/assets/search-index.js": "atlas/site",
+    "site/public/assets/LICENSE-CODE.txt": "atlas/site",
     "site/": "atlas/site",
     "sources/": "atlas/sources",
     "tasks/": "atlas/tasks",

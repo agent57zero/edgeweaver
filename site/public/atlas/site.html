@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<meta name="edgeweaver-release" content="ew-m4-20260710">
+<meta name="edgeweaver-release" content="ew-20260710-rc1">
 <title>Atlas: site/ (this website) | How Edgeweaver Works</title>
 <link rel="stylesheet" href="../assets/site.css">
 <script defer src="../assets/search-index.js"></script>
@@ -31,8 +31,9 @@
       <button type="button" data-reading-choice="both" aria-pressed="true">Both</button>
     </div>
     <button class="theme-toggle" type="button" aria-pressed="false" hidden>Theme</button>
+    <form class="logout-form" method="post" action="/ew-logout"><button type="submit">Log out</button></form>
   </div>
-  <span class="snapshot" data-snapshot="2026-07-09">snapshot 2026-07-09</span>
+  <span class="snapshot" data-snapshot="2026-07-10">snapshot 2026-07-10</span>
 </header>
 <p id="lens-announcer" class="sr-only" aria-live="polite"></p>
 <dialog id="site-search" class="search-dialog" aria-labelledby="search-title">
@@ -47,7 +48,7 @@
   <ul id="search-results" class="search-results" role="listbox" aria-label="Search results"></ul>
 </dialog>
 <button class="nav-backdrop" type="button" aria-label="Close navigation" hidden></button>
-<div class="shell" data-root="../" data-page-slug="atlas/site" data-release-id="ew-m4-20260710">
+<div class="shell" data-root="../" data-page-slug="atlas/site" data-release-id="ew-20260710-rc1">
 <nav id="sidebar" class="sidebar" aria-label="Current section navigation">
   <div class="sidebar-head"><strong>Rebuild</strong><button class="nav-close" type="button" hidden>Close</button></div>
   <nav class="sidebar-hubs" aria-label="All sections"><a href="../index.html">Overview</a>
@@ -145,7 +146,7 @@
 <article class="atlas-entry" data-depth="deep">
 <h3 id="file-site-middleware-js"><code>site/middleware.js</code> <span class="badge">active-code</span></h3>
 <div class="atlas-field" data-field="what"><strong>What it is.</strong> The framework-less routing middleware that places every deployed path behind one shared password gate. It is explicitly a courtesy and team-grade privacy wall, not a vault.</div>
-<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It reads the password only from the deployment environment, fails closed when absent, derives a deterministic HMAC bearer cookie, compares values without early exit, parses cookies, sanitizes local return paths, serves its own no-store login form, delays failed attempts, and lets authenticated requests continue to static files. No route matcher or public login carve-out exists, so pages, assets, Atlas routes, and missing paths all cross the same middleware. Rotation changes the derived cookie and ends old sessions. Current pre-release code does not yet claim the later logout, minimum-length, or full security-header hardening.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It reads the password only from the deployment environment, fails closed when absent or short, derives a deterministic HMAC bearer cookie with the __Host prefix, compares values without early exit, parses cookies, sanitizes local return paths, serves its own private no-store login form, delays failed attempts, supports explicit POST logout, and lets authenticated requests continue to static files. No route matcher or public login carve-out exists, so pages, assets, Atlas routes, and missing paths all cross the same middleware. Rotation changes the derived cookie and ends old sessions; static and middleware responses carry restrictive security headers.</div>
 <div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Every deployed request passes through it. Alan controls the environment value and rotation; site authors never handle the password.</div>
 <div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> With a throwaway development value entered only through the browser, test missing configuration, wrong password, successful cookie flow, nested pages, assets, login return, and rotation. Before release, complete the separate gate-hardening checklist and inspect response headers without publishing the host.</div>
 <div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../honesty.html">the courtesy-wall limit</a>, <a href="../segmentation.html">secret boundaries</a>, and <a href="../operations.html">release operations</a>.</div>
@@ -165,6 +166,14 @@
 <div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Browser search loads it. Artifacts receive the builder's shared in-memory records instead; they do not read this generated JavaScript. Authors never edit it.</div>
 <div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Rebuild under freeze; parse the payload, check destinations and redaction, and test exact-path ranking.</div>
 <div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">local search</a>, <a href="../about.html">generated outputs</a>, and <a href="site.html#file-scripts-site-build-site-mjs">the builder</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-site-public-assets-LICENSE-CODE-txt"><code>site/public/assets/LICENSE-CODE.txt</code> <span class="badge">generated</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The distributable MIT notice for the site's HTML, CSS, JavaScript, and build code.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> The complete permission, attribution, warranty, and liability text copied from the repository's code-license decision.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> A recipient reads it before copying code from the deployed site; the artifact and about page carry the same licensing boundary.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Compare this asset byte-for-byte with the approved code notice before a release and confirm it is present in the deployed public asset set.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../about.html#about-license">license and attribution</a> and <a href="site.html#file-site-README-md">the site handoff</a>.</div>
 </article>
 <article class="atlas-entry" data-depth="deep">
 <h3 id="file-site-src-AUTHORING-md"><code>site/src/AUTHORING.md</code> <span class="badge">authority</span></h3>
@@ -251,7 +260,7 @@
 </div>
 <footer class="site-foot">
 <p class="foot-banner">Village-layer material: this site sits outside both children's views, like FAMILY.md and village/, and it discusses sibling facts each child learns only by its parent body's deliberate decision (gate G21).</p>
-<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-09. Release ew-m4-20260710.</p>
+<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-10. Release ew-20260710-rc1.</p>
 </footer>
 </div>
 </div>

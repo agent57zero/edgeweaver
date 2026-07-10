@@ -14,15 +14,16 @@
   --mut: #5d6b74;
   --line: #e2dfd7;
   --accent: #0f766e;
+  --accent-strong: #0f766e;
   --accent-soft: #e4f0ee;
   --link: #0c655e;
   --strand1: #0f766e;
   --strand2: #b4690e;
   --ochre-text: #a85f08;
   --strand3: #52616b;
-  --ok: #15803d;
+  --ok: #166534;
   --bad: #b91c1c;
-  --warn: #b45309;
+  --warn: #92400e;
   --gap-state: #7c3aed;
   --serif: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", "Times New Roman", serif;
   --sans: system-ui, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
@@ -38,6 +39,7 @@
     --mut: #92a3a9;
     --line: #2a3b43;
     --accent: #2aa79a;
+    --accent-strong: #0f766e;
     --accent-soft: #123a37;
     --link: #4cc4b6;
     --strand1: #2aa79a;
@@ -53,7 +55,7 @@
 }
 :root[data-theme="dark"] {
   --bg: #101a1e; --card: #16232a; --soft: #1b2b33; --ink: #dde4e2;
-  --mut: #92a3a9; --line: #2a3b43; --accent: #2aa79a; --accent-soft: #123a37;
+  --mut: #92a3a9; --line: #2a3b43; --accent: #2aa79a; --accent-strong: #0f766e; --accent-soft: #123a37;
   --link: #4cc4b6; --strand1: #2aa79a; --strand2: #d08b3c; --strand3: #7e939e;
   --ochre-text: #f0ad5a;
   --ok: #4ade80; --bad: #f87171; --warn: #fbbf24; --gap-state: #a78bfa;
@@ -61,10 +63,10 @@
 }
 :root[data-theme="light"] {
   --bg: #faf9f6; --card: #ffffff; --soft: #f1efe9; --ink: #24313a;
-  --mut: #5d6b74; --line: #e2dfd7; --accent: #0f766e; --accent-soft: #e4f0ee;
+  --mut: #5d6b74; --line: #e2dfd7; --accent: #0f766e; --accent-strong: #0f766e; --accent-soft: #e4f0ee;
   --link: #0c655e; --strand1: #0f766e; --strand2: #b4690e; --strand3: #52616b;
   --ochre-text: #a85f08;
-  --ok: #15803d; --bad: #b91c1c; --warn: #b45309; --gap-state: #7c3aed;
+  --ok: #166534; --bad: #b91c1c; --warn: #92400e; --gap-state: #7c3aed;
   color-scheme: light;
 }
 
@@ -85,7 +87,7 @@ body {
 /* Accessibility floor */
 .skip {
   position: absolute; left: -9999px; top: 0;
-  background: var(--accent); color: #fff; padding: 8px 14px; border-radius: 0 0 8px 0;
+  background: var(--accent-strong); color: #fff; padding: 8px 14px; border-radius: 0 0 8px 0;
 }
 .skip:focus { left: 0; z-index: 50; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -93,6 +95,7 @@ body {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
 }
+.license-block { white-space: pre-wrap; overflow-wrap: anywhere; font: 12px/1.5 var(--mono); }
 
 a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 2px; }
 a:hover { text-decoration-thickness: 2px; }
@@ -114,21 +117,22 @@ a:hover { text-decoration-thickness: 2px; }
   font-size: 12.5px; color: var(--mut); white-space: nowrap;
   font-family: var(--mono);
 }
-.nav-toggle, .nav-close, .theme-toggle, .search-toggle, .reading-controls button, .search-close {
+.nav-toggle, .nav-close, .theme-toggle, .search-toggle, .reading-controls button, .search-close, .logout-form button {
   font: 13px var(--sans); color: var(--ink);
   background: var(--soft); border: 1px solid var(--line);
   border-radius: 8px; min-height: 44px; padding: 8px 11px; cursor: pointer;
 }
 .nav-toggle { display: none; }
-.nav-toggle[aria-expanded="true"] { background: var(--accent); color: #fff; border-color: var(--accent); }
+.nav-toggle[aria-expanded="true"] { background: var(--accent-strong); color: #fff; border-color: var(--accent-strong); }
 .hub-nav { display: flex; align-items: center; gap: 4px; margin-left: auto; }
 .hub-nav a { color: var(--mut); text-decoration: none; padding: 8px 9px; border-radius: 7px; white-space: nowrap; }
 .hub-nav a:hover { background: var(--soft); color: var(--ink); }
 .hub-nav a[aria-current] { color: var(--accent); background: var(--accent-soft); font-weight: 700; }
 .top-actions { display: flex; align-items: center; gap: 6px; }
+.logout-form { margin: 0; }
 .reading-controls { display: inline-flex; gap: 2px; border: 1px solid var(--line); border-radius: 9px; padding: 2px; }
 .reading-controls button { min-height: 38px; border: 0; background: transparent; padding: 6px 8px; }
-.reading-controls button[aria-pressed="true"] { background: var(--accent); color: #fff; }
+.reading-controls button[aria-pressed="true"] { background: var(--accent-strong); color: #fff; }
 
 /* Shell: sidebar + content */
 .shell {

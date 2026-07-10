@@ -3,7 +3,7 @@
 The explainer wiki for the whole project (decision D21; plan + adversarial trail:
 [runs/site-plan.md](../runs/site-plan.md)). Village-layer material: it sits outside
 both children's views, like FAMILY.md and village/. Snapshot date for all content:
-2026-07-09.
+2026-07-10.
 
 ## Resume here
 
@@ -12,9 +12,9 @@ this plan** through **Definition of done**. Its F0-F7 sequence supersedes the
 historical M0-M6 build sequence retained later in that file. S0 and S1 closed on
 2026-07-10; approved candidate `cc31144` is the M3 safety/content baseline.
 The shared F2 contract is committed at `084dce8`; the completed M4/M5 checkpoint
-continues from `d879555` with the correction pass integrated. The next safe action
-is the M6 QA and release-candidate reconciliation: browser modes, gate hardening,
-licensing, the site-wide TLDR, and the final evidence ledger.
+continues from `d879555` with the correction pass integrated. The M6 release-candidate
+reconciliation is complete for automated evidence; the next safe action is the S2 Alan
+review, including Windows Narrator smoke evidence and approval against the candidate commit.
 
 The 27 non-Atlas pages and all 26 Atlas pages now have authored content in the
 working tree; the generated search index, artifacts, and Atlas manifest are rebuilt
@@ -91,5 +91,5 @@ Alan named; accepted seats by first name + seat; published authors cited.
 | M3 | Beings + infrastructure: genesis, alpha, body, voice, brain-lab, backups, operations, dark-build, ecosystem + D12-D14 D16; digest | ☑ 2026-07-10 (candidate `cc31144` approved by Alan; G3/Alpha/status truth repaired; identity and operational disclosure redacted; `--redaction` + full suite green) |
 | M4 | Atlas: 26 pages, every mapped file anchored, zero drift; digest | ☑ 2026-07-10 (244 anchors, 59 exclusion-class paths, release wall green) |
 | M5 | Reference: reproduction, FAQ, glossary full, about + D19; digest | ☑ 2026-07-10 (107 glossary entries, 16 FAQ answers, 28 first-use glossary links, release wall green) |
-| M6 | Editions + QA + TLDR reconciliation; Alan checkpoint | ☐ |
+| M6 | Editions + QA + TLDR reconciliation; Alan checkpoint | candidate prepared 2026-07-10; S2 pending |
 | Ship | Bookkeeping commit, Vercel prod + smoke, artifact (lite) published | ☐ |

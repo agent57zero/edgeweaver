@@ -11,9 +11,22 @@
 //     carve-outs, no redirect loops). Team-grade gate, not hard security: the
 //     site contains no secrets by construction and verification.
 
-const COOKIE_NAME = "ew_site_auth";
+const COOKIE_NAME = "__Host-ew_site_auth";
 const COOKIE_MSG = "ew-site-cookie-v1";
 const MAX_AGE = 60 * 60 * 24 * 30; // 30 days
+const MIN_PASSWORD_LENGTH = 20;
+const SECURITY_HEADERS = {
+  "cache-control": "private, no-store",
+  "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'none'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'",
+  "referrer-policy": "no-referrer",
+  "x-content-type-options": "nosniff",
+  "x-frame-options": "DENY",
+  "permissions-policy": "camera=(), microphone=(), geolocation=(), browsing-topics=()",
+};
+
+function secureHeaders(extra = {}) {
+  return { ...SECURITY_HEADERS, ...extra };
+}
 
 async function hmacHex(key, message) {
   const enc = new TextEncoder();
@@ -80,7 +93,7 @@ ${err}
     status,
     headers: {
       "content-type": "text/html; charset=utf-8",
-      "cache-control": "no-store",
+      ...secureHeaders(),
       "x-robots-tag": "noindex, nofollow",
     },
   });
@@ -88,10 +101,10 @@ ${err}
 
 export default async function middleware(request) {
   const password = process.env.EW_SITE_PASSWORD;
-  if (!password) {
+  if (!password || password.length < MIN_PASSWORD_LENGTH) {
     return new Response("Site gate not configured (EW_SITE_PASSWORD unset). Failing closed.", {
       status: 503,
-      headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "no-store" },
+      headers: secureHeaders({ "content-type": "text/plain; charset=utf-8" }),
     });
   }
 
@@ -101,7 +114,16 @@ export default async function middleware(request) {
   const cookie = cookieValue(request.headers.get("cookie"), COOKIE_NAME);
   if (cookie && timingSafeEqual(cookie, expected)) {
     if (url.pathname === "/ew-login") {
-      return new Response(null, { status: 303, headers: { location: "/" } });
+      return new Response(null, { status: 303, headers: secureHeaders({ location: "/" }) });
+    }
+    if (url.pathname === "/ew-logout" && request.method === "POST") {
+      return new Response(null, {
+        status: 303,
+        headers: secureHeaders({
+          location: "/",
+          "set-cookie": `${COOKIE_NAME}=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax`,
+        }),
+      });
     }
     return undefined; // authenticated: continue to the static file
   }
@@ -116,15 +138,14 @@ export default async function middleware(request) {
     } catch {
       return loginPage("/", true, 400);
     }
-    const got = await hmacHex(candidate, COOKIE_MSG);
-    if (timingSafeEqual(got, expected)) {
+    const got = candidate.length >= MIN_PASSWORD_LENGTH ? await hmacHex(candidate, COOKIE_MSG) : "";
+    if (candidate.length >= MIN_PASSWORD_LENGTH && timingSafeEqual(got, expected)) {
       return new Response(null, {
         status: 303,
-        headers: {
+        headers: secureHeaders({
           location: next,
           "set-cookie": `${COOKIE_NAME}=${expected}; Path=/; Max-Age=${MAX_AGE}; HttpOnly; Secure; SameSite=Lax`,
-          "cache-control": "no-store",
-        },
+        }),
       });
     }
     await new Promise((r) => setTimeout(r, 400));

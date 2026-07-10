@@ -20,6 +20,7 @@ archives the key *names* alongside the encrypted values, so drift shows up in dr
 | TELEGRAM_BOT_TOKEN | Genesis's Telegram bot — **value pending** (Phase 3) | @BotFather (`/token`; revoke with `/revoke`) |
 | TELEGRAM_ALLOWED_USER_ID | Alan's Telegram user id (config, not secret) — **value pending** | @userinfobot |
 | LAB_DB_URL | brain lab (D15/BRAINS.md): edgeweaver-lab pooler string, scratch brains only | Supabase → edgeweaver-lab → Connection string |
+| EW_SITE_PASSWORD | Vercel shared-password gate for the private explainer site; fail-closed, 20-character minimum | Vercel project environment settings; Alan sets and rotates it out of band |
 
 **Deliberately absent (do not create):**
 

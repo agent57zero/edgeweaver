@@ -16,6 +16,7 @@ arming pass (Phase 4 + G5), not before.
 | Nightly 03:30 | Night loop (11 steps) + coherence snapshot | daemon | `tasks/edgeweaver-night-loop.xml` |
 | Weekly Sun 04:30 | Index rebuild-from-atoms; spot-check digest; boundaries.json regen | daemon + Alan | `tasks/edgeweaver-weekly-index.xml` |
 | Every ~3h (fallback) | Heartbeat wake (waking policy) | daemon | `tasks/edgeweaver-heartbeat.xml` |
+| Monthly and whenever `decisions.md` changes | Explainer-site reconciliation, rebuild, release-wall review, and snapshot refresh | Alan + build agent | `runs/site-plan.md` F6/F7; public bytes remain private until an explicit approval gate |
 | Every wake | Expectations check; budget decrement | daemon | (in-loop) |
 | Monthly | box_snapshot; one assumption test; budget review vs ceiling | daemon + Alan | (calendar) |
 | Quarterly | Backup restore drill; security-floor audit; routine probe run | executor + Alan | (calendar) |
