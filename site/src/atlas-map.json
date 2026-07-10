@@ -1,5 +1,5 @@
 {
-  "comment": "Coverage map for the repo atlas: longest-prefix match of tracked paths to the atlas page that must carry each file's anchor (id=file-<path-hyphenated>). Exclusion classes name tracked paths that deliberately carry no per-file anchor and where they are documented instead. Read by scripts/site/build-site.mjs (to emit atlas-manifest.json) and scripts/verify/verify-site.mjs (check 5 and --against-live drift).",
+  "comment": "Coverage map for the repo atlas: longest-prefix match of tracked paths to the atlas page that must carry each file's anchor (id=file-<path-hyphenated>). An exact path mapping overrides a broad exclusion prefix. Exclusion classes name tracked paths that deliberately carry no per-file anchor and where they are documented instead. Read by scripts/site/build-site.mjs (to emit atlas-manifest.json) and scripts/verify/verify-site.mjs (check 5 and --against-live drift).",
   "map": {
     "PLAN.md": "atlas/root",
     "GROWING-EDGEWEAVER.md": "atlas/root",
@@ -59,6 +59,7 @@
     "scripts/edge-functions/": "atlas/edge-functions",
     "supabase/": "atlas/edge-functions",
     "scripts/site/": "atlas/site",
+    "site/public/assets/search-index.js": "atlas/site",
     "site/": "atlas/site",
     "sources/": "atlas/sources",
     "tasks/": "atlas/tasks",

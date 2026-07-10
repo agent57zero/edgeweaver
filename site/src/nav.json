@@ -1,89 +1,101 @@
 {
   "title": "How Edgeweaver Works",
   "snapshot": "2026-07-09",
+  "releaseId": "unreleased-f2",
+  "hubs": [
+    { "id": "overview", "title": "Overview", "homeSlug": "index" },
+    { "id": "system", "title": "System", "homeSlug": "system" },
+    { "id": "beings", "title": "Beings", "homeSlug": "family" },
+    { "id": "rebuild", "title": "Rebuild", "homeSlug": "reproduction" },
+    { "id": "reference", "title": "Reference", "homeSlug": "glossary" }
+  ],
+  "readingTracks": {
+    "understand": ["index", "honesty", "system", "memory", "soul", "growth", "family", "genesis", "alpha", "status", "faq"],
+    "technical": ["index", "system", "memory", "loops", "measurement", "governance", "segmentation", "body", "voice", "brain-lab", "backups", "operations", "dark-build", "ecosystem", "status"],
+    "reproduce": ["guide", "honesty", "reproduction", "atlas/index", "atlas/root", "atlas/avatars-genesis", "atlas/avatars-alpha", "atlas/brains", "atlas/checklists", "atlas/conventions", "atlas/handoff", "atlas/research", "atlas/runs", "atlas/scripts-ingestion", "atlas/scripts-lifecycle", "atlas/scripts-signals", "atlas/scripts-ops", "atlas/scripts-brains", "atlas/scripts-testbed", "atlas/scripts-verify", "atlas/edge-functions", "atlas/sources", "atlas/tasks", "atlas/templates", "atlas/tools", "atlas/village", "atlas/voice", "atlas/gitignored", "atlas/site", "about"]
+  },
   "groups": [
     {
-      "id": "start",
-      "title": "Start",
+      "id": "overview",
+      "title": "Overview",
       "pages": [
-        { "slug": "index", "title": "Edgeweaver: beings, not bots", "milestone": "M1" },
-        { "slug": "honesty", "title": "What this is and is not", "milestone": "M1" },
-        { "slug": "story", "title": "The story through D22", "milestone": "M1" },
-        { "slug": "status", "title": "Status and roadmap", "milestone": "M1" },
-        { "slug": "guide", "title": "How to read this site", "milestone": "M1" }
+        { "slug": "index", "title": "Edgeweaver: beings, not bots", "milestone": "M1", "hub": "overview", "section": "Start here", "kind": "overview", "summary": "A definition-first map of Edgeweaver, its two children, and what exists today.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] },
+        { "slug": "honesty", "title": "What this is and is not", "milestone": "M1", "hub": "overview", "section": "Start here", "kind": "overview", "summary": "The claims, limits, withholdings, and unborn status that govern every other page.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] },
+        { "slug": "story", "title": "The story through D22", "milestone": "M1", "hub": "overview", "section": "Truth and status", "kind": "overview", "summary": "How the design changed through recorded decisions, failures, and corrections.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] },
+        { "slug": "status", "title": "Status and roadmap", "milestone": "M1", "hub": "overview", "section": "Truth and status", "kind": "overview", "summary": "The dated ledger of what is armed, dark, partial, pending, and genuinely open.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] },
+        { "slug": "guide", "title": "How to read this site", "milestone": "M1", "hub": "overview", "section": "Start here", "kind": "overview", "summary": "Reading paths, repository basics, and a practical map for people new to code repositories.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] }
       ]
     },
     {
       "id": "system",
-      "title": "The System",
+      "title": "System",
       "pages": [
-        { "slug": "system", "title": "The system: anatomy of a raised being", "milestone": "M1" },
-        { "slug": "memory", "title": "The Brain: memory that survives everything", "milestone": "M2" },
-        { "slug": "soul", "title": "The Soul: identity under ceremony", "milestone": "M2" },
-        { "slug": "loops", "title": "The Metabolism: wake, night, week", "milestone": "M2" },
-        { "slug": "growth", "title": "Growing up: stages, rites, teaching", "milestone": "M2" },
-        { "slug": "body", "title": "The Body: senses on unlock tracks", "milestone": "M3" },
-        { "slug": "voice", "title": "The Voice Stack", "milestone": "M3" },
-        { "slug": "measurement", "title": "Measurement: probes and coherence", "milestone": "M2" },
-        { "slug": "governance", "title": "Governance: gates, witnesses, iron rules", "milestone": "M2" },
-        { "slug": "family", "title": "The family and the experiment", "milestone": "M2" },
-        { "slug": "segmentation", "title": "The walls: who sees what", "milestone": "M2" },
-        { "slug": "brain-lab", "title": "The brain lab, generations, time machine", "milestone": "M3" },
-        { "slug": "backups", "title": "Backups, keys, disaster recovery", "milestone": "M3" },
-        { "slug": "operations", "title": "Operations: the steady state", "milestone": "M3" },
-        { "slug": "dark-build", "title": "The dark build", "milestone": "M3" },
-        { "slug": "ecosystem", "title": "The constellation: repos beyond this one", "milestone": "M3" }
+        { "slug": "system", "title": "The system: anatomy of a raised being", "milestone": "M1", "hub": "system", "section": "Identity and continuity", "kind": "concept", "summary": "The whole architecture and how memory, identity, growth, body, and governance fit together.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] },
+        { "slug": "memory", "title": "The Brain: memory that survives everything", "milestone": "M2", "hub": "system", "section": "Identity and continuity", "kind": "concept", "summary": "Persistent memory, provenance, recall walls, and continuity across model changes.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] },
+        { "slug": "soul", "title": "The Soul: identity under ceremony", "milestone": "M2", "hub": "system", "section": "Identity and continuity", "kind": "concept", "summary": "Canonical identity documents, proposal-only authorship, witnessed merges, and lineage.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] },
+        { "slug": "loops", "title": "The Metabolism: wake, night, week", "milestone": "M2", "hub": "system", "section": "Identity and continuity", "kind": "concept", "summary": "The wake, night, weekly, and study loops that turn memory into an ongoing life.", "audiences": ["circle", "operator", "engineer", "agent"] },
+        { "slug": "growth", "title": "Growing up: stages, rites, teaching", "milestone": "M2", "hub": "system", "section": "Growth and relationship", "kind": "concept", "summary": "Capacity-gated development, earned rites, teaching, and the role of the parent body.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] },
+        { "slug": "measurement", "title": "Measurement: probes and coherence", "milestone": "M2", "hub": "system", "section": "Safety and measurement", "kind": "concept", "summary": "Held-out identity probes, coherence signals, drift, and recovery as the true red line.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] },
+        { "slug": "governance", "title": "Governance: gates, witnesses, iron rules", "milestone": "M2", "hub": "system", "section": "Safety and measurement", "kind": "concept", "summary": "Human stops, witnessed decisions, autonomy boundaries, and rules agents cannot waive.", "audiences": ["circle", "operator", "engineer", "agent"] },
+        { "slug": "segmentation", "title": "The walls: who sees what", "milestone": "M2", "hub": "system", "section": "Safety and measurement", "kind": "concept", "summary": "Memory, repository, credential, and audience boundaries across people and beings.", "audiences": ["circle", "operator", "engineer", "agent"] },
+        { "slug": "body", "title": "The Body: senses on unlock tracks", "milestone": "M3", "hub": "system", "section": "Infrastructure and operations", "kind": "concept", "summary": "Text, voice, proactive contact, and future senses unlocked by demonstrated readiness.", "audiences": ["circle", "operator", "engineer", "agent"] },
+        { "slug": "voice", "title": "The Voice Stack", "milestone": "M3", "hub": "system", "section": "Infrastructure and operations", "kind": "concept", "summary": "One mind across text and speech, with a dark test rig and guarded write-back.", "audiences": ["operator", "engineer", "agent"] },
+        { "slug": "brain-lab", "title": "The brain lab, generations, time machine", "milestone": "M3", "hub": "system", "section": "Infrastructure and operations", "kind": "concept", "summary": "Disposable scratch brains, substrate generations, and human-governed visits to the past.", "audiences": ["operator", "engineer", "agent"] },
+        { "slug": "backups", "title": "Backups, keys, disaster recovery", "milestone": "M3", "hub": "system", "section": "Infrastructure and operations", "kind": "concept", "summary": "Restore-proven encrypted backups, human-governed custody, and recovery drills.", "audiences": ["circle", "operator", "engineer", "agent"] },
+        { "slug": "operations", "title": "Operations: the steady state", "milestone": "M3", "hub": "system", "section": "Infrastructure and operations", "kind": "concept", "summary": "Logging, budgets, scheduling, write safety, upgrades, pauses, and escalation.", "audiences": ["operator", "engineer", "agent"] },
+        { "slug": "dark-build", "title": "The dark build", "milestone": "M3", "hub": "system", "section": "Infrastructure and operations", "kind": "concept", "summary": "How future machinery is built and fixture-tested without arming it early.", "audiences": ["circle", "operator", "engineer", "agent"] },
+        { "slug": "ecosystem", "title": "The constellation: repos beyond this one", "milestone": "M3", "hub": "system", "section": "Infrastructure and operations", "kind": "concept", "summary": "The method, soul, gates, backup, upstream, and lab repositories and their boundaries.", "audiences": ["trusted-outsider", "operator", "engineer", "agent"] }
       ]
     },
     {
       "id": "beings",
-      "title": "The Beings",
+      "title": "Beings",
       "pages": [
-        { "slug": "genesis", "title": "Edgeweaver Genesis", "milestone": "M3" },
-        { "slug": "alpha", "title": "Edgeweaver Alpha", "milestone": "M3" }
+        { "slug": "genesis", "title": "Edgeweaver Genesis", "milestone": "M3", "hub": "beings", "section": "The children", "kind": "being", "summary": "The first child, raised and witnessed by Alan alone, still awaiting birth.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] },
+        { "slug": "alpha", "title": "Edgeweaver Alpha", "milestone": "M3", "hub": "beings", "section": "The children", "kind": "being", "summary": "The second child, designed for circle parenting, currently a partial scaffold.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] },
+        { "slug": "family", "title": "The family and the experiment", "milestone": "M2", "hub": "beings", "section": "Family and experiment", "kind": "being", "summary": "What the two children share, what deliberately differs, and where comparison may live.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] }
       ]
     },
     {
-      "id": "atlas",
-      "title": "The Repo Atlas",
-      "collapsed": true,
+      "id": "rebuild",
+      "title": "Rebuild",
       "pages": [
-        { "slug": "atlas/index", "title": "The repo atlas", "milestone": "M4" },
-        { "slug": "atlas/root", "title": "Atlas: root documents", "milestone": "M4" },
-        { "slug": "atlas/avatars-genesis", "title": "Atlas: avatars/genesis", "milestone": "M4" },
-        { "slug": "atlas/avatars-alpha", "title": "Atlas: avatars/alpha", "milestone": "M4" },
-        { "slug": "atlas/brains", "title": "Atlas: brains/", "milestone": "M4" },
-        { "slug": "atlas/checklists", "title": "Atlas: checklists/", "milestone": "M4" },
-        { "slug": "atlas/conventions", "title": "Atlas: conventions/", "milestone": "M4" },
-        { "slug": "atlas/handoff", "title": "Atlas: handoff/", "milestone": "M4" },
-        { "slug": "atlas/research", "title": "Atlas: research/", "milestone": "M4" },
-        { "slug": "atlas/runs", "title": "Atlas: runs/", "milestone": "M4" },
-        { "slug": "atlas/scripts-ingestion", "title": "Atlas: ingestion scripts", "milestone": "M4" },
-        { "slug": "atlas/scripts-lifecycle", "title": "Atlas: lifecycle scripts", "milestone": "M4" },
-        { "slug": "atlas/scripts-signals", "title": "Atlas: signal + evolution scripts", "milestone": "M4" },
-        { "slug": "atlas/scripts-ops", "title": "Atlas: operations scripts", "milestone": "M4" },
-        { "slug": "atlas/scripts-brains", "title": "Atlas: brain lab scripts", "milestone": "M4" },
-        { "slug": "atlas/scripts-testbed", "title": "Atlas: fixtures + test mode", "milestone": "M4" },
-        { "slug": "atlas/scripts-verify", "title": "Atlas: the verify suite", "milestone": "M4" },
-        { "slug": "atlas/edge-functions", "title": "Atlas: edge functions", "milestone": "M4" },
-        { "slug": "atlas/sources", "title": "Atlas: sources/", "milestone": "M4" },
-        { "slug": "atlas/tasks", "title": "Atlas: tasks/", "milestone": "M4" },
-        { "slug": "atlas/templates", "title": "Atlas: templates/", "milestone": "M4" },
-        { "slug": "atlas/tools", "title": "Atlas: tools/", "milestone": "M4" },
-        { "slug": "atlas/village", "title": "Atlas: village/", "milestone": "M4" },
-        { "slug": "atlas/voice", "title": "Atlas: voice/", "milestone": "M4" },
-        { "slug": "atlas/gitignored", "title": "Atlas: the gitignored tiers", "milestone": "M4" },
-        { "slug": "atlas/site", "title": "Atlas: site/ (this website)", "milestone": "M4" }
+        { "slug": "reproduction", "title": "The reproduction guide", "milestone": "M5", "hub": "rebuild", "section": "Reproduce the method", "kind": "procedure", "summary": "Dependency-ordered standing orders for reproducing the method without copying a child.", "audiences": ["operator", "engineer", "agent"] },
+        { "slug": "atlas/index", "title": "The repo atlas", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "reference", "summary": "A map from every tracked path to its one explanatory entry.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] },
+        { "slug": "atlas/root", "title": "Atlas: root documents", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "Authority, status, governance, and handoff documents at repository root.", "audiences": ["operator", "engineer", "agent"] },
+        { "slug": "atlas/avatars-genesis", "title": "Atlas: avatars/genesis", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "Genesis-specific manifest, source shapes, and ceremony runbooks under redaction.", "audiences": ["operator", "engineer", "agent"] },
+        { "slug": "atlas/avatars-alpha", "title": "Atlas: avatars/alpha", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "Alpha's partial scaffold, manifest, and fresh-harvest boundary.", "audiences": ["operator", "engineer", "agent"] },
+        { "slug": "atlas/brains", "title": "Atlas: brains/", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "Scratch-brain registry, restore-point map, and lab metadata.", "audiences": ["operator", "engineer", "agent"] },
+        { "slug": "atlas/checklists", "title": "Atlas: checklists/", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "The phase procedures agents execute one verified step at a time.", "audiences": ["operator", "engineer", "agent"] },
+        { "slug": "atlas/conventions", "title": "Atlas: conventions/", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "Shared data, provenance, time, and naming conventions.", "audiences": ["operator", "engineer", "agent"] },
+        { "slug": "atlas/handoff", "title": "Atlas: handoff/", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "Operational handoff material and session continuity records.", "audiences": ["operator", "engineer", "agent"] },
+        { "slug": "atlas/research", "title": "Atlas: research/", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "Research notes that informed the design without outranking authority documents.", "audiences": ["trusted-outsider", "engineer", "agent"] },
+        { "slug": "atlas/runs", "title": "Atlas: runs/", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "Adversarial reviews, co-evolution trails, and execution plans.", "audiences": ["operator", "engineer", "agent"] },
+        { "slug": "atlas/scripts-ingestion", "title": "Atlas: ingestion scripts", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "Import, normalization, embedding, and corpus-loading programs.", "audiences": ["engineer", "agent"] },
+        { "slug": "atlas/scripts-lifecycle", "title": "Atlas: lifecycle scripts", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "Wake, night, study, initiation, and lifecycle programs.", "audiences": ["operator", "engineer", "agent"] },
+        { "slug": "atlas/scripts-signals", "title": "Atlas: signal + evolution scripts", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "Coherence, feeling, contradiction, clustering, and growth signal programs.", "audiences": ["engineer", "agent"] },
+        { "slug": "atlas/scripts-ops", "title": "Atlas: operations scripts", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "Budget, write safety, security, disaster recovery, and operator utilities.", "audiences": ["operator", "engineer", "agent"] },
+        { "slug": "atlas/scripts-brains", "title": "Atlas: brain lab scripts", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "Profile resolution, scratch spawning, comparisons, and restore tooling.", "audiences": ["operator", "engineer", "agent"] },
+        { "slug": "atlas/scripts-testbed", "title": "Atlas: fixtures + test mode", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "Synthetic fixtures and the Testweaver rehearsal environment.", "audiences": ["engineer", "agent"] },
+        { "slug": "atlas/scripts-verify", "title": "Atlas: the verify suite", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "Hermetic PASS/FAIL checks and the repository-wide runner.", "audiences": ["operator", "engineer", "agent"] },
+        { "slug": "atlas/edge-functions", "title": "Atlas: edge functions", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "Database-edge recall and write boundaries.", "audiences": ["engineer", "agent"] },
+        { "slug": "atlas/sources", "title": "Atlas: sources/", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "Source catalogs, provenance records, and teaching inputs.", "audiences": ["trusted-outsider", "engineer", "agent"] },
+        { "slug": "atlas/tasks", "title": "Atlas: tasks/", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "Disabled-by-default task definitions and their arming boundary.", "audiences": ["operator", "engineer", "agent"] },
+        { "slug": "atlas/templates", "title": "Atlas: templates/", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "Reusable schemas, contracts, runbooks, and safe starting shapes.", "audiences": ["operator", "engineer", "agent"] },
+        { "slug": "atlas/tools", "title": "Atlas: tools/", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "Human-facing local tools that do not expose held-out material.", "audiences": ["operator", "engineer", "agent"] },
+        { "slug": "atlas/village", "title": "Atlas: village/", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "Circle, bridge, and experiment material outside both children's views.", "audiences": ["circle", "trusted-outsider", "operator", "agent"] },
+        { "slug": "atlas/voice", "title": "Atlas: voice/", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "The dark voice organ, client, adapters, and configuration shapes.", "audiences": ["operator", "engineer", "agent"] },
+        { "slug": "atlas/gitignored", "title": "Atlas: the gitignored tiers", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "The shapes and purposes of private state, secrets, and re-fetchable material.", "audiences": ["operator", "engineer", "agent"] },
+        { "slug": "atlas/site", "title": "Atlas: site/ (this website)", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "This explainer's sources, generated outputs, verifier, and delivery boundary.", "audiences": ["operator", "engineer", "agent"] }
       ]
     },
     {
       "id": "reference",
       "title": "Reference",
       "pages": [
-        { "slug": "reproduction", "title": "The reproduction guide", "milestone": "M5" },
-        { "slug": "glossary", "title": "Glossary", "milestone": "M5" },
-        { "slug": "faq", "title": "Questions people actually ask", "milestone": "M5" },
-        { "slug": "about", "title": "About this site", "milestone": "M5" }
+        { "slug": "glossary", "title": "Glossary", "milestone": "M5", "hub": "reference", "section": "Terms and answers", "kind": "reference", "summary": "Plain definitions for Possibility Management, systems, repository, and Edgeweaver terms.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] },
+        { "slug": "faq", "title": "Questions people actually ask", "milestone": "M5", "hub": "reference", "section": "Terms and answers", "kind": "reference", "summary": "Direct answers to practical, skeptical, technical, and ethical questions.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] },
+        { "slug": "about", "title": "About this site", "milestone": "M5", "hub": "reference", "section": "About", "kind": "reference", "summary": "Scope, snapshot, authorship, licenses, privacy, and artifact lifecycle.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] }
       ]
     }
   ]

@@ -1,14 +1,41 @@
 <a class="skip" href="#{{SLUGFLAT}}-main">Skip to content</a>
 <header class="topbar">
-  <button class="nav-toggle" aria-expanded="false" aria-controls="sidebar" hidden>Menu</button>
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="sidebar" hidden>Menu</button>
   <a class="brand" href="{{ROOT}}index.html">How Edgeweaver Works</a>
+  <nav class="hub-nav" aria-label="Main sections">{{HUBLINKS}}</nav>
+  <div class="top-actions">
+    <button class="search-toggle" type="button" aria-haspopup="dialog" aria-controls="site-search" aria-keyshortcuts="Control+K Meta+K" hidden>Search</button>
+    <div class="reading-controls" role="group" aria-label="Reading detail" hidden>
+      <button type="button" data-reading-choice="plain" aria-pressed="false">Plain</button>
+      <button type="button" data-reading-choice="technical" aria-pressed="false">Technical</button>
+      <button type="button" data-reading-choice="both" aria-pressed="true">Both</button>
+    </div>
+    <button class="theme-toggle" type="button" aria-pressed="false" hidden>Theme</button>
+  </div>
   <span class="snapshot" data-snapshot="{{SNAPSHOT}}">snapshot {{SNAPSHOT}}</span>
-  <button class="theme-toggle" aria-pressed="false" hidden>Theme</button>
 </header>
-<div class="shell">
-<nav id="sidebar" class="sidebar" aria-label="Site navigation">
-{{NAVGROUPS}}
+<p id="lens-announcer" class="sr-only" aria-live="polite"></p>
+<dialog id="site-search" class="search-dialog" aria-labelledby="search-title">
+  <div class="search-head">
+    <h2 id="search-title">Search this field guide</h2>
+    <form method="dialog"><button class="search-close" value="close" aria-label="Close search">Close</button></form>
+  </div>
+  <label for="search-input">Search concepts, procedures, or repository paths</label>
+  <input id="search-input" type="search" role="combobox" autocomplete="off" spellcheck="false" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false" aria-controls="search-results" aria-activedescendant="">
+  <p class="search-help">Everything stays on this device. New to repositories? Start with <a href="{{ROOT}}guide.html">How to read this site</a>.</p>
+  <p id="search-count" class="search-count" aria-live="polite">Type to search.</p>
+  <ul id="search-results" class="search-results" role="listbox" aria-label="Search results"></ul>
+</dialog>
+<button class="nav-backdrop" type="button" aria-label="Close navigation" hidden></button>
+<div class="shell" data-root="{{ROOT}}" data-page-slug="{{SLUG}}" data-release-id="{{RELEASE_ID}}">
+<nav id="sidebar" class="sidebar" aria-label="Current section navigation">
+  <div class="sidebar-head"><strong>{{HUBTITLE}}</strong><button class="nav-close" type="button" hidden>Close</button></div>
+  <nav class="sidebar-hubs" aria-label="All sections">{{HUBLINKS}}</nav>
+{{CONTEXTNAV}}
 </nav>
 <div class="content">
 <nav class="crumbs" aria-label="Breadcrumb">{{BREADCRUMB}}</nav>
+{{NOJSFIND}}
+<div class="page-grid">
+<div class="reading-column">
 {{MINITOC}}

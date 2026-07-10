@@ -1,7 +1,7 @@
 // build-site.mjs: the deterministic assembler for site/ ("How Edgeweaver Works").
 //
 // Inputs (committed sources ONLY; never git state, never the network):
-//   site/src/nav.json            page order, titles, groups, snapshot date
+//   site/src/nav.json            page metadata, hubs, tracks, release id
 //   site/src/atlas-map.json      path-prefix coverage map + exclusion classes
 //   site/src/partials/*.html     head / nav / footer templates
 //   site/public/**/*.html        hand-authored pages (machine-owned marker regions)
@@ -9,6 +9,7 @@
 //
 // Outputs (all committed):
 //   site/public/**/*.html        marker regions regenerated in place
+//   site/public/assets/search-index.js       deterministic local search data
 //   site/artifact/edgeweaver-site-full.html   single-file edition, everything
 //   site/artifact/edgeweaver-site-lite.html   single-file edition, atlas dir pages
 //                                             collapsed to hub one-liners
@@ -23,7 +24,7 @@
 //     editions therefore rewrite links, never ids (verify-site check 4 enforces).
 
 import { readFileSync, writeFileSync, readdirSync, statSync, mkdirSync, existsSync } from "node:fs";
-import { join, dirname } from "node:path";
+import { join, dirname, posix } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -49,10 +50,51 @@ const FOOT_T = partial("footer");
 const pages = [];
 for (const g of nav.groups) for (const p of g.pages) pages.push({ ...p, groupId: g.id, groupTitle: g.title });
 const bySlug = new Map(pages.map((p) => [p.slug, p]));
+const hubById = new Map((nav.hubs || []).map((h) => [h.id, h]));
+const KINDS = new Set(["overview", "concept", "being", "procedure", "reference", "atlas-file"]);
+const AUDIENCES = new Set(["circle", "trusted-outsider", "operator", "engineer", "agent"]);
+
+function validateNav() {
+  if (!nav.releaseId || typeof nav.releaseId !== "string") throw new Error("nav.json: releaseId must be a nonempty string");
+  if (!Array.isArray(nav.hubs) || nav.hubs.length !== 5) throw new Error("nav.json: exactly five hubs are required");
+  if (hubById.size !== nav.hubs.length) throw new Error("nav.json: duplicate hub id");
+  if (bySlug.size !== pages.length) throw new Error("nav.json: duplicate page slug");
+  for (const p of pages) {
+    for (const field of ["hub", "section", "kind", "summary"]) {
+      if (!p[field] || typeof p[field] !== "string") throw new Error(`nav.json: ${p.slug} missing ${field}`);
+    }
+    if (!hubById.has(p.hub)) throw new Error(`nav.json: ${p.slug} references unknown hub ${p.hub}`);
+    if (!KINDS.has(p.kind)) throw new Error(`nav.json: ${p.slug} has invalid kind ${p.kind}`);
+    if (!Array.isArray(p.audiences) || !p.audiences.length || p.audiences.some((a) => !AUDIENCES.has(a))) {
+      throw new Error(`nav.json: ${p.slug} has invalid audiences`);
+    }
+  }
+  for (const hub of nav.hubs) {
+    const home = bySlug.get(hub.homeSlug);
+    if (!home || home.hub !== hub.id) throw new Error(`nav.json: ${hub.id} has invalid homeSlug ${hub.homeSlug}`);
+  }
+  const trackNames = ["understand", "technical", "reproduce"];
+  if (!nav.readingTracks || Object.keys(nav.readingTracks).sort().join(",") !== trackNames.sort().join(",")) {
+    throw new Error("nav.json: understand, technical, and reproduce tracks are required");
+  }
+  for (const [name, track] of Object.entries(nav.readingTracks)) {
+    if (!Array.isArray(track) || !track.length) throw new Error(`nav.json: ${name} track is empty`);
+    if (new Set(track).size !== track.length) throw new Error(`nav.json: ${name} track repeats a slug`);
+    for (const slug of track) if (!bySlug.has(slug)) throw new Error(`nav.json: ${name} track references ${slug}`);
+  }
+}
+validateNav();
 
 const flatOf = (slug) => slug.replace(/\//g, "-");
 const rootOf = (slug) => (slug.includes("/") ? "../" : "");
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+const decode = (s) => s.replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
+  .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)))
+  .replace(/&nbsp;/gi, " ").replace(/&amp;/gi, "&").replace(/&lt;/gi, "<")
+  .replace(/&gt;/gi, ">").replace(/&quot;/gi, '"').replace(/&#39;|&apos;/gi, "'");
+const plain = (s) => decode(s.replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ").trim();
+const safeJson = (value) => JSON.stringify(value)
+  .replace(/</g, "\\u003c").replace(/\u2028/g, "\\u2028").replace(/\u2029/g, "\\u2029");
 
 // ---------- region filling ----------
 
@@ -72,86 +114,247 @@ function mainOf(html, file) {
   return m[0];
 }
 
-function navGroupsFor(current) {
-  const out = [];
-  for (const g of nav.groups) {
-    const items = g.pages
-      .map((p) => {
-        const cur = p.slug === current.slug ? ' aria-current="page"' : "";
-        return `<li><a href="${rootOf(current.slug)}${p.slug}.html"${cur}>${esc(p.title)}</a></li>`;
-      })
-      .join("\n");
-    if (g.collapsed) {
-      const open = g.pages.some((p) => p.slug === current.slug) ? " open" : "";
-      out.push(`<details${open}><summary>${esc(g.title)}</summary>\n<ul>\n${items}\n</ul>\n</details>`);
-    } else {
-      out.push(`<h2>${esc(g.title)}</h2>\n<ul>\n${items}\n</ul>`);
-    }
+function mainInnerOf(html, file) {
+  const m = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/);
+  if (!m) throw new Error(`${file}: no <main> element`);
+  return m[1];
+}
+
+function attrOf(attrs, name) {
+  const m = attrs.match(new RegExp(`\\b${name}="([^"]*)"`));
+  return m ? decode(m[1]) : "";
+}
+
+function searchableText(html) {
+  return plain(html
+    .replace(/<script\b[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style\b[\s\S]*?<\/style>/gi, " ")
+    .replace(/<nav\b[\s\S]*?<\/nav>/gi, " ")
+    .replace(/<svg\b[\s\S]*?<\/svg>/gi, " ")
+    .replace(/<(?:span|strong)\b[^>]*class="[^"]*\b(?:label|register|badge|pill)\b[^"]*"[^>]*>[\s\S]*?<\/(?:span|strong)>/gi, " "));
+}
+
+function registerFor(main, index, id) {
+  const before = main.slice(0, index);
+  const open = before.lastIndexOf("<section");
+  const close = before.lastIndexOf("</section>");
+  if (open > close) {
+    const tagEnd = main.indexOf(">", open);
+    const tag = main.slice(open, tagEnd + 1);
+    const value = attrOf(tag, "data-register");
+    if (value === "plain" || value === "technical") return value;
   }
-  return out.join("\n");
+  if (/-plain$/.test(id)) return "plain";
+  if (/-how$/.test(id)) return "technical";
+  return null;
+}
+
+function badgeTexts(html) {
+  const out = [];
+  for (const m of html.matchAll(/<[^>]+class="[^"]*\b(?:badge|pill)\b[^"]*"[^>]*>([\s\S]*?)<\/[^>]+>/gi)) {
+    const value = plain(m[1]);
+    if (value && !out.includes(value)) out.push(value);
+  }
+  return out;
+}
+
+function searchRecordsForPage(p, raw) {
+  const main = mainOf(raw, p.slug);
+  const events = [];
+  for (const m of main.matchAll(/<h2\b([^>]*)>([\s\S]*?)<\/h2>/gi)) {
+    const id = attrOf(m[1], "id");
+    if (id) events.push({ type: "h2", index: m.index, end: m.index + m[0].length, id, heading: plain(m[2]) });
+  }
+  for (const m of main.matchAll(/<h3\b([^>]*)>([\s\S]*?)<\/h3>/gi)) {
+    const id = attrOf(m[1], "id");
+    if (id.startsWith("file-")) events.push({ type: "file", index: m.index, end: m.index + m[0].length, id, heading: plain(m[2]) });
+  }
+  events.sort((a, b) => a.index - b.index || (a.type === "h2" ? -1 : 1));
+  const h2Events = events.filter((e) => e.type === "h2");
+  return events.map((event) => {
+    let end = main.length;
+    if (event.type === "h2") {
+      const next = h2Events.find((candidate) => candidate.index > event.index);
+      if (next) end = next.index;
+    } else {
+      const next = events.find((candidate) => candidate.index > event.index && (candidate.type === "h2" || candidate.type === "file"));
+      if (next) end = next.index;
+    }
+    const segment = main.slice(event.end, end);
+    const filePath = event.type === "file" ? event.heading : null;
+    return {
+      slug: p.slug,
+      anchor: event.id,
+      title: p.title,
+      hub: p.hub,
+      section: p.section,
+      kind: event.type === "file" ? "atlas-file" : p.kind,
+      audiences: [...p.audiences],
+      heading: event.heading,
+      register: event.type === "h2" ? registerFor(main, event.index, event.id) : null,
+      badges: badgeTexts(segment),
+      filePath,
+      text: searchableText(segment),
+    };
+  });
+}
+
+const sourceBySlug = new Map();
+for (const p of pages) {
+  const file = join(PUB, p.slug + ".html");
+  if (!existsSync(file)) throw new Error(`nav.json page missing on disk: site/public/${p.slug}.html`);
+  sourceBySlug.set(p.slug, readLF(file));
+}
+const webSearchRecords = pages.flatMap((p) => searchRecordsForPage(p, sourceBySlug.get(p.slug)));
+const liteExcludedSlugs = new Set(pages.filter((p) => p.slug.startsWith("atlas/") && p.slug !== "atlas/index").map((p) => p.slug));
+const liteSearchRecords = webSearchRecords.flatMap((record) => {
+  if (!liteExcludedSlugs.has(record.slug)) return [record];
+  if (!record.filePath) return [];
+  return [{
+    ...record,
+    slug: "atlas/index",
+    anchor: "lite-map-" + record.anchor.slice("file-".length),
+    title: "Repo Atlas file map",
+    heading: record.filePath,
+    register: null,
+    text: `${record.text} Detail in the gated or full edition.`,
+  }];
+});
+
+function searchAsset(records) {
+  return `/* Generated by scripts/site/build-site.mjs. No network, no analytics. */\nwindow.EDGEWEAVER_SEARCH_INDEX = ${safeJson({ releaseId: nav.releaseId, records })};\n`;
+}
+
+function hubLinksFor(current) {
+  return nav.hubs.map((hub) => {
+    const active = current.hub === hub.id ? ' aria-current="page"' : "";
+    return `<a href="${rootOf(current.slug)}${hub.homeSlug}.html"${active}>${esc(hub.title)}</a>`;
+  }).join("\n");
+}
+
+function contextNavFor(current) {
+  const currentPages = pages.filter((p) => p.hub === current.hub);
+  const sections = [];
+  for (const p of currentPages) {
+    let section = sections.find((item) => item.title === p.section);
+    if (!section) { section = { title: p.section, pages: [] }; sections.push(section); }
+    section.pages.push(p);
+  }
+  return sections.map((section) => {
+    const items = section.pages.map((p) => {
+      const active = p.slug === current.slug ? ' aria-current="page"' : "";
+      return `<li><a href="${rootOf(current.slug)}${p.slug}.html"${active}>${esc(p.title)}</a></li>`;
+    }).join("\n");
+    return `<h2>${esc(section.title)}</h2>\n<ul>\n${items}\n</ul>`;
+  }).join("\n");
 }
 
 function breadcrumbFor(p) {
   if (p.slug === "index") return `<span aria-current="page">Home</span>`;
-  return `<a href="${rootOf(p.slug)}index.html">Home</a> &rsaquo; <span>${esc(p.groupTitle)}</span> &rsaquo; <span aria-current="page">${esc(p.title)}</span>`;
+  const hub = hubById.get(p.hub);
+  const parts = [`<a href="${rootOf(p.slug)}index.html">Home</a>`];
+  if (hub.homeSlug !== "index" && p.slug !== hub.homeSlug) {
+    parts.push(`<a href="${rootOf(p.slug)}${hub.homeSlug}.html">${esc(hub.title)}</a>`);
+  } else if (hub.homeSlug === "index") {
+    parts.push(`<span>${esc(hub.title)}</span>`);
+  }
+  parts.push(`<span>${esc(p.section)}</span>`);
+  parts.push(`<span aria-current="page">${esc(p.title)}</span>`);
+  return parts.join(" &rsaquo; ");
+}
+
+function tocItems(mainHtml) {
+  const items = [];
+  for (const m of mainHtml.matchAll(/<h2\b([^>]*)>([\s\S]*?)<\/h2>/gi)) {
+    const id = attrOf(m[1], "id");
+    if (id) items.push({ id, title: plain(m[2]) });
+  }
+  return items;
 }
 
 function minitocFor(mainHtml) {
-  const items = [];
-  const re = /<h2 id="([^"]+)"[^>]*>([\s\S]*?)<\/h2>/g;
-  let m;
-  while ((m = re.exec(mainHtml))) items.push(`<li><a href="#${m[1]}">${m[2].replace(/<[^>]+>/g, "")}</a></li>`);
+  const items = tocItems(mainHtml);
   if (items.length < 2) return "";
-  return `<details class="minitoc"><summary>On this page</summary>\n<ul>\n${items.join("\n")}\n</ul>\n</details>`;
+  return `<details class="minitoc"><summary>On this page</summary>\n<ul>\n${items.map((item) => `<li><a href="#${item.id}">${esc(item.title)}</a></li>`).join("\n")}\n</ul>\n</details>`;
 }
 
-function pagerFor(p) {
-  const i = pages.findIndex((x) => x.slug === p.slug);
-  const prev = i > 0 ? pages[i - 1] : null;
-  const next = i >= 0 && i < pages.length - 1 ? pages[i + 1] : null;
-  const a = prev ? `<a href="${rootOf(p.slug)}${prev.slug}.html" rel="prev">&larr; ${esc(prev.title)}</a>` : "<span></span>";
-  const b = next ? `<a href="${rootOf(p.slug)}${next.slug}.html" rel="next">${esc(next.title)} &rarr;</a>` : "<span></span>";
-  return a + "\n" + b;
+function pageTocFor(mainHtml) {
+  const items = tocItems(mainHtml);
+  if (items.length < 2) return "";
+  return `<nav class="page-toc" aria-label="On this page"><h2>On this page</h2><ul>\n${items.map((item) => `<li><a href="#${item.id}">${esc(item.title)}</a></li>`).join("\n")}\n</ul></nav>`;
+}
+
+const trackTitles = { understand: "Understand", technical: "Technical", reproduce: "Reproduce" };
+function continueFor(p) {
+  const cards = [];
+  for (const [name, track] of Object.entries(nav.readingTracks)) {
+    const index = track.indexOf(p.slug);
+    if (index < 0) continue;
+    const next = index < track.length - 1 ? bySlug.get(track[index + 1]) : null;
+    const body = next
+      ? `<a href="${rootOf(p.slug)}${next.slug}.html">Next: ${esc(next.title)} <span aria-hidden="true">&rarr;</span></a>`
+      : `<p>Track complete on this page.</p>`;
+    cards.push(`<article class="continue-card"><p class="continue-label">${trackTitles[name]} track</p>${body}</article>`);
+  }
+  if (!cards.length) return "";
+  return `<section class="continue" aria-labelledby="${flatOf(p.slug)}-continue"><h2 id="${flatOf(p.slug)}-continue">Continue</h2><div class="continue-grid">${cards.join("\n")}</div></section>`;
 }
 
 function renderPage(p, raw, file) {
   const slugflat = flatOf(p.slug);
   const main = mainOf(raw, file);
   let html = raw;
-  html = fillRegion(html, "HEAD", HEAD_T.replace(/\{\{TITLE\}\}/g, esc(p.title)).replace(/\{\{ROOT\}\}/g, rootOf(p.slug)).trimEnd(), file);
+  html = fillRegion(html, "HEAD", HEAD_T.replace(/\{\{TITLE\}\}/g, esc(p.title))
+    .replace(/\{\{ROOT\}\}/g, rootOf(p.slug))
+    .replace(/\{\{RELEASE_ID\}\}/g, esc(nav.releaseId)).trimEnd(), file);
   html = fillRegion(
     html,
     "NAV",
     NAV_T.replace(/\{\{SLUGFLAT\}\}/g, slugflat)
+      .replace(/\{\{SLUG\}\}/g, esc(p.slug))
       .replace(/\{\{ROOT\}\}/g, rootOf(p.slug))
       .replace(/\{\{SNAPSHOT\}\}/g, SNAP)
-      .replace(/\{\{NAVGROUPS\}\}/g, navGroupsFor(p))
+      .replace(/\{\{RELEASE_ID\}\}/g, esc(nav.releaseId))
+      .replace(/\{\{HUBTITLE\}\}/g, esc(hubById.get(p.hub).title))
+      .replace(/\{\{HUBLINKS\}\}/g, hubLinksFor(p))
+      .replace(/\{\{CONTEXTNAV\}\}/g, contextNavFor(p))
       .replace(/\{\{BREADCRUMB\}\}/g, breadcrumbFor(p))
       .replace(/\{\{MINITOC\}\}/g, minitocFor(main))
+      .replace(/\{\{NOJSFIND\}\}/g, p.slug === "guide" ? `<noscript><div class="note"><p><strong>Search fallback.</strong> Use your browser's Find command on this page, or open the single-file edition and search the whole guide there.</p></div></noscript>` : "")
       .trimEnd(),
     file
   );
-  html = fillRegion(html, "FOOTER", FOOT_T.replace(/\{\{PREVNEXT\}\}/g, pagerFor(p)).replace(/\{\{SNAPSHOT\}\}/g, SNAP).trimEnd(), file);
+  html = fillRegion(html, "FOOTER", FOOT_T
+    .replace(/\{\{CONTINUE\}\}/g, continueFor(p))
+    .replace(/\{\{PAGETOC\}\}/g, pageTocFor(main))
+    .replace(/\{\{SNAPSHOT\}\}/g, SNAP)
+    .replace(/\{\{RELEASE_ID\}\}/g, esc(nav.releaseId)).trimEnd(), file);
   return lf(html);
 }
 
 // 404 is outside nav.json: no pager, fixed crumb.
 function render404(raw, file) {
+  const page404 = { slug: "404", title: "Page not found", hub: "overview", section: "Start here" };
   let html = raw;
-  html = fillRegion(html, "HEAD", HEAD_T.replace(/\{\{TITLE\}\}/g, "Page not found").replace(/\{\{ROOT\}\}/g, "").trimEnd(), file);
+  html = fillRegion(html, "HEAD", HEAD_T.replace(/\{\{TITLE\}\}/g, "Page not found").replace(/\{\{ROOT\}\}/g, "").replace(/\{\{RELEASE_ID\}\}/g, esc(nav.releaseId)).trimEnd(), file);
   html = fillRegion(
     html,
     "NAV",
     NAV_T.replace(/\{\{SLUGFLAT\}\}/g, "notfound")
+      .replace(/\{\{SLUG\}\}/g, "404")
       .replace(/\{\{ROOT\}\}/g, "")
       .replace(/\{\{SNAPSHOT\}\}/g, SNAP)
-      .replace(/\{\{NAVGROUPS\}\}/g, navGroupsFor({ slug: "404" }))
+      .replace(/\{\{RELEASE_ID\}\}/g, esc(nav.releaseId))
+      .replace(/\{\{HUBTITLE\}\}/g, "Overview")
+      .replace(/\{\{HUBLINKS\}\}/g, hubLinksFor(page404))
+      .replace(/\{\{CONTEXTNAV\}\}/g, contextNavFor(page404))
       .replace(/\{\{BREADCRUMB\}\}/g, `<a href="index.html">Home</a> &rsaquo; <span aria-current="page">Not found</span>`)
       .replace(/\{\{MINITOC\}\}/g, "")
+      .replace(/\{\{NOJSFIND\}\}/g, "")
       .trimEnd(),
     file
   );
-  html = fillRegion(html, "FOOTER", FOOT_T.replace(/\{\{PREVNEXT\}\}/g, "<span></span>\n<span></span>").replace(/\{\{SNAPSHOT\}\}/g, SNAP).trimEnd(), file);
+  html = fillRegion(html, "FOOTER", FOOT_T.replace(/\{\{CONTINUE\}\}/g, "").replace(/\{\{PAGETOC\}\}/g, "").replace(/\{\{SNAPSHOT\}\}/g, SNAP).replace(/\{\{RELEASE_ID\}\}/g, esc(nav.releaseId)).trimEnd(), file);
   return lf(html);
 }
 
@@ -169,8 +372,7 @@ function hostPath(u) {
 // Resolve an href relative to the page's directory into a site-root slug.
 function resolveSlug(fromSlug, href) {
   const base = fromSlug.includes("/") ? fromSlug.slice(0, fromSlug.lastIndexOf("/") + 1) : "";
-  let path = href.startsWith("../") ? href.slice(3) : base + href;
-  return path.replace(/\.html$/, "");
+  return posix.normalize(posix.join(base, href)).replace(/\.html$/, "");
 }
 
 function artifactBody(edition) {
@@ -255,6 +457,99 @@ ${sections}
 `);
 }
 
+function liteFileMap() {
+  const rows = liteSearchRecords.filter((record) => record.filePath).map((record) =>
+    `<li id="${record.anchor}"><code>${esc(record.filePath)}</code> <span>detail in the gated or full edition</span></li>`
+  );
+  return `<section class="lite-file-map" aria-labelledby="atlas-lite-file-map"><h2 id="atlas-lite-file-map">File map</h2><p>Every tracked path has one destination here. Detailed entries remain in the gated site and full edition.</p><ul>${rows.join("\n")}</ul></section>`;
+}
+
+function artifactBodyV4(edition) {
+  const excluded = edition === "lite" ? liteExcludedSlugs : new Set();
+  const included = pages.filter((p) => !excluded.has(p.slug));
+  const includedSlugs = new Set(included.map((p) => p.slug));
+  const articles = included.map((p) => {
+    let content = mainInnerOf(sourceBySlug.get(p.slug), p.slug) + "\n" + continueFor(p);
+    if (edition === "lite" && p.slug === "atlas/index") content += "\n" + liteFileMap();
+    content = content.replace(/<a\s([^>]*?)href="([^"#]+\.html)(#[^"]*)?"([^>]*)>([\s\S]*?)<\/a>/g, (whole, pre, target, hash, post, text) => {
+      if (/^https?:\/\//.test(target)) return whole;
+      const slug = resolveSlug(p.slug, target);
+      if (!includedSlugs.has(slug)) {
+        if (edition === "lite" && hash && hash.startsWith("#file-")) return `<a ${pre}href="#lite-map-${hash.slice(6)}"${post}>${text}</a>`;
+        return text;
+      }
+      const anchor = hash || `#${flatOf(slug)}-top`;
+      return `<a ${pre}href="${anchor}"${post}>${text}</a>`;
+    });
+    content = content.replace(/<a\s[^>]*href="(https?:\/\/[^"]+)"[^>]*>([\s\S]*?)<\/a>/g, (whole, url, text) => `${text} (<code>${esc(hostPath(url))}</code>)`);
+    return `<article class="af-page" id="af-${flatOf(p.slug)}" aria-labelledby="${flatOf(p.slug)}-top">\n${content}\n</article>`;
+  });
+  const toc = nav.hubs.map((hub) => {
+    const items = included.filter((p) => p.hub === hub.id).map((p) => `<li><a href="#${flatOf(p.slug)}-top">${esc(p.title)}</a></li>`).join("\n");
+    return `<li><strong>${esc(hub.title)}</strong><ul>${items}</ul></li>`;
+  }).join("\n");
+  return { articles: articles.join("\n<hr>\n"), toc };
+}
+
+function artifactSearchDialog() {
+  return `<dialog id="site-search" class="search-dialog" aria-labelledby="search-title">
+  <div class="search-head"><h2 id="search-title">Search this field guide</h2><form method="dialog"><button class="search-close" value="close" aria-label="Close search">Close</button></form></div>
+  <label for="search-input">Search concepts, procedures, or repository paths</label>
+  <input id="search-input" type="search" autocomplete="off" spellcheck="false" aria-controls="search-results" aria-activedescendant="">
+  <p class="search-help">Everything stays on this device. New to repositories? Start with <a href="#guide-top">How to read this site</a>.</p>
+  <p id="search-count" class="search-count" aria-live="polite">Type to search.</p>
+  <ul id="search-results" class="search-results" role="listbox" aria-label="Search results"></ul>
+</dialog>`;
+}
+
+function artifactDocV4(edition) {
+  const css = readLF(join(PUB, "assets", "site.css"));
+  const js = readLF(join(PUB, "assets", "site.js"));
+  const records = edition === "lite" ? liteSearchRecords : webSearchRecords;
+  const { articles, toc } = artifactBodyV4(edition);
+  const label = edition === "full" ? "full edition" : "lite edition with detailed Atlas entries mapped to one-line destinations";
+  return lf(`<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="edgeweaver-release" content="${esc(nav.releaseId)}">
+<title>How Edgeweaver Works (single file, ${edition})</title>
+<style>
+${css}
+.af-wrap { max-width: 980px; margin: 0 auto; padding: 76px 18px 80px; }
+.af-toc { border: 1px solid var(--line); border-radius: 10px; background: var(--card); padding: 14px 18px; }
+.af-toc > ul { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; list-style: none; padding: 0; }
+.af-toc ul ul { padding-left: 18px; }
+article.af-page { margin-top: 44px; }
+.artifact-toolbar { position: fixed; inset: 0 0 auto; z-index: 30; }
+</style>
+</head>
+<body data-artifact="true">
+<header class="topbar artifact-toolbar">
+  <strong class="brand">How Edgeweaver Works</strong>
+  <div class="top-actions">
+    <button class="search-toggle" type="button" aria-haspopup="dialog" aria-controls="site-search" aria-keyshortcuts="Control+K Meta+K" hidden>Search</button>
+    <div class="reading-controls" role="group" aria-label="Reading detail" hidden><button type="button" data-reading-choice="plain" aria-pressed="false">Plain</button><button type="button" data-reading-choice="technical" aria-pressed="false">Technical</button><button type="button" data-reading-choice="both" aria-pressed="true">Both</button></div>
+    <button class="theme-toggle" type="button" aria-pressed="false" hidden>Theme</button>
+  </div>
+</header>
+<p id="lens-announcer" class="sr-only" aria-live="polite"></p>
+${artifactSearchDialog()}
+<div class="af-wrap" data-root="" data-page-slug="artifact" data-release-id="${esc(nav.releaseId)}">
+<header><h1>How Edgeweaver Works</h1><p class="foot-license">Single-file ${label}. Generated by scripts/site/build-site.mjs. Snapshot ${SNAP}. Release ${esc(nav.releaseId)}.</p></header>
+<nav class="af-toc" aria-label="Contents"><ul>${toc}</ul></nav>
+<main id="artifact-main">${articles}</main>
+<footer class="site-foot"><p class="foot-banner">Village-layer material: this site sits outside both children's views, like FAMILY.md and village/.</p><p class="foot-license">Documentation license: CC BY-SA 4.0. Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot ${SNAP}. Release ${esc(nav.releaseId)}.</p></footer>
+</div>
+<script>${searchAsset(records)}</script>
+<script>${js}</script>
+</body>
+</html>
+`);
+}
+
 // ---------- atlas manifest ----------
 
 function stableStringify(v, indent = 0) {
@@ -310,8 +605,7 @@ const outputs = new Map(); // absolute path -> content
 
 for (const p of pages) {
   const file = join(PUB, p.slug + ".html");
-  if (!existsSync(file)) throw new Error(`nav.json page missing on disk: site/public/${p.slug}.html`);
-  outputs.set(file, renderPage(p, readLF(file), file));
+  outputs.set(file, renderPage(p, sourceBySlug.get(p.slug), file));
 }
 const nf = join(PUB, "404.html");
 if (existsSync(nf)) outputs.set(nf, render404(readLF(nf), nf));
@@ -321,8 +615,9 @@ for (const file of listPublicHtml()) {
   if (!outputs.has(file)) throw new Error(`page on disk but not in nav.json: ${file}`);
 }
 
-outputs.set(join(SITE, "artifact", "edgeweaver-site-full.html"), artifactDoc("full"));
-outputs.set(join(SITE, "artifact", "edgeweaver-site-lite.html"), artifactDoc("lite"));
+outputs.set(join(PUB, "assets", "search-index.js"), searchAsset(webSearchRecords));
+outputs.set(join(SITE, "artifact", "edgeweaver-site-full.html"), artifactDocV4("full"));
+outputs.set(join(SITE, "artifact", "edgeweaver-site-lite.html"), artifactDocV4("lite"));
 outputs.set(join(SRC, "atlas-manifest.json"), buildManifest());
 
 if (CHECK) {

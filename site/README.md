@@ -11,7 +11,9 @@ The current execution handoff is `runs/site-plan.md` v4, from **How Luna must us
 this plan** through **Definition of done**. Its F0-F7 sequence supersedes the
 historical M0-M6 build sequence retained later in that file. S0 and S1 closed on
 2026-07-10; approved candidate `cc31144` is the M3 safety/content baseline. F2 is
-next: freeze the shared navigation, search, reading-lens, and accessibility contract.
+F2 is the active integration point: its shared navigation, search, reading-lens,
+artifact, and accessibility contract is implemented in source and becomes current
+only after the orchestrator runs the deterministic builder and verification wall.
 
 The nine M3 pages, Reproduction draft, expanded Glossary, generated artifacts, and
 release redaction wall are committed on `codex/finish-edgeweaver-site`. The Repo
@@ -31,22 +33,32 @@ node scripts/site/build-site.mjs           # regenerate marker regions, artifact
 node scripts/site/build-site.mjs --check   # freshness check (newline-agnostic), exit 1 if stale
 node scripts/verify/verify-site.mjs        # the 12-check wall (default mode; run-all runs this)
 node scripts/verify/verify-site.mjs --against-live   # + atlas drift report vs git ls-files (read-only)
+node scripts/verify/verify-site.mjs --redaction      # + fail-closed identity and operations scans
+node scripts/verify/verify-site.mjs --release        # complete editorial, Atlas, semantic, and release wall
 ```
 
 Local preview: the `site` entry in `.claude/launch.json` (or any static server on
-`site/public/`), or double-click `site/public/index.html`; every page works from
-`file://`. The password gate only exists on Vercel; testing it locally needs
+`site/public/`), or double-click `site/public/index.html`; every page and local
+search work from `file://`. Search never uses the network and records no query.
+Without JavaScript, all navigation and both reading registers remain visible; use
+the browser's Find command on one page, or Find in either single-file edition for
+the whole guide. The password gate only exists on Vercel; testing it locally needs
 `vercel dev` with a throwaway Development password (Alan-present).
 
 ## Layout
 
 - `public/` - the 53 hand-authored pages + `404.html` + `assets/`. Only this
   directory (plus `middleware.js`) is ever served by Vercel.
-- `src/` - `nav.json` (page order; single source), `atlas-map.json` (path-prefix
+- `public/assets/search-index.js` - GENERATED deterministic search records from
+  authored `<main>` content. It is committed and freshness-checked.
+- `src/` - `nav.json` (five hubs, metadata, tracks, page order, release id),
+  `atlas-map.json` (path-prefix
   to atlas-page coverage map), `atlas-manifest.json` (GENERATED), `partials/`,
   `allowed-domains.txt`.
 - `artifact/` - GENERATED single-file editions (full + lite). The lite edition is
-  what ships to claude.ai (Alan, D21).
+  what ships to claude.ai (Alan, D21). Both editions inline their own search data
+  and runtime, expose Search, Plain/Technical/Both, and Theme in one toolbar, and
+  use one document `<main>` with a separate `<article>` for each included page.
 - `middleware.js` - the entire password gate (`EW_SITE_PASSWORD`, fail-closed).
   The password lives ONLY in Vercel project env config. Never commit it, never
   type it in a terminal or chat. Rotation: new env value + redeploy (old cookies
@@ -61,8 +73,9 @@ Local preview: the `site` entry in `.claude/launch.json` (or any static server o
 No em-dashes. No secrets, endpoints, project refs, handles, or numeric ids. No
 probe scenario text. Pre-A3 redaction tier on Genesis DNA (soul-source
 named-never-summarized; harvest answers never; boundary/refusal text shape-only).
-Registers always both on the page. People: Alan named; accepted seats by first
-name + seat; published authors cited.
+Both registers always remain in source and are the no-JS/print default; the viewer
+may choose Plain, Technical, or Both without hiding status or uncertainty. People:
+Alan named; accepted seats by first name + seat; published authors cited.
 
 ## Milestone ledger (tick per session, house style)
 

@@ -47,6 +47,7 @@ const visibleText = (s) => decodeEntities(s
   .replace(/<script\b[\s\S]*?<\/script>/gi, " ")
   .replace(/<style\b[\s\S]*?<\/style>/gi, " ")
   .replace(/<[^>]+>/g, " "));
+const plainButtonText = (s) => visibleText(s).replace(/\s+/g, " ").trim();
 const normalizedWords = (s) => visibleText(s).toLowerCase().replace(/[^a-z0-9]+/g, " ").trim().split(/\s+/).filter(Boolean);
 const distinct = (items) => [...new Set(items)];
 
@@ -79,6 +80,8 @@ const redactionFiles = distinct([...pageFiles, ...artifactFiles.filter(existsSyn
 const nav = JSON.parse(read(join(SRC, "nav.json")));
 const atlasMap = JSON.parse(read(join(SRC, "atlas-map.json")));
 const navPages = nav.groups.flatMap((g) => g.pages.map((p) => p.slug));
+const navRecords = nav.groups.flatMap((g) => g.pages);
+const navBySlug = new Map(navRecords.map((p) => [p.slug, p]));
 
 // ---- check 1: builder freshness + determinism -------------------------------
 try {
@@ -94,6 +97,33 @@ try {
   const missingOnDisk = navPages.filter((s) => !onDisk.includes(s));
   for (const s of extraOnDisk) problems.push(`check 2 (nav): page on disk but not in nav.json: ${s}`);
   for (const s of missingOnDisk) problems.push(`check 2 (nav): nav.json page missing on disk: ${s}`);
+}
+
+// ---- check 2b: F2 navigation metadata and tracks -----------------------------
+{
+  const kinds = new Set(["overview", "concept", "being", "procedure", "reference", "atlas-file"]);
+  const audiences = new Set(["circle", "trusted-outsider", "operator", "engineer", "agent"]);
+  if (!nav.releaseId || typeof nav.releaseId !== "string") problems.push("check 2 (nav): releaseId missing");
+  if (!Array.isArray(nav.hubs) || nav.hubs.length !== 5) problems.push("check 2 (nav): exactly five hubs required");
+  const hubIds = new Set((nav.hubs || []).map((h) => h.id));
+  for (const hub of nav.hubs || []) {
+    const home = navBySlug.get(hub.homeSlug);
+    if (!home || home.hub !== hub.id) problems.push(`check 2 (nav): ${hub.id} has invalid homeSlug ${hub.homeSlug}`);
+  }
+  for (const p of navRecords) {
+    if (!hubIds.has(p.hub)) problems.push(`check 2 (nav): ${p.slug} has invalid hub`);
+    if (!p.section || !p.summary) problems.push(`check 2 (nav): ${p.slug} missing section or summary`);
+    if (!kinds.has(p.kind)) problems.push(`check 2 (nav): ${p.slug} has invalid kind`);
+    if (!Array.isArray(p.audiences) || !p.audiences.length || p.audiences.some((a) => !audiences.has(a))) problems.push(`check 2 (nav): ${p.slug} has invalid audiences`);
+  }
+  for (const name of ["understand", "technical", "reproduce"]) {
+    const track = nav.readingTracks && nav.readingTracks[name];
+    if (!Array.isArray(track) || !track.length) problems.push(`check 2 (nav): ${name} reading track missing`);
+    else {
+      if (new Set(track).size !== track.length) problems.push(`check 2 (nav): ${name} reading track repeats a slug`);
+      for (const slug of track) if (!navBySlug.has(slug)) problems.push(`check 2 (nav): ${name} track references missing ${slug}`);
+    }
+  }
 }
 
 // ---- parse pages once ---------------------------------------------------------
@@ -159,6 +189,74 @@ for (const [slug, d] of pageData) {
   }
 }
 
+// ---- F2 shell, search wiring, and safe controls ------------------------------
+let searchIndexData = null;
+{
+  const searchPath = join(PUB, "assets", "search-index.js");
+  if (!existsSync(searchPath)) {
+    problems.push("check 2 (search): generated assets/search-index.js missing");
+  } else {
+    const source = read(searchPath);
+    if (source.includes("<") || /[\u2028\u2029]/.test(source) || /<\/script/i.test(source)) problems.push("check 2 (search): index serialization is not script-safe");
+    const match = source.match(/window\.EDGEWEAVER_SEARCH_INDEX\s*=\s*([\s\S]*);\s*$/);
+    if (!match) problems.push("check 2 (search): assignment wrapper malformed");
+    else {
+      try { searchIndexData = JSON.parse(match[1]); }
+      catch { problems.push("check 2 (search): generated payload is not valid JSON"); }
+    }
+  }
+  if (searchIndexData) {
+    if (searchIndexData.releaseId !== nav.releaseId) problems.push("check 2 (search): releaseId does not match nav.json");
+    if (!Array.isArray(searchIndexData.records)) problems.push("check 2 (search): records must be an array");
+    else {
+      const expectedKeys = ["anchor", "audiences", "badges", "filePath", "heading", "hub", "kind", "register", "section", "slug", "text", "title"].sort().join(",");
+      const destinations = new Set();
+      for (const [index, record] of searchIndexData.records.entries()) {
+        if (Object.keys(record).sort().join(",") !== expectedKeys) problems.push(`check 2 (search): record ${index} has wrong fields`);
+        const page = pageData.get(record.slug);
+        if (!page || !page.ids.has(record.anchor)) problems.push(`check 2 (search): record ${index} has missing destination ${record.slug}#${record.anchor}`);
+        const key = `${record.slug}#${record.anchor}`;
+        if (destinations.has(key)) problems.push(`check 2 (search): duplicate destination ${key}`);
+        destinations.add(key);
+      }
+      for (const p of navRecords) {
+        const data = pageData.get(p.slug);
+        if (!data) continue;
+        for (const m of data.main.matchAll(/<h2\b[^>]*\bid="([^"]+)"/g)) {
+          if (!destinations.has(`${p.slug}#${m[1]}`)) problems.push(`check 2 (search): missing h2 record ${p.slug}#${m[1]}`);
+        }
+        for (const m of data.main.matchAll(/\bid="(file-[^"]+)"/g)) {
+          if (!destinations.has(`${p.slug}#${m[1]}`)) problems.push(`check 2 (search): missing Atlas record ${p.slug}#${m[1]}`);
+        }
+      }
+    }
+  }
+
+  const runtime = read(join(PUB, "assets", "site.js"));
+  if (/\b(?:innerHTML|outerHTML|insertAdjacentHTML)\b/.test(runtime)) problems.push("check 2 (search): runtime may not interpolate HTML");
+  if (!/textContent/.test(runtime)) problems.push("check 2 (search): runtime does not use textContent rendering");
+
+  for (const [slug, d] of pageData) {
+    const expectedRoot = slug.includes("/") ? "../" : "";
+    if (!d.html.includes(`src="${expectedRoot}assets/search-index.js"`)) problems.push(`check 2 (search): ${slug} missing local index script`);
+    const mainId = slug === "404" ? "notfound-main" : `${slug.replace(/\//g, "-")}-main`;
+    if (!new RegExp(`<a\\b[^>]*class="[^"]*\\bskip\\b[^"]*"[^>]*href="#${mainId}"`).test(d.html) || !d.ids.has(mainId)) {
+      problems.push(`check 10 (accessibility): ${slug} skip target missing or broken`);
+    }
+    if (!/<dialog\b[^>]*id="site-search"[^>]*aria-labelledby="search-title"/.test(d.html)) problems.push(`check 10 (accessibility): ${slug} search dialog lacks accessible name`);
+    if (!/<label\b[^>]*for="search-input"/.test(d.html)) problems.push(`check 10 (accessibility): ${slug} search input lacks label`);
+    const searchInput = (d.html.match(/<input\b[^>]*id="search-input"[^>]*>/) || [""])[0];
+    if (!/\brole="combobox"/.test(searchInput) || !/\baria-autocomplete="list"/.test(searchInput) || !/\baria-expanded="false"/.test(searchInput) || !/\baria-controls="search-results"/.test(searchInput) || !/\baria-activedescendant=""/.test(searchInput)) {
+      problems.push(`check 10 (accessibility): ${slug} search input lacks complete combobox semantics`);
+    }
+    if (!/<ul\b[^>]*id="search-results"[^>]*role="listbox"/.test(d.html)) problems.push(`check 10 (accessibility): ${slug} search results lack listbox semantics`);
+    for (const m of d.html.matchAll(/<button\b([^>]*)>([\s\S]*?)<\/button>/g)) {
+      if (!plainButtonText(m[2]) && !/\baria-label="[^"]+"/.test(m[1])) problems.push(`check 10 (accessibility): ${slug} has unnamed button`);
+    }
+    for (const m of d.html.matchAll(/\btabindex="([1-9]\d*)"/g)) problems.push(`check 10 (accessibility): ${slug} uses positive tabindex ${m[1]}`);
+  }
+}
+
 // ---- check 5: atlas wiring (default) / drift (--against-live) -----------------
 const manifestPath = join(SRC, "atlas-manifest.json");
 let manifest = null;
@@ -188,6 +286,10 @@ if (!existsSync(manifestPath)) {
 }
 
 function excluded(path) {
+  // A deliberately exact map entry is a carve-out from a broader exclusion
+  // class (for example, a generated public asset that needs its own Atlas
+  // entry). Exact exclusion paths still apply unless the path is mapped.
+  if (Object.prototype.hasOwnProperty.call(atlasMap.map || {}, path)) return false;
   for (const ex of atlasMap.exclusions || []) {
     for (const pre of ex.prefixes || []) if (path.startsWith(pre)) return true;
     for (const p of ex.paths || []) if (path === p) return true;
@@ -382,12 +484,33 @@ if (REDACTION) {
     for (let i = 0; i + shingleSize <= words.length; i++) identityBank.add(words.slice(i, i + shingleSize).join(" "));
   }
 
+  const visibleLines = (file) => {
+    const rawLines = read(file).split("\n");
+    if (searchFiles.includes(file)) return rawLines.map(() => "");
+    if (!file.endsWith(".html")) return rawLines.map((line) => visibleText(line));
+    let hidden = false;
+    return rawLines.map((line) => {
+      let candidate = line;
+      if (hidden) {
+        if (/<\/(?:script|style)>/i.test(line)) hidden = false;
+        return "";
+      }
+      const opener = candidate.match(/<(?:script|style)\b/i);
+      if (opener) {
+        const before = candidate.slice(0, opener.index);
+        if (!/<\/(?:script|style)>/i.test(candidate.slice(opener.index))) hidden = true;
+        candidate = before;
+      }
+      return visibleText(candidate);
+    });
+  };
+
   for (const file of redactionFiles) {
-    const lines = read(file).split("\n");
+    const lines = visibleLines(file);
     let overlapCount = 0;
     let firstOverlap = 0;
     for (let i = 0; i < lines.length; i++) {
-      const plain = visibleText(lines[i]);
+      const plain = lines[i];
       const lower = plain.toLowerCase();
       if (/\b(?:seeds?|bright principles?|constitutional bedrock|permanent bedrock)\b/i.test(plain)) {
         for (const value of seedValues) {
@@ -396,7 +519,7 @@ if (REDACTION) {
           }
         }
       }
-      const words = normalizedWords(lines[i]);
+      const words = normalizedWords(plain);
       for (let j = 0; j + shingleSize <= words.length; j++) {
         if (identityBank.has(words.slice(j, j + shingleSize).join(" "))) {
           overlapCount++;
@@ -405,6 +528,34 @@ if (REDACTION) {
       }
     }
     if (overlapCount) problems.push(`redaction (identity.source-overlap): ${rel(file)}:${firstOverlap} (${overlapCount} protected window(s), text not shown)`);
+  }
+
+  for (const file of searchFiles) {
+    const raw = read(file);
+    try {
+      const start = raw.indexOf("{");
+      const end = raw.lastIndexOf("}");
+      const payload = JSON.parse(raw.slice(start, end + 1));
+      for (const record of payload.records || []) {
+        const label = `${rel(file)}:${record.slug || "unknown"}#${record.anchor || "top"}`;
+        for (const sentence of String(record.text || "").split(/(?:[.!?]+\s+|\n+)/)) {
+          if (!/\b(?:seeds?|bright principles?|constitutional bedrock|permanent bedrock)\b/i.test(sentence)) continue;
+          for (const value of seedValues) {
+            if (new RegExp(`\\b${value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i").test(sentence)) {
+              problems.push(`redaction (identity.seed-principles): ${label} (value not shown)`);
+            }
+          }
+        }
+        const words = normalizedWords(String(record.text || ""));
+        let overlaps = 0;
+        for (let i = 0; i + shingleSize <= words.length; i++) {
+          if (identityBank.has(words.slice(i, i + shingleSize).join(" "))) overlaps++;
+        }
+        if (overlaps) problems.push(`redaction (identity.source-overlap): ${label} (${overlaps} protected window(s), text not shown)`);
+      }
+    } catch {
+      problems.push(`redaction (search): generated index is not parseable: ${rel(file)}`);
+    }
   }
 
   if (existsSync(familyPath)) {
@@ -417,7 +568,7 @@ if (REDACTION) {
       for (const [index, name] of forbidden.entries()) {
         const pattern = new RegExp(`\\b${name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i");
         for (const file of redactionFiles) {
-          const hit = read(file).split("\n").findIndex((line) => pattern.test(visibleText(line)));
+          const hit = visibleLines(file).findIndex((line) => pattern.test(line));
           if (hit >= 0) problems.push(`redaction (people.unaccepted-seat-${index + 1}): ${rel(file)}:${hit + 1} (name not shown)`);
         }
       }
@@ -456,11 +607,12 @@ if (REDACTION) {
     ["operations.coordinate.machine-path", /\b[A-Za-z]:\\[^\s<]+/],
   ];
   for (const file of redactionFiles) {
-    const lines = read(file).split("\n");
-    for (let i = 0; i < lines.length; i++) {
-      const plain = visibleText(lines[i]);
+    const rawLines = read(file).split("\n");
+    const plainLines = visibleLines(file);
+    for (let i = 0; i < rawLines.length; i++) {
+      const plain = plainLines[i];
       for (const { label, value } of denyEntries) {
-        if (value.length >= 4 && (plain.toLowerCase().includes(value.toLowerCase()) || lines[i].toLowerCase().includes(value.toLowerCase()))) {
+        if (value.length >= 4 && (plain.toLowerCase().includes(value.toLowerCase()) || rawLines[i].toLowerCase().includes(value.toLowerCase()))) {
           problems.push(`redaction (${label}): ${rel(file)}:${i + 1} (value not shown)`);
         }
       }
@@ -471,7 +623,86 @@ if (REDACTION) {
   }
 }
 
-if (RELEASE) problems.push("release completeness: F2/F4 checks are not installed yet; --release remains fail-closed");
+// ---- release completeness scaffold ------------------------------------------
+if (RELEASE) {
+  if (/^(?:unreleased|placeholder|development|dev)/i.test(nav.releaseId)) problems.push("release: nav releaseId is still a development placeholder");
+  const placeholder = /\b(?:Stub|TBD|TODO|To be written|Entry lands)\b/i;
+  const allowedBadges = new Set(["authority", "runbook", "active-code", "schema-data", "generated", "archive", "fixture", "described-not-shown"]);
+  const bands = { deep: [160, 250], standard: [100, 180], compact: [50, 100] };
+  const atlasArticles = new Map();
+
+  for (const [slug, data] of pageData) {
+    if (placeholder.test(visibleText(data.main))) problems.push(`release (completeness): placeholder copy in ${slug}`);
+    const page = navBySlug.get(slug);
+    const registers = [...data.main.matchAll(/<section\b[^>]*data-register="(plain|technical)"/g)].map((m) => m[1]);
+    if (page && (page.kind === "concept" || page.kind === "being")) {
+      if (registers.filter((r) => r === "plain").length !== 1 || registers.filter((r) => r === "technical").length !== 1) problems.push(`release (registers): ${slug} needs one plain and one technical section`);
+    } else if (registers.length && !(registers.includes("plain") && registers.includes("technical"))) {
+      problems.push(`release (registers): ${slug} has an unpaired reading register`);
+    }
+
+    const tableCount = (data.main.match(/<table\b/g) || []).length;
+    let wrappedTables = 0;
+    for (const wrap of data.main.matchAll(/<div\b([^>]*)class="[^"]*\btablewrap\b[^"]*"([^>]*)>([\s\S]*?)<\/div>/g)) {
+      const attrs = wrap[1] + wrap[2];
+      wrappedTables += (wrap[3].match(/<table\b/g) || []).length;
+      if (!/\brole="region"/.test(attrs) || !/\btabindex="0"/.test(attrs) || !/\baria-(?:label|labelledby)="[^"]+"/.test(attrs)) problems.push(`release (tables): inaccessible table region in ${slug}`);
+    }
+    if (wrappedTables !== tableCount) problems.push(`release (tables): every table in ${slug} must be in an accessible tablewrap`);
+    for (const table of data.main.matchAll(/<table\b([^>]*)>([\s\S]*?)<\/table>/g)) {
+      if (!/<caption\b/.test(table[2]) && !/\baria-labelledby="[^"]+"/.test(table[1])) problems.push(`release (tables): table without caption or aria-labelledby in ${slug}`);
+      for (const th of table[2].matchAll(/<th\b([^>]*)>/g)) if (!/\bscope="(?:row|col|rowgroup|colgroup)"/.test(th[1])) problems.push(`release (tables): th without scope in ${slug}`);
+    }
+
+    const svgCount = (data.main.match(/<svg\b/g) || []).length;
+    let wrappedSvgs = 0;
+    for (const wrap of data.main.matchAll(/<div\b([^>]*)class="[^"]*\bdiagram-scroll\b[^"]*"([^>]*)>([\s\S]*?)<\/div>/g)) {
+      const attrs = wrap[1] + wrap[2];
+      wrappedSvgs += (wrap[3].match(/<svg\b/g) || []).length;
+      if (!/\brole="region"/.test(attrs) || !/\btabindex="0"/.test(attrs) || !/\baria-(?:label|labelledby)="[^"]+"/.test(attrs)) problems.push(`release (diagrams): inaccessible diagram region in ${slug}`);
+    }
+    if (wrappedSvgs !== svgCount) problems.push(`release (diagrams): every SVG in ${slug} must be in an accessible diagram-scroll`);
+    for (const svg of data.main.matchAll(/<svg\b([^>]*)>([\s\S]*?)<\/svg>/g)) {
+      if (!/\brole="img"/.test(svg[1]) || !/^\s*<title>[\s\S]*?<\/title>\s*<desc>[\s\S]*?<\/desc>/.test(svg[2])) problems.push(`release (diagrams): SVG lacks role, title, or description in ${slug}`);
+    }
+
+    if (slug.startsWith("atlas/")) {
+      for (const article of data.main.matchAll(/<article\b([^>]*)class="[^"]*\batlas-entry\b[^"]*"([^>]*)>([\s\S]*?)<\/article>/g)) {
+        const attrs = article[1] + article[2];
+        const id = (article[3].match(/<h3\b[^>]*id="(file-[^"]+)"/) || [])[1];
+        if (!id) { problems.push(`release (atlas): entry without file h3 in ${slug}`); continue; }
+        atlasArticles.set(id, { slug, attrs, html: article[3] });
+      }
+    }
+  }
+
+  for (const [id, expectedSlug] of Object.entries((manifest && manifest.anchors) || {})) {
+    const entry = atlasArticles.get(id);
+    if (!entry || entry.slug !== expectedSlug) { problems.push(`release (atlas): ${id} lacks one complete article on ${expectedSlug}`); continue; }
+    const depth = (entry.attrs.match(/\bdata-depth="(deep|standard|compact)"/) || [])[1];
+    if (!depth) problems.push(`release (atlas): ${id} missing valid depth`);
+    const fields = [...entry.html.matchAll(/<div\b[^>]*class="[^"]*\batlas-field\b[^"]*"[^>]*data-field="(what|contains|readers|verify|related)"[^>]*>([\s\S]*?)<\/div>/g)];
+    const names = fields.map((field) => field[1]).join(",");
+    if (names !== "what,contains,readers,verify,related") problems.push(`release (atlas): ${id} needs five ordered fields`);
+    const badge = (entry.html.match(/<[^>]+class="[^"]*\bbadge\b[^"]*"[^>]*>([\s\S]*?)<\/[^>]+>/) || [])[1];
+    const badgeText = badge ? visibleText(badge).trim().toLowerCase() : "";
+    if (!allowedBadges.has(badgeText)) problems.push(`release (atlas): ${id} has missing or invalid badge`);
+    if (depth && fields.length === 5) {
+      const prose = fields.map((field) => visibleText(field[2].replace(/<code\b[\s\S]*?<\/code>/g, " "))).join(" ");
+      const count = prose.trim().split(/\s+/).filter(Boolean).length;
+      const [min, max] = bands[depth];
+      if (count < min || count > max) problems.push(`release (atlas): ${id} ${depth} prose is ${count} words, expected ${min}-${max}`);
+    }
+  }
+
+  const glossary = pageData.get("glossary");
+  if (glossary) {
+    for (const link of glossary.main.matchAll(/<a\b[^>]*class="[^"]*\bterm\b[^"]*"[^>]*href="([^"]+)"/g)) {
+      const target = link[1].split("#")[1];
+      if (!target || !glossary.ids.has(target)) problems.push(`release (glossary): broken term link ${link[1]}`);
+    }
+  }
+}
 
 // ---- check 9: gate sanity --------------------------------------------------------
 {
@@ -485,7 +716,7 @@ if (RELEASE) problems.push("release completeness: F2/F4 checks are not installed
 // ---- check 10: HTML sanity --------------------------------------------------------
 {
   const VOID = new Set(["area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"]);
-  const checkBalance = (f, requireOneMain) => {
+  const checkBalance = (f, requireOneMain, requireOneH1) => {
     let text = read(f);
     text = text.replace(/<!--[\s\S]*?-->/g, "").replace(/<script\b[\s\S]*?<\/script>/g, "<script></script>").replace(/<style\b[\s\S]*?<\/style>/g, "<style></style>");
     const stack = [];
@@ -511,13 +742,18 @@ if (RELEASE) problems.push("release completeness: F2/F4 checks are not installed
     if (!/<meta charset=/.test(doc)) problems.push(`check 10 (html): ${rel(f)}: missing charset`);
     if (!/<meta name="viewport"/.test(doc)) problems.push(`check 10 (html): ${rel(f)}: missing viewport`);
     if (!/<title>/.test(doc)) problems.push(`check 10 (html): ${rel(f)}: missing title`);
-    if (requireOneMain) {
-      if ((doc.match(/<main\b/g) || []).length !== 1) problems.push(`check 10 (html): ${rel(f)}: must have exactly one <main>`);
-      if ((doc.match(/<h1\b/g) || []).length !== 1) problems.push(`check 10 (html): ${rel(f)}: must have exactly one <h1>`);
-    }
+    if (requireOneMain && (doc.match(/<main\b/g) || []).length !== 1) problems.push(`check 10 (html): ${rel(f)}: must have exactly one <main>`);
+    if (requireOneH1 && (doc.match(/<h1\b/g) || []).length !== 1) problems.push(`check 10 (html): ${rel(f)}: must have exactly one <h1>`);
   };
-  for (const f of pageFiles) checkBalance(f, true);
-  for (const af of artifactFiles) if (existsSync(af)) checkBalance(af, false);
+  for (const f of pageFiles) checkBalance(f, true, true);
+  for (const af of artifactFiles) {
+    if (!existsSync(af)) continue;
+    checkBalance(af, true, false);
+    const html = read(af);
+    if (!/class="[^"]*\bartifact-toolbar\b/.test(html) || !/class="[^"]*\bsearch-toggle\b/.test(html) || !/class="[^"]*\breading-controls\b/.test(html) || !/class="[^"]*\btheme-toggle\b/.test(html)) problems.push(`check 10 (artifact): ${rel(af)} missing toolbar controls`);
+    if (!/window\.EDGEWEAVER_SEARCH_INDEX\s*=/.test(html)) problems.push(`check 10 (artifact): ${rel(af)} missing inline search index`);
+    for (const m of html.matchAll(/\btabindex="([1-9]\d*)"/g)) problems.push(`check 10 (accessibility): ${rel(af)} uses positive tabindex ${m[1]}`);
+  }
 }
 
 // ---- check 11: probe-content tripwire ----------------------------------------------

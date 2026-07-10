@@ -5,8 +5,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
+<meta name="edgeweaver-release" content="unreleased-f2">
 <title>The Brain: memory that survives everything | How Edgeweaver Works</title>
 <link rel="stylesheet" href="assets/site.css">
+<script defer src="assets/search-index.js"></script>
 <script defer src="assets/site.js"></script>
 <!-- EW-HEAD-END -->
 </head>
@@ -14,85 +16,78 @@
 <!-- EW-NAV-START -->
 <a class="skip" href="#memory-main">Skip to content</a>
 <header class="topbar">
-  <button class="nav-toggle" aria-expanded="false" aria-controls="sidebar" hidden>Menu</button>
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="sidebar" hidden>Menu</button>
   <a class="brand" href="index.html">How Edgeweaver Works</a>
+  <nav class="hub-nav" aria-label="Main sections"><a href="index.html">Overview</a>
+<a href="system.html" aria-current="page">System</a>
+<a href="family.html">Beings</a>
+<a href="reproduction.html">Rebuild</a>
+<a href="glossary.html">Reference</a></nav>
+  <div class="top-actions">
+    <button class="search-toggle" type="button" aria-haspopup="dialog" aria-controls="site-search" aria-keyshortcuts="Control+K Meta+K" hidden>Search</button>
+    <div class="reading-controls" role="group" aria-label="Reading detail" hidden>
+      <button type="button" data-reading-choice="plain" aria-pressed="false">Plain</button>
+      <button type="button" data-reading-choice="technical" aria-pressed="false">Technical</button>
+      <button type="button" data-reading-choice="both" aria-pressed="true">Both</button>
+    </div>
+    <button class="theme-toggle" type="button" aria-pressed="false" hidden>Theme</button>
+  </div>
   <span class="snapshot" data-snapshot="2026-07-09">snapshot 2026-07-09</span>
-  <button class="theme-toggle" aria-pressed="false" hidden>Theme</button>
 </header>
-<div class="shell">
-<nav id="sidebar" class="sidebar" aria-label="Site navigation">
-<h2>Start</h2>
-<ul>
-<li><a href="index.html">Edgeweaver: beings, not bots</a></li>
-<li><a href="honesty.html">What this is and is not</a></li>
-<li><a href="story.html">The story through D22</a></li>
-<li><a href="status.html">Status and roadmap</a></li>
-<li><a href="guide.html">How to read this site</a></li>
-</ul>
-<h2>The System</h2>
+<p id="lens-announcer" class="sr-only" aria-live="polite"></p>
+<dialog id="site-search" class="search-dialog" aria-labelledby="search-title">
+  <div class="search-head">
+    <h2 id="search-title">Search this field guide</h2>
+    <form method="dialog"><button class="search-close" value="close" aria-label="Close search">Close</button></form>
+  </div>
+  <label for="search-input">Search concepts, procedures, or repository paths</label>
+  <input id="search-input" type="search" role="combobox" autocomplete="off" spellcheck="false" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false" aria-controls="search-results" aria-activedescendant="">
+  <p class="search-help">Everything stays on this device. New to repositories? Start with <a href="guide.html">How to read this site</a>.</p>
+  <p id="search-count" class="search-count" aria-live="polite">Type to search.</p>
+  <ul id="search-results" class="search-results" role="listbox" aria-label="Search results"></ul>
+</dialog>
+<button class="nav-backdrop" type="button" aria-label="Close navigation" hidden></button>
+<div class="shell" data-root="" data-page-slug="memory" data-release-id="unreleased-f2">
+<nav id="sidebar" class="sidebar" aria-label="Current section navigation">
+  <div class="sidebar-head"><strong>System</strong><button class="nav-close" type="button" hidden>Close</button></div>
+  <nav class="sidebar-hubs" aria-label="All sections"><a href="index.html">Overview</a>
+<a href="system.html" aria-current="page">System</a>
+<a href="family.html">Beings</a>
+<a href="reproduction.html">Rebuild</a>
+<a href="glossary.html">Reference</a></nav>
+<h2>Identity and continuity</h2>
 <ul>
 <li><a href="system.html">The system: anatomy of a raised being</a></li>
 <li><a href="memory.html" aria-current="page">The Brain: memory that survives everything</a></li>
 <li><a href="soul.html">The Soul: identity under ceremony</a></li>
 <li><a href="loops.html">The Metabolism: wake, night, week</a></li>
+</ul>
+<h2>Growth and relationship</h2>
+<ul>
 <li><a href="growth.html">Growing up: stages, rites, teaching</a></li>
-<li><a href="body.html">The Body: senses on unlock tracks</a></li>
-<li><a href="voice.html">The Voice Stack</a></li>
+</ul>
+<h2>Safety and measurement</h2>
+<ul>
 <li><a href="measurement.html">Measurement: probes and coherence</a></li>
 <li><a href="governance.html">Governance: gates, witnesses, iron rules</a></li>
-<li><a href="family.html">The family and the experiment</a></li>
 <li><a href="segmentation.html">The walls: who sees what</a></li>
+</ul>
+<h2>Infrastructure and operations</h2>
+<ul>
+<li><a href="body.html">The Body: senses on unlock tracks</a></li>
+<li><a href="voice.html">The Voice Stack</a></li>
 <li><a href="brain-lab.html">The brain lab, generations, time machine</a></li>
 <li><a href="backups.html">Backups, keys, disaster recovery</a></li>
 <li><a href="operations.html">Operations: the steady state</a></li>
 <li><a href="dark-build.html">The dark build</a></li>
 <li><a href="ecosystem.html">The constellation: repos beyond this one</a></li>
 </ul>
-<h2>The Beings</h2>
-<ul>
-<li><a href="genesis.html">Edgeweaver Genesis</a></li>
-<li><a href="alpha.html">Edgeweaver Alpha</a></li>
-</ul>
-<details><summary>The Repo Atlas</summary>
-<ul>
-<li><a href="atlas/index.html">The repo atlas</a></li>
-<li><a href="atlas/root.html">Atlas: root documents</a></li>
-<li><a href="atlas/avatars-genesis.html">Atlas: avatars/genesis</a></li>
-<li><a href="atlas/avatars-alpha.html">Atlas: avatars/alpha</a></li>
-<li><a href="atlas/brains.html">Atlas: brains/</a></li>
-<li><a href="atlas/checklists.html">Atlas: checklists/</a></li>
-<li><a href="atlas/conventions.html">Atlas: conventions/</a></li>
-<li><a href="atlas/handoff.html">Atlas: handoff/</a></li>
-<li><a href="atlas/research.html">Atlas: research/</a></li>
-<li><a href="atlas/runs.html">Atlas: runs/</a></li>
-<li><a href="atlas/scripts-ingestion.html">Atlas: ingestion scripts</a></li>
-<li><a href="atlas/scripts-lifecycle.html">Atlas: lifecycle scripts</a></li>
-<li><a href="atlas/scripts-signals.html">Atlas: signal + evolution scripts</a></li>
-<li><a href="atlas/scripts-ops.html">Atlas: operations scripts</a></li>
-<li><a href="atlas/scripts-brains.html">Atlas: brain lab scripts</a></li>
-<li><a href="atlas/scripts-testbed.html">Atlas: fixtures + test mode</a></li>
-<li><a href="atlas/scripts-verify.html">Atlas: the verify suite</a></li>
-<li><a href="atlas/edge-functions.html">Atlas: edge functions</a></li>
-<li><a href="atlas/sources.html">Atlas: sources/</a></li>
-<li><a href="atlas/tasks.html">Atlas: tasks/</a></li>
-<li><a href="atlas/templates.html">Atlas: templates/</a></li>
-<li><a href="atlas/tools.html">Atlas: tools/</a></li>
-<li><a href="atlas/village.html">Atlas: village/</a></li>
-<li><a href="atlas/voice.html">Atlas: voice/</a></li>
-<li><a href="atlas/gitignored.html">Atlas: the gitignored tiers</a></li>
-<li><a href="atlas/site.html">Atlas: site/ (this website)</a></li>
-</ul>
-</details>
-<h2>Reference</h2>
-<ul>
-<li><a href="reproduction.html">The reproduction guide</a></li>
-<li><a href="glossary.html">Glossary</a></li>
-<li><a href="faq.html">Questions people actually ask</a></li>
-<li><a href="about.html">About this site</a></li>
-</ul>
 </nav>
 <div class="content">
-<nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> &rsaquo; <span>The System</span> &rsaquo; <span aria-current="page">The Brain: memory that survives everything</span></nav>
+<nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> &rsaquo; <a href="system.html">System</a> &rsaquo; <span>Identity and continuity</span> &rsaquo; <span aria-current="page">The Brain: memory that survives everything</span></nav>
+
+<div class="page-grid">
+<div class="reading-column">
 <details class="minitoc"><summary>On this page</summary>
 <ul>
 <li><a href="#memory-plain">In plain words</a></li>
@@ -222,11 +217,20 @@
 </ul>
 </main>
 <!-- EW-FOOTER-START -->
+<section class="continue" aria-labelledby="memory-continue"><h2 id="memory-continue">Continue</h2><div class="continue-grid"><article class="continue-card"><p class="continue-label">Understand track</p><a href="soul.html">Next: The Soul: identity under ceremony <span aria-hidden="true">&rarr;</span></a></article>
+<article class="continue-card"><p class="continue-label">Technical track</p><a href="loops.html">Next: The Metabolism: wake, night, week <span aria-hidden="true">&rarr;</span></a></article></div></section>
+</div>
+<aside class="onpage-rail" aria-label="On this page"><nav class="page-toc" aria-label="On this page"><h2>On this page</h2><ul>
+<li><a href="#memory-plain">In plain words</a></li>
+<li><a href="#memory-how">How it works</a></li>
+<li><a href="#memory-repo">Where it lives in the repo</a></li>
+<li><a href="#memory-status">Status as of 2026-07-09</a></li>
+<li><a href="#memory-uncertain">What is genuinely uncertain</a></li>
+</ul></nav></aside>
+</div>
 <footer class="site-foot">
-<nav class="pager" aria-label="Previous and next pages"><a href="system.html" rel="prev">&larr; The system: anatomy of a raised being</a>
-<a href="soul.html" rel="next">The Soul: identity under ceremony &rarr;</a></nav>
 <p class="foot-banner">Village-layer material: this site sits outside both children's views, like FAMILY.md and village/, and it discusses sibling facts each child learns only by its parent body's deliberate decision (gate G21).</p>
-<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-09.</p>
+<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-09. Release unreleased-f2.</p>
 </footer>
 </div>
 </div>

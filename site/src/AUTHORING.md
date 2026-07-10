@@ -72,7 +72,7 @@ trail: runs/site-plan.md. Snapshot date for all content: 2026-07-09.
   function and flag names, schemas, invariants, failure modes, enough that the
   behavior could be reproduced.
 - Length targets: system/being pages 1,300-2,200 words total; start pages per
-  their briefs; atlas entries 120-250 words each.
+  their briefs. Atlas depth bands are defined below and have no exceptions.
 - Links: from top-level pages, other pages are href="slug.html" and atlas pages
   are href="atlas/name.html". FROM atlas pages, top-level pages are
   href="../slug.html" and atlas siblings are href="name.html". Anchors:
@@ -91,9 +91,104 @@ trail: runs/site-plan.md. Snapshot date for all content: 2026-07-09.
   <div class="note holds">...</div> (the withholding/known-gap accent).
 - TLDR boxes: <div class="tldr"><span class="label">TLDR</span><p>60-100 words,
   plain register.</p></div>.
-- Register eyebrows before the two big sections (already in the stubs):
-  <span class="register plain">In plain words</span> and
-  <span class="register technical">How it works</span>.
+- Paired registers are adjacent `<section data-register="plain">` and
+  `<section data-register="technical">` elements. Keep the existing eyebrow
+  spans and h2 ids inside those sections. TLDR, repo map, status, uncertainty,
+  honesty, and navigation stay outside them so a reading lens never hides truth.
+
+## Navigation and page metadata
+
+`site/src/nav.json` is the navigation and search metadata source. Do not change a
+slug. Every page has `hub`, `section`, `kind`, `summary`, and `audiences`.
+Allowed kinds: `overview`, `concept`, `being`, `procedure`, `reference`,
+`atlas-file`. Allowed audiences: `circle`, `trusted-outsider`, `operator`,
+`engineer`, `agent`. The five hubs are Overview, System, Beings, Rebuild, and
+Reference; each has exactly one `homeSlug`. The three ordered tracks are
+Understand, Technical, and Reproduce. Add a page to every relevant track
+explicitly. Never infer a track from the previous or next page.
+
+The builder owns these shared components:
+
+- five global hub links and one contextual left rail for the current hub;
+- linked breadcrumbs, compact tablet TOC, and sticky desktop on-page rail;
+- one Continue card for each reading track containing the current page;
+- Search, Plain/Technical/Both, and Theme controls;
+- an accessible mobile navigation drawer; and
+- the artifact toolbar and static five-hub contents tree.
+
+Authors keep h2 text concise because it becomes TOC and search-result text. The
+Reading Guide owns Repository 101. Its F3 content must define repository, root,
+folder and path, tracked and untracked, ignored, clone, commit, branch, fork,
+environment variable, terminal or CLI, JSON, Markdown, and source of truth. It
+must also explain this repo's authority order and the literal workflow:
+START-HERE, the IMPLEMENTATION ledger, one checklist step, verify, then commit.
+
+## Search contract
+
+Search is generated, deterministic, local, and network-free. The builder emits
+`site/public/assets/search-index.js` from authored `<main>` content. Each authored
+h2 with an id and each Atlas file entry creates one record with exactly these
+fields: `slug`, `anchor`, `title`, `hub`, `section`, `kind`, `audiences`,
+`heading`, `register`, `badges`, `filePath`, `text`. Useful code and path tokens
+stay searchable. Scripts, styles, navigation, fixed field labels, and SVG-internal
+text do not. Figcaptions remain.
+
+The runtime renders all query and result strings with `textContent`, never HTML.
+It ranks exact path and title matches before title prefixes, heading matches,
+all-token body matches, and partial body matches. Equal scores keep nav order and
+then source order. Results stop at 50. Search must work over `file://`, static
+HTTP, the gated site, and both artifacts. Do not add fetch, analytics, logging,
+remote assets, or query persistence.
+
+## Reading lens and progressive enhancement
+
+Both registers are the source and no-JS default. JavaScript may persist a viewer's
+explicit Plain, Technical, or Both choice. CSS hides a register only after the
+`.js` class exists. Print always shows both. If a hash or search result targets a
+hidden register, temporarily reveal Both, update the visible control, and announce
+the change without overwriting the stored preference.
+
+Without JavaScript, navigation and all content remain visible, the system theme
+applies, both registers show, and Search and lens controls remain absent. The
+Reading Guide includes a browser Find-in-page fallback. JavaScript upgrades the
+mobile navigation into a modal drawer with Escape, focus trap and restoration,
+close-on-selection, background-scroll lock, and 44 px targets.
+
+## Atlas entry contract
+
+Every tracked file anchor is one `<article class="atlas-entry"
+data-depth="deep|standard|compact">`. Its h3 keeps the immutable `file-*` id and
+contains the path. Add exactly one allowed badge: `authority`, `runbook`,
+`active-code`, `schema-data`, `generated`, `archive`, `fixture`, or
+`described-not-shown`. Every entry contains these five field elements in order:
+
+1. `<div class="atlas-field" data-field="what">` for what it is.
+2. `<div class="atlas-field" data-field="contains">` for contents, or governed
+   shape only when redaction applies.
+3. `<div class="atlas-field" data-field="readers">` for who reads it and when.
+4. `<div class="atlas-field" data-field="verify">` for verification or
+   reproduction.
+5. `<div class="atlas-field" data-field="related">` for related concept links.
+
+Count prose only inside those five fields. Deep is 160-250 words for authority
+and runbook material. Standard is 100-180 words for active code, schema, and data.
+Compact is 50-100 words for generated, archive, and fixture material. A governed
+file that cannot safely fill a larger band uses compact plus
+`described-not-shown`; never add filler or disclose protected content.
+
+## Accessibility and responsive foundations
+
+Desktop uses a 240-260 px contextual rail, a 680-760 px reading column, and a
+200-220 px sticky on-page rail. Tablet removes the right rail and shows its
+compact TOC. Mobile is one column with the upgraded drawer. Anchored headings use
+scroll margin; long paths wrap; only table and diagram regions scroll sideways.
+
+Every table has a `<caption>` or `aria-labelledby`, and every th has the correct
+`scope`. Wrap it in `.tablewrap` with `role="region"`, `aria-label` or
+`aria-labelledby`, and `tabindex="0"`. Every diagram keeps `<svg role="img">`
+with title and description, and its `.diagram-scroll` wrapper is a similarly
+named focusable region. Never use a positive tabindex. Use `--ochre-text` for
+ochre text on the paper ground; `--strand2` is decorative only.
 
 ## Diagrams (inline SVG, house pattern)
 Wrap in <figure class="diagram"> with a <figcaption>. Use CSS variables for all

@@ -206,6 +206,7 @@
     "file-site-README-md": "atlas/site",
     "file-site-middleware-js": "atlas/site",
     "file-site-package-json": "atlas/site",
+    "file-site-public-assets-search-index-js": "atlas/site",
     "file-site-src-AUTHORING-md": "atlas/site",
     "file-site-src-allowed-domains-txt": "atlas/site",
     "file-site-src-atlas-map-json": "atlas/site",
