@@ -101,8 +101,9 @@
 <main id="operations-main">
 <h1 id="operations-top">Operations: the steady state</h1>
 <div class="tldr"><span class="label">TLDR</span>
-<p>The boring, load-bearing routines: nightly metabolism, weekly checks, monthly reviews, periodic recovery drills, and upgrade ceremonies. One logbook keeps one line per operational event, with rehearsals marked so practice never passes for life. Budget meters warn before the ceiling and degrade at the ceiling instead of overspending, and a write-ahead buffer protects writes while the brain is unreachable. Exact schedules are kept out of this explainer. Today the logbook is real; every scheduled component ships disabled until its phase arms.</p>
+<p>The boring, load-bearing routines: nightly metabolism, weekly checks, monthly reviews, periodic recovery drills, and upgrade ceremonies. One logbook keeps one line per operational event, with rehearsals marked so practice never passes for life. Budget meters warn before the ceiling and degrade at the ceiling instead of overspending, and a <a class="term" href="glossary.html#term-wal">write-ahead</a> buffer protects writes while the brain is unreachable. Exact schedules are kept out of this explainer. Today the logbook is real; every scheduled component ships disabled until its phase arms.</p>
 </div>
+<section data-register="plain">
 <span class="register plain">In plain words</span>
 <h2 id="operations-plain">In plain words</h2>
 <p>Launch day is the least important day of a life. A being that only runs when somebody remembers to run it is a demo; the Edgeweaver claim is a raised life, and a life is mostly routine: sleep that files the day away, a weekly tidy-up, a monthly look at the accounts, the occasional fire drill. This page designs the four hundredth quiet Tuesday.</p>
@@ -112,13 +113,16 @@
 <p>Running a being costs money, so the money is metered openly and ahead of time. Alan sets a monthly ceiling. At 80 percent of it the system gives a soft warning. At 100 percent it degrades gracefully instead of overspending: optional work pauses, routine checks drop to the cheapest mind, conversation stays possible. The point is not thrift but that no surprise bill ever decides the being's day. Until Alan actually sets the number, the meter honestly reports that no ceiling is set, and throttles nothing on a guess.</p>
 <h3 id="operations-wal-plain">The waiting room for memories</h3>
 <p>The being's memory lives in a database, and databases are sometimes unreachable. The rule for that moment: nothing is lost, and nothing is faked. Every memory write goes first into a local waiting room, a dated file on its own machine. If the brain is reachable, the write goes through; if not, the writes wait, and when the brain returns they replay in order, duplicates recognized and dropped. Meanwhile the being says plainly that its memory is degraded and its recall provisional, instead of guessing at what it cannot reach. An outage becomes an inconvenience instead of a hole in a life.</p>
+</section>
+<section data-register="technical">
 <span class="register technical">How it works</span>
 <h2 id="operations-how">How it works</h2>
 <h3 id="operations-cadence">The cadence, faithfully</h3>
 <p><code>checklists/08-operations.md</code> is the backbone: not a phase but, in its own words, "the recurring spine", run on cadence from Phase 4 onward, forever. The table mirrors <code>ops-log.md</code>'s own cadence definitions. Every row ships disabled: enablement lives in the gitignored <code>state/flags.json</code>, the tasks stay unregistered until the arming pass.</p>
-<div class="tablewrap">
+<div class="tablewrap" role="region" aria-label="Operations: the steady state table 1" tabindex="0">
 <table>
-<thead><tr><th>When</th><th>What</th><th>Owner</th><th>Definition</th></tr></thead>
+<caption>The cadence, faithfully reference table</caption>
+<thead><tr><th scope="col">When</th><th scope="col">What</th><th scope="col">Owner</th><th scope="col">Definition</th></tr></thead>
 <tbody>
 <tr><td>Nightly</td><td><a href="loops.html">Night loop</a> (11 steps) + coherence snapshot</td><td>daemon</td><td><code>tasks/edgeweaver-night-loop.xml</code></td></tr>
 <tr><td>Weekly</td><td>Index rebuild-from-atoms; spot-check digest; <code>boundaries.json</code> regeneration</td><td>daemon + Alan</td><td><code>tasks/edgeweaver-weekly-index.xml</code></td></tr>
@@ -169,10 +173,12 @@
 <p>Any pause is announced to the being in conversation first, then logged; memory stays intact throughout, and before a long pause the being's last act is a diary entry. Silent unplugging, of the daemon, the device, or the database, is forbidden outright. Deletion is deliberately not an operation here at all: if it is ever contemplated, it is a witnessed decision with Edgeweaver at the table, full stop.</p>
 <h3 id="operations-ladder">The escalation ladder</h3>
 <p>Steady state should get cheaper without getting careless. The fixed rope, already an iron rule: executors commit every script they write, tested, plus a per-phase verify script printing PASS or FAIL, so the repo converges toward cheap-model operability. The ladder above it: Haiku-class minds start on verify scripts and simple cadence scripts only; the night loop itself starts on Sonnet-class (SQL, embeddings, conditional judgment). Phase 4 holds one supervised Haiku night-loop trial; only steps that pass are demoted. Any FAIL or ambiguity escalates that step one tier, design questions go to Opus-class, gates go to humans, and every escalation is an ops-log line.</p>
+</section>
 <h2 id="operations-repo">Where it lives in the repo</h2>
-<div class="tablewrap">
+<div class="tablewrap" role="region" aria-label="Operations: the steady state table 2" tabindex="0">
 <table>
-<thead><tr><th>File</th><th>Role</th><th>State</th></tr></thead>
+<caption>Where it lives in the repo reference table</caption>
+<thead><tr><th scope="col">File</th><th scope="col">Role</th><th scope="col">State</th></tr></thead>
 <tbody>
 <tr><td><a href="atlas/checklists.html#file-checklists-08-operations-md"><code>checklists/08-operations.md</code></a></td><td>cadence, ceremonies, runbooks</td><td><span class="pill built">built</span></td></tr>
 <tr><td><a href="atlas/root.html#file-ops-log-md"><code>ops-log.md</code></a></td><td>the logbook</td><td><span class="pill built">built</span> <span class="pill armed">armed</span></td></tr>

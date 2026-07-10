@@ -104,59 +104,107 @@
 <main id="atlas-scripts-brains-main">
 <h1 id="atlas-scripts-brains-top">Atlas: brain lab scripts</h1>
 <div class="tldr"><span class="label">TLDR</span>
-<p>Stub. Per-file explainer entries for this part of the repo. Authored at M4. Snapshot 2026-07-09.</p>
+<p>The brain lab can clone memory into isolated scratch schemas, test different brain-and-model combinations, compare results, propagate schema changes, open a past backup for inspection, and retire experiments without touching the live brain. Profile guards, pure SQL generation, and side-effect helpers are separate on purpose. A scratch brain is a research instrument, not a second living child.</p>
 </div>
 <h2 id="atlas-scripts-brains-about">What this page covers</h2>
-<p>To be written at M4. Every file entry gets one anchor: <code>file-</code> plus the path with separators as hyphens.</p>
+<p>These tools form one fleet architecture. The registry and profile resolver identify a brain without storing credentials. Pure transformers generate schema-safe SQL. Database helpers execute explicit plans. Operator commands compose those layers for spawn, migration, comparison, A/B runs, restore-point mapping, and retirement. Dry runs are designed to expose plans before side effects, while live-brain guards and scratch-only checks make the dangerous direction harder to choose accidentally.</p>
 <h2 id="atlas-scripts-brains-entries">File entries</h2>
-<div class="atlas-entry">
-<h3 id="file-scripts-brains-ab-run-mjs"><code>scripts/brains/ab-run.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-brains-db-mjs"><code>scripts/brains/db.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-brains-diff-mjs"><code>scripts/brains/diff.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-brains-dump-transform-mjs"><code>scripts/brains/dump-transform.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-brains-fixtures-ab-questions-json"><code>scripts/brains/fixtures/ab-questions.json</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-brains-list-mjs"><code>scripts/brains/list.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-brains-migrate-mjs"><code>scripts/brains/migrate.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-brains-profiles-mjs"><code>scripts/brains/profiles.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-brains-restore-point-mjs"><code>scripts/brains/restore-point.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-brains-retire-mjs"><code>scripts/brains/retire.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-brains-spawn-mjs"><code>scripts/brains/spawn.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-brains-sql-gen-mjs"><code>scripts/brains/sql-gen.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
+<article class="atlas-entry" data-depth="deep">
+<h3 id="file-scripts-brains-ab-run-mjs"><code>scripts/brains/ab-run.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The attributable A/B runner for comparing named scratch-brain and model configurations against one fixed governed question set. It is an experiment runner, not an identity probe or recall-quality score.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It validates candidate and question inputs, resolves every profile in test mode, runs questions sequentially through the mind-server seam, recalls context from the candidate schema, writes rehearsal episodes back only to that scratch, and records an attributable transcript containing brain profile, generation, model, code revision, timings, and errors. Its current scratch recall is embedding-free full-text search, so results can compare end-to-end configurations but cannot establish production vector-recall quality. Dry-run reads registry metadata and prints a plan without credentials, connections, model calls, or transcript writes.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Brain-lab operators run it after scratch schemas and a governed test set exist. Reviewers compare outputs privately; the being never consumes the test questions or transcripts.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Use dry-run to pin usage errors and prove that even a named live profile is not resolved. At the lab gate, run only approved scratch candidates, confirm every write carries rehearsal and generation metadata, inspect attribution completeness, and void or retire the experimental state.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../brain-lab.html">brain generations</a>, <a href="../measurement.html">measurement boundaries</a>, and <a href="scripts-testbed.html#file-scripts-test-mode-live-mind-mjs">the persistent test mind</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
+<h3 id="file-scripts-brains-db-mjs"><code>scripts/brains/db.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The side-effect layer shared by brain-fleet commands for local PostgreSQL tooling and explicit database URLs.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It locates required command-line programs, runs SQL files or temporary statements with stop-on-error behavior, executes copy meta-commands, parses simple unaligned query rows, converts supported backup archives to plain SQL locally, and removes temporary workspaces. Error text redacts connection URLs.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Spawn, migration, comparison, retirement, and A/B tools import it only after dry-run and profile checks permit side effects. Operators supply credentials through ignored environment configuration.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Exercise tool discovery and temporary cleanup on a disposable setup, force a database error to confirm URL redaction, and rely on higher-level dry-run and lab verifies for each caller.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../brain-lab.html">the lab boundary</a>, <a href="../segmentation.html">credential handling</a>, and <a href="scripts-brains.html#file-scripts-brains-sql-gen-mjs">pure SQL generation</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
+<h3 id="file-scripts-brains-diff-mjs"><code>scripts/brains/diff.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> An operator comparison tool for live and scratch table counts plus records a scratch gained after its spawn.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It validates that the requested registry row is an active scratch, derives table names from the canonical DDL, supports a no-connection plan, and then queries live and lab databases for count deltas and post-spawn activity. It reads both sides directly and is not a being recall path.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> A brain-lab operator runs it after an experiment. Reviewers use the result to understand what the candidate lived, not to declare identity quality.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Start with dry-run, then compare against a known scratch and confirm table coverage, deltas, and graceful handling of tables without creation dates. Never expose connection values in output.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../brain-lab.html">candidate comparison</a>, <a href="../memory.html">runtime recall</a>, and <a href="scripts-brains.html#file-scripts-brains-spawn-mjs">spawn</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="deep">
+<h3 id="file-scripts-brains-dump-transform-mjs"><code>scripts/brains/dump-transform.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The data-safe transformer that retargets a full decrypted brain dump into an isolated scratch schema for a past-brain experiment.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It separates SQL structure from copy-data blocks before applying the shared schema rewrite. DDL and copy headers may change schema references, extension declarations, ownership metadata, and database-level commands as required by the lab. Every byte inside a copy-data region, including text that resembles SQL, passes through untouched. Physical line endings inside those regions are preserved. The function prepends one scratch schema header and delegates structural policy to the same rewrite used by live-copy spawn, preventing two divergent restore policies.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The past-brain spawn command calls it only after Alan has privately decrypted a backup. Verifiers use a synthetic dump whose data deliberately contains rewrite-like text.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Segment input and output the same way, assert data regions are byte-identical, then check that all permitted DDL transformations occurred exactly once. Run the past-spawn dry plan and the regular brain verify afterward to catch policy drift.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../brain-lab.html">the time machine</a>, <a href="../backups.html">encrypted backups</a>, and <a href="scripts-brains.html#file-scripts-brains-sql-gen-mjs">the shared rewrite policy</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-brains-fixtures-ab-questions-json"><code>scripts/brains/fixtures/ab-questions.json</code> <span class="badge">described-not-shown</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The fixed, structured question set used by the brain-lab A/B runner.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Each row has a stable identifier and governed test text. Questions are not reproduced or summarized beyond that shape.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The private A/B procedure and its runner read it; a being must not receive the set as study material.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Validate JSON shape, unique identifiers, and stable ordering privately. Changes require review because they break longitudinal comparability.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../measurement.html">blind evaluation</a>, <a href="../brain-lab.html">A/B runs</a>, and <a href="../honesty.html">withholding</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-brains-list-mjs"><code>scripts/brains/list.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> A metadata-only command that prints active brain registry rows, with an option to include retired history.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It shows names, kinds, schemas, generations, schema versions, status, dates, and stated purpose without opening a database connection.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Operators use it to orient before a lab command; reviewers may use the all-history view during an audit.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Compare output with the committed registry and confirm the default excludes retired rows. No credential should be required.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../brain-lab.html">the fleet</a> and <a href="scripts-brains.html#file-scripts-brains-profiles-mjs">profile resolution</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
+<h3 id="file-scripts-brains-migrate-mjs"><code>scripts/brains/migrate.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The fleet migration command that applies ordered canonical schema migrations to selected profiles while keeping version metadata explicit.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It validates a target version and selection, finds ordered migration files, rewrites SQL for scratch schemas, leaves live SQL in its canonical form, applies scratches before live when operating on all, and updates each successful registry row. The fleet's current version advances only when every active brain reaches the target.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> A brain-lab operator runs it after reviewing migration source and a dry plan. Live migration remains an explicit high-consequence action.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Use dry-run to inspect order and transformed plans, test on scratches first, confirm per-profile version changes, then verify the fleet guard rejects drift. Report partial failure instead of advancing the global version.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../brain-lab.html">schema propagation</a>, <a href="../memory.html">brain structure</a>, and <a href="scripts-brains.html#file-scripts-brains-sql-gen-mjs">the transformer</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="deep">
+<h3 id="file-scripts-brains-profiles-mjs"><code>scripts/brains/profiles.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The single resolution point for selecting a brain profile and joining committed metadata with ignored credential values.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It loads and validates the brain registry, separately loads environment configuration, resolves a requested active profile, and returns only the connection fields named by that row. One guard refuses the live brain in test mode unless a deliberate override is present. Another rejects an unexpected schema version before query time. Helpers save registry changes, stamp every write with substrate generation, and expose the live generation without making downstream code reimplement selection. The registry can be committed because it stores variable names and metadata, never secret values.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Every fleet command and generation-aware consumer should use this module rather than choosing a database ad hoc. Tests inject roots and environment flags to exercise guards safely.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Test missing and retired profiles, live-in-test refusal, deliberate override, schema mismatch, generation stamping, and registry round trips. Inspect errors to ensure they identify metadata problems without revealing credentials.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../brain-lab.html">one fleet</a>, <a href="../segmentation.html">separation</a>, and <a href="../measurement.html">attributable generations</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="deep">
+<h3 id="file-scripts-brains-restore-point-mjs"><code>scripts/brains/restore-point.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The time-machine map writer that ties one date to the brain backup, canonical soul revision, body revision, and live generation metadata. It stores references, not the stores themselves.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Its pure gatherer accepts injected repository and release readers, normalizes dates and short references, parses row-count evidence when available, and returns a JSON record with no secrets. File helpers read the committed JSONL map and upsert by date so repeating a day replaces rather than duplicates it. The live command wires real tools only when explicitly requested; dry-run reads existing map state without making a remote claim. Missing row-count wording becomes null rather than an estimate.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Operators create a line after all coordinated stores have evidence for the day. Future past-brain work reads the map to locate matching versions; it does not grant decryption authority.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Use injected canned outputs to cover present and absent counts, date normalization, append then replace, invalid usage, and a fresh-root dry-run with external tools unavailable. At a real checkpoint, compare references privately before committing the metadata line.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../brain-lab.html">restore points</a>, <a href="../backups.html">backup evidence</a>, and <a href="../soul.html">canonical soul history</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-brains-retire-mjs"><code>scripts/brains/retire.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The guarded command that drops one scratch schema and marks its registry row retired.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It requires a named active scratch, refuses live or already retired profiles, supports a dry plan, then preserves the registry row as history after deletion.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> A lab operator uses it after comparison or cleanup. Runtime code never retires brains autonomously.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Dry-run, test refusals, then confirm the scratch is gone, history remains, and live is untouched.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../brain-lab.html">scratch hygiene</a> and <a href="scripts-brains.html#file-scripts-brains-list-mjs">the registry list</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="deep">
+<h3 id="file-scripts-brains-spawn-mjs"><code>scripts/brains/spawn.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The main command for opening a fresh scratch brain from either the live brain read-only or a privately decrypted historical dump.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Live-copy mode rewrites canonical DDL, checks required database capability, creates an isolated schema, copies tables in dependency order, compares source and destination counts, and registers the scratch only after parity. Past-dump mode detects supported archive form, converts if needed without a connection, transforms only SQL structure and copy headers, applies the result in the lab, reports scratch counts, and registers its source reference. Both modes refuse active-name collisions and expose dry plans. A deliberate cleanup option handles unregistered residue from a failed earlier spawn.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Brain-lab operators run it under the relevant human gate. Live is a read-only source in copy mode; historical decryption remains Alan-present and outside automation.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Inspect dry output, run pure transform verifies, spawn only into the lab, confirm table counts and registry metadata, then compare or retire the scratch. Test residue refusal and never infer live parity for a dump whose own bytes are the source of truth.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../brain-lab.html">spawning and past brains</a>, <a href="scripts-brains.html#file-scripts-brains-dump-transform-mjs">dump safety</a>, and <a href="scripts-brains.html#file-scripts-brains-profiles-mjs">profile guards</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="deep">
+<h3 id="file-scripts-brains-sql-gen-mjs"><code>scripts/brains/sql-gen.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The pure SQL-planning library for brain-fleet schema cloning, migration rewriting, copy order, and count verification. It makes no connections.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It validates scratch names, quotes identifiers, strips project-level extension statements, protects extension-owned type and operator families, rewrites canonical schema references, repins function search paths, and can remove database or ownership metadata when transforming full dumps. It parses table names, derives a dependency-aware copy order from foreign keys, emits paired copy commands, and builds count queries. The rewrite is deliberately regular-expression based over the expected database-dump format, not a general SQL parser; embedded unusual SQL requires review.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Spawn, migration, difference, and dump-transform code use these helpers before the database side-effect layer. Verifiers run them on synthetic DDL with policy, trigger, function, extension, and dependency cases.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Assert valid and invalid names, exactly one target schema, extension preservation in its owning schema, policy and trigger retention, search-path changes, copy ordering, and count SQL. Keep the fixture representative whenever canonical DDL gains a new construct.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../brain-lab.html">schema cloning</a>, <a href="scripts-brains.html#file-scripts-brains-db-mjs">database execution</a>, and <a href="scripts-brains.html#file-scripts-brains-dump-transform-mjs">full-dump segmentation</a>.</div>
+</article>
 </main>
 <!-- EW-FOOTER-START -->
 <section class="continue" aria-labelledby="atlas-scripts-brains-continue"><h2 id="atlas-scripts-brains-continue">Continue</h2><div class="continue-grid"><article class="continue-card"><p class="continue-label">Reproduce track</p><a href="../atlas/scripts-testbed.html">Next: Atlas: fixtures + test mode <span aria-hidden="true">&rarr;</span></a></article></div></section>

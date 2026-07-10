@@ -74,6 +74,7 @@
 <ul>
 <li><a href="#glossary-pm">Possibility Management language</a></li>
 <li><a href="#glossary-systems">Systems language</a></li>
+<li><a href="#glossary-repository">Repository basics</a></li>
 <li><a href="#glossary-native">Edgeweaver's own terms</a></li>
 </ul>
 </details>
@@ -81,7 +82,7 @@
 <main id="glossary-main">
 <h1 id="glossary-top">Glossary</h1>
 <div class="tldr"><span class="label">TLDR</span>
-<p>Every term of art this site leans on, defined twice in one paragraph: plainly first, for a circle member with no technical background, then precisely, for specialists. Three clusters, alphabetical within each: Possibility Management language, systems language, and Edgeweaver's own terms. This is the full glossary as of the 2026-07-09 snapshot: 97 terms, grown that same day from the thirty-term seed.</p>
+<p>Every term of art this site leans on, defined plainly first and precisely second. Four clusters cover Possibility Management, systems, repository basics, and Edgeweaver's own language. This glossary has 107 terms as of the 2026-07-09 snapshot, including the vocabulary a person needs before using a repository for the first time.</p>
 </div>
 
 <h2 id="glossary-pm">Possibility Management language</h2>
@@ -230,6 +231,39 @@
 
 <h3 id="term-wal">Write-ahead log (WAL)</h3>
 <p>A safety notebook where every write lands first, so a crash mid-work loses nothing. Twice here: Postgres's WAL underlies the brain's point-in-time recovery; an append-first local buffer (<code>state/wal/</code>) holds episodes through OB1 outages, replayed with dedupe.</p>
+
+<h2 id="glossary-repository">Repository basics</h2>
+<p>The minimum vocabulary for navigating, changing, and verifying this repository. The <a href="guide.html#guide-repository-101">worked Repository 101 guide</a> shows how these pieces fit together.</p>
+
+<h3 id="term-branch-fork">Branch vs fork</h3>
+<p>A branch is a movable line of commits inside one repository; a fork is a separate repository copied from another, usually under different ownership. Edgeweaver uses ordinary branches for development and a fork plus proposal branches for being-authored soul changes.</p>
+
+<h3 id="term-clone">Clone</h3>
+<p>A local copy of a repository and its recorded history. Cloning restores tracked files, not ignored secrets, machine state, account access, or human authority.</p>
+
+<h3 id="term-commit">Commit</h3>
+<p>A named snapshot of selected tracked changes with an author and message. It records what changed; verification and review establish whether the change is sound.</p>
+
+<h3 id="term-environment-variable">Environment variable</h3>
+<p>A named configuration value supplied by the operating environment. Documentation can safely name variables, while credential values remain in ignored local state or approved external custody.</p>
+
+<h3 id="term-json-markdown">JSON vs Markdown</h3>
+<p>JSON is strict machine-readable data whose punctuation matters. Markdown is readable plain text with lightweight headings, links, lists, and code marks. This repo uses JSON for program inputs and Markdown for human authority and procedure.</p>
+
+<h3 id="term-path-root">Path, folder, and repository root</h3>
+<p>The root is the repository's top folder. A folder groups files below it, and a path is the slash-separated address from root to one item, such as <code>scripts/waking/orient.mjs</code>.</p>
+
+<h3 id="term-repository">Repository</h3>
+<p>A project folder whose file history is recorded by version control. A repository can hold authority, procedures, code, evidence, and generated outputs; those roles are not interchangeable merely because they share one tree.</p>
+
+<h3 id="term-source-of-truth">Source of truth</h3>
+<p>The one authoritative location a fact or configuration is meant to come from. Generated copies and explanations must point back to it and never quietly become competing authorities.</p>
+
+<h3 id="term-terminal-cli">Terminal / CLI</h3>
+<p>A terminal is the text window where commands run. A command-line interface, or CLI, is a program controlled through those commands. Repo instructions assume commands run from the root unless stated otherwise.</p>
+
+<h3 id="term-tracked-ignored">Tracked, untracked, and ignored</h3>
+<p>Tracked files belong to recorded history. Untracked files exist locally but have not been added. Ignored files match <code>.gitignore</code>, so ordinary Git work leaves them out; Edgeweaver uses ignored locations for secrets and operational state.</p>
 
 <h2 id="glossary-native">Edgeweaver's own terms</h2>
 <p>Words this project coined or repurposed; the rest of the site leans on them hardest.</p>
@@ -394,6 +428,7 @@
 <aside class="onpage-rail" aria-label="On this page"><nav class="page-toc" aria-label="On this page"><h2>On this page</h2><ul>
 <li><a href="#glossary-pm">Possibility Management language</a></li>
 <li><a href="#glossary-systems">Systems language</a></li>
+<li><a href="#glossary-repository">Repository basics</a></li>
 <li><a href="#glossary-native">Edgeweaver's own terms</a></li>
 </ul></nav></aside>
 </div>

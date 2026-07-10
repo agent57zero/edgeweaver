@@ -104,43 +104,75 @@
 <main id="atlas-scripts-ops-main">
 <h1 id="atlas-scripts-ops-top">Atlas: operations scripts</h1>
 <div class="tldr"><span class="label">TLDR</span>
-<p>Stub. Per-file explainer entries for this part of the repo. Authored at M4. Snapshot 2026-07-09.</p>
+<p>Operations code keeps dark machinery bounded: budgets can suppress optional work, writes can survive a brain outage, channels recognize only pinned authority, flags start disabled, and recovery and security checks expose failure. These scripts explain mechanism without publishing schedules, network coordinates, account topology, custody, or secret values. Built and verified does not mean armed or live.</p>
 </div>
 <h2 id="atlas-scripts-ops-about">What this page covers</h2>
-<p>To be written at M4. Every file entry gets one anchor: <code>file-</code> plus the path with separators as hyphens.</p>
+<p>The entries cover resource limits, degraded memory, configuration initialization, channel scoping, security review, and disaster-recovery rehearsal. The shared pattern is fail closed: missing authority, credentials, or explicit arming must not turn into permissive behavior. Some checks are deliberately best-effort until the real host and accounts exist, and the repository-only recovery drill is only one leg of the full human-governed recovery runbook.</p>
 <h2 id="atlas-scripts-ops-entries">File entries</h2>
-<div class="atlas-entry">
-<h3 id="file-scripts-budget-budget-mjs"><code>scripts/budget/budget.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-dr-dr-drill-mjs"><code>scripts/dr/dr-drill.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-init-flags-mjs"><code>scripts/init-flags.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-seal-secrets-cmd"><code>scripts/seal-secrets.cmd</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-security-security-audit-mjs"><code>scripts/security/security-audit.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-telegram-channel-policy-mjs"><code>scripts/telegram/channel-policy.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-telegram-init-interlocutors-mjs"><code>scripts/telegram/init-interlocutors.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-wal-wal-mjs"><code>scripts/wal/wal.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
+<article class="atlas-entry" data-depth="standard">
+<h3 id="file-scripts-budget-budget-mjs"><code>scripts/budget/budget.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The pure resource-meter policy for model spend, optional loops, proactive attention, and voice usage.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It records estimated spend and voice minutes, compares spend with a human-set monthly ceiling, emits normal, warning, or degraded states, and suppresses optional work only at the hard limit. An unset ceiling stays visibly unset because gate G6 is pending.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Waking, voice, and scheduled loop callers consult it before optional actions. Operators set policy outside this file; tests use invented numbers.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Exercise unset, below-warning, warning, and cap states, plus accumulated voice minutes. Confirm the code never invents a ceiling and mandatory safety work remains distinguishable from optional work.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../operations.html">budgets and attention</a>, <a href="../body.html">proactive senses</a>, and <a href="../voice.html">voice cost</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
+<h3 id="file-scripts-dr-dr-drill-mjs"><code>scripts/dr/dr-drill.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> A repository-machinery disaster-recovery rehearsal that clones the current project into a disposable workspace and runs its complete verify suite.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It creates scratch space, performs a local clone, guards against recursive self-invocation, measures recovery time, reports whether the suite reached all-pass, and removes the scratch tree afterward. It contains no secret, brain, or soul restoration.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> An operator runs it as one evidence leg of the broader recovery runbook. The verify suite may invoke it with a recursion guard.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Run from a clean committed state, confirm the clone verifies independently and the scratch location is removed. Treat success as proof of buildable machinery only, not full continuity recovery.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../backups.html">backups and recovery</a>, <a href="../operations.html">failure drills</a>, and <a href="scripts-verify.html#file-scripts-verify-verify-dr-mjs">its verifier</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
+<h3 id="file-scripts-init-flags-mjs"><code>scripts/init-flags.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The non-destructive initializer for live operational flags from the committed disabled defaults.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It creates the ignored state document when absent, adds newly introduced component, task, and channel keys as disabled, preserves every existing entry verbatim, and refuses to overwrite malformed state. It never enables a component.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Operators run it after clone, schema change, or recovery. Other code reads the resulting state only after its own gate checks.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Start with absent, partial, armed, and malformed fixtures. Confirm missing keys are added, existing values survive, every default is disabled, and malformed state fails without replacement.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../dark-build.html">dark-by-default machinery</a>, <a href="../operations.html">arming</a>, and <a href="../governance.html">gates</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-seal-secrets-cmd"><code>scripts/seal-secrets.cmd</code> <span class="badge">described-not-shown</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> An Alan-present interactive helper for sealing the disaster-recovery secret bundle.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It guides human key handling, encrypts a prepared bundle, verifies decryption before removing plaintext staging, and places sealed copies under governed custody. Coordinates and topology are withheld.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The human custodian runs it during recovery; runtime agents do not.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Complete the private seal-and-open rehearsal and confirm no plaintext residue. Never paste keys, locations, or account details into evidence.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../backups.html">secret recovery</a>, <a href="../governance.html">human custody</a>, and <a href="../segmentation.html">credential walls</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
+<h3 id="file-scripts-security-security-audit-mjs"><code>scripts/security/security-audit.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The quarterly security-floor checklist runner for repository secrets, runtime extensions, network exposure, pinned senders, and credential separation.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It scans tracked text for key-shaped material, checks local channel state when present, and tests that the runtime credential cannot reach the private gate authority. The extension and listening-service legs are best-effort declarations in the dark build and require real host review at arming.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Operators run it during the security cadence and before arming. The dedicated verifier asserts that each named leg reports a result.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Inspect each result independently rather than trusting only the aggregate. Re-run host, account, and network checks in the real environment, and report failures without printing sensitive values or coordinates.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../operations.html">security cadence</a>, <a href="../segmentation.html">credential separation</a>, and <a href="../governance.html">the gate boundary</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
+<h3 id="file-scripts-telegram-channel-policy-mjs"><code>scripts/telegram/channel-policy.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The pure sender-classification wall for the planned parent messaging channel.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It recognizes Alan only through a pinned entry, assigns the governed audience, permits lesson confirmation only for that pinned confirmer, and sends every other known or unknown sender to the same brief deferral path as untrusted content. Tier-changing decisions still require a separate out-of-band check by the caller.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Channel adapters call it for every inbound sender after pairing. Verifiers use invented identifiers; the live channel remains dark.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Test pinned confirmer, known non-parent, unknown sender, missing state, and lesson-confirm paths. Confirm no message content can promote its own sender authority.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../body.html">the gated body</a>, <a href="../segmentation.html">audience scopes</a>, and <a href="../governance.html">confirmation authority</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-telegram-init-interlocutors-mjs"><code>scripts/telegram/init-interlocutors.mjs</code> <span class="badge">described-not-shown</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The ignored-state initializer for the planned messaging interlocutor map.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It reads only the allowed environment-variable name, writes a parent entry when privately configured, otherwise writes a clearly marked pending shape, and keeps unknown senders public and untrusted.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> An operator runs it during pairing; policy reads it. It never enables the channel.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Parse the generated shape, confirm the untrusted default and confirmer flag, and keep all real identifiers out of logs and documentation.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../body.html">pairing</a>, <a href="../segmentation.html">audience</a>, and <a href="../operations.html">dark configuration</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="deep">
+<h3 id="file-scripts-wal-wal-mjs"><code>scripts/wal/wal.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The append-first write-ahead buffer for degraded brain availability. It preserves intended writes while telling callers that recall is provisional rather than guessing.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It fingerprints content, appends timestamped kind and payload records to ignored daily JSONL, replays files through an injected sink, suppresses repeated fingerprints seen during that replay, and moves drained files into a replayed area. A health helper converts failed reachability into an explicit degraded result. Brain-side content fingerprinting provides the complementary cross-run deduplication layer. The module is constructed and dark-verified, but production callers are not yet all armed through it.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Write paths call it before a remote brain write once the body arms. Operators inspect backlog and replay status; verifiers use an isolated state directory.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Simulate outage, duplicate appends, successful replay, failed and healthy pings, and cleanup. Confirm ordering, counts, archived drained files, identical fingerprints for identical content, and no claim that unavailable recall succeeded.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../memory.html">memory degradation</a>, <a href="../operations.html">outage behavior</a>, and <a href="scripts-verify.html#file-scripts-verify-verify-wal-mjs">the WAL verifier</a>.</div>
+</article>
 </main>
 <!-- EW-FOOTER-START -->
 <section class="continue" aria-labelledby="atlas-scripts-ops-continue"><h2 id="atlas-scripts-ops-continue">Continue</h2><div class="continue-grid"><article class="continue-card"><p class="continue-label">Reproduce track</p><a href="../atlas/scripts-brains.html">Next: Atlas: brain lab scripts <span aria-hidden="true">&rarr;</span></a></article></div></section>

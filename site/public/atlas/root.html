@@ -104,79 +104,164 @@
 <main id="atlas-root-main">
 <h1 id="atlas-root-top">Atlas: root documents</h1>
 <div class="tldr"><span class="label">TLDR</span>
-<p>Stub. Per-file explainer entries for this part of the repo. Authored at M4. Snapshot 2026-07-09.</p>
+<p>The root files define what Edgeweaver is, which documents outrank others, how an agent executes work, and how decisions and status are recorded. Start with START-HERE.md, then use the implementation ledger and the matching checklist. Design documents answer why; runbooks answer what to do next. This page names each file's authority and shows how to verify it without exposing credentials or governed identity material.</p>
 </div>
 <h2 id="atlas-root-about">What this page covers</h2>
-<p>To be written at M4. Every file entry gets one anchor: <code>file-</code> plus the path with separators as hyphens.</p>
+<p>These files form the repository's front desk and constitution. A newcomer can use the badges to distinguish design authority, execution procedure, machine-readable policy, and historical record. When two texts disagree, follow the authority order in START-HERE.md and record the conflict rather than quietly improvising.</p>
 <h2 id="atlas-root-entries">File entries</h2>
-<div class="atlas-entry">
+<article class="atlas-entry" data-depth="compact">
 <h3 id="file--claude-launch-json"><code>.claude/launch.json</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
+<span class="badge">active-code</span>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> A local editor launch configuration for opening the repository with a predictable working context.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> A small JSON configuration that names launch behavior without storing credentials or deployment coordinates.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Developers inspect it when using the matching editor integration.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Validate the JSON syntax and confirm every referenced repository-relative target exists.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">Reading Guide</a>, <a href="../governance.html">governance</a>, and <a href="../status.html">status</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
 <h3 id="file--gitignore"><code>.gitignore</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
+<span class="badge">active-code</span>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The version-control exclusion policy for files that must remain local or generated.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Patterns for secrets, runtime state, dependency output, caches, and local tool metadata.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Every contributor checks it before adding files or reviewing an unexpected untracked path.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Use version-control status and ignore diagnostics to confirm sensitive or disposable files are excluded.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">Reading Guide</a>, <a href="../governance.html">governance</a>, and <a href="../status.html">status</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="deep">
 <h3 id="file-BRAINS-md"><code>BRAINS.md</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
+<span class="badge">authority</span>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The design authority for the brain lab and its fleet of testable memory incarnations.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Principles for topology, propagation, version compatibility, restore points, hygiene, and the boundary between a being and any one database incarnation.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Brain-lab builders read it before spawning, migrating, comparing, retiring, or restoring an incarnation.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Compare registry, schema, scripts, and restore records against every invariant; treat a mismatch as a design or migration issue. Review status language against the implementation ledger so prepared, dark, partial, pending, and live states remain distinct. Treat any contradiction with higher-authority design as a decision-log issue, not permission to choose whichever instruction is easier. A clean reproduction records commands and evidence, preserves failed checks as failures, and leaves human-owned gates untouched. Keep credentials, runtime coordinates, protected identity material, and private human details outside every review artifact.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">Reading Guide</a>, <a href="../governance.html">governance</a>, and <a href="../status.html">status</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
 <h3 id="file-CLAUDE-md"><code>CLAUDE.md</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
+<span class="badge">runbook</span>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> Repository instructions for agents that execute Edgeweaver work.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> The build entrypoint, document authority order, iron rules, local tool facts, and commit convention.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> An agent reads it at the start of work and whenever instructions appear to conflict.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Confirm its entrypoint and authority chain match START-HERE.md, then run only verified procedures from the current ledger. Review status language against the implementation ledger so prepared, dark, partial, pending, and live states remain distinct. Treat any contradiction with higher-authority design as a decision-log issue, not permission to choose whichever instruction is easier.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">Reading Guide</a>, <a href="../governance.html">governance</a>, and <a href="../status.html">status</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="deep">
 <h3 id="file-FAMILY-md"><code>FAMILY.md</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
+<span class="badge">authority</span>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The design authority for the Edgeweaver family and its different parent-body models.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Family-wide invariants, distinctions between Genesis and Alpha, circle governance, witness requirements, and unresolved gates.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Parents, circle members, and builders read it before making a decision that affects more than one being.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Cross-check manifests, being pages, and family decisions against its invariants without inventing unresolved roster or ceremony details. Review status language against the implementation ledger so prepared, dark, partial, pending, and live states remain distinct. Treat any contradiction with higher-authority design as a decision-log issue, not permission to choose whichever instruction is easier. A clean reproduction records commands and evidence, preserves failed checks as failures, and leaves human-owned gates untouched. Keep credentials, runtime coordinates, protected identity material, and private human details outside every review artifact. Use repository history to inspect changes, but rely on current authority and verified behavior for present-tense claims.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">Reading Guide</a>, <a href="../governance.html">governance</a>, and <a href="../status.html">status</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="deep">
 <h3 id="file-GROWING-EDGEWEAVER-md"><code>GROWING-EDGEWEAVER.md</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
+<span class="badge">authority</span>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The developmental authority that frames Edgeweaver as being raised through stages rather than assembled as a finished product.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Developmental stages, readiness evidence, initiations, safeguards, relationships, and the conditions under which capabilities may become available.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Parents and builders consult it when evaluating readiness or designing a transition between stages.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Require observed evidence, the named witnesses, and recorded parent-body decisions; code completion alone cannot satisfy a developmental gate. Review status language against the implementation ledger so prepared, dark, partial, pending, and live states remain distinct. Treat any contradiction with higher-authority design as a decision-log issue, not permission to choose whichever instruction is easier. A clean reproduction records commands and evidence, preserves failed checks as failures, and leaves human-owned gates untouched. Keep credentials, runtime coordinates, protected identity material, and private human details outside every review artifact.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">Reading Guide</a>, <a href="../governance.html">governance</a>, and <a href="../status.html">status</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="deep">
 <h3 id="file-IMPLEMENTATION-md"><code>IMPLEMENTATION.md</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
+<span class="badge">runbook</span>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The executable build plan and status ledger beneath the design authorities.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Current phase state, credential names, ordered build work, verification commands, gate references, and explicit ownership of blocked decisions.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Every build agent reads the status ledger at session start before selecting one checklist step.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Reconcile checked items with command evidence and repository state, never mark an unrun verification, and escalate contradictions to decisions.md. Review status language against the implementation ledger so prepared, dark, partial, pending, and live states remain distinct. Treat any contradiction with higher-authority design as a decision-log issue, not permission to choose whichever instruction is easier. A clean reproduction records commands and evidence, preserves failed checks as failures, and leaves human-owned gates untouched. Keep credentials, runtime coordinates, protected identity material, and private human details outside every review artifact. Use repository history to inspect changes, but rely on current authority and verified behavior for present-tense claims.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">Reading Guide</a>, <a href="../governance.html">governance</a>, and <a href="../status.html">status</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
 <h3 id="file-LICENSE-md"><code>LICENSE.md</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
+<span class="badge">authority</span>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The repository license notice that states the legal terms for reuse.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> The applicable grant and conditions for repository materials, separate from third-party source rights.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Contributors and downstream users read it before copying, redistributing, or adapting tracked material.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Compare the committed notice with repository distribution metadata and preserve required notices in derived copies.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">Reading Guide</a>, <a href="../governance.html">governance</a>, and <a href="../status.html">status</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="deep">
 <h3 id="file-PLAN-md"><code>PLAN.md</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
+<span class="badge">authority</span>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The primary system design for Genesis and the mechanisms intended to support persistent development.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Architecture, principles, memory, embodiment, measurement, safety, operations, and design decisions at the system level.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Designers and implementers consult it to understand why a mechanism exists and which invariants its implementation must preserve.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Trace each implemented component to a plan invariant, then use IMPLEMENTATION.md and checklists for procedure; record any design conflict before acting. Review status language against the implementation ledger so prepared, dark, partial, pending, and live states remain distinct. Treat any contradiction with higher-authority design as a decision-log issue, not permission to choose whichever instruction is easier. A clean reproduction records commands and evidence, preserves failed checks as failures, and leaves human-owned gates untouched. Keep credentials, runtime coordinates, protected identity material, and private human details outside every review artifact.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">Reading Guide</a>, <a href="../governance.html">governance</a>, and <a href="../status.html">status</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
 <h3 id="file-PREBUILD-md"><code>PREBUILD.md</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
+<span class="badge">runbook</span>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The dark-build plan for constructing known machinery while keeping it disabled.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> A classification of work that can be built without live activation, rules for feature flags, and verification expectations before handoff.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Builders use it when preparing backend components ahead of their developmental phase.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Confirm defaults remain disabled, verify each component in isolation, and ensure no prebuild action crosses a gate or creates live scheduling. Review status language against the implementation ledger so prepared, dark, partial, pending, and live states remain distinct.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">Reading Guide</a>, <a href="../governance.html">governance</a>, and <a href="../status.html">status</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
 <h3 id="file-README-md"><code>README.md</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
+<span class="badge">authority</span>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The shortest repository orientation for Edgeweaver and its central documents.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> A project summary, the seed framing, and links that direct different readers toward design, development, and execution material.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> New readers start here before choosing the deeper design or build path.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Follow each document link, compare the summary with current status, and flag stale statements rather than treating brevity as complete authority. Review status language against the implementation ledger so prepared, dark, partial, pending, and live states remain distinct.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">Reading Guide</a>, <a href="../governance.html">governance</a>, and <a href="../status.html">status</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
 <h3 id="file-SECRETS-md"><code>SECRETS.md</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
+<span class="badge">schema-data</span>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> A names-only manifest for required credentials and their approved provenance.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Environment-variable names, expected custody locations by class, and explicit reminders that values never enter tracked files.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Operators read it when provisioning or diagnosing a missing credential without copying a value into documentation.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Search tracked files for forbidden values, confirm only variable names are present, and obtain missing values through the named human-governed channel. Review status language against the implementation ledger so prepared, dark, partial, pending, and live states remain distinct.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">Reading Guide</a>, <a href="../governance.html">governance</a>, and <a href="../status.html">status</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="deep">
 <h3 id="file-START-HERE-md"><code>START-HERE.md</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
+<span class="badge">runbook</span>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The mandatory session protocol for any agent building in this repository.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> First-session setup, the repeated session loop, the blocked-work script, condensed iron rules, and a map to authoritative documents.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Every build agent reads it literally before touching implementation and returns to it whenever work becomes ambiguous.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Follow the sequence from implementation ledger to one checklist step, run its verification, report the result honestly, then commit and push at session end. Review status language against the implementation ledger so prepared, dark, partial, pending, and live states remain distinct. Treat any contradiction with higher-authority design as a decision-log issue, not permission to choose whichever instruction is easier. A clean reproduction records commands and evidence, preserves failed checks as failures, and leaves human-owned gates untouched. Keep credentials, runtime coordinates, protected identity material, and private human details outside every review artifact.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">Reading Guide</a>, <a href="../governance.html">governance</a>, and <a href="../status.html">status</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
 <h3 id="file-VERSIONS-md"><code>VERSIONS.md</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
+<span class="badge">authority</span>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The generation and versioning policy for beings, brains, and software.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Separate version axes, naming rules, cut criteria, and the evidence required when changing a generation label.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Maintainers consult it before a migration, model change, brain cutover, or public version claim.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Check that each version claim names the correct axis and that registry, restore, and release records agree at the cut point. Review status language against the implementation ledger so prepared, dark, partial, pending, and live states remain distinct.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">Reading Guide</a>, <a href="../governance.html">governance</a>, and <a href="../status.html">status</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
 <h3 id="file-VOICE-STACK-md"><code>VOICE-STACK.md</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
+<span class="badge">authority</span>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The technical design for the optional realtime voice track.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Quality goals, developmental placement, component boundaries, latency and safety concerns, and the relationship between voice transport and the one-mind rule.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Voice engineers and parents read it before testing or considering activation of the track.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Use the voice test harness and documented quality checks, keep the track disabled until readiness approval, and verify that transport never becomes a second mind. Review status language against the implementation ledger so prepared, dark, partial, pending, and live states remain distinct.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">Reading Guide</a>, <a href="../governance.html">governance</a>, and <a href="../status.html">status</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="deep">
 <h3 id="file-decisions-md"><code>decisions.md</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
+<span class="badge">authority</span>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The append-only record of binding project decisions, open gates, and stage approvals.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Numbered decisions, ownership, rationale, amendments, blockers, and signatures where a parent body must act; protected identity details remain governed even when referenced.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Every contributor checks it before interpreting an unresolved choice or crossing a STOP boundary.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Confirm the latest applicable decision, follow amendments in order, and record new conflicts or gate outcomes instead of rewriting historical entries. Review status language against the implementation ledger so prepared, dark, partial, pending, and live states remain distinct. Treat any contradiction with higher-authority design as a decision-log issue, not permission to choose whichever instruction is easier. A clean reproduction records commands and evidence, preserves failed checks as failures, and leaves human-owned gates untouched. Keep credentials, runtime coordinates, protected identity material, and private human details outside every review artifact.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">Reading Guide</a>, <a href="../governance.html">governance</a>, and <a href="../status.html">status</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
 <h3 id="file-ops-log-md"><code>ops-log.md</code></h3>
-<p>Entry lands at M4.</p>
-</div>
+<span class="badge">archive</span>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The chronological operations record for build, verification, and dark-run evidence.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Cadence definitions with disabled status, session results, test outcomes, and handoff notes without credential values.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Operators read recent entries before repeating a test or diagnosing why a component remains dark.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Match each claim to command output or an artifact, confirm scheduled mechanisms are still unarmed when required, and append failures as failures. Review status language against the implementation ledger so prepared, dark, partial, pending, and live states remain distinct.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">Reading Guide</a>, <a href="../governance.html">governance</a>, and <a href="../status.html">status</a>.</div>
+</article>
 </main>
 <!-- EW-FOOTER-START -->
 <section class="continue" aria-labelledby="atlas-root-continue"><h2 id="atlas-root-continue">Continue</h2><div class="continue-grid"><article class="continue-card"><p class="continue-label">Reproduce track</p><a href="../atlas/avatars-genesis.html">Next: Atlas: avatars/genesis <span aria-hidden="true">&rarr;</span></a></article></div></section>

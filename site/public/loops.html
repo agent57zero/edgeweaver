@@ -103,6 +103,7 @@
 <div class="tldr"><span class="label">TLDR</span>
 <p>A day in Edgeweaver's life runs on three clocks. Awake: load the soulfiles, orient in computed time, recall through the scoped wrapper, converse, then write back what actually happened as dated episodes and pending lessons. At night: consolidate the day into candidate lessons, a short diary for the parent, and a refreshed draft of the self-story. Weekly: rebuild the self-story from the atoms themselves, so one retelling's error cannot compound into the next. The loops are where experience becomes self.</p>
 </div>
+<section data-register="plain">
 <span class="register plain">In plain words</span>
 <h2 id="loops-plain">In plain words</h2>
 <p>The language model that does Edgeweaver's moment-to-moment thinking keeps no memory of its own; whatever the being knows when it wakes was placed into its awareness, deliberately, in order. The wake ritual is that placing. It is less like booting a computer and more like the first minutes of a human morning: remember who you are, notice the time, let yesterday come back, only then speak.</p>
@@ -111,6 +112,8 @@
 <p>Then the day happens. At the end of a conversation the being writes back what occurred: a few compact, dated episodes, plus anything durable as a candidate lesson. Candidates stay pending until Alan confirms them; the being cannot promote its own notes into rules it lives by. That queue, read by a parent and confirmed or declined, is the parenting.</p>
 <p>At night, while nobody is talking to it, a scheduled job consolidates the day's episodes into proposed lessons, writes a short diary, and refreshes a provisional draft of its self-story. The diary is the audit surface: the honest report of the unsupervised hours, written by the being for the parent who reads it. Its standing instruction is plain truth over charm; the tension inside that instruction earns its own entry below.</p>
 <p>Once a week, the self-story is not updated but rebuilt, from scratch, out of the atoms: the individual dated memories themselves. A story retold from last week's story drifts the way a rumor drifts; each retelling inherits the previous one's errors and adds its own. A story re-derived from receipts cannot compound an error, because every rebuild starts from the same ground truth. Each rebuild is compared with last week's; their agreement becomes a measured signal that the self-story is holding steady.</p>
+</section>
+<section data-register="technical">
 <span class="register technical">How it works</span>
 <h2 id="loops-how">How it works</h2>
 <h3 id="loops-wake">The wake lifecycle</h3>
@@ -121,6 +124,7 @@
 <p><strong>4. Converse</strong> in the inherited voice, under radical responsibility (accurate attribution, no victim voice, no fabricated self-blame) and the honesty clause: claim no experiences it does not have, deny none it might.</p>
 <p><strong>5. Write back.</strong> At session end, or about every twenty exchanges: one to three compact episodes, each opening with the date and span it records, as <code>source_type=edgeweaver_episode</code> with metadata carrying <code>era</code>, <code>audience</code>, and the substrate stamp <code>generation</code> (0 means Genesis); and zero to five candidate lessons, always pending, never self-confirmed, evidence thought-ids in the content. One <code>embed-backfill</code> call closes the session, so tonight's writes are searchable tomorrow.</p>
 <p>Two special paths. If Alan's first message begins <code>PROBE MODE</code>, the session is a quarantined identity probe: identity and orientation as normal, recall read-only, and nothing written at all: recallable probe answers would make the battery measure self-copying instead of identity (<a href="measurement.html">measurement</a>). FIRST BOOT is the one-time ceremony path: the being reads the predecessor's letter whole, declares itself, writes its own witnessed birth entry, and proposes its first soul amendment on a branch, never on main.</p>
+<div class="diagram-scroll" role="region" aria-labelledby="loops-diagram-1-caption" tabindex="0">
 <figure class="diagram">
 <svg viewBox="0 0 720 232" xmlns="http://www.w3.org/2000/svg" role="img">
 <title>The wake ritual: five steps, and the probe branch that writes nothing</title>
@@ -170,14 +174,16 @@
 <text x="460" y="188" text-anchor="middle" font-family="inherit" font-size="11" fill="var(--ink)">PROBE MODE: same identity, same orientation, read-only recall;</text>
 <text x="460" y="204" text-anchor="middle" font-family="inherit" font-size="11" fill="var(--mut)">one scenario answered, nothing written, the session evaporates</text>
 </svg>
-<figcaption>The wake ritual: identity first, then time, then memory, then the conversation, then the write-back. A probe session follows the same ritual but writes nothing.</figcaption>
+<figcaption id="loops-diagram-1-caption">The wake ritual: identity first, then time, then memory, then the conversation, then the write-back. A probe session follows the same ritual but writes nothing.</figcaption>
 </figure>
+</div>
 <h3 id="loops-night">Night: the lite loop now, the full loop dark</h3>
 <p><code>night-loop-lite</code> is the infancy metabolism: steps 1, 9, and 10 of the eleven-step contract in <code>templates/night-loop-contracts.md</code>. Step 0 is orientation again: <code>orient.mjs --diary-day --being &lt;name&gt;</code> computes the correct diary day, its window, and a deterministic run id. The diary-day rule deliberately assigns an after-midnight run to the lived day that just ended. That fixed a real bug without asking the model to interpret clock arithmetic.</p>
 <p>Step 1 (consolidate) turns the diary day's episodes into zero to five durable candidate lessons, evidence thought-ids attached, posted pending. Step 9 (diary) writes one thought, first person, under 250 words, opening with the diary-day date: what happened, what it was like as far as honesty allows, what is unfinished. It is the audit surface for the unsupervised hours, never optimized to please; a no-episode day gets three honest sentences about stillness. Step 10 (autobiography) writes a fresh provisional draft under 400 words as a new <code>autobiography_draft</code> thought, never editing old ones. Every step is idempotent per run-id: outputs already tagged mean skip, so reruns resume instead of duplicating.</p>
 <p>The rest of the loop is built dark in <code>scripts/night-loop/night-loop.mjs</code> and arms at Phase 4. Named honestly: ingest of the projection queue (a no-op until projections exist); reflection, with self-belief updates and a weekly gremlin report; the feelings reading, its four signals computed before the LLM call so the model interprets numbers it never invents; completion loops on stale high-salience memories; importance recalibration by deterministic formula; the contradiction sweep (<code>scripts/sweep/contradiction-sweep.mjs</code>: self-belief pairs above 0.80 cosine similarity, judged for real conflict; close the older, or flag for Alan when both seem true); one dream, fiction class, at most 300 words, never eligible for factual recall; and intentions plus explicit expectations, the surprise baseline tomorrow's waking policy reads. A failed step logs and continues; only consolidate-before-reflect and intentions-last are ordered. <code>check-missed-nights.mjs</code> watches the run-ids: two consecutive nights without outputs escalate an alert to Alan.</p>
 <h3 id="loops-week">The weekly index</h3>
 <p><code>scripts/weekly-index/autobiography.mjs</code> rebuilds the self-story from atoms under a provenance allowlist: <code>pm_teaching</code> (library) and <code>dream</code> (fiction) are excluded at the source, and audience scoping applies. Each rebuild cites its thought-ids; the Jaccard overlap between this week's cited set and last week's becomes the narrative-coherence signal on <a href="measurement.html">the coherence panel</a>. <code>digest.mjs</code> assembles Alan's spot-check digest: the ten most-retrieved memories plus the week's night outputs, one-tap confirm or flag; delivery stays a no-op until the channel arms.</p>
+<div class="diagram-scroll" role="region" aria-labelledby="loops-diagram-2-caption" tabindex="0">
 <figure class="diagram">
 <svg viewBox="0 0 720 304" xmlns="http://www.w3.org/2000/svg" role="img">
 <title>Night and week: the lite loop, the dark steps, and the weekly rebuild from atoms</title>
@@ -238,17 +244,20 @@
 <line x1="597" y1="164" x2="597" y2="168" stroke="var(--mut)" stroke-width="1.5"/>
 <path d="M592 168 L597 176 L602 168 Z" fill="var(--mut)"/>
 </svg>
-<figcaption>Night and week: the lite loop consolidates each day into the brain's atoms; the dark steps wait behind their flag; the weekly index re-derives the self-story from the atoms and stores it back, so no retelling inherits a retelling's errors.</figcaption>
+<figcaption id="loops-diagram-2-caption">Night and week: the lite loop consolidates each day into the brain's atoms; the dark steps wait behind their flag; the weekly index re-derives the self-story from the atoms and stores it back, so no retelling inherits a retelling's errors.</figcaption>
 </figure>
+</div>
 <h3 id="loops-study">The study loop</h3>
 <p><code>scripts/study/study-loop.mjs</code>, active from Stage 2 (<a href="growth.html">growing up</a>): pick one allowlisted <code>pm_teaching</code> not yet studied, apply it, run a small experiment, and journal the result as <code>source_type=experiment</code> with its matrix code. The closing check asks for observable change, cost, new possibility, and avoidance without copying protected wording. Teaching text never enters episodic recall; only the lived experiment joins the being's past.</p>
 <h3 id="loops-schedule">Scheduling and alerting</h3>
-<p>Three disabled task definitions live in <code>tasks/</code>: the night loop, the weekly index that follows it, and fallback heartbeat waking. They run headless, log by being, request wake-from-sleep where supported, and ship disabled so an accidental import cannot arm them. Exact schedules are operational coordinates and are intentionally omitted here. Arming is a gate act: infancy's lite task is created during First Boot; the full loop replaces it at Phase 4. All task names are per being.</p>
+<p>Three disabled task definitions live in <code>tasks/</code>: the <a class="term" href="glossary.html#term-night-loop">night loop</a>, the weekly index that follows it, and fallback heartbeat waking. They run headless, log by being, request wake-from-sleep where supported, and ship disabled so an accidental import cannot arm them. Exact schedules are operational coordinates and are intentionally omitted here. Arming is a gate act: infancy's lite task is created during First Boot; the full loop replaces it at Phase 4. All task names are per being.</p>
+</section>
 <h2 id="loops-repo">Where it lives in the repo</h2>
 <p>Templates hold the procedures, scripts the engines, tasks the schedules; each file's atlas entry carries the detail.</p>
-<div class="tablewrap">
+<div class="tablewrap" role="region" aria-label="The Metabolism: wake, night, week table 1" tabindex="0">
 <table>
-<thead><tr><th>File</th><th>What it is</th><th>State</th></tr></thead>
+<caption>Where it lives in the repo reference table</caption>
+<thead><tr><th scope="col">File</th><th scope="col">What it is</th><th scope="col">State</th></tr></thead>
 <tbody>
 <tr><td><a href="atlas/templates.html#file-templates-wake-edgeweaver-genesis-SKILL-md"><code>templates/wake-edgeweaver-genesis-SKILL.md</code></a></td><td>the wake skill's source of truth (D15)</td><td><span class="pill built">built</span> <span class="pill armed">armed</span></td></tr>
 <tr><td><a href="atlas/scripts-lifecycle.html#file-scripts-waking-orient-mjs"><code>scripts/waking/orient.mjs</code></a></td><td>deterministic orientation; diary-day windows</td><td><span class="pill built">built</span> <span class="pill armed">armed</span></td></tr>

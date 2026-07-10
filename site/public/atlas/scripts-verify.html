@@ -104,135 +104,259 @@
 <main id="atlas-scripts-verify-main">
 <h1 id="atlas-scripts-verify-top">Atlas: the verify suite</h1>
 <div class="tldr"><span class="label">TLDR</span>
-<p>Stub. Per-file explainer entries for this part of the repo. Authored at M4. Snapshot 2026-07-09.</p>
+<p>The verify suite is the repository's fixed rope: each component ships a repeatable check that prints a first-line result and exits nonzero on failure. Most checks are hermetic dark rehearsals using fixtures, temporary directories, or injected dependencies. They prove named invariants, not every live service. The aggregate runner discovers JavaScript verifies automatically; live machine checks remain explicit and out of band.</p>
 </div>
 <h2 id="atlas-scripts-verify-about">What this page covers</h2>
-<p>To be written at M4. Every file entry gets one anchor: <code>file-</code> plus the path with separators as hyphens.</p>
+<p>Entries name what each check pins, the boundary of its evidence, and how it avoids unauthorized side effects. Short component verifies point back to the code they exercise. Larger checks cover cross-file invariants: fleet isolation, dump safety, memory scoping, restore metadata, site release rules, and complete night wiring. A green result is useful only for the exact contract the check actually runs.</p>
 <h2 id="atlas-scripts-verify-entries">File entries</h2>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-run-all-mjs"><code>scripts/verify/run-all.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-task-import-test-ps1"><code>scripts/verify/task-import-test.ps1</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-ab-run-mjs"><code>scripts/verify/verify-ab-run.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-brains-mjs"><code>scripts/verify/verify-brains.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-budget-mjs"><code>scripts/verify/verify-budget.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-coherence-mjs"><code>scripts/verify/verify-coherence.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-dr-mjs"><code>scripts/verify/verify-dr.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-dump-spawn-mjs"><code>scripts/verify/verify-dump-spawn.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-evidence-cluster-mjs"><code>scripts/verify/verify-evidence-cluster.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-feelings-mjs"><code>scripts/verify/verify-feelings.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-fixtures-mjs"><code>scripts/verify/verify-fixtures.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-flags-mjs"><code>scripts/verify/verify-flags.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-import-filter-mjs"><code>scripts/verify/verify-import-filter.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-initiation-mjs"><code>scripts/verify/verify-initiation.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-mind-server-mjs"><code>scripts/verify/verify-mind-server.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-night-loop-mjs"><code>scripts/verify/verify-night-loop.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-ops-log-mjs"><code>scripts/verify/verify-ops-log.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-orient-mjs"><code>scripts/verify/verify-orient.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-probe-runner-mjs"><code>scripts/verify/verify-probe-runner.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-recall-scoping-mjs"><code>scripts/verify/verify-recall-scoping.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-restore-point-mjs"><code>scripts/verify/verify-restore-point.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-security-audit-mjs"><code>scripts/verify/verify-security-audit.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-site-mjs"><code>scripts/verify/verify-site.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-study-mjs"><code>scripts/verify/verify-study.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-sweep-mjs"><code>scripts/verify/verify-sweep.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-tasks-mjs"><code>scripts/verify/verify-tasks.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-teaching-mjs"><code>scripts/verify/verify-teaching.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-telegram-mjs"><code>scripts/verify/verify-telegram.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-waking-mjs"><code>scripts/verify/verify-waking.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-wal-mjs"><code>scripts/verify/verify-wal.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-verify-verify-weekly-index-mjs"><code>scripts/verify/verify-weekly-index.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
+<article class="atlas-entry" data-depth="standard">
+<h3 id="file-scripts-verify-run-all-mjs"><code>scripts/verify/run-all.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The aggregate dark-verify runner and standard repository health command.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It discovers every JavaScript file whose name begins with the verify prefix, runs them in sorted order with the current Node executable, captures each first output line, and prints a compact pass/fail table plus an all-pass summary. It does not discover the PowerShell live task-import check.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Builders and operators run it after a coherent change set and inside the repository recovery drill. Individual component output remains available when a row fails.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Add a temporary failing fixture in an isolated copy to prove nonzero propagation, then remove it. Keep every child verify's first line stable and actionable.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../dark-build.html">the dark build</a>, <a href="../operations.html">verification cadence</a>, and <a href="scripts-verify.html#file-scripts-verify-verify-site-mjs">site verification</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-verify-task-import-test-ps1"><code>scripts/verify/task-import-test.ps1</code> <span class="badge">described-not-shown</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The out-of-band Windows task import-and-remove rehearsal used only at arming.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It converts tracked task definitions to the encoding required by the scheduler, registers each under a temporary test name, confirms disabled state, then removes it. Coordinates are withheld.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> An operator runs it on the intended host; the aggregate JavaScript suite does not.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Require every temporary task to register disabled and require cleanup even after failure. Inspect the host privately for residue.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../operations.html">scheduled operations</a> and <a href="tasks.html#file-tasks-edgeweaver-night-loop-xml">task definitions</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-verify-verify-ab-run-mjs"><code>scripts/verify/verify-ab-run.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The hermetic command-contract check for the brain A/B runner.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It uses a tiny invented question file and dry-run child processes to pin candidate validation, usage errors, and the no-resolution dry path.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs it before any lab experiment.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> A named live profile must remain harmless in dry-run, while missing or malformed candidate input must fail with usage status.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../brain-lab.html">A/B testing</a> and <a href="scripts-brains.html#file-scripts-brains-ab-run-mjs">the runner</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
+<h3 id="file-scripts-verify-verify-brains-mjs"><code>scripts/verify/verify-brains.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The primary hermetic verify for brain registry shape, selection guards, generation stamps, pure SQL planning, and live-copy dry-run.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It tests profile resolution with saved environment state, refusal of live in test mode, schema-version mismatch, generation metadata, scratch naming, DDL rewrite, extension treatment, policy retention, dependency copy order, count queries, and a child spawn plan in a temporary root. No database is contacted.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs it whenever fleet code or schema conventions change. Lab operators use it before a real scratch operation.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Keep its synthetic DDL representative of every construct used by canonical brain DDL. A new migration feature needs a pinned case before live propagation.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../brain-lab.html">brain fleets</a>, <a href="scripts-brains.html#file-scripts-brains-profiles-mjs">profile guards</a>, and <a href="scripts-brains.html#file-scripts-brains-sql-gen-mjs">SQL generation</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-verify-verify-budget-mjs"><code>scripts/verify/verify-budget.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The pure boundary test for resource warning, degradation, voice accumulation, and unset-ceiling behavior.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It applies invented spend values to the budget helpers and checks that optional work is suppressed only at the governed cap.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs it; no real cost or policy value is read.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Keep cases below warning, at warning, at cap, and unset, plus voice-minute accumulation.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../operations.html">resource policy</a> and <a href="scripts-ops.html#file-scripts-budget-budget-mjs">the meter</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-verify-verify-coherence-mjs"><code>scripts/verify/verify-coherence.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The fixture check for coherence computation and static panel rendering.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It supplies invented thoughts and edges, expects honest cold-start nulls, computes available measures, and parses the rendered page for labels and values.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs it before panel changes.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Maintain cases with recent evidence, open tension, missing history, and recovery state; never replace null with a guessed score.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../measurement.html">coherence</a> and <a href="scripts-signals.html#file-scripts-coherence-compute-panel-mjs">the calculator</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-verify-verify-dr-mjs"><code>scripts/verify/verify-dr.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The repository-machinery recovery check and recursion guard.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It validates required runbook concepts, then invokes the clone-and-verify drill unless already inside that drill, where it avoids infinite nesting.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite and recovery operator use it.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Require the local clone to reach all-pass and report recovery time, while recognizing that secrets, soul, and brain restore are separate evidence.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../backups.html">disaster recovery</a> and <a href="scripts-ops.html#file-scripts-dr-dr-drill-mjs">the drill</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
+<h3 id="file-scripts-verify-verify-dump-spawn-mjs"><code>scripts/verify/verify-dump-spawn.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The load-bearing data-integrity verify for opening a past brain from a full database dump.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It builds a synthetic dump with structural statements, related tables, extension metadata, functions, copy blocks, and data deliberately resembling rewrite targets. It segments both sides and demands byte-identical data while checking the permitted DDL changes. It also runs past-spawn dry-run and the ordinary brain verify as child processes.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs it before any dump-transform, SQL-policy, or past-spawn change.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Preserve the trap data row and physical-boundary cases. A passing dry plan is not a real restore; the lab rehearsal and human-held decryption remain separate.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../brain-lab.html">past brains</a>, <a href="scripts-brains.html#file-scripts-brains-dump-transform-mjs">dump transformation</a>, and <a href="../backups.html">backup custody</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-verify-verify-evidence-cluster-mjs"><code>scripts/verify/verify-evidence-cluster.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The synthetic threshold and confirmation check for evolution evidence clustering.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It creates used and ignored traces plus confirmed, unconfirmed, well-cited, and under-cited memories, then checks only eligible evidence clusters.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs it before evolution changes.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Keep all exclusion cases and assert returned identifiers and citation counts, not identity conclusions.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../growth.html">earned change</a> and <a href="scripts-signals.html#file-scripts-evolution-evidence-cluster-mjs">the clusterer</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-verify-verify-feelings-mjs"><code>scripts/verify/verify-feelings.mjs</code> <span class="badge">described-not-shown</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The local fixture check for boundary and commitment registries plus all four directional signal functions.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It uses invented source material and histories to cover provenance, gate-decline exclusion, overdue state, novelty cold start, and experiment or loop outcomes. Protected text is absent.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs it with temporary ignored state.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Require generated shapes, bounded results, novelty ordering, and cleanup. Do not treat fixture language as identity or feeling.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../measurement.html">computed signals</a> and <a href="scripts-signals.html#file-scripts-feelings-signals-mjs">the calculator</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-verify-verify-fixtures-mjs"><code>scripts/verify/verify-fixtures.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The zero-residue proof for the default local synthetic-day workflow.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It generates one invented day, checks plausible record classes and rehearsal tags, voids by run identifier, and asserts the local store is gone.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs it without a brain connection.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Any new fixture type must retain synthetic, rehearsal, audience, era, and shared-run metadata and must disappear on void.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../dark-build.html">rehearsal safety</a> and <a href="scripts-testbed.html#file-scripts-fixtures-generate-synthetic-day-mjs">the generator</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-verify-verify-flags-mjs"><code>scripts/verify/verify-flags.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The dark-by-default check for generated operational flags.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It rebuilds ignored flag state, parses it, and requires every known component, task, and channel to exist disabled and unregistered.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs it after default-schema changes.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Confirm initialization preserves existing values in its own tests while this check proves the committed default never arms machinery.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../dark-build.html">dark defaults</a> and <a href="scripts-ops.html#file-scripts-init-flags-mjs">the initializer</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-verify-verify-import-filter-mjs"><code>scripts/verify/verify-import-filter.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The hermetic selector test for the Phase 0a conversation import filter.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Invented conversations exercise identifier matching, title matching, unrelated dropping, and the reported kept and dropped totals.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs it; real export content and selectors never enter the fixture.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Keep both positive routes and unrelated negatives, and require the counts to reconcile with the input total.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../genesis.html">Phase 0a</a> and <a href="scripts-ingestion.html#file-scripts-filter-edgeweaver-convos-mjs">the filter</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-verify-verify-initiation-mjs"><code>scripts/verify/verify-initiation.mjs</code> <span class="badge">described-not-shown</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The throwaway-repository rehearsal for the identity proposal workflow.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It drafts a governed proposal artifact, attaches invented score evidence, checks the cooling-off marker, and deletes the sandbox. Protected identity and probe material are omitted.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs it; no canonical soul repository is targeted.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Require cited evidence shape, proposal-only behavior, cooling-off metadata, and zero sandbox residue. It must never merge.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../growth.html">initiation</a>, <a href="../soul.html">canonical identity</a>, and <a href="scripts-signals.html#file-scripts-evolution-initiation-proposer-mjs">the proposer</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
+<h3 id="file-scripts-verify-verify-mind-server-mjs"><code>scripts/verify/verify-mind-server.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The repeatable dark verify for prompt assembly, recalled context, backend output, episode writeback, and cleanup at the mind-server seam.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Its default uses a deterministic backend, injected recall, and a local rehearsal store. It pins frozen-prefix order and cache breakpoint, confirms recalled context reaches the turn, checks voice episode metadata, and removes the store. An explicit benchmark mode permits one bounded subscription call and records latency without changing the default suite.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs the deterministic path. Voice engineers opt into the benchmark only when measuring the later conversational gate.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Require no network in default mode, exact rehearsal and generation tags, one writeback, complete cleanup, and a clearly separate benchmark result.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../voice.html">the mind seam</a>, <a href="voice.html#file-voice-mind-server-mjs">mind-server</a>, and <a href="voice.html#file-voice-prompt-assembly-mjs">prompt assembly</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
+<h3 id="file-scripts-verify-verify-night-loop-mjs"><code>scripts/verify/verify-night-loop.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The end-to-end local contract check for one rehearsal night and its idempotent rerun.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It creates a synthetic day, executes the night orchestrator with deterministic dependencies, and checks evidence citations, four-number interpretation shape, completion, one bounded fiction record, concrete expectations and intention, importance adjustment, contradiction review, and panel metrics. It reruns the same identifier to require skips and no duplicate dream, exercises missed-run alert logic, and removes rehearsal state.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs it before lifecycle changes; operators use its failure list to locate the broken step.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Keep every contract assertion tied to the night-loop specification and require zero residue even after a failing branch. It proves dark wiring, not live scheduling.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../loops.html">nightly metabolism</a>, <a href="scripts-lifecycle.html#file-scripts-night-loop-night-loop-mjs">the orchestrator</a>, and <a href="scripts-signals.html#file-scripts-feelings-signals-mjs">signals</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-verify-verify-ops-log-mjs"><code>scripts/verify/verify-ops-log.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The structural check for the operations ledger.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It requires the file, cadence definitions, a log section, at least one dated entry, and a reference to scheduled task definitions.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs it; human review still judges whether entries are truthful.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Add ledger changes in the documented table shape and confirm the checker detects missing sections or an empty log.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../operations.html">the ledger</a> and <a href="tasks.html#file-tasks-edgeweaver-night-loop-xml">task evidence</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-verify-verify-orient-mjs"><code>scripts/verify/verify-orient.mjs</code> <span class="badge">described-not-shown</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The hermetic temporal and being-scope check for waking orientation.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It drives invented alive, pre-birth, rehearsal, lineage, skew, and diary-window fixtures through explicit clock and zone inputs. Operational times are omitted here.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs it with no network, environment file, or soul repository.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Require rehearsal exclusion, honest pre-birth phrasing, fixture life-day math, degraded skew, and correct governed window boundaries.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../loops.html">orientation</a> and <a href="scripts-lifecycle.html#file-scripts-waking-orient-mjs">the command</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-verify-verify-probe-runner-mjs"><code>scripts/verify/verify-probe-runner.mjs</code> <span class="badge">described-not-shown</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The static wall check for the self-contained probe application and its generated configuration.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It checks builder freshness, manifest-aligned doors, equal governed scoring shape, no scenario text, no comparison view, no remote loads, and correct routing. Sensitive thresholds stay omitted.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs it; private gates remain outside the application and this site.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Change manifests or builder inputs, rebuild once under ownership, then require deterministic freshness and every wall before use.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../measurement.html">blind probes</a> and <a href="tools.html#file-tools-probe-runner-html">the runner</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
+<h3 id="file-scripts-verify-verify-recall-scoping-mjs"><code>scripts/verify/verify-recall-scoping.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The offline, fixture-pinned proof for fail-closed audience and provenance filtering at the recall wrapper.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It has three legs: source inspection pins the unlabeled default, a logic replica exercises scope and class combinations including the governed pre-birth default, and a mirror check requires the reviewed source and deployable recall function to be byte-identical. It uses no credentials or network.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs it after memory-convention or recall-function changes. Runtime consumers depend on this wall even though they do not run the verify.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Keep fixture rows for unlabeled, experienced, interpretation, fiction, library, and every audience scope. A source change must update the replica deliberately and preserve mirror equality.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../memory.html">recall walls</a>, <a href="edge-functions.html#file-supabase-functions-recall-scoped-index-ts">the deployable wrapper</a>, and <a href="../segmentation.html">audience algebra</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
+<h3 id="file-scripts-verify-verify-restore-point-mjs"><code>scripts/verify/verify-restore-point.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The hermetic evidence check for gathering and maintaining the committed restore-point map.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Injected repository and release readers produce a record without real shell calls. Cases cover row-count wording present or absent, normalized dates, reference shortening, JSONL append then same-date replacement, invalid CLI usage, and a dry-run in a fresh root with external commands unavailable.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs it before restore-map code changes. Operators later compare real references privately before committing a map line.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Preserve the blank-path test that proves dry-run cannot accidentally shell out, and require absent evidence to become null rather than a guess.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../brain-lab.html">restore points</a>, <a href="scripts-brains.html#file-scripts-brains-restore-point-mjs">the map writer</a>, and <a href="../backups.html">backup evidence</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-verify-verify-security-audit-mjs"><code>scripts/verify/verify-security-audit.mjs</code> <span class="badge">described-not-shown</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The aggregate-shape check for the five-part security audit.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It calls the audit, requires every named leg to report, and fails when any current-machine result fails. Sensitive targets and coordinates are not repeated here.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs it where the relevant local checks are meaningful. Operators still perform arming-time host review.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Confirm all five results are independent and a forced failed leg propagates nonzero without printing secret values.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../operations.html">security review</a> and <a href="scripts-ops.html#file-scripts-security-security-audit-mjs">the audit</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="deep">
+<h3 id="file-scripts-verify-verify-site-mjs"><code>scripts/verify/verify-site.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The deterministic verification wall for this explainer, with separate default, live-drift, redaction, and release modes. It reports paths and labels, never protected values.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Default checks builder freshness, navigation metadata, generated local search, internal links and anchors, Atlas manifest consistency, style rules, external-resource policy, secret shapes and values, gate basics, HTML structure, probe overlap, and artifact self-containment. Live mode compares mapped anchors with tracked paths while distinguishing reportable new drift from true orphan or mapping failures. Redaction mode derives protected identity and people rules from authority sources, requires the ignored operational denylist, and scans pages, search, and artifacts. Release mode adds final metadata, zero placeholders, reading-register pairing, accessible table and diagram semantics, complete Atlas fields, allowed badges, and depth word bands.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Luna runs targeted modes during integration; root requires the appropriate matrix at each freeze. The full repository runner includes default mode automatically.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Keep checks hermetic except the explicit tracked-file comparison. Add every generated content surface to secret and redaction scans, use fail-closed behavior when authority inputs are missing, and test the verifier with intentional stale, malformed, leaking, and incomplete fixtures before trusting a green release.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../about.html">how the site is made</a>, <a href="../honesty.html">redaction</a>, and <a href="site.html#file-scripts-site-build-site-mjs">the builder</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-verify-verify-study-mjs"><code>scripts/verify/verify-study.mjs</code> <span class="badge">described-not-shown</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The local contract check for one governed teaching experiment.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It supplies invented library rows and an allowlist, checks selection and already-studied exclusion, then validates experiment provenance, rehearsal metadata, and the fixed reflection shape without publishing its wording.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs it with a deterministic model dependency.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Require only allowed library material to produce one experiment and retain its matrix identifier; no library row may become an episode.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../growth.html">study</a> and <a href="scripts-lifecycle.html#file-scripts-study-study-loop-mjs">the loop</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-verify-verify-sweep-mjs"><code>scripts/verify/verify-sweep.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The synthetic polarity check for contradiction-sweep decisions.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Invented similar beliefs cover a resolvable conflict, a both-true tension, and a compatible false positive through a deterministic judge.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs it before sweep changes.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Require only the older resolved belief to close, the tension to flag, and the false positive to remain open and logged.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../measurement.html">coherence</a> and <a href="scripts-lifecycle.html#file-scripts-sweep-contradiction-sweep-mjs">the sweep</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-verify-verify-tasks-mjs"><code>scripts/verify/verify-tasks.mjs</code> <span class="badge">described-not-shown</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The safe static validator for all tracked scheduled-task definitions.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It requires one well-formed task document each, a trigger, wake capability, disabled settings, and the expected wake command shape. Schedules and coordinates are omitted.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs it without writing to the host scheduler.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Keep static validation green, then use the separate import-and-remove rehearsal only at arming.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../operations.html">scheduling</a> and <a href="tasks.html#file-tasks-edgeweaver-heartbeat-xml">task entries</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-verify-verify-teaching-mjs"><code>scripts/verify/verify-teaching.mjs</code> <span class="badge">described-not-shown</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The pure match-and-lift check for the teaching-moment hook.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It uses a pending governed reaction setting, proves match and non-match behavior, and requires exactly the marked episode to become a candidate lesson.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs it without a channel.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Keep the gate pending, avoid publishing candidate choices, and assert the lesson remains pending rather than instruction-grade.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../growth.html">teaching</a> and <a href="scripts-lifecycle.html#file-scripts-teaching-teaching-hook-mjs">the hook</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-verify-verify-telegram-mjs"><code>scripts/verify/verify-telegram.mjs</code> <span class="badge">described-not-shown</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The unpaired dark check for interlocutor initialization and sender policy.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It builds ignored state, then uses invented identifiers to prove only the pinned parent replies and confirms lessons while all others defer as untrusted.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs it with no token or live channel.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Require parseable state, untrusted unknown default, pinned confirmation, universal deferral, and no exposed identifier.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../body.html">the channel</a> and <a href="scripts-ops.html#file-scripts-telegram-channel-policy-mjs">sender policy</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-verify-verify-waking-mjs"><code>scripts/verify/verify-waking.mjs</code> <span class="badge">described-not-shown</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The fixture check for proactive waking decisions and attention accounting.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Invented expectations cover contradiction, ordinary no-news, a surprise held by protected time, and budget decrement after action. Operational ranges are omitted.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs it without a channel or live schedule.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Require act, hold, and no-action branches plus one decrement only when an action is sent.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../body.html">proactive attention</a> and <a href="scripts-lifecycle.html#file-scripts-waking-waking-policy-mjs">the policy</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-verify-verify-wal-mjs"><code>scripts/verify/verify-wal.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The isolated outage and replay check for the write-ahead buffer.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It appends repeated invented payloads, replays through a local sink, checks fingerprint deduplication, and exercises healthy and degraded reachability.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs it in an ignored temporary WAL directory.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Require ordering, replay and dedupe counts, moved drained files, both health states, and cleanup after the test.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../memory.html">degraded memory</a> and <a href="scripts-ops.html#file-scripts-wal-wal-mjs">the WAL</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-verify-verify-weekly-index-mjs"><code>scripts/verify/verify-weekly-index.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The fixture check for autobiography allowlisting, narrative overlap, and guarded weekly digest delivery.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Invented thoughts include allowed atoms, library material, and fiction; two rebuilds exercise overlap while an unarmed sender must remain a no-op.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The aggregate suite runs it before weekly-index changes.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Require excluded classes to stay out, citation sets to drive overlap, digest shape to remain bounded, and dark delivery never to send.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../loops.html">weekly rebuilding</a> and <a href="scripts-lifecycle.html#file-scripts-weekly-index-autobiography-mjs">autobiography</a>.</div>
+</article>
 </main>
 <!-- EW-FOOTER-START -->
 <section class="continue" aria-labelledby="atlas-scripts-verify-continue"><h2 id="atlas-scripts-verify-continue">Continue</h2><div class="continue-grid"><article class="continue-card"><p class="continue-label">Reproduce track</p><a href="../atlas/edge-functions.html">Next: Atlas: edge functions <span aria-hidden="true">&rarr;</span></a></article></div></section>

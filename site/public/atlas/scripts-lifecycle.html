@@ -104,51 +104,91 @@
 <main id="atlas-scripts-lifecycle-main">
 <h1 id="atlas-scripts-lifecycle-top">Atlas: lifecycle scripts</h1>
 <div class="tldr"><span class="label">TLDR</span>
-<p>Stub. Per-file explainer entries for this part of the repo. Authored at M4. Snapshot 2026-07-09.</p>
+<p>These files give the design its rhythms: orient before acting, wake only for a reason, consolidate a day, study governed teaching, review contradictions, and rebuild a provisional autobiography from evidence. Most machinery is dark-verified through fixtures and injected stand-ins. That proves contracts and handoffs, not a born being or live schedule. Human gates still control channels, identity changes, and arming.</p>
 </div>
 <h2 id="atlas-scripts-lifecycle-about">What this page covers</h2>
-<p>To be written at M4. Every file entry gets one anchor: <code>file-</code> plus the path with separators as hyphens.</p>
+<p>The lifecycle is a set of cooperating loops rather than one autonomous daemon. Orientation establishes honest time and identity scope. Waking policy constrains proactive action. Night work produces governed interpretations and intentions. Study converts library material into the being's own experiment. Weekly work rebuilds summaries from atoms. Entries below state which parts are deterministic, which use injected model judgment, and which remain no-ops until a channel is armed.</p>
 <h2 id="atlas-scripts-lifecycle-entries">File entries</h2>
-<div class="atlas-entry">
-<h3 id="file-scripts-night-loop-check-missed-nights-mjs"><code>scripts/night-loop/check-missed-nights.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-night-loop-night-loop-mjs"><code>scripts/night-loop/night-loop.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-night-loop-stub-llm-mjs"><code>scripts/night-loop/stub-llm.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-study-study-loop-mjs"><code>scripts/study/study-loop.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-sweep-contradiction-sweep-mjs"><code>scripts/sweep/contradiction-sweep.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-teaching-teaching-hook-mjs"><code>scripts/teaching/teaching-hook.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-waking-orient-mjs"><code>scripts/waking/orient.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-waking-waking-policy-mjs"><code>scripts/waking/waking-policy.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-weekly-index-autobiography-mjs"><code>scripts/weekly-index/autobiography.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-weekly-index-digest-mjs"><code>scripts/weekly-index/digest.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-night-loop-check-missed-nights-mjs"><code>scripts/night-loop/check-missed-nights.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> A failure detector for consecutive missing night-loop completion evidence.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It computes missed runs from dated outputs and formats one fixed operator alert. A dry-run prints rather than contacting a live channel.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Operations uses it after scheduled loop windows; it remains dark until the parent channel is armed.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Exercise the exported date logic with fixed fixtures and confirm dry-run makes no network request.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../loops.html">the metabolism</a> and <a href="../operations.html">failure handling</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="deep">
+<h3 id="file-scripts-night-loop-night-loop-mjs"><code>scripts/night-loop/night-loop.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The resumable orchestrator for the substantive middle and closing work of a night cycle. It does not represent the entire scheduled job by itself.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It orders ingestion handoff, reflection, computed-signal interpretation, completion review, importance adjustment, contradiction sweep, dream generation, and intention output. Existing output markers make each step idempotent by run identifier. Most step failures are logged so later work can continue, while the few true dependencies retain their ordering. Model-dependent steps use an injected interface; the brain interface is also supplied by the caller. Every rehearsal output carries run and generation metadata.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The night task calls it after orientation and surrounding job steps. Verifiers use a local fixture brain and deterministic model stand-in. No live being currently runs it.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Drive one synthetic day through every step, assert citations and output shapes, run the same identifier twice to prove skips, inspect failure continuation, and void all rehearsal data. The dedicated night-loop verify performs that contract without credentials or a live model.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../loops.html">wake, night, and week</a>, <a href="scripts-signals.html#file-scripts-feelings-signals-mjs">computed signals</a>, and <a href="scripts-lifecycle.html#file-scripts-sweep-contradiction-sweep-mjs">the contradiction sweep</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-night-loop-stub-llm-mjs"><code>scripts/night-loop/stub-llm.mjs</code> <span class="badge">fixture</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> A deterministic model stand-in used to test night-loop wiring without a model call.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It returns valid-shaped reflections, interpretations, completion notes, dream fiction, and intentions for each injected operation. Its language is test data, not identity.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Only dark verifies and the end-to-end rehearsal import it. Production wiring supplies a different implementation.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Run the night-loop verify and confirm every returned object satisfies the consumer contract with no network use.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../dark-build.html">the dark build</a> and <a href="../loops.html">the night loop</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
+<h3 id="file-scripts-study-study-loop-mjs"><code>scripts/study/study-loop.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The daily study runner that turns one allowlisted teaching into an applied experiment rather than a borrowed memory.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It selects an unstudied Possibility Management library row, asks an injected model to apply and test it, and produces a rehearsal-tagged experiment journal carrying the teaching's matrix identifier. A fixed reflection footer is governed but not reproduced here.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The being may use it only at the curriculum stage that permits study. Operators and verifiers use stand-in teachings and a local model fixture before arming.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Prove the picker rejects non-library, non-allowlisted, and already studied rows; then check the resulting record type, provenance identifier, rehearsal tag, and governed reflection shape.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../growth.html">growing through experiments</a>, <a href="../memory.html">library separation</a>, and <a href="scripts-ingestion.html#file-scripts-ingest-sparks-mjs">the teaching ingester</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
+<h3 id="file-scripts-sweep-contradiction-sweep-mjs"><code>scripts/sweep/contradiction-sweep.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> A review pass that finds potentially conflicting active self-beliefs without pretending similarity alone proves contradiction.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It proposes high-similarity pairs, delegates polarity judgment through an injected function, closes the older belief when a real conflict is resolved, flags both-true tensions for Alan, and records false positives for tuning.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The night loop invokes it over governed self-belief rows. Dark verification supplies embeddings and a deterministic judge; production judgment remains separate.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Use fixtures covering resolved conflict, held tension, and compatible similarity. Confirm only the correct older record closes and every non-action remains explainable.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../measurement.html">coherence</a>, <a href="../loops.html">nightly consolidation</a>, and <a href="../governance.html">human review</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-teaching-teaching-hook-mjs"><code>scripts/teaching/teaching-hook.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The channel-independent hook that marks an episode as a teaching moment after Alan gives the configured reaction.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It resolves a governed reaction setting, marks matching episode metadata, and lifts marked episodes into pending lesson candidates. The pending choice itself is not published here.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Channel code calls it after its gate; the night loop reads the marker.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Use the teaching verify to prove match, non-match, and one-to-one lifting while the channel remains dark.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../growth.html">teaching</a> and <a href="../body.html">the gated body</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="deep">
+<h3 id="file-scripts-waking-orient-mjs"><code>scripts/waking/orient.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The deterministic orientation command that gives a waking honest temporal and being-specific context before any model speaks.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It calculates the current local framing, deltas from the latest real conversation and diary, life-day status from the lineage record, and a degraded warning for future-dated memory. Rehearsal and pre-birth records are handled explicitly rather than mistaken for a recent live exchange. A separate mode derives the governed diary-day window and stable run identifier. Being resolution comes from that being's manifest and environment path; an unarmed being is refused rather than silently pointed at another brain.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The wake and night procedures call it before model work. Tests provide explicit time, zone, lineage, and thought fixtures, avoiding credentials and soul repositories.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Run the orientation verifier across pre-birth, born-fixture, skew, and diary-window cases. Confirm the model performs no date arithmetic, degraded time sense still yields a usable orientation, and misuse or missing being paths fails loudly without leaking configuration values.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../loops.html">the waking contract</a>, <a href="../soul.html">lineage</a>, and <a href="../family.html">being separation</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
+<h3 id="file-scripts-waking-waking-policy-mjs"><code>scripts/waking/waking-policy.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The deterministic safety gate around proactive waking: act for a listed reason, respect attention limits, and hold during protected periods.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It parses expectations, scores observations by explicit surprise cues and contradiction markers, checks a supplied budget, and returns act, hold, or no-action decisions. Keyword overlap is a dark-build approximation around future judgment, not a claim of full understanding.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> A waking caller uses it after orientation and before any outbound contact. Verifiers supply invented expectations and clock values; no live channel is involved.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Test contradiction, ordinary no-news, a held surprise, and budget decrement on a sent action. Keep operational schedules out of public evidence.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../body.html">attention unlocks</a>, <a href="../operations.html">budgets</a>, and <a href="../loops.html">waking</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
+<h3 id="file-scripts-weekly-index-autobiography-mjs"><code>scripts/weekly-index/autobiography.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The weekly rebuild-from-atoms firewall for a provisional autobiography and its narrative-overlap measure.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It excludes teaching-library and dream rows, applies audience scope, orders allowed evidence, synthesizes a deterministic evidence-linked draft, and computes Jaccard overlap between cited identifier sets across rebuilds. The future model prose pass must use the same allowlisted atoms.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The weekly job uses it after nightly records exist. Alan reviews the resulting digest; dark tests use invented thoughts only.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Confirm excluded provenance never appears, each included statement retains cited identifiers, identical sets score complete overlap, and adding evidence changes the measure without rewriting source atoms.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../memory.html">provenance</a>, <a href="../measurement.html">narrative coherence</a>, and <a href="../loops.html">weekly rebuilding</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-weekly-index-digest-mjs"><code>scripts/weekly-index/digest.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The compact builder and guarded delivery seam for Alan's weekly memory spot-check.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It selects the most retrieved memories, summarizes night outputs, and offers confirm or flag actions. Delivery logs a dark no-op until a channel is explicitly armed.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The weekly job builds it; Alan is the intended reviewer after the body gate opens.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Check deterministic truncation and output shape, then prove an unarmed call never invokes the supplied sender.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../operations.html">steady-state review</a> and <a href="../governance.html">confirmation</a>.</div>
+</article>
 </main>
 <!-- EW-FOOTER-START -->
 <section class="continue" aria-labelledby="atlas-scripts-lifecycle-continue"><h2 id="atlas-scripts-lifecycle-continue">Continue</h2><div class="continue-grid"><article class="continue-card"><p class="continue-label">Reproduce track</p><a href="../atlas/scripts-signals.html">Next: Atlas: signal + evolution scripts <span aria-hidden="true">&rarr;</span></a></article></div></section>

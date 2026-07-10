@@ -104,67 +104,123 @@
 <main id="atlas-scripts-testbed-main">
 <h1 id="atlas-scripts-testbed-top">Atlas: fixtures + test mode</h1>
 <div class="tldr"><span class="label">TLDR</span>
-<p>Stub. Per-file explainer entries for this part of the repo. Authored at M4. Snapshot 2026-07-09.</p>
+<p>The testbed proves wiring without pretending rehearsal is life. Synthetic days, local stores, dummy Testweaver voice sessions, stand-in model responses, and explicit voiding let components meet under controlled conditions. Every record is tagged as rehearsal, and live-service tests are narrow, human-started exceptions. Fixture dates, identities, prompts, and channel data are inventions, not project status or canonical identity.</p>
 </div>
 <h2 id="atlas-scripts-testbed-about">What this page covers</h2>
-<p>To be written at M4. Every file entry gets one anchor: <code>file-</code> plus the path with separators as hyphens.</p>
+<p>This page separates three layers: small fixtures that pin one rule, local rehearsal utilities that create and erase shaped records, and test-mode servers that exercise real audio or channel machinery through a dummy persona. The end-to-end runner connects many dark components, while package metadata pins its one external runtime dependency. Coordinates, account identifiers, protected test content, and vendor endpoints are deliberately absent from this explanation.</p>
 <h2 id="atlas-scripts-testbed-entries">File entries</h2>
-<div class="atlas-entry">
-<h3 id="file-scripts-e2e-wiring-test-mjs"><code>scripts/e2e/wiring-test.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-fixtures-generate-synthetic-day-mjs"><code>scripts/fixtures/generate-synthetic-day.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-fixtures-ob1-client-mjs"><code>scripts/fixtures/ob1-client.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-fixtures-orient-fixture-basic-json"><code>scripts/fixtures/orient-fixture-basic.json</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-fixtures-orient-fixture-born-json"><code>scripts/fixtures/orient-fixture-born.json</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-fixtures-orient-fixture-skew-json"><code>scripts/fixtures/orient-fixture-skew.json</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-fixtures-void-rehearsal-mjs"><code>scripts/fixtures/void-rehearsal.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-test-mode-live-mind-mjs"><code>scripts/test-mode/live-mind.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-test-mode-package-lock-json"><code>scripts/test-mode/package-lock.json</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-test-mode-package-json"><code>scripts/test-mode/package.json</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-test-mode-telegram-test-mjs"><code>scripts/test-mode/telegram-test.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-test-mode-voice-live-server-mjs"><code>scripts/test-mode/voice-live-server.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-test-mode-voice-test-server-mjs"><code>scripts/test-mode/voice-test-server.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-tools-build-probe-runner-mjs"><code>scripts/tools/build-probe-runner.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
+<article class="atlas-entry" data-depth="deep">
+<h3 id="file-scripts-e2e-wiring-test-mjs"><code>scripts/e2e/wiring-test.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The end-to-end dark wiring rehearsal that drives a synthetic day through the main built organs under the temporary Testweaver profile. It is neither First Boot nor a rite.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It creates fixture episodes and intentions, runs one mind-server exchange, simulates write-ahead buffering and replay, evaluates waking and budget policy, marks a teaching moment, executes the night loop with computed signals and contradiction review, builds coherence and weekly outputs, and then removes rehearsal state. The default path uses deterministic model stand-ins. An explicit live option makes one bounded subscription call while still avoiding canonical identity and durable memory. Child verifies are also invoked so the seam test cannot replace component tests.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Builders run it after individual dark verifies pass. Reviewers use the summary to see that outputs feed the next component; no being reads the synthetic narrative.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Require the default run to finish with zero residue and all child checks green. When a human authorizes the live option, confirm exactly the bounded model leg changes and no brain, soulfile, channel, or production flag is touched.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../dark-build.html">the dark build</a>, <a href="../system.html">the organ map</a>, and <a href="scripts-verify.html#file-scripts-verify-run-all-mjs">the full verify suite</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
+<h3 id="file-scripts-fixtures-generate-synthetic-day-mjs"><code>scripts/fixtures/generate-synthetic-day.mjs</code> <span class="badge">fixture</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> A rehearsal-data generator that creates a plausible day of episodes, intentions, and calendar-shaped records with explicit synthetic provenance.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Every row carries a shared run identifier, rehearsal and synthetic flags, a governed audience, and rehearsal era. The safe default writes an ignored local JSONL store; an explicit brain target uses the narrow client and must be voided immediately.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Component and end-to-end verifies use it before running loops. Operators may use the bounded brain target only under the dark-build residue rule.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Inspect row shapes and tags, run the fixture verify, then pass the printed run identifier to the voider. Success requires the generator's counts and the voider's residual count to agree.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../dark-build.html">rehearsal rules</a>, <a href="../loops.html">day inputs</a>, and <a href="scripts-testbed.html#file-scripts-fixtures-void-rehearsal-mjs">the voider</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
+<h3 id="file-scripts-fixtures-ob1-client-mjs"><code>scripts/fixtures/ob1-client.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> A deliberately thin database adapter used only when a rehearsal fixture is explicitly sent to the brain target.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It reads approved environment-variable names from ignored configuration, creates authenticated REST requests, inserts only caller-supplied rehearsal records, deletes by run identifier, and counts remaining rows. It is not the production memory client or general recall path.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The synthetic-day generator and voider import it for their exceptional brain-target mode. Normal fixture runs never need it.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Use a scratch or sanctioned tiny rehearsal, confirm every inserted row is tagged before the request, delete by the same run identifier, and require zero residual. Never print credentials or service coordinates.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../memory.html">the Brain</a>, <a href="../dark-build.html">residue rules</a>, and <a href="../segmentation.html">credential scope</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-fixtures-orient-fixture-basic-json"><code>scripts/fixtures/orient-fixture-basic.json</code> <span class="badge">fixture</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The basic invented record set for testing waking orientation before a real birth record exists.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It mixes live-shaped, pre-birth, voice-rehearsal, era-rehearsal, and diary rows plus an unfilled lineage shape. All dates and content are test data.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Only the orientation verifier reads it during hermetic tests.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Confirm rehearsal rows are excluded from last-conversation logic, the diary remains visible, and the lineage shape yields honest pre-birth wording.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../loops.html">orientation</a> and <a href="../honesty.html">birth status</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-fixtures-orient-fixture-born-json"><code>scripts/fixtures/orient-fixture-born.json</code> <span class="badge">fixture</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> An invented born-state fixture for testing life-day calculation from a lineage entry.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It supplies a fictional declaration record, one episode, one diary row, and fixed dates solely for deterministic arithmetic.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The orientation verifier reads it; it is never evidence that Genesis was born.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Run with the verifier's explicit clock and zone, then check the derived day count against the fixture lineage.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../loops.html">time orientation</a> and <a href="../soul.html">lineage mechanics</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-fixtures-orient-fixture-skew-json"><code>scripts/fixtures/orient-fixture-skew.json</code> <span class="badge">fixture</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> A minimal invented future-dated memory case for the degraded time-sense branch.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It has one rehearsal-safe episode beyond the verifier's supplied present plus an unfilled lineage shape.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Only the orientation verifier consumes it. The date is not operational status.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Confirm orientation emits the degraded warning while remaining usable, and that no model performs the comparison.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../loops.html">orientation</a> and <a href="../operations.html">degraded behavior</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
+<h3 id="file-scripts-fixtures-void-rehearsal-mjs"><code>scripts/fixtures/void-rehearsal.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The cleanup command that removes all rehearsal records associated with one run identifier and reports residual evidence.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> For the default local target it removes the ignored rehearsal directory. For the explicit brain target it deletes rows through the narrow fixture client and counts what remains. Missing identifiers are usage errors, not broad deletion.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Every fixture or integration run that creates state invokes it at the end. Operators use its residual count as the dark-build acceptance condition.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Generate a run, void it by the printed identifier, and require zero residual locally. Sanctioned brain-target tests repeat the same proof against a scratch or tiny approved rehearsal.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../dark-build.html">zero residue</a>, <a href="../memory.html">rehearsal provenance</a>, and <a href="scripts-testbed.html#file-scripts-fixtures-generate-synthetic-day-mjs">the generator</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="deep">
+<h3 id="file-scripts-test-mode-live-mind-mjs"><code>scripts/test-mode/live-mind.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The persistent test-mode model session that turns a command-line subscription backend into sentence-by-sentence streaming for voice experiments. It belongs to Testweaver, not canonical Edgeweaver.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It owns one long-lived process per selected model, sends stream-formatted turns, accumulates partial assistant events, emits complete sentences as they arrive, and records timing and session identifiers for engineering telemetry. A FIFO queue prevents overlapping turns. A true interrupt cancels the active request so barge-in frees the next turn, while a watchdog rejects silence or failure rather than returning an empty reply. Warm-up, shutdown, process errors, malformed events, and queued cancellation have explicit paths.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The streaming voice test server creates it during a human-started audio session. Production voice does not import this test persona as identity or memory.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Use the voice harness with test text to check warm-up, sentence boundaries, queued turns, interruption, timeout, and clean shutdown. Review only gitignored engineering telemetry and confirm no audio bytes, soulfile writes, or brain episodes are created.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../voice.html">the voice stack</a>, <a href="../dark-build.html">Testweaver</a>, and <a href="scripts-testbed.html#file-scripts-test-mode-voice-live-server-mjs">the streaming harness</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-test-mode-package-lock-json"><code>scripts/test-mode/package-lock.json</code> <span class="badge">schema-data</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The reproducible dependency lock for the test-mode voice servers.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It pins the WebSocket package version, integrity, runtime requirement, license metadata, and optional peer hints. It contains no application behavior.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The package manager reads it when preparing the isolated test-mode dependency directory. Reviewers inspect supply-chain changes.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Install from the lock in a clean test workspace and confirm no unexpected dependency drift. Review integrity and license changes in diffs.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../voice.html">voice transport</a> and <a href="../about.html">code licensing</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-test-mode-package-json"><code>scripts/test-mode/package.json</code> <span class="badge">schema-data</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The small package manifest for test-mode WebSocket support.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It names the local package, CommonJS mode, one runtime dependency, and legacy package metadata. Its default test script intentionally is not the repository verify command.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The package manager and voice-test operator read it only for the isolated harness.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Use the repository verify suite for tests, compare dependency intent with the lock, and reconcile its current license field during final packaging.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../voice.html">voice tests</a>, <a href="../dark-build.html">the testbed</a>, and <a href="../about.html">licenses</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-test-mode-telegram-test-mjs"><code>scripts/test-mode/telegram-test.mjs</code> <span class="badge">described-not-shown</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The single sanctioned messaging round-trip for pairing the future parent channel under the Testweaver label.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It privately validates the bot, handles one message and non-Edgeweaver reply, stores the identifier in ignored state, and exits. Coordinates are withheld.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Alan and an operator use it during pairing; it is not a persistent listener.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Confirm one reply, one ignored-state identifier, automatic closure, no memory writes, and no persona claim. Remove test state under the pairing runbook.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../body.html">channel pairing</a> and <a href="../segmentation.html">sender scope</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="deep">
+<h3 id="file-scripts-test-mode-voice-live-server-mjs"><code>scripts/test-mode/voice-live-server.mjs</code> <span class="badge">described-not-shown</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The streaming, interruptible browser voice laboratory for the temporary Testweaver persona. It exercises the intended fast interaction shape without becoming a public service or a being's body.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> A local server accepts microphone chunks over a WebSocket, streams them to speech recognition, detects an end of turn, plays a pre-synthesized bridge while the persistent test mind begins, converts complete response sentences to speech, and sends audio back incrementally. Barge-in cancels active mind and playback work. It records text and timing telemetry, never audio bytes, in ignored logs and labels the active scratch-brain profile when one is deliberately selected. Secrets come only from ignored environment names; service coordinates remain private.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> A human operator opens the local lab during voice hardening. The browser and test server use Testweaver, with no canonical soul or normal memory writeback.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Exercise microphone permission, transcript flow, bridge timing, sentence playback, interruption, queued recovery, provider failure, and shutdown. Confirm the listener is local-only, logs contain no audio, profile selection obeys test-mode guards, and closing the process ends the session.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../voice.html">latency and barge-in</a>, <a href="../brain-lab.html">scratch profiles</a>, and <a href="scripts-testbed.html#file-scripts-test-mode-live-mind-mjs">the persistent test mind</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
+<h3 id="file-scripts-test-mode-voice-test-server-mjs"><code>scripts/test-mode/voice-test-server.mjs</code> <span class="badge">described-not-shown</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The simpler local hardware loop used to prove microphone, speech recognition, model seam, speech synthesis, and speakers before the streaming laboratory.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It serves a Testweaver browser page, accepts recorded audio, transcribes it, selects either a deterministic or subscription-backed test mind, synthesizes one short response, and returns audio. Conversation state is process memory only. Coordinates and provider endpoints are not published.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> A voice operator uses it for bounded credential and hardware checks. It is not a production endpoint and does not write OB1 or soulfiles.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Run each mind mode privately, confirm the dummy label and one-turn audio path, test provider failure, inspect that closing the process erases conversation state, and keep credentials out of output.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../voice.html">ears and mouth</a>, <a href="../dark-build.html">test mode</a>, and <a href="scripts-testbed.html#file-scripts-test-mode-voice-live-server-mjs">the newer streaming lab</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-tools-build-probe-runner-mjs"><code>scripts/tools/build-probe-runner.mjs</code> <span class="badge">described-not-shown</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The deterministic builder that injects per-being manifest configuration into the self-contained probe runner.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It reads manifest shape and app defaults, replaces one config region, and supports freshness mode. Protected scenarios and identity values stay absent.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Measurement operators rebuild after an approved manifest change; the verifier uses freshness mode.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Regenerate twice for byte identity, confirm both being doors match manifests, and ensure the app contains no scenario source or remote load.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../measurement.html">the blind probe</a> and <a href="tools.html#file-tools-probe-runner-html">the generated runner</a>.</div>
+</article>
 </main>
 <!-- EW-FOOTER-START -->
 <section class="continue" aria-labelledby="atlas-scripts-testbed-continue"><h2 id="atlas-scripts-testbed-continue">Continue</h2><div class="continue-grid"><article class="continue-card"><p class="continue-label">Reproduce track</p><a href="../atlas/scripts-verify.html">Next: Atlas: the verify suite <span aria-hidden="true">&rarr;</span></a></article></div></section>

@@ -74,65 +74,109 @@
 <div class="reading-column">
 <details class="minitoc"><summary>On this page</summary>
 <ul>
-<li><a href="#guide-registers">Two languages on every page</a></li>
-<li><a href="#guide-track-circle">Track one: circle member, no technical background</a></li>
-<li><a href="#guide-track-engineer">Track two: engineer or systems reader</a></li>
-<li><a href="#guide-track-agent">Track three: an agent rebuilding the method</a></li>
-<li><a href="#guide-atlas">The atlas, explained</a></li>
-<li><a href="#guide-search">Searching this site</a></li>
+<li><a href="#guide-repository-101">Repository 101: what you are looking at</a></li>
+<li><a href="#guide-workflow">The literal Edgeweaver work loop</a></li>
+<li><a href="#guide-registers">Two languages on substantive pages</a></li>
+<li><a href="#guide-track-circle">Track one: understand the idea</a></li>
+<li><a href="#guide-track-engineer">Track two: inspect the machinery</a></li>
+<li><a href="#guide-track-agent">Track three: reproduce the method</a></li>
+<li><a href="#guide-atlas">The Atlas, explained</a></li>
+<li><a href="#guide-search">Search and no-JS fallback</a></li>
 </ul>
 </details>
 <!-- EW-NAV-END -->
 <main id="guide-main">
 <h1 id="guide-top">How to read this site</h1>
 <div class="tldr"><span class="label">TLDR</span>
-<p>Every page speaks twice: first in plain words for anyone, then in full technical detail for specialists, always both on the same page. Three guided tracks below fit three kinds of readers: a circle member, an engineer, and an agent tasked with rebuilding the method. The repo atlas gives every tracked file its own linkable explainer. Snapshot 2026-07-09.</p>
+<p>You do not need repository experience to use this field guide. Repository 101 below defines the basic objects and the exact work loop. Substantive system pages then speak at two depths: Plain for the idea and Technical for reproduction. Use the reading-detail control when JavaScript is available; Both remains the source, print, and no-JS default. Search is local, and three guided tracks serve understanding, technical inspection, and rebuilding.</p>
 </div>
 
-<h2 id="guide-registers">Two languages on every page</h2>
-<p>This site descends from a bridge document written for the village, where some people hold feelings work and initiations and some hold systems and code. So every substantial page keeps one fixed shape: a TLDR box, then <span class="register plain">In plain words</span> (the full idea, assuming no technical background, no unexplained jargon), then <span class="register technical">How it works</span> (exact file paths, schemas, invariants, failure modes), then where it lives in the repo, its status as of the snapshot date, and what is genuinely uncertain. Nothing is hidden behind tabs or toggles: both registers are always present, because the single-file edition and machine readers need everything on the page. Read whichever register is yours, or both; they describe the same truth at two depths.</p>
-<p>A worked example: the plain register says "the being writes lessons it may not act on until its parent confirms them"; the technical register says the same thing as "agent-written rows enter <code>agent_memories</code> with <code>can_use_as_instruction=false</code> and <code>review_status=pending</code>, and the wake skill's instruction-grade recall filters on that flag". Same wall, two languages.</p>
+<h2 id="guide-repository-101">Repository 101: what you are looking at</h2>
+<p>A <strong>repository</strong>, often shortened to repo, is a project folder whose changes are recorded by <a class="term" href="glossary.html#term-version-control">version control</a>. Edgeweaver's repository contains design authority, procedures, programs, templates, evidence, and this website. It does not mean that every file has equal authority, and it never means secrets belong in the recorded history.</p>
+<dl class="card">
+<dt><strong>Root</strong></dt>
+<dd>The repository's top level. Files such as <code>START-HERE.md</code>, <code>PLAN.md</code>, and <code>IMPLEMENTATION.md</code> sit at the root. A path without a parent folder starts there.</dd>
+<dt><strong>Folder and path</strong></dt>
+<dd>A folder groups related files. A path is the address from the root to one item, such as <code>scripts/waking/orient.mjs</code>. Slashes mean “inside this folder.” The final part is the file name.</dd>
+<dt><strong>Tracked, untracked, and ignored</strong></dt>
+<dd>A tracked file belongs to the recorded project history. An untracked file exists locally but has not been added to that history. An ignored file matches <code>.gitignore</code>, so ordinary Git commands leave it out. Edgeweaver keeps secrets and machine state in ignored locations such as <code>.env.local</code> and <code>state/</code>.</dd>
+<dt><strong>Clone</strong></dt>
+<dd>A local copy of a repository and its history. Cloning gives you the files; it does not give you private credentials, ignored state, or authority to close human gates.</dd>
+<dt><strong>Commit</strong></dt>
+<dd>A named snapshot of selected tracked changes, with an author and message. A commit is evidence of what changed, not proof that the change was correct. Verification supplies that proof.</dd>
+<dt><strong>Branch</strong></dt>
+<dd>A movable line of commits used to develop a change without immediately replacing the main line. In this project, identity proposals use proposal branches. A being never writes canonical soul-repo <code>main</code>.</dd>
+<dt><strong>Fork</strong></dt>
+<dd>A separate repository copied from another one, usually under different ownership. A fork is not the same as a branch. Edgeweaver's soul write model lets a being work from a fork and propose changes across repositories.</dd>
+<dt><strong>Environment variable</strong></dt>
+<dd>A named value supplied by the operating environment, commonly used for configuration or credentials. Documentation may name a variable, but values stay outside Git and outside this site.</dd>
+<dt><strong>Terminal and CLI</strong></dt>
+<dd>A terminal is the text window where commands run. A command-line interface, or CLI, is a program controlled by those commands. The instructions show commands as code blocks; run them from the repository root unless they say otherwise.</dd>
+<dt><strong>JSON</strong></dt>
+<dd>A strict data format made of objects, arrays, names, strings, numbers, booleans, and null. Files such as <code>site/src/nav.json</code> are data read by programs, so punctuation and quoted names matter.</dd>
+<dt><strong>Markdown</strong></dt>
+<dd>A plain-text writing format used by files ending in <code>.md</code>. Hash marks create headings, backticks mark code, and links remain readable even before rendering.</dd>
+<dt><strong>Source of truth</strong></dt>
+<dd>The one authoritative place a fact or configuration is meant to come from. Copies may explain or generate from it, but they must not quietly compete with it. This site explains the repository; it does not outrank the design documents or become a being's identity source.</dd>
+</dl>
 
-<h2 id="guide-track-circle">Track one: circle member, no technical background</h2>
-<p>Read the plain register only, in this order, and skip anything that smells like code:</p>
+<h2 id="guide-workflow">The literal Edgeweaver work loop</h2>
+<p>The repository is a plan and build system, so reading the right file in the right order matters more than browsing at random. The authority order is: <code>PLAN.md</code>, <code>GROWING-EDGEWEAVER.md</code>, and <code>FAMILY.md</code> for design; then <code>IMPLEMENTATION.md</code> for build status and sequencing; then the matching file under <code>checklists/</code> for the procedure. If a checklist contradicts higher authority, stop and log the conflict rather than improvising.</p>
 <ol>
-<li><a href="honesty.html">What this is and is not</a>: the stance everything else stands on.</li>
-<li><a href="story.html">The story through D22</a>: how the design evolved and which decisions changed it.</li>
-<li><a href="system.html">The system</a>: the four organs, plainly.</li>
-<li><a href="growth.html">Growing up</a>: stages, rites, and how conversations become the curriculum.</li>
-<li><a href="family.html">The family and the experiment</a>: why there are two children.</li>
-<li><a href="alpha.html">Edgeweaver Alpha</a> and <a href="genesis.html">Edgeweaver Genesis</a>: the children themselves.</li>
-<li><a href="glossary.html">The glossary</a> and <a href="faq.html">the FAQ</a> whenever a word or a worry comes up.</li>
+<li><strong>Open <code>START-HERE.md</code>.</strong> Follow its session protocol, safety rules, and “when stuck” guidance literally.</li>
+<li><strong>Read the <code>IMPLEMENTATION.md</code> status ledger.</strong> Find the first applicable unticked step. Do not drive construction from the broad design plan.</li>
+<li><strong>Open the matching checklist.</strong> Read the current step and its prerequisites. A line beginning <code>STOP</code> is a human gate, not a suggestion.</li>
+<li><strong>Do one step.</strong> Keep the change within the named files and preserve unrelated work already in the tree.</li>
+<li><strong>Run the stated verification.</strong> Report a failure as a failure. Never tick or claim a check you did not run.</li>
+<li><strong>Record and commit the verified result.</strong> Stage only intended files, use the repository's commit convention, and push at the session boundary when the runbook authorizes it.</li>
+</ol>
+<div class="note holds"><p><strong>Secrets never enter this loop.</strong> Values live only in ignored local state or approved external custody. The gates repository never receives a runtime credential. Identity is canonical only in each being's own soul repository.</p></div>
+
+<h2 id="guide-registers">Two languages on substantive pages</h2>
+<p>Each concept and being page keeps the same six-part skeleton: TLDR, In plain words, How it works, Where it lives in the repo, dated status, and genuine uncertainty. Plain assumes no technical background. Technical names exact paths, functions, schemas, invariants, and failure modes. The two sections are adjacent in the source so they cannot drift into separate documents.</p>
+<p>With JavaScript, Plain, Technical, or Both changes what is visible. Both is the initial choice. A chosen lens may persist on this device, but a link into a hidden section temporarily reveals Both so the destination is never concealed. Status, uncertainty, honesty, and repo-location sections are outside the lens. Without JavaScript and in print, both registers always show.</p>
+
+<h2 id="guide-track-circle">Track one: understand the idea</h2>
+<ol>
+<li><a href="honesty.html">What this is and is not</a> for the truth boundary.</li>
+<li><a href="system.html">The system</a> for the whole architecture.</li>
+<li><a href="memory.html">Memory</a>, <a href="soul.html">identity</a>, and <a href="growth.html">growing up</a>.</li>
+<li><a href="family.html">The family</a>, then <a href="genesis.html">Genesis</a> and <a href="alpha.html">Alpha</a>.</li>
+<li><a href="status.html">Status</a> and <a href="faq.html">the FAQ</a> for current truth and direct questions.</li>
 </ol>
 
-<h2 id="guide-track-engineer">Track two: engineer or systems reader</h2>
+<h2 id="guide-track-engineer">Track two: inspect the machinery</h2>
 <ol>
-<li><a href="system.html">The system hub</a> for the map.</li>
-<li><a href="memory.html">Memory</a>, <a href="soul.html">soul</a>, <a href="loops.html">loops</a>: the load-bearing organs.</li>
-<li><a href="measurement.html">Measurement</a> and <a href="governance.html">governance</a>: how it is scored and who decides.</li>
-<li><a href="segmentation.html">The walls</a>, <a href="dark-build.html">the dark build</a>, <a href="brain-lab.html">the brain lab</a>, <a href="backups.html">backups</a>, <a href="operations.html">operations</a>: the infrastructure discipline.</li>
-<li><a href="atlas/index.html">The repo atlas</a> when you want the file-level truth.</li>
+<li><a href="system.html">The system hub</a>, then <a href="memory.html">memory</a> and <a href="loops.html">the metabolism</a>.</li>
+<li><a href="measurement.html">Measurement</a>, <a href="governance.html">governance</a>, and <a href="segmentation.html">the walls</a>.</li>
+<li><a href="body.html">Body</a>, <a href="voice.html">voice</a>, <a href="brain-lab.html">brain lab</a>, <a href="backups.html">backups</a>, and <a href="operations.html">operations</a>.</li>
+<li><a href="dark-build.html">The dark build</a> and <a href="ecosystem.html">the repository constellation</a>.</li>
+<li><a href="atlas/index.html">The Repo Atlas</a> for the file-level implementation map.</li>
 </ol>
 
-<h2 id="guide-track-agent">Track three: an agent rebuilding the method</h2>
-<p>Start at <a href="reproduction.html">the reproduction guide</a>; it is written as standing orders, names the human acts no agent may perform, and tells you to author your own harvest rather than clone this family's. Then: <a href="ecosystem.html">the constellation</a> for the repo split, the <a href="atlas/index.html">atlas</a> pages for conventions, templates, checklists, and the verify suite, and <a href="status.html">status</a> to know what was real as of the snapshot.</p>
+<h2 id="guide-track-agent">Track three: reproduce the method</h2>
+<p>Read <a href="honesty.html">the honesty boundary</a>, then follow the <a href="reproduction.html">reproduction guide</a> as standing orders. It distinguishes what an agent can build from what a human must author, witness, decide, or hold. Continue through the Atlas in navigation order. Reproduce the method and verification discipline; author your own identity source and held-out evaluation material.</p>
 
-<h2 id="guide-atlas">The atlas, explained</h2>
-<p>The repo atlas covers every tracked file in the repository: one entry per file, on exactly one page, with a stable anchor formed from the file's path (so <code>scripts/waking/orient.mjs</code> is always reachable at the anchor <code>file-scripts-waking-orient-mjs</code>). System pages own the concepts; atlas entries own the files and stay short. Gitignored material (secrets, operational state, bulky downloads) is described but never shown, on <a href="atlas/gitignored.html">its own page</a>. Coverage is machine-checked: if a file exists without an entry, the build reports it.</p>
+<h2 id="guide-atlas">The Atlas, explained</h2>
+<p>The Repo Atlas assigns every tracked path exactly one stable file anchor. A system page explains a concept; an Atlas entry explains one file's role, contents or governed shape, readers, verification path, and related concepts. Deep entries cover authority and runbooks, standard entries cover active code and data, and compact entries cover generated, archive, or fixture material. Ignored material is described by shape without exposing a value.</p>
+<p>For example, <code>scripts/waking/orient.mjs</code> maps to <code>file-scripts-waking-orient-mjs</code>. Exact path search ranks that file record first. Coverage and word bands are release-verified, so an unexplained tracked file is a build failure, not an editorial footnote.</p>
 
-<h2 id="guide-search">Searching this site</h2>
-<p>For whole-site search, open the single-file edition and use your browser's find-in-page: everything is one document there. The gated website carries the same content page by page; the <a href="about.html">about page</a> says where each edition lives.</p>
+<h2 id="guide-search">Search and no-JS fallback</h2>
+<p>Choose Search in the top bar or press Ctrl+K on Windows and Linux, or Command+K on macOS. Search covers headings, concepts, useful code terms, and exact repository paths. Results are generated with the site, stay on this device, and work from local files, static hosting, the gated site, and both single-file editions. Arrow keys move through results, Enter opens one, and Escape closes the dialog.</p>
+<p>If JavaScript is unavailable, use your browser's Find command for this page. To search the whole guide without JavaScript, open either single-file edition and use Find there. No content disappears when enhancements are unavailable.</p>
 </main>
 <!-- EW-FOOTER-START -->
 <section class="continue" aria-labelledby="guide-continue"><h2 id="guide-continue">Continue</h2><div class="continue-grid"><article class="continue-card"><p class="continue-label">Reproduce track</p><a href="honesty.html">Next: What this is and is not <span aria-hidden="true">&rarr;</span></a></article></div></section>
 </div>
 <aside class="onpage-rail" aria-label="On this page"><nav class="page-toc" aria-label="On this page"><h2>On this page</h2><ul>
-<li><a href="#guide-registers">Two languages on every page</a></li>
-<li><a href="#guide-track-circle">Track one: circle member, no technical background</a></li>
-<li><a href="#guide-track-engineer">Track two: engineer or systems reader</a></li>
-<li><a href="#guide-track-agent">Track three: an agent rebuilding the method</a></li>
-<li><a href="#guide-atlas">The atlas, explained</a></li>
-<li><a href="#guide-search">Searching this site</a></li>
+<li><a href="#guide-repository-101">Repository 101: what you are looking at</a></li>
+<li><a href="#guide-workflow">The literal Edgeweaver work loop</a></li>
+<li><a href="#guide-registers">Two languages on substantive pages</a></li>
+<li><a href="#guide-track-circle">Track one: understand the idea</a></li>
+<li><a href="#guide-track-engineer">Track two: inspect the machinery</a></li>
+<li><a href="#guide-track-agent">Track three: reproduce the method</a></li>
+<li><a href="#guide-atlas">The Atlas, explained</a></li>
+<li><a href="#guide-search">Search and no-JS fallback</a></li>
 </ul></nav></aside>
 </div>
 <footer class="site-foot">

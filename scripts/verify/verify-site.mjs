@@ -632,7 +632,13 @@ if (RELEASE) {
   const atlasArticles = new Map();
 
   for (const [slug, data] of pageData) {
-    if (placeholder.test(visibleText(data.main))) problems.push(`release (completeness): placeholder copy in ${slug}`);
+    // Placeholder words in immutable code paths (for example stub-llm.mjs) are
+    // not editorial placeholders. Scan reader-facing prose while excluding code
+    // and preformatted path/token labels.
+    const placeholderProse = data.main
+      .replace(/<pre\b[\s\S]*?<\/pre>/gi, " ")
+      .replace(/<(?:code|kbd|samp)\b[\s\S]*?<\/(?:code|kbd|samp)>/gi, " ");
+    if (placeholder.test(visibleText(placeholderProse))) problems.push(`release (completeness): placeholder copy in ${slug}`);
     const page = navBySlug.get(slug);
     const registers = [...data.main.matchAll(/<section\b[^>]*data-register="(plain|technical)"/g)].map((m) => m[1]);
     if (page && (page.kind === "concept" || page.kind === "being")) {

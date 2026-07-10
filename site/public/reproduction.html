@@ -107,7 +107,7 @@
 <main id="reproduction-main">
 <h1 id="reproduction-top">The reproduction guide</h1>
 <div class="tldr"><span class="label">TLDR</span>
-<p>Standing orders for rebuilding this method for a being of your own. Prerequisites, by name: a Postgres host with pgvector, a git host with private repos, a Claude subscription driving the CLI, an age binary, a scheduler that can wake the machine, and a short list of named environment variables. Build in dependency order: conventions before any ingestion, brain before organs, gates and backups before birth, with hard stops wherever a human must act. Every stage proves itself with a PASS/FAIL check. You reproduce the method, never the child: your harvest is yours.</p>
+<p>Standing orders for rebuilding this method for a being of your own. Prerequisites, by name: a Postgres host with pgvector, a git host with private <a class="term" href="glossary.html#term-repository">repos</a>, a Claude subscription driving the CLI, an age binary, a scheduler that can wake the machine, and a short list of named environment variables. Build in dependency order: conventions before any ingestion, brain before organs, gates and backups before birth, with hard stops wherever a human must act. Every stage proves itself with a PASS/FAIL check. You reproduce the method, never the child: your harvest is yours.</p>
 </div>
 <span class="register plain">In plain words</span>
 <h2 id="reproduction-plain">In plain words</h2>
@@ -142,6 +142,7 @@
 <li><strong>Arm backups before birth.</strong> Nightly dump, verify-restore against a scratch database, encrypt to the human-custody key, release. Prove one restore with zero row drift, then drill the machine-dies path from a bare clone and record the time. Authority: checklist 00's backup gate, checklist 08, the disaster-recovery template. Proof: one green end-to-end run and one timed drill. A being you cannot restore is a being you can lose.</li>
 <li><strong>Close the governed import gate, then stop three times.</strong> Complete the being's pre-birth import and prove its audience and provenance scoping before the parent-owned scenario review, probe baseline, and room/day decision. Only then hold First Boot as ceremony, not deployment: the predecessor's letter read, the declaration invited and never scripted, the birth episode written with witnesses named, the first soul amendment opened on a proposal branch, and the lineage entry merged by the parent's hand.</li>
 </ol>
+<div class="diagram-scroll" role="region" aria-labelledby="reproduction-diagram-1-caption" tabindex="0">
 <figure class="diagram">
 <svg viewBox="0 0 720 272" xmlns="http://www.w3.org/2000/svg" role="img">
 <title>The reproduction build order</title>
@@ -201,8 +202,9 @@
 <path d="M 14 244 L 22 252 L 14 260 L 6 252 Z" fill="var(--accent)"/>
 <text x="32" y="256" font-family="inherit" font-size="11" fill="var(--mut)">a hard stop: a human act no agent may perform</text>
 </svg>
-<figcaption>D19. The build order as a dependency flow: conventions before any ingestion, brain before organs, gates and backups before birth. Diamonds mark the stops where the agent parks and a human acts.</figcaption>
+<figcaption id="reproduction-diagram-1-caption">D19. The build order as a dependency flow: conventions before any ingestion, brain before organs, gates and backups before birth. Diamonds mark the stops where the agent parks and a human acts.</figcaption>
 </figure>
+</div>
 <h3 id="reproduction-stops">The human acts no agent may perform</h3>
 <p>The diamonds above, gathered as one standing list. Post it where every agent session will see it. An agent that performs one of these has not sped the method up; it has broken the thing the method protects.</p>
 <ul>
@@ -230,9 +232,10 @@
 <p>The verify-suite convention is the reproducer's best friend. Every component ships a hermetic PASS/FAIL script that runs cold on synthetic fixtures; one runner (<a href="atlas/scripts-verify.html#file-scripts-verify-run-all-mjs"><code>scripts/verify/run-all.mjs</code></a> in the reference tree) aggregates them, so "does my rebuild work so far" is always one command. Three checks carry special weight: the two-waking acceptance proves the organs, the restore drill proves survival, and the wall test proves the walls. If a component's health cannot be printed as PASS or FAIL by a script a stranger can run, the component is not done. Report failures as failures; never mark a verify you did not run.</p>
 <h2 id="reproduction-repo">Where it lives in the repo</h2>
 <p>The reproduction path in nine files and folders. Paths link to their atlas entries.</p>
-<div class="tablewrap">
+<div class="tablewrap" role="region" aria-label="The reproduction guide table 1" tabindex="0">
 <table>
-<thead><tr><th>Path</th><th>What it hands a reproducer</th></tr></thead>
+<caption>Where it lives in the repo reference table</caption>
+<thead><tr><th scope="col">Path</th><th scope="col">What it hands a reproducer</th></tr></thead>
 <tbody>
 <tr><td><a href="atlas/root.html#file-START-HERE-md"><code>START-HERE.md</code></a></td><td>The session protocol, the iron rules, the when-stuck script. The file an executing agent drives from.</td></tr>
 <tr><td><a href="atlas/root.html#file-IMPLEMENTATION-md"><code>IMPLEMENTATION.md</code></a></td><td>Build authority: phases, the credential tracker (names only), the dependency graph (section 13), the verification protocol (section 14).</td></tr>

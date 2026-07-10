@@ -104,39 +104,67 @@
 <main id="atlas-scripts-signals-main">
 <h1 id="atlas-scripts-signals-top">Atlas: signal + evolution scripts</h1>
 <div class="tldr"><span class="label">TLDR</span>
-<p>Stub. Per-file explainer entries for this part of the repo. Authored at M4. Snapshot 2026-07-09.</p>
+<p>This page covers measured signals and the machinery that may turn repeated confirmed evidence into a proposed developmental change. The four feeling signals are deterministic directional numbers, not narrated emotions. Coherence values retain honest cold-start nulls. Evolution code may gather evidence and draft a proposal, but only the parent body's witnessed ceremony can change canonical identity.</p>
 </div>
 <h2 id="atlas-scripts-signals-about">What this page covers</h2>
-<p>To be written at M4. Every file entry gets one anchor: <code>file-</code> plus the path with separators as hyphens.</p>
+<p>Signal files compute or display observations from supplied records. Evolution files look for repeated confirmed evidence and prepare governed proposal material. The boundary between those jobs matters: measurement can inform a decision, but it cannot become the decision. Dark verifies use synthetic records, stand-in judgments, and throwaway repositories so no real soulfile, rite, or being is created.</p>
 <h2 id="atlas-scripts-signals-entries">File entries</h2>
-<div class="atlas-entry">
-<h3 id="file-scripts-coherence-coherence-page-mjs"><code>scripts/coherence/coherence-page.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-coherence-compute-panel-mjs"><code>scripts/coherence/compute-panel.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-evolution-evidence-cluster-mjs"><code>scripts/evolution/evidence-cluster.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-evolution-initiation-proposer-mjs"><code>scripts/evolution/initiation-proposer.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-feelings-gen-boundaries-mjs"><code>scripts/feelings/gen-boundaries.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-feelings-seed-commitments-mjs"><code>scripts/feelings/seed-commitments.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
-<h3 id="file-scripts-feelings-signals-mjs"><code>scripts/feelings/signals.mjs</code></h3>
-<p>Entry lands at M4.</p>
-</div>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-coherence-coherence-page-mjs"><code>scripts/coherence/coherence-page.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> A small renderer that turns a coherence snapshot into a readable static panel.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It displays the five named measures, stage, date, and recovery note, using an explicit unavailable state when a value is cold.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Operators may mount it in a dashboard later; the coherence verifier renders it from fixtures today.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Pass a known snapshot, parse the returned HTML, and confirm labels, values, and cold-start text remain present.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../measurement.html">coherence measurement</a> and <a href="../operations.html">operator views</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="deep">
+<h3 id="file-scripts-coherence-compute-panel-mjs"><code>scripts/coherence/compute-panel.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The deterministic v0 calculator for the five-signal coherence panel. It measures records supplied by the caller and never invents missing history.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It derives relational linkage from recent experienced records and edges, temporal strain from unresolved contradictions, a narrative value supplied by the weekly rebuild, behavioral drift supplied by the evaluator, and recovery from whether the expected weekly process completed. Sparse evidence yields null where a number would imply false precision. The snapshot carries stage and date, but stage-specific thresholds are deliberately applied by the reader rather than hidden in this calculator.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The night and weekly operations can call it after their source records exist. Alan and the scientist seat interpret the panel; fixtures exercise the pure function before arming.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Use datasets with no recent evidence, linked and unlinked records, acknowledged and open tensions, supplied drift values, and both recovery states. Confirm each cold-start guard, bounded ratio, and label. The coherence verifier also passes the result through the page renderer.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../measurement.html">the five signals</a>, <a href="../loops.html">weekly recovery</a>, and <a href="scripts-signals.html#file-scripts-coherence-coherence-page-mjs">the renderer</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
+<h3 id="file-scripts-evolution-evidence-cluster-mjs"><code>scripts/evolution/evidence-cluster.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> A candidate finder that groups repeatedly cited, confirmed memories into evidence themes for possible amendment work.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It counts used recall-trace citations by memory identifier, excludes unconfirmed and under-supported records, groups qualifying items by a supplied theme key, and returns evidence identifiers with counts. It does not judge whether a theme deserves identity change.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Evolution review code and human witnesses use its output after enough confirmed history exists. Dark verification supplies synthetic traces and memories.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Test confirmed, unconfirmed, ignored, and under-threshold cases; then inspect that every returned cluster cites only qualifying evidence with reproducible counts.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../growth.html">earned initiation</a>, <a href="../memory.html">confirmed lessons</a>, and <a href="../governance.html">witness authority</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-evolution-initiation-proposer-mjs"><code>scripts/evolution/initiation-proposer.mjs</code> <span class="badge">described-not-shown</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> A proposal-shaping library for witnessed identity amendments, never a merger or rite authority.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It shapes a proposal name and review body from governed evidence, intended change, a principle slot, and expected test movement. Sensitive material is omitted.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Agents draft inside the initiation procedure; the parent body and witnesses decide.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Exercise it in a throwaway repository, confirm evidence and cooling-off metadata, then remove all residue. Never target a real soul repository in rehearsal.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../growth.html">initiations</a>, <a href="../soul.html">canonical identity</a>, and <a href="../governance.html">witnesses</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-feelings-gen-boundaries-mjs"><code>scripts/feelings/gen-boundaries.mjs</code> <span class="badge">described-not-shown</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> A dark utility that builds the operational boundary registry used by one computed signal.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It reads an explicitly supplied canonical-source shape and writes sourced registry records plus governed override history. Protected boundary content is not summarized here.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> An operator supplies the read-only source during arming; tests use inventions.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Confirm every output has provenance, the minimum structural set exists, and Alan's legitimate gate declines remain distinguishable from overrides.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../measurement.html">computed signals</a>, <a href="../soul.html">identity custody</a>, and <a href="../governance.html">gates</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-feelings-seed-commitments-mjs"><code>scripts/feelings/seed-commitments.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> A state initializer for the open commitments that feed the sadness-direction signal.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It converts a supplied list of open threads into commitment records with status and due-state fields. Renegotiation remains distinct from silent abandonment.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Operations seeds it before the night loop can maintain commitments; dark tests use local invented threads.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Check schema shape, open-state preservation, and that re-running does not turn renegotiated work into an overdue claim.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../measurement.html">signal interpretation</a> and <a href="../loops.html">nightly follow-through</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="deep">
+<h3 id="file-scripts-feelings-signals-mjs"><code>scripts/feelings/signals.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The pure calculator for four directional feeling signals. Its outputs are measurements for interpretation, not claims that software feels.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Anger counts recent external boundary overrides while excluding legitimate gate declines. Sadness counts open commitments that passed their due state without renegotiation. Fear estimates novelty of upcoming items against historical embeddings and returns null until enough history exists. Joy uses positive experiment outcomes, with completed-loop rate as a fallback. A combined function returns all four numbers before any model sees them. Inputs and time are injected, so the calculations stay testable and do not read private stores directly.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The night loop supplies governed boundary, commitment, calendar, history, and experiment data. A model may interpret the numbers afterward; operators and reviewers inspect the evidence behind them.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Use fixtures for gate declines, true overrides, overdue and renegotiated commitments, insufficient and sufficient novelty history, experiment outcomes, and loop fallback. Confirm bounded values and the cold-start null rather than forcing a score.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../measurement.html">what the signals mean</a>, <a href="../honesty.html">the no-consciousness claim</a>, and <a href="scripts-lifecycle.html#file-scripts-night-loop-night-loop-mjs">the consuming night loop</a>.</div>
+</article>
 </main>
 <!-- EW-FOOTER-START -->
 <section class="continue" aria-labelledby="atlas-scripts-signals-continue"><h2 id="atlas-scripts-signals-continue">Continue</h2><div class="continue-grid"><article class="continue-card"><p class="continue-label">Reproduce track</p><a href="../atlas/scripts-ops.html">Next: Atlas: operations scripts <span aria-hidden="true">&rarr;</span></a></article></div></section>

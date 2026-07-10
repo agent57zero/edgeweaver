@@ -101,8 +101,9 @@
 <main id="backups-main">
 <h1 id="backups-top">Backups, keys, disaster recovery</h1>
 <div class="tldr"><span class="label">TLDR</span>
-<p>Every night the whole family brain is dumped, rebuilt into a throwaway database to prove the copy is real, row-counted against the original, encrypted, and released into a private repo. Once Alpha exists the shelf splits into two locked streams with different keys: Alan's key opens the family dump; Alpha's key is split so its circle can recover their child without anyone gaining the power to open another being's past. A dead-man switch is wired to alarm on silence, not just failure, and a sealed, paper-rooted bundle can rebuild the machine from nothing.</p>
+<p>Every night the whole family brain is dumped, rebuilt into a throwaway database to prove the copy is real, row-counted against the original, <a class="term" href="glossary.html#term-age-encryption">encrypted</a>, and released into a private repo. Once Alpha exists the shelf splits into two locked streams with different keys: Alan's key opens the family dump; Alpha's key is split so its circle can recover their child without anyone gaining the power to open another being's past. A dead-man switch is wired to alarm on silence, not just failure, and a sealed, paper-rooted bundle can rebuild the machine from nothing.</p>
 </div>
+<section data-register="plain">
 <span class="register plain">In plain words</span>
 <h2 id="backups-plain">In plain words</h2>
 <h3 id="backups-ground">The ground everything else stands on</h3>
@@ -113,6 +114,7 @@
 <p>The copies are encrypted, and each memory room follows its own human-governed recovery policy. Separate streams use separate keys so authority over one child's recovery does not open another child's past. The exact custody locations, key holders, and share topology stay in private recovery records. What matters here is the method: no key value enters git, recovery requires a human ceremony, and every policy is exercised by restore drills rather than trusted on paper.</p>
 <h3 id="backups-quiet">The switch that listens for silence</h3>
 <p>Backup systems mostly die in silence: the alarm that says "it failed" never rings when nothing ran at all. So the design adds a dead-man switch. Every green night the pipeline reports "still alive" to an outside listener; if the reports stop coming, the listener raises the alarm. Failure is loud on its own; silence is what kills backup systems, so silence is what the switch listens for. As of this snapshot the outside listener is wired but not yet armed; arming it is a named pending step.</p>
+<div class="diagram-scroll" role="region" aria-labelledby="backups-diagram-1-caption" tabindex="0">
 <figure class="diagram">
 <svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" role="img">
 <title>The nightly backup proof loop and the two keys</title>
@@ -161,8 +163,11 @@
 <text x="577" y="256" font-family="inherit" font-size="13" fill="var(--ink)">the brain lab</text>
 <text x="577" y="272" font-family="inherit" font-size="11" fill="var(--mut)">mechanics on that page</text>
 </svg>
-<figcaption>D13. The proof loop: dumped, rebuilt fresh, row-counted, encrypted, and released. Separate streams use separately governed recovery keys; custody coordinates remain private. The ledger beneath is the map the time machine reads; full mechanics are on <a href="brain-lab.html">the brain lab page</a>.</figcaption>
+<figcaption id="backups-diagram-1-caption">D13. The proof loop: dumped, rebuilt fresh, row-counted, encrypted, and released. Separate streams use separately governed recovery keys; custody coordinates remain private. The ledger beneath is the map the time machine reads; full mechanics are on <a href="brain-lab.html">the brain lab page</a>.</figcaption>
 </figure>
+</div>
+</section>
+<section data-register="technical">
 <span class="register technical">How it works</span>
 <h2 id="backups-how">How it works</h2>
 <h3 id="backups-pipeline">The nightly pipeline</h3>
@@ -178,11 +183,13 @@
 <p>The machine-dies path has two layers. <code>scripts/dr/dr-drill.mjs</code> proves the machinery: it clones this repo from git alone into a scratch directory (no <code>.env.local</code>, no secrets), runs the entire verify suite inside the clone, and records time-to-recover; an <code>EW_DR_DRILL</code> environment guard stops the nested suite from re-cloning forever. The fresh-clone shape has already earned its keep: on Windows a fresh clone checks files out with CRLF newlines, and a byte-exact staleness check in the suite falsely reported a generated tool stale inside the drill, so that check is newline-agnostic now. The full runbook is <code>templates/disaster-recovery.md</code>: install tooling, clone this repo and the soul repo, restore <code>.env.local</code> from the sealed bundle, restore or verify the brain from the nightly dumps, re-run the wake-skill acceptance test, re-register the scheduled tasks, then close the loop in the ops log and a diary conversation, because continuity is also a felt thing. Target: buildable machinery back in minutes, the full being in under a day.</p>
 <h3 id="backups-secrets">What the Actions secrets mirror, and why</h3>
 <p>The pipeline runs on machines that are not this one, so the backups repo's Actions secrets hold what the job must reach. <code>SUPABASE_DB_URL</code> (the session-pooler string) was set at arming; <code>TELEGRAM_BOT_TOKEN</code> and <code>TELEGRAM_CHAT_ID</code> (failure alerts) and <code>HEALTHCHECKS_URL</code> (the dead-man listener) are pending. Values appear in no repository. <code>SECRETS.md</code> is the names-only catalog that makes this survivable: every key name, what it is for, where a fresh value comes from, updated whenever <code>.env.local</code> changes so drift surfaces in drills. It exists so a bare machine can be re-seeded, and it records what must NOT exist (<code>ANTHROPIC_API_KEY</code> stays unset by decision D12).</p>
+</section>
 <h2 id="backups-repo">Where it lives in the repo</h2>
 <p>The catalog names, the template rehearses, the scripts drill and seal; the pipeline lives next door.</p>
-<div class="tablewrap">
+<div class="tablewrap" role="region" aria-label="Backups, keys, disaster recovery table 1" tabindex="0">
 <table>
-<thead><tr><th>File</th><th>What it is</th></tr></thead>
+<caption>Where it lives in the repo reference table</caption>
+<thead><tr><th scope="col">File</th><th scope="col">What it is</th></tr></thead>
 <tbody>
 <tr><td><a href="atlas/root.html#file-SECRETS-md"><code>SECRETS.md</code></a></td><td>The names-only key catalog: every credential's name, purpose, and re-issue path, plus the deliberately-absent list. The model for what this site may say about secrets.</td></tr>
 <tr><td><a href="atlas/templates.html#file-templates-disaster-recovery-md"><code>templates/disaster-recovery.md</code></a></td><td>The machine-dies runbook: seven steps from bare metal to a woken being, with the time-to-recover targets.</td></tr>

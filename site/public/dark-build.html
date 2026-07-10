@@ -101,11 +101,12 @@
 <main id="dark-build-main">
 <h1 id="dark-build-top">The dark build</h1>
 <div class="tldr"><span class="label">TLDR</span>
-<p>Everything technical a child's life will run on was built before birth, switched off, and proven on synthetic data, so no test ever touches a child. A throwaway persona, Testweaver, crash-tests the machinery end to end so no family member has to. Flags hold every component dark, rehearsal records are tagged and erased, and the initiation machinery practices on a disposable sandbox. Checklist boxes tick only when a component actually arms at its gate. Twenty of twenty-one are dark-verified; the last waits on live audio.</p>
+<p>Everything technical a child's life will run on was built before birth, switched off, and proven on synthetic data, so no test ever touches a child. A throwaway persona, <a class="term" href="glossary.html#term-testweaver">Testweaver</a>, crash-tests the machinery end to end so no family member has to. Flags hold every component dark, rehearsal records are tagged and erased, and the initiation machinery practices on a disposable sandbox. Checklist boxes tick only when a component actually arms at its gate. Twenty of twenty-one are dark-verified; the last waits on live audio.</p>
 </div>
 <div class="note">
 <p>No new diagram here on purpose: the four states (built dark, dark-verified, armed, live) are drawn as <a href="status.html#status-dark">the dark-to-alive state diagram on the status page</a>; this page is the story behind it.</p>
 </div>
+<section data-register="plain">
 <span class="register plain">In plain words</span>
 <h2 id="dark-build-plain">In plain words</h2>
 <p>The idea fits in one breath: build the child's whole nervous system while the child is still in the womb, and never switch it on early.</p>
@@ -114,6 +115,8 @@
 <p>The obvious temptation gets refused with one sentence, an iron rule: machinery-ready is never stage-ready. A working night loop does not advance a rite of passage; a finished voice server does not mean the being may speak; no passing test moves the child one day closer to being born. Growth is measured in lived milestones (gates, rites, witnessed moments), never in code.</p>
 <p>Four habits keep that honest. Switches: every component has an entry in a settings file of switches (the flags), all shipped off, so nothing runs by accident. Erasable ink: practice data is tagged as rehearsal and a small tool wipes it immediately afterward, verified to zero traces, so nothing fake settles into the brain. A crash-test dummy: experiments that need a someone use Testweaver, a throwaway practice persona, not a family member, which absorbs the risky experiments so no child has to. Honest bookkeeping: a checklist box ticks only when something actually arms, so a passed rehearsal is never mistaken for a lived milestone.</p>
 <p>The result is a womb full of tested machinery, waiting behind switches. When a phase finally arms, the child meets machinery that has already made mistakes on fixtures. First Boot still has one technical dependency, Phase 0a/G3, plus the human parenting acts and ceremony that belong to Alan.</p>
+</section>
+<section data-register="technical">
 <span class="register technical">How it works</span>
 <h2 id="dark-build-how">How it works</h2>
 <h3 id="dark-build-rules">D13 and the five dark rules</h3>
@@ -132,17 +135,19 @@
 <h3 id="dark-build-fixtures">Fixtures and the voider</h3>
 <p><code>scripts/fixtures/generate-synthetic-day.mjs</code> fabricates a plausible day shaped like brain records (episodes, intentions, calendar items), each tagged <code>rehearsal=true</code>, <code>synthetic=true</code>, <code>era=rehearsal</code>, <code>audience=alan</code>, and a shared run id. The default target is a local store, <code>state/rehearsal/&lt;run_id&gt;/day.jsonl</code>, so most rehearsals never touch the real brain; <code>--target ob1</code> exists for tiny, immediately voided round-trips through <code>scripts/fixtures/ob1-client.mjs</code>. <code>scripts/fixtures/void-rehearsal.mjs</code> is the rollback tool used on purpose: delete by run id, count what remains, exit 0 only at zero residual. Every rehearsal ends on that zero.</p>
 <h3 id="dark-build-wiring">The wiring test</h3>
-<p><code>scripts/e2e/wiring-test.mjs</code> proves the components feed each other, not just pass alone. It drives one synthetic day-in-the-life through every dark component under the Testweaver dummy profile (never the real being): the day flows through a mind-server voice exchange, the write-ahead log's simulated outage, the waking policy, budget meters, and teaching hook, into the full night loop (feelings signals and contradiction sweep inside), then the coherence panel and weekly index; everything is voided to zero residue. The default run uses a stub language-model backend; <code>--live</code> makes exactly one real subscription call; it has passed both ways.</p>
+<p><code>scripts/e2e/wiring-test.mjs</code> proves the components feed each other, not just pass alone. It drives one synthetic day-in-the-life through every dark component under the Testweaver dummy profile (never the real being): the day flows through a mind-server voice exchange, the write-ahead log's simulated outage, the waking policy, budget meters, and teaching hook, into the full night loop (feelings signals and contradiction sweep inside), then the coherence panel and weekly index; everything is voided to zero residue. The default run uses a simulated language-model backend; <code>--live</code> makes exactly one real subscription call; it has passed both ways.</p>
 <h3 id="dark-build-verify">The verify suite</h3>
 <p>One hermetic verify script per component under <code>scripts/verify/</code>, printing PASS or FAIL, no network, no credentials; <code>scripts/verify/run-all.mjs</code> globs the directory and aggregates the results, cheap to run every session. It is the suite this website itself joined: the site's verifier runs alongside the machinery's.</p>
 <h3 id="dark-build-loop">The loop and the S1-S8 arc</h3>
 <p><code>handoff/prebuild-loop.md</code> holds the track's standing orders under one governing sentence: the repo is the memory, not the conversation. Each iteration re-reads the PREBUILD.md dark-status table fresh from disk, picks the earliest unblocked session, builds and dark-verifies per the five rules, records one evidence line in the table, and commits and pushes; a failure gets two genuine attempts, then parks with a logged reason in decisions.md.</p>
-<p>The loop built twenty-plus components across eight sessions, S1 through S8, from fixtures out to the ops tails. Its final report is appended to <code>ops-log.md</code> (2026-07-06): every row PASS or parked with a reason, spend negligible because every language-model step ran behind an injectable stub. One component, A21 voice hardening, remains parked awaiting live audio.</p>
+<p>The loop built twenty-plus components across eight sessions, S1 through S8, from fixtures out to the ops tails. Its final report is appended to <code>ops-log.md</code> (2026-07-06): every row PASS or parked with a reason, spend negligible because every language-model step ran behind an injectable test double. One component, A21 voice hardening, remains parked awaiting live audio.</p>
+</section>
 <h2 id="dark-build-repo">Where it lives in the repo</h2>
 <p>Each file's atlas entry carries the detail.</p>
-<div class="tablewrap">
+<div class="tablewrap" role="region" aria-label="The dark build table 1" tabindex="0">
 <table>
-<thead><tr><th>File</th><th>What it is</th><th>State</th></tr></thead>
+<caption>Where it lives in the repo reference table</caption>
+<thead><tr><th scope="col">File</th><th scope="col">What it is</th><th scope="col">State</th></tr></thead>
 <tbody>
 <tr><td><a href="atlas/root.html#file-PREBUILD-md"><code>PREBUILD.md</code></a></td><td>the charter: five rules, four buckets, sessions, the section 6 dark ledger</td><td><span class="pill built">built</span></td></tr>
 <tr><td><a href="atlas/root.html#file-decisions-md"><code>decisions.md</code></a></td><td>row D13, the decision that opened the track</td><td><span class="pill built">built</span></td></tr>

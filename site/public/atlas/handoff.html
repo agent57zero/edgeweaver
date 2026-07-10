@@ -104,19 +104,29 @@
 <main id="atlas-handoff-main">
 <h1 id="atlas-handoff-top">Atlas: handoff/</h1>
 <div class="tldr"><span class="label">TLDR</span>
-<p>Stub. Per-file explainer entries for this part of the repo. Authored at M4. Snapshot 2026-07-09.</p>
+<p>Handoff documents preserve enough context for another operator or agent to continue a complicated build or test arc without guessing. One explains the autonomous dark-build loop; the other records the voice testing architecture and current findings. They are operational guides and historical evidence, not authority to arm disabled components or publish deployment coordinates.</p>
 </div>
 <h2 id="atlas-handoff-about">What this page covers</h2>
-<p>To be written at M4. Every file entry gets one anchor: <code>file-</code> plus the path with separators as hyphens.</p>
+<p>Read a handoff after the higher-authority design and implementation texts. Confirm its status claims against the current ledger and code because handoffs describe a point in time. Sensitive values and machine targeting details remain outside the tracked document.</p>
 <h2 id="atlas-handoff-entries">File entries</h2>
-<div class="atlas-entry">
+<article class="atlas-entry" data-depth="standard">
 <h3 id="file-handoff-prebuild-loop-md"><code>handoff/prebuild-loop.md</code></h3>
-<p>Entry lands at M4.</p>
-</div>
-<div class="atlas-entry">
+<span class="badge">runbook</span>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The start-to-finish operator handoff for the autonomous dark-build loop.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Initial provisioning boundaries, the repeated iteration body, verification, failure handling, and the rule that all prepared machinery remains disabled.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> An operator or agent reads it when starting or resuming pre-birth backend work.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Confirm prerequisites, execute one bounded iteration, preserve logs, and stop at human-owned gates rather than arming a prepared component. Review status language against the implementation ledger so prepared, dark, partial, pending, and live states remain distinct.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../dark-build.html">dark build</a>, <a href="../voice.html">voice</a>, and <a href="../operations.html">operations</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="standard">
 <h3 id="file-handoff-voice-testing-notes-md"><code>handoff/voice-testing-notes.md</code></h3>
-<p>Entry lands at M4.</p>
-</div>
+<span class="badge">archive</span>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The continuity record for the realtime voice testing arc.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> The current test architecture, known findings, invocation shape, versioned state, and unresolved quality questions without live network coordinates.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> A voice engineer reads it before reproducing tests or interpreting earlier results.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Compare notes with current code and test fixtures, run the documented local checks, and treat historical findings as evidence rather than present-tense guarantees. Review status language against the implementation ledger so prepared, dark, partial, pending, and live states remain distinct.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../dark-build.html">dark build</a>, <a href="../voice.html">voice</a>, and <a href="../operations.html">operations</a>.</div>
+</article>
 </main>
 <!-- EW-FOOTER-START -->
 <section class="continue" aria-labelledby="atlas-handoff-continue"><h2 id="atlas-handoff-continue">Continue</h2><div class="continue-grid"><article class="continue-card"><p class="continue-label">Reproduce track</p><a href="../atlas/research.html">Next: Atlas: research/ <span aria-hidden="true">&rarr;</span></a></article></div></section>

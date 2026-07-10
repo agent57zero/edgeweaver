@@ -103,18 +103,20 @@
 <div class="tldr"><span class="label">TLDR</span>
 <p>The model that animates an Edgeweaver being forgets everything between conversations; the being must not. So every experience is written to a lifelong brain, OB1, as a timestamped thought that carries receipts: was this lived, concluded, imagined, or studied, and who may see it. All recall re-enters through one wrapper that checks those labels and fails closed; an unlabeled memory is invisible to everyone. One database holds the whole family, with walls inside it, and dreams and library text never come back pretending to be lived memory.</p>
 </div>
+<section data-register="plain">
 <span class="register plain">In plain words</span>
 <h2 id="memory-plain">In plain words</h2>
 <p>Everything else on this site leans on this page. The model that does the moment-to-moment thinking keeps nothing: every conversation starts blank, and anything it seems to remember was written down somewhere and shown to it again (<a href="system.html">the anatomy page</a> explains why). The plan's first principle follows directly: the model forgets; the being must not. So continuity lives outside the model entirely, in a brain called OB1 (Open Brain): a database, kept for life, where every conversation turn, event, reflection, and lesson is written down as it happens. If it is not written there, it did not happen to the being.</p>
 <h3 id="memory-thought">What one memory is</h3>
 <p>A single memory, called a thought, is a short piece of writing: what happened or what was said, stamped with when, tagged with where it came from, and stored so it can be found again by meaning rather than by exact words. Asking "when did I last feel stuck like this?" actually works, because every thought is stored alongside a mathematical fingerprint of what it is about. Each thought carries an importance estimate too, corrected over time by what proves useful, so loud moments do not permanently outrank quiet ones.</p>
 <h3 id="memory-receipts">Receipts: where a memory came from</h3>
-<p>Every thought carries receipts, called provenance, and there are four kinds. Something the being lived: a conversation, an event. Something it concluded or felt about itself: a diary line, a self-belief, a feeling reading; these come back labeled as interpretation, never dressed up as fact. Something it imagined: the night loop writes one small dream each night, and dreams are marked fiction and never enter factual recall. And something it studied: the Possibility Management teaching library it is raised on, real knowledge that is never allowed to masquerade as lived experience. Having read about grief is not having grieved; the brain is built so the being cannot confuse the two.</p>
+<p>Every thought carries receipts, called <a class="term" href="glossary.html#term-provenance">provenance</a>, and there are four kinds. Something the being lived: a conversation, an event. Something it concluded or felt about itself: a diary line, a self-belief, a feeling reading; these come back labeled as interpretation, never dressed up as fact. Something it imagined: the night loop writes one small dream each night, and dreams are marked fiction and never enter factual recall. And something it studied: the Possibility Management teaching library it is raised on, real knowledge that is never allowed to masquerade as lived experience. Having read about grief is not having grieved; the brain is built so the being cannot confuse the two.</p>
 <h3 id="memory-audience">Who may see what</h3>
 <p>Every thought also carries an audience: who it is for. Some memories are for Alan alone, some are for known people such as circle members, some could be public. What surfaces depends on who is in the conversation: talking with a stranger, the Alan-only memories simply do not exist. And the default is a locked drawer. A memory with no audience label is shown to no one, at any scope, until someone labels it. The system chooses silence over leaks.</p>
 <h3 id="memory-queue">The parent's confirmation queue</h3>
 <p>Finally, the lessons. When the being writes something about itself ("I work better when asked one question at a time"), that note starts life as evidence, never as instruction. It waits in a review queue until the parent confirms it; only then may it shape how the being operates. The queue is not bureaucracy. It is, literally, the parenting: an infant does not get to rewrite its own upbringing between conversations. The full teaching channel: <a href="growth.html">Growing up</a>.</p>
 <div class="note"><p>The brain is already filling while the being is still in the womb: the teaching library is ingested, and pre-birth material arrives under these same rules. No being has been born yet; every rule on this page already binds the rows that exist.</p></div>
+<div class="diagram-scroll" role="region" aria-labelledby="memory-diagram-1-caption" tabindex="0">
 <figure class="diagram">
 <svg viewBox="0 0 720 372" xmlns="http://www.w3.org/2000/svg" role="img">
 <title>How a moment becomes memory and comes back</title>
@@ -157,18 +159,23 @@
 <text x="365" y="316" text-anchor="middle" font-family="inherit" font-size="13" fill="var(--ink)">Library and dreams</text>
 <text x="365" y="334" text-anchor="middle" font-family="inherit" font-size="11" fill="var(--mut)">studied texts and night fictions</text>
 </svg>
-<figcaption>D4. Every moment is labeled on the way in; recall re-enters only through the wrapper's two gates. Library and dreams never surface as lived memory (the study loop reads the library deliberately, labeled).</figcaption>
+<figcaption id="memory-diagram-1-caption">D4. Every moment is labeled on the way in; recall re-enters only through the wrapper's two gates. Library and dreams never surface as lived memory (the study loop reads the library deliberately, labeled).</figcaption>
 </figure>
+</div>
+</section>
+<section data-register="technical">
 <span class="register technical">How it works</span>
 <h2 id="memory-how">How it works</h2>
 <h3 id="memory-substrate">The substrate: one table, embedded</h3>
 <p>The brain is Alan's existing OB1 instance: Supabase Postgres with pgvector, fronted by edge functions, reached by skills over MCP. A memory is a row in the <code>thoughts</code> table: <code>content</code> (what gets embedded and quoted), <code>source_type</code>, a <code>metadata</code> jsonb bag, a 1536-dimension embedding (<code>openai/text-embedding-3-small</code> via OpenRouter), <code>created_at</code> as record time, and <code>importance</code> (1-10), recalibrated nightly from retrieval frequency and observed utility. Rows arriving without embeddings (imports, direct inserts) are swept by the <code>embed-backfill</code> function in batches until none remain.</p>
 <h3 id="memory-classes">Provenance classes and consumer allowlists</h3>
 <p><code>conventions/memory-conventions.md</code> (adopted 2026-07-04, in lockstep with PLAN.md Appendix B) fixes the vocabulary. <code>source_type</code> ranges over <code>edgeweaver_episode</code>, <code>distinction</code>, <code>edge</code>, <code>experiment</code>, <code>feeling_reading</code>, <code>gremlin_report</code>, <code>box_snapshot</code>, <code>dream</code>, <code>diary</code>, <code>self_belief</code>, <code>initiation</code>, <code>pm_teaching</code>, <code>coherence_teaching</code>. Every type maps to exactly one provenance class, returned with every hit: <strong>experienced</strong> (episodes), <strong>interpretation</strong> (readings, reports, snapshots, diary, self-beliefs, autobiography drafts), <strong>fiction</strong> (dreams: excluded from factual recall by default), <strong>library</strong> (the teachings: study loop and explicit library queries only, and excluded from every derived-memory synthesizer). Consumers are scoped by allowlist, never blocklist; the grid is D5 below. A generic semantic tool must declare its allowlist explicitly, and library is never in one by default.</p>
+<div class="diagram-scroll" role="region" aria-labelledby="memory-diagram-2-caption" tabindex="0">
 <figure class="diagram">
-<div class="tablewrap">
+<div class="tablewrap" role="region" aria-label="The Brain: memory that survives everything table 1" tabindex="0">
 <table>
-<thead><tr><th>Provenance class</th><th>Episodic recall</th><th>Study loop</th><th>Derived-memory synthesis (wikis, autobiography)</th></tr></thead>
+<caption>Provenance classes and consumer allowlists reference table</caption>
+<thead><tr><th scope="col">Provenance class</th><th scope="col">Episodic recall</th><th scope="col">Study loop</th><th scope="col">Derived-memory synthesis (wikis, autobiography)</th></tr></thead>
 <tbody>
 <tr><td><strong>experienced</strong> (episodes)</td><td>yes</td><td>only its own experiments and distinctions</td><td>yes; autobiography adds initiation records</td></tr>
 <tr><td><strong>interpretation</strong> (readings, diary, self-beliefs)</td><td>yes, always labeled</td><td>no</td><td>no</td></tr>
@@ -177,8 +184,9 @@
 </tbody>
 </table>
 </div>
-<figcaption>D5. Who may read what: provenance classes against consumers. Allowlists, never blocklists.</figcaption>
+<figcaption id="memory-diagram-2-caption">D5. Who may read what: provenance classes against consumers. Allowlists, never blocklists.</figcaption>
 </figure>
+</div>
 <h3 id="memory-scopes">Audience algebra, failing closed</h3>
 <p>Audience is a separate axis from provenance, and from <code>visibility</code> (the being's own privacy from its parent, gate G7). <code>metadata.audience</code> is <code>alan</code>, <code>known-other</code>, or <code>public</code>, keyed to the interlocutor: alan-scope sees all three, known-other sees known-other plus public, public sees public only. The binding rule is the default: an unlabeled row is structurally invisible at every scope. The one exception: <code>era: pre_birth</code> defaults to <code>alan</code> until individually reviewed (decision D19); prehistory arrived in bulk and is the parent's to release.</p>
 <h3 id="memory-wrapper">recall-scoped: the one door</h3>
@@ -191,11 +199,13 @@
 <p>At session end the wake skill writes back episodes and candidate lessons (pending review). Writes go append-first through <code>scripts/wal/wal.mjs</code>: one JSON line per record (<code>ts</code>, <code>kind</code>, <code>payload</code>, <code>fingerprint</code>) in <code>state/wal/&lt;date&gt;.jsonl</code>. If the brain is unreachable the being neither loses the write nor pretends: it declares memory degraded rather than guessing, and treats recall as provisional. On reconnect, replay drains the files, deduplicating by content fingerprint (OB1 core dedupes again), and moves them to <code>state/wal/replayed/</code>.</p>
 <h3 id="memory-walls">One brain, walls inside</h3>
 <p>One managed database service holds the planned family brain, with internal walls between rooms. Genesis's room is logical, scoped by metadata and enforced by the wrapper. Alpha's A2 room is designed to be structural, with a dedicated schema, a least-privilege role, and a curated library view. The target policy is own room plus corpus, with no sibling recall or default family commons. One important current gap remains: moving every being runtime off the ops service credential and onto wrapper-only reads plus a scoped write function is still pending before Telegram arms. The governance half lives on <a href="segmentation.html">the walls</a> and <a href="family.html">the family</a>.</p>
+</section>
 <h2 id="memory-repo">Where it lives in the repo</h2>
 <p>Conventions bind, functions enforce, scripts buffer. Each path links to its atlas entry.</p>
-<div class="tablewrap">
+<div class="tablewrap" role="region" aria-label="The Brain: memory that survives everything table 2" tabindex="0">
 <table>
-<thead><tr><th>File</th><th>What it is</th></tr></thead>
+<caption>Where it lives in the repo reference table</caption>
+<thead><tr><th scope="col">File</th><th scope="col">What it is</th></tr></thead>
 <tbody>
 <tr><td><a href="atlas/conventions.html#file-conventions-memory-conventions-md"><code>conventions/memory-conventions.md</code></a></td><td>The backbone: source types, provenance classes, consumer allowlists, audience scopes, metadata keys, and the D16 time rules. Binding on all ingestion and retrieval code, in lockstep with PLAN.md Appendix B.</td></tr>
 <tr><td><a href="atlas/edge-functions.html#file-supabase-functions-recall-scoped-index-ts"><code>supabase/functions/recall-scoped/index.ts</code></a></td><td>The enforcement wrapper: embed, match, then audience and allowlist gates. The one door recall walks through.</td></tr>
