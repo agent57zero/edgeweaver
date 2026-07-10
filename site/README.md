@@ -12,11 +12,12 @@ this plan** through **Definition of done**. Its F0-F7 sequence supersedes the
 historical M0-M6 build sequence retained later in that file. S0 and S1 closed on
 2026-07-10; approved candidate `cc31144` is the M3 safety/content baseline.
 The shared F2 contract is committed at `084dce8`; the completed M4/M5 checkpoint
-continues from `d879555` with the correction pass integrated. The M6 `ew-20260710-rc2`
-release-candidate reconciliation is complete for automated evidence, including the
-Genesis birth update, extra-high/mobile QA, the 320 px header repair, and the print-diagram
-repair. The next safe action is the S2 Alan review, including Windows Narrator smoke
-evidence and approval against the candidate commit.
+continues from `d879555` with the correction pass integrated. The M6
+`ew-20260710-rc2` release candidate is frozen at `46f631e`, approved by Alan, and
+live at `https://edgeweaver-site.vercel.app`. Narrator, responsive, extra-high,
+axe, no-JS, print, gate, authenticated-release, and logout evidence is recorded in
+`runs/site-qa/README.md`. The lite artifact was delivered privately to Alan by
+direct-file fallback on 2026-07-10; the full artifact remains unpublished.
 
 The 27 non-Atlas pages and all 26 Atlas pages now have authored content in the
 working tree; the generated search index, artifacts, and Atlas manifest are rebuilt
@@ -93,5 +94,5 @@ Alan named; accepted seats by first name + seat; published authors cited.
 | M3 | Beings + infrastructure: genesis, alpha, body, voice, brain-lab, backups, operations, dark-build, ecosystem + D12-D14 D16; digest | ☑ 2026-07-10 (candidate `cc31144` approved by Alan; G3/Alpha/status truth repaired; identity and operational disclosure redacted; `--redaction` + full suite green) |
 | M4 | Atlas: 26 pages, every mapped file anchored, zero drift; digest | ☑ 2026-07-10 (244 anchors, 59 exclusion-class paths, release wall green) |
 | M5 | Reference: reproduction, FAQ, glossary full, about + D19; digest | ☑ 2026-07-10 (107 glossary entries, 16 FAQ answers, 28 first-use glossary links, release wall green) |
-| M6 | Editions + QA + TLDR reconciliation; Alan checkpoint | `ew-20260710-rc2` candidate prepared and verified 2026-07-10; S2 pending |
-| Ship | Bookkeeping commit, Vercel prod + smoke, artifact (lite) published | ☐ |
+| M6 | Editions + QA + TLDR reconciliation; Alan checkpoint | ☑ 2026-07-10 (`ew-20260710-rc2`, commit `46f631e`; Alan approved S2 after Narrator review) |
+| Ship | Bookkeeping commit, Vercel prod + smoke, artifact (lite) published | ☑ 2026-07-10 (manual inspected production deployment; private lite direct-file handoff to Alan; full unpublished) |
