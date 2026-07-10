@@ -1,17 +1,607 @@
-# The site plan: "How Edgeweaver Works" (approved, with adversarial trail)
+# The site plan: "How Edgeweaver Works" (v4 execution handoff)
 
-> Lineage record, per the house convention that plans carry their revision trail.
-> Produced 2026-07-09 in session with Alan: three exploration passes, two design
-> passes, a fresh-context Fable adversarial pass (round 1), and a co-evolve bounce
-> (round 2, declared convergence). Approved by Alan 2026-07-09. Decision row: D21
-> (site) and D22 (code license) in decisions.md. The build ledger lives in
-> site/README.md. This file is the plan as approved; if practice diverges, the
-> divergence gets recorded, not hidden (living-plan stipulation).
+> Current execution authority for finishing the site. Written for Luna as lead
+> implementer and for a root agent acting as orchestrator. The approved v3 design,
+> page inventory, editorial rules, delivery architecture, and adversarial trail are
+> retained below as the design specification. This v4 handoff supersedes the old
+> build sequence and conflicting v3 clauses for navigation, the viewer-selected
+> reading lens, tiered Atlas depth, identity/operational redaction, verification,
+> and release. V3 governs everything else. PLAN.md, GROWING-EDGEWEAVER.md, and
+> FAMILY.md remain higher authority.
 
-Version: v3, FINAL. Converged after a fresh-context Fable adversarial pass (round 1)
-and a co-evolve bounce (round 2), per Alan's instruction and the project's own
-witnessed-revision method. Full trail at the end. Snapshot date for all site
-content: 2026-07-09.
+Version: v4, EXECUTION HANDOFF. Audit date: 2026-07-09. Content snapshot remains
+2026-07-09 until the M6 reconciliation deliberately changes it.
+
+## How Luna must use this plan
+
+1. Read this handoff through **Definition of done** before editing anything.
+2. Read `site/README.md` and `site/src/AUTHORING.md` completely.
+3. Preserve the current dirty site work. Do not stash, reset, clean, restore,
+   checkout, or regenerate over it.
+4. Follow the work waves and file ownership below. Do not drive from the historical
+   v3 build sequence later in this file.
+5. A line beginning with **STOP** is a real stop. Luna reports the evidence to the
+   orchestrator; Alan closes the human decision.
+6. The orchestrator owns assignments, freezes, integration, verification, Git, and
+   release. Luna owns the shared implementation contract and applies integrated
+   fixes. Content agents own only the files explicitly assigned to them.
+
+## Current repository truth
+
+| Surface | Audited state |
+|---|---|
+| Git | `main` and `origin/main` both end at `34a3da4` (site M2). There is no other branch, pull request, stash, or worktree containing later site work. |
+| Dirty work | Thirteen tracked site files contain the live continuation: nine M3 pages, `reproduction.html`, `glossary.html`, and both generated artifact editions. They add about 3,100 lines. |
+| Untracked file | Root `AGENTS.md` is unrelated to the site batch. Never stage it as part of site work. If Alan later chooses to track it, add its Atlas entry before M4 closes. |
+| Completed | Pre-M0, M0, M0.5, M1, and M2 are committed. The gate spike proved Routing Middleware attaches to the framework-less static site. |
+| In progress | All nine M3 pages are substantially authored but uncommitted. Reproduction and a 97-term glossary make M5 partially authored. |
+| Dominant gap | All 26 Repo Atlas pages still contain placeholder prose. Their approximately 243 file anchors are wired, but the required explanations do not exist. |
+| QA | `build-site --check` reports 57 generated files fresh. Site checks 1-12 pass across 54 HTML pages. Full/lite artifacts are about 562/495 KB. `--against-live` reports zero path drift. |
+| Important interpretation | A green verifier currently proves structure, safety patterns, and anchor wiring. It does not prove editorial completeness, semantic redaction, accessibility, or that Atlas entries are authored. |
+| Ship state | M6, final bookkeeping, final Vercel production promotion, and private lite-artifact publication are not complete. The existing production alias must be treated as an untrusted gate-spike deployment until final smoke testing identifies its exact release. |
+
+Before changing a dirty file, Luna creates a gitignored recovery patch at
+`state/site-pre-finish.patch` containing exactly the thirteen tracked site files and
+records its SHA-256 in the session log. This patch is recovery evidence only. It is
+never committed, uploaded, quoted, or used as the final source.
+
+## Locked execution decisions
+
+- Preserve all 53 stable page URLs, existing page-prefixed IDs, both registers,
+  both artifact editions, and the static, dependency-free architecture.
+- Keep the current warm editorial field-guide identity. Refine it with precise
+  systems structure; do not turn it into generic developer docs or mystical UI.
+- Present the site through five reader hubs: Overview, System, Beings, Rebuild,
+  and Reference. The current full-site list becomes contextual navigation.
+- Add deterministic, network-free full-text search. It must work from `file://`,
+  static HTTP, the gated deployment, and both artifact editions.
+- Add a viewer-selected Plain / Technical / Both lens. Both is the default;
+  no-JS, print, and uninitialized artifacts show both. Status, uncertainty,
+  honesty, and repo-location sections are never hidden by the lens.
+- Cover every tracked file exactly once in the Atlas, but use tiered depth:
+  authority/runbook entries 160-250 words; active code/schema/data entries
+  100-180; generated/archive/fixture entries 50-100. Repeated bundles get one
+  shared anatomy explanation plus concise anchored member roles.
+- G3 remains birth-blocking. Site language must say that First Boot awaits the
+  three Alan-owned parenting acts plus Phase 0a/G3.
+- Operational disclosure is mechanism-complete but coordinate-redacted. Explain
+  how backups, keys, accounts, schedules, and networks work without publishing
+  exact times, custody locations, account topology, quiet-hour coordinates, or
+  other targeting details in any site edition.
+- This repository must remain private. A future public release requires a new
+  sanitized mirror and a history-aware review; password rotation cannot sanitize
+  this repository's history.
+- Continue on `codex/finish-edgeweaver-site`, created locally from the current
+  dirty `main`. If that branch already exists when work resumes, reuse it. Do not
+  create parallel finish branches.
+- No analytics, telemetry, service worker, remote fonts, remote runtime assets,
+  decorative animation, social-preview image, or new application framework.
+
+## Mandatory safety correction before parallel authoring
+
+### STOP S0: contain deployment before the first push
+
+Alan checks Vercel Project Settings > Git. If the repository is connected, he
+disconnects it or disables deployment for all branches. Vercel creates deployments
+for pushes to connected repositories by default, so no finish-branch or `main`
+push happens until this is confirmed. The approved release path is a manual deploy
+from `site/`, never automatic deployment from Git.
+
+Also confirm, without submitting a password through agent chat or a terminal, that
+the current production alias returns the gate for the root, one asset, one nested
+Atlas URL, and a missing page. Do not deploy the current dirty tree.
+
+### Central redaction and truth repair
+
+Luna alone performs this pass before other authors fan out:
+
+1. Remove all identity-derived Genesis content that violates D18/D21: named seed
+   values, harvest-answer structure, answer-derived principle architecture,
+   gremlin-inventory traits, boundary wording, and close paraphrases. The affected
+   surface includes Genesis, Alpha, Family, Soul, Story, Glossary, and Loops. Keep
+   only existence, shape, ceremony role, and the approved Q1-Q12 domain labels.
+2. Apply the selected operational tier to Body, Voice, Brain Lab, Backups,
+   Operations, Dark Build, Ecosystem, Reproduction, and any cross-links. Keep
+   mechanism and reproduction method; remove coordinates and targeting details.
+3. Correct status truth: Alpha A1 is partial/in progress, not wholly unstarted;
+   G3 is open and birth-blocking; no being has been born; headings such as "twenty
+   decisions" must not claim a stale count.
+4. Clarify that identity is canonical only in each being's own soul repository;
+   this site describes identity mechanics but is not an identity source.
+5. Extend the authoring contract so later agents cannot reintroduce any of these
+   categories.
+6. Extend site verification with a fail-closed release redaction check. It reads
+   the relevant authority sources and a gitignored labeled denylist, compares
+   normalized visible page text, generated search indexes, and both artifacts, and
+   reports labels plus file/line, never forbidden values. Search outputs are also
+   included in secret, probe, forbidden-name, operational-coordinate, and em-dash
+   scans. `--redaction` and `--release` fail if required authority sources or
+   denylist categories are missing.
+
+### STOP S1: retrospective M1 approval
+
+After the corrected Honesty, Voice, known-gap, status, and redaction material is
+ready, Luna builds, passes `verify-site --redaction`, and creates a local candidate
+commit without pushing it. Alan explicitly approves that hash. The current ledger
+phrase "checkpoint posted as digest" does not satisfy v3's definition of
+`[CONFIRM]`. S1 also records the D21 amendments for mechanism-without-coordinates
+disclosure and the permanent-private-repository rule. If Alan requests changes,
+the candidate is abandoned; Luna revises, rebuilds, reruns release verification,
+and presents a new hash. Record approval later in a non-public bookkeeping commit.
+
+Only after S0 and S1 close may Luna push the finish branch or parallelize content.
+
+### Verification mode matrix
+
+- **Default:** the current deterministic build, links, IDs, internal Atlas wiring,
+  em-dash, external-load, secret, gate, HTML, probe, and artifact checks. Once F2
+  lands, it also requires fresh and valid search wiring. It must stay green at
+  every checkpoint but does not demand final editorial completeness.
+- **`--against-live`:** default plus the read-only tracked-path drift report. It
+  stays green at every checkpoint; newly tracked paths are added to the current
+  partial Atlas in the same checkpoint before push.
+- **`--redaction`:** default plus fail-closed identity, operational disclosure,
+  forbidden-name, search-index, secret, probe, and artifact scans. It is independent
+  of Atlas completeness. It must pass in F1 before S1 and at every later checkpoint.
+- **`--release`:** the superset: redaction plus zero placeholders, complete Atlas
+  fields/depth, paired registers, glossary wiring, table/control/SVG semantics,
+  license packaging, gate hardening, and release metadata. It first becomes
+  required green at F4 and remains mandatory through Ship.
+
+Required identity sources are `avatars/genesis/manifest.json` (including all seed
+principles), Genesis's harvest/calibration/succession soul-source files, the
+Genesis gates handoff, and the governing decision/PLAN boundary rows. The scanner
+allows only the approved Q1-Q12 domain labels. The gitignored denylist uses
+`category.name=value` lines and must contain at least one nonempty entry for each
+of: `operations.schedule`, `operations.quiet-hours`, `operations.custody`,
+`operations.account-topology`, and `operations.network-topology`. Identity
+categories are derived from authority sources, not copied into a tracked config.
+`deployment.password` is optional because the real password exists only in the
+Vercel dashboard; if Alan privately seeds it, it is scanned but never reported.
+No command, log, diff, or failure message may print a denylist value.
+
+## Shared implementation contract Luna freezes first
+
+Luna owns these shared surfaces for the whole build: `site/src/`, the three
+partials, shared CSS/JS, middleware and Vercel config, the builder, the site
+verifier, generated artifacts/manifest/search output, the site ledger, and final
+bookkeeping. No other agent edits them.
+
+### Navigation and page metadata
+
+Extend `nav.json` without changing any slug. Each page record gains `hub`,
+`section`, `kind`, `summary`, and `audiences`. Allowed `kind` values are
+`overview`, `concept`, `being`, `procedure`, `reference`, and `atlas-file`.
+Allowed audiences are `circle`, `trusted-outsider`, `operator`, `engineer`, and
+`agent`. The root gains an ordered `hubs` collection with an explicit `homeSlug`
+for each hub, three ordered `readingTracks` arrays, and a nonsecret `releaseId`.
+The builder validates every enum and referenced slug and emits the release ID in
+page/artifact metadata.
+
+- **Overview:** Home, Honesty, Story, Status, Reading Guide.
+- **System:** System hub, grouped into Identity and Continuity; Growth and
+  Relationship; Safety and Measurement; Infrastructure and Operations.
+- **Beings:** Genesis, Alpha, and Family/Experiment.
+- **Rebuild:** Reproduction Guide and the Repo Atlas.
+- **Reference:** Glossary, FAQ, and About.
+
+The three continuation tracks are:
+
+1. **Understand:** Home -> Honesty -> System -> Memory -> Soul -> Growth -> Family
+   -> Genesis -> Alpha -> Status -> FAQ.
+2. **Technical:** Home -> System -> Memory -> Loops -> Measurement -> Governance
+   -> Segmentation -> Body -> Voice -> Brain Lab -> Backups -> Operations -> Dark
+   Build -> Ecosystem -> Status.
+3. **Reproduce:** Reading Guide -> Honesty -> Reproduction -> Atlas hub -> Atlas
+   pages in `nav.json` order -> About.
+
+The builder renders five global hub links, a left rail containing only the current
+hub and subsection, linked breadcrumbs, a sticky desktop on-page rail, a compact
+tablet TOC, and track-aware Continue cards. There is no implicit or persisted track
+state: a page shows one labeled next card for each reading track that contains it.
+Artifact page sections retain the same cards after links are rewritten to anchors.
+The old 53-page linear pager is removed.
+
+### Search interface and generated record
+
+The builder emits `site/public/assets/search-index.js` from the current authored
+`site/public` `<main>` inputs, never from Git state. A record has:
+
+`{ slug, anchor, title, hub, section, kind, audiences, heading, register, badges, filePath, text }`
+
+Create one record for every authored h2 with a nonempty ID and one per Atlas file
+entry. Decode HTML entities; exclude scripts, styles, navigation, fixed field
+labels, and SVG internal text; retain figcaptions plus useful code/path tokens.
+Normalize case and whitespace. Rank exact file-path/title matches first, then title
+prefixes, heading matches, all-query-token body matches, and partial body matches.
+Break equal scores by `nav.json` page order, source heading order, then
+slug-plus-anchor. Return at most 50 results. Map overview/concept to Concepts,
+being to Beings, procedure/reference to Reference, and atlas-file to Files. No
+query leaves the device; there is no logging or analytics.
+
+Each rendered web page exposes its root prefix (`""` or `"../"`). Runtime links are
+built from canonical slug plus anchor, so nested `file://` pages work without
+root-relative URLs. The search dialog supports a visible Search button, Ctrl/Cmd+K,
+arrow keys, Enter, Escape, focus restoration, `aria-live` result counts, and an
+input-centered `aria-activedescendant` keyboard model. Search and page content are
+rendered with `textContent`, never HTML interpolation. Serialized inline indexes
+escape `<`, `</script`, U+2028, and U+2029.
+
+The full artifact uses direct `#anchor` links. The lite artifact includes a
+lightweight record for every tracked file, pointing to a distinct one-line map row
+on the Atlas hub and labelled "detail in the gated/full edition"; it never
+duplicates `file-*` IDs. `atlas/index.html` therefore contains one deterministic
+map row per tracked path, with a normal web/full link to the detailed entry. Both
+artifacts inline their matching index and interaction code; they never fetch it.
+
+Artifacts receive an explicit top toolbar with Search, Plain/Technical/Both, and
+Theme, plus a static five-hub contents tree. One lens choice affects all included
+register sections. Continuation cards stay inside each page section and their links
+are rewritten to artifact anchors. Contextual side rails are web-only.
+
+Acceptance examples:
+
+- On web/full, an exact tracked path ranks its one Atlas file anchor first. In lite,
+  it ranks the corresponding Atlas-hub map row first and names the detail limit.
+- A core mechanism term ranks its concept page above incidental mentions.
+- "First Boot" returns Genesis, Status, and Reproduction.
+- Every result destination passes the existing link/anchor verifier.
+
+### Reading lens and content markup
+
+Wrap paired registers in sections with `data-register="plain"` and
+`data-register="technical"`. The root uses `data-reading="both|plain|technical"`.
+Both is the initial state. The viewer's explicit selection may persist in local
+storage. CSS hides only the unselected paired register; shared TLDR, repo map,
+status, uncertainty, honesty, and navigation stay visible. Print and no-JS force
+both. The verifier requires paired markup on substantive concept/being pages and
+forbids a lens on pages without paired registers.
+
+If a hash or search result targets a register hidden by the active lens, reveal the
+target for that navigation, update the visible lens control to Both, and announce
+the change. This temporary reveal does not overwrite the stored preference; a
+later explicit lens choice does. Search results label their Plain/Technical
+register.
+
+Progressive enhancement is mandatory. Navigation is visible and usable by default;
+JS adds a `.js` class and only then upgrades mobile navigation into a modal drawer.
+Without JS, navigation and all content remain visible, both registers show, the
+system theme preference applies, and Search/Lens controls stay absent with a clear
+Find-in-page fallback in the Reading Guide.
+
+### Atlas entry contract
+
+Every pre-planted file anchor becomes one `<article class="atlas-entry">` with an
+immutable h3 ID, path, allowed badge, and `data-depth="deep|standard|compact"`.
+Deep means 160-250 words, standard 100-180, and compact 50-100. Count only prose
+inside the five field values; exclude path, badge, fixed labels, and code tokens.
+There are no word-band exceptions. A tier-governed entry that cannot safely reach a
+larger band uses compact plus `described-not-shown`, never filler or disclosure.
+Each entry contains all five labeled fields:
+
+1. What it is.
+2. What it contains, or governed shape only.
+3. Who reads it and when.
+4. How to verify or reproduce it.
+5. Related concept links.
+
+The verifier enforces the fields, allowed badge, depth word band, unique anchor,
+assigned Atlas page, and absence of `Stub`, `TBD`, `TODO`, `To be written`, and
+`Entry lands`. `atlas/index.html` provides the map and filter. `gitignored.html`
+describes tiers and shapes without inventing tracked anchors.
+
+### Responsive and accessibility contract
+
+- Desktop: 240-260 px contextual rail, 680-760 px reading column, 200-220 px
+  sticky on-page rail. Tablet collapses the right rail. Mobile uses one column and
+  an accessible modal navigation drawer.
+- Mobile drawer and search support Escape, focus trapping/restoration,
+  close-on-selection, background-scroll lock, and 44 px targets.
+- Add `scroll-margin-top` to anchored headings. Long paths wrap. Only diagram and
+  table frames may scroll horizontally.
+- At narrow widths, complex SVGs sit in labeled scroll frames with a minimum
+  readable canvas; their adjacent prose remains the complete text alternative.
+  Diagram and table scroll frames use `role="region"`, an accessible name,
+  `tabindex="0"`, visible focus, and keyboard scrolling.
+- Every table has a caption or `aria-labelledby`; every header cell has the right
+  `scope`. Every SVG keeps role, title, and description.
+- Split paragraphs over about 180 words and prefer a natural split near 120.
+- Use a separate accessible ochre text token (`#a85f08` on the light paper
+  ground, contrast about 4.9:1) while preserving the current decorative strand.
+- Meet WCAG 2.2 AA for text and controls, keyboard use, reduced motion, 200% zoom,
+  light/dark modes, no-JS, and print. M6 includes an axe-core-equivalent automated
+  pass over every page template in both themes and a Windows Narrator smoke test on
+  Home, one system page, one Atlas page, full artifact, and lite artifact. The
+  screen-reader pass covers drawer, search results, lens, TOC, and scroll regions.
+  If the execution environment has no approved accessibility runner, stop and ask
+  the orchestrator to supply one; manual visual checks alone cannot close M6.
+
+## Parallel work protocol
+
+All agents share one working tree. File ownership, not Git merging, prevents
+collisions. The orchestrator announces each wave, names owners and files, and
+confirms every writer is idle before generation. Subagents never switch branches,
+stage, commit, push, stash, reset, clean, run formatters, or run the builder.
+
+Only Luna may mutate shared/generated files. Only the orchestrator authorizes Git
+and release actions. During a build freeze, Luna runs the builder once, then the
+orchestrator reviews and stages explicit paths. Never use `git add -A`.
+
+### Worker ownership
+
+| Worker | Exclusive write surface | Baseline Atlas anchors |
+|---|---|---:|
+| Luna, lead/integrator | All non-Atlas pages; all current dirty M3/M5 drafts; shared implementation surfaces listed above; final bookkeeping | n/a |
+| Atlas A, authority/identity/archive | `root`, `avatars-genesis`, `avatars-alpha`, `brains`, `checklists`, `conventions`, `handoff`, `research`, `runs`, `sources`, `templates`, `village` | 122 |
+| Atlas B, code/operations/site | `index`, `scripts-ingestion`, `scripts-lifecycle`, `scripts-signals`, `scripts-ops`, `scripts-brains`, `scripts-testbed`, `scripts-verify`, `edge-functions`, `tasks`, `tools`, `voice`, `gitignored`, `site` | 121 |
+| Root, orchestrator | No authored files while workers are active. Owns scope, freezes, review routing, Alan stops, acceptance, staging, commits, pushes, and release | n/a |
+
+An agent that finds an authority conflict, needs a new shared class/schema field,
+or discovers a tracked-path change stops and reports it. The agent does not cross
+ownership to fix it.
+
+The 122/121 counts describe the audited baseline only. New tracked site outputs,
+including the search index and distributable license notice, belong to Atlas B's
+`site` page. At each freeze, the orchestrator derives the authoritative expected
+set from live tracked paths plus `atlas-map.json`; hard-coded totals never decide
+release readiness.
+
+Progress report cadence: every four Atlas pages or 30 anchors, whichever comes
+first. Each report states files done, anchors done/remaining, redaction decisions,
+targeted checks, and blockers. Final handoff states exact files, exact dynamic
+anchor count, zero placeholder hits, every entry within its word band, zero
+`git diff --check` errors, and no edits outside ownership.
+
+## Finish sequence
+
+### F0 - Preserve and branch (serialized)
+
+1. Root announces a write freeze and confirms no agent is editing.
+2. Luna re-audits branch ancestry, all branches, worktrees, stashes, status, and the
+   complete dirty-site path set. The expected baseline is the thirteen tracked
+   files listed above plus untracked root `AGENTS.md`. Any unexplained difference is
+   a stop for the orchestrator, not something to normalize away.
+3. From the verified current set, create the gitignored binary recovery patch;
+   record its hash without exposing content.
+4. Run `git diff --check`, builder `--check`, site verify default, and
+   `--against-live`. These must match the audited baseline.
+5. If no finish branch exists, create `codex/finish-edgeweaver-site` without
+   dropping dirty changes. If one exists, verify it descends from audited `main` and
+   contains no divergent work before reusing it; otherwise stop.
+6. Complete S0. Do not push before S0 closes.
+7. Stage only this v4 plan and the site README pointer for the local handoff commit.
+
+### F1 - Safety baseline and M3 close (serialized Luna)
+
+1. Apply the central redaction, operational-tier, G3, Alpha A1, title, and honesty
+   repairs across committed and dirty pages.
+2. Add the release redaction/completeness checks and update the authoring contract.
+3. Finish the nine M3 pages and confirm diagrams D12-D14 plus D16 are present and
+   truthful. Keep Reproduction/Glossary as M5-in-progress.
+4. Run the builder once under freeze; run site verification default,
+   `--against-live`, and `--redaction`, then the repo suite.
+5. Stage the exact sanitized sources, shared safety changes, and generated outputs;
+   create a local candidate commit without pushing. Present its hash and the
+   corrected M1/M3 digest to Alan, then stop at S1.
+6. After approval, record S1 and its D21 amendments in a separate non-public
+   bookkeeping commit, tick M3, and push both commits. The candidate contains all
+   dirty narrative sources and artifacts together so deterministic outputs never
+   get ahead of sources. It may name M5 as a sanitized draft; M5 remains unticked.
+
+### F2 - Shared shell, search, and design contract (Luna; Atlas agents read-only)
+
+1. Freeze and document the navigation schema, component vocabulary, Atlas markup,
+   search record/ranking, reading lens, and responsive breakpoints in AUTHORING.
+2. Implement the five-hub shell, contextual rails, sticky TOC, continuation cards,
+   search, reading lens, mobile focus behavior, contrast token, diagram frames,
+   and table/anchor foundations.
+3. Extend the builder for generated search output and edition-specific inline
+   search/lens behavior.
+4. Extend the verifier for search freshness/destinations, paired register markup,
+   skip targets, accessible control names, table semantics, SVG labelling, no
+   positive tabindex, script-safe index serialization, all content-security scans
+   over indexes, and Atlas completeness.
+5. Update `site/README.md` with the generated search asset, `--release` command,
+   artifact toolbar, and no-JS Find-in-page fallback so the resume guide matches the
+   new contract.
+6. Build and verify under freeze. Commit/push the shared contract before Atlas
+   authoring begins so all workers write to one stable target.
+
+### F3 - Parallel content wave
+
+Run Luna, Atlas A, and Atlas B concurrently on their exclusive surfaces.
+
+**Luna:** integrate and polish all 27 non-Atlas pages; build the definition-first
+homepage, truth strip, three path cards, system clusters, and Genesis/Alpha
+comparison; finish Reproduction, FAQ, Glossary, and About; split dense paragraphs;
+add first-occurrence glossary links; add table semantics and register wrappers;
+preserve the six-section skeleton and immutable IDs.
+
+**Atlas A/B:** author every assigned entry to the frozen contract and depth band.
+Genesis soul-source entries stay named-never-summarized. Repeated run bundles share
+one anatomy explanation but retain concise individual anchored roles. Agents run
+only targeted searches, word/anchor counts, `git diff --check -- <owned files>`, and
+page-local em-dash/placeholder/ID/link checks.
+
+Luna must not run the builder while either Atlas agent is active.
+
+At every session end or paired four-page/30-anchor reporting boundary, whichever
+comes first, root freezes all three writers and confirms them idle. Luna builds
+once; root runs default, `--against-live`, `--redaction`, and `git diff --check`;
+then root explicitly stages all changed authored sources plus their generated
+outputs and commits/pushes one integrated checkpoint such as
+`build: site M4 partial - Atlas A x/Aexpected, Atlas B y/Bexpected`. No per-agent commits are
+allowed, M4 remains unticked, and work resumes only from the green checkpoint.
+
+### F4 - Atlas integration and M4 close (serialized)
+
+1. Atlas A and B declare final handoff and stop editing. Root confirms both idle.
+2. Luna reviews factual authority, redaction, entry shape, terminology, and links
+   without changing an agent-owned page until ownership is formally returned.
+3. Resolve notes, then run the builder once.
+4. Required results: all 26 Atlas pages complete; the dynamic expected anchor set
+   derived from tracked paths is present exactly once; zero placeholders; all
+   entries meet field/badge/depth rules; the Atlas hub has one lite-map row per
+   tracked path; full and lite artifacts fresh; default and release verification
+   green; live drift zero; repo suite green.
+5. Tick M4, record both anchor counts, send the digest, and commit/push all Atlas,
+   verifier, shared, and generated outputs as one deterministic milestone.
+
+### F5 - Reference, global linking, and M5 close (serialized Luna)
+
+1. Reconcile Reproduction against the completed Atlas and keep all Alan STOP acts
+   visually explicit.
+2. Finish the 90-110-term Glossary, alphabet navigation/filter markup, 12-16 FAQ,
+   license/privacy colophon, and first-occurrence links across every substantive
+   page.
+3. Confirm the three reading tracks and continuation cards reach every intended
+   page without making one giant mandatory sequence.
+4. Add a v1 experiment-data statement: no raw conversations, identifiable diary
+   material, or individual probe results are published. Any future results require
+   a separate Alan-approved governance row; default publication is aggregate-only
+   after G20 and explicit participant consent.
+5. Build, run release verification, tick M5, send the digest, commit, and push.
+
+### F6 - M6 reconciliation and release candidate
+
+1. Reconcile the homepage 280-340-word, eight-beat TLDR against the finished site.
+   Neutral definition comes before metaphor. Replace "what we created" language
+   with design/build truth while no being is born.
+2. Reconcile every status and uncertainty statement against PLAN, GROWING, FAMILY,
+   IMPLEMENTATION, decisions, and ops-log. Set one site-wide snapshot deliberately.
+3. Add distributable licensing: prose/diagrams CC BY-SA 4.0; HTML/CSS/JS/build code
+   MIT; include the full MIT notice in deployed assets and both artifacts; preserve
+   PM and OB1 attribution based on their actual upstream notices.
+4. Set a unique nonsecret release ID before the candidate commit. The builder emits
+   it in every page, both artifacts, and the search index. The ledger maps release
+   ID, artifact SHA-256 values, and deployed-byte hashes to the eventual candidate
+   commit; do not attempt to embed a circular Git hash in its own commit.
+5. Harden the gate: cookie name `__Host-ew_site_auth`, no Domain, Path `/`,
+   HttpOnly, Secure, SameSite=Lax, D21's 30-day maximum age, explicit POST logout,
+   and fail closed when the password is absent or shorter than 20 characters.
+   Apply `Cache-Control: private, no-store` to every gated response, including the
+   content-bearing search index and all static content. Add CSP with
+   `frame-ancestors 'none'`, Referrer-Policy, nosniff, and a restrictive
+   Permissions-Policy. Keep the wrong-password delay.
+6. Test at 320, 375, 768, 1024, and 1440 px; light/dark; 200% zoom; keyboard-only;
+   reduced motion; no-JS; print; static HTTP; `file://`; full artifact; lite
+   artifact. Only tables/diagrams may have local horizontal scrolling.
+7. Save cropped desktop/mobile light/dark screenshots under gitignored
+   `state/site-qa/`; verify they contain no password prompt, URL, account identity,
+   private tab, or OS/browser chrome. Track only `runs/site-qa/README.md`, which
+   records every viewport/theme/zoom/keyboard/no-JS/print result plus private
+   screenshot filenames and hashes. Stage that README and its new `atlas/runs`
+   entry before the final live-drift check.
+8. Run the required axe-core-equivalent pass and Narrator smoke test from the
+   accessibility contract; record results in the QA matrix.
+9. Run: builder, builder `--check`, site verify, site verify `--against-live`, site
+   verify `--release`, `git diff --check`, and `run-all`. Run the full suite from
+   the repository-owning shell if the sandbox alone reports Git dubious ownership;
+   never change global Git config to hide that environment failure.
+10. Complete pre-release bookkeeping before freezing the candidate: add
+   `EW_SITE_PASSWORD` by name only to SECRETS.md; add the monthly and
+   decisions-change refresh cadence to ops-log; update decision evidence; add
+   `site/` explicitly to FAMILY's village-layer layout. Do not mark Ship yet.
+11. Reconcile once more after the authority/bookkeeping edits, rebuild after every
+   public-byte change, rerun the full wall, and create one
+   clean release-candidate commit containing the final public bytes plus
+   pre-release bookkeeping; push it after S0 is confirmed. No dirty-tree
+   deployment.
+
+### STOP S2: Alan's M6 approval
+
+Alan reviews the release candidate's Honesty page, Genesis/Alpha framing, known
+gaps, G3 wording, operational disclosure, licenses, search/lens behavior, and the
+exact lite artifact. Record approval against the candidate commit. Any subsequent
+change to a public byte invalidates approval and returns to F6.
+
+Name that approved commit **RC**. For the first release, **RELEASE = RC**. A later
+metadata-only descendant may record deployment evidence but is never substituted
+as the source of either channel. Both channels publish RC's public bytes and lite
+artifact; the ledger maps RC to the release ID and checksums.
+
+### F7 - Bookkeeping and controlled release
+
+1. Confirm RC is checked out in a clean worktree, the public source and generated
+   files are unchanged, and Vercel Git remains disconnected. Do not make a new
+   pre-deploy commit.
+2. Build RC into Vercel's prebuilt output and inspect the actual output/upload
+   manifest before any deployment. Prove `src/`, `artifact/`, README, `.vercel/`,
+   `state/`, the recovery patch, and all repository files outside the compiled
+   middleware plus `public/` are absent. Deploy only the inspected prebuilt output.
+3. Test Preview gate configuration in this order. Alan removes/unsets the Preview
+   password in the dashboard; redeploy RC and prove 503. Alan sets a throwaway value
+   shorter than 20 characters himself; redeploy and prove 503. Alan then replaces
+   it with a new high-entropy real value as sensitive Preview + Production state;
+   redeploy and smoke the correct configuration. No agent enters or receives any
+   of these values.
+4. Configure the Hobby-compatible WAF rule for `POST /ew-login`: fixed window,
+   10 attempts per IP per 10 minutes, then 429. Do not specify a persistent timed
+   block, which requires Pro/Enterprise. Exhaust the limit only on Preview from a
+   disposable/separate client, then wait for or reset the window before production
+   testing so Alan's login IP is not blocked.
+5. **STOP:** Alan authorizes production promotion. Deploy the same inspected RC
+   prebuilt output to production, not a rebuilt dirty tree.
+6. Smoke root, asset, nested Atlas path, missing path, and logout: unauthenticated
+   401 with no content; one wrong-password production check returns 401; correct
+   password returns 303 plus hardened cookie then content; logout clears access;
+   old throwaway password fails; security/no-store/noindex headers are present.
+   Verify the emitted release ID and deployed-byte hashes match RC's ledger mapping.
+   Alan performs real-password entry in his own browser.
+7. **STOP:** Alan approves sharing. Publish the approved lite edition privately via
+   the Artifact channel. Keep full committed but unpublished. If the Artifact tool
+   is unavailable, a directly delivered, checksum-verified lite HTML file is the
+   signed fallback channel and satisfies this step when its recipient/lifecycle is
+   recorded.
+8. Tick Ship only after both channels are proven. Record deployment evidence,
+   approved commit, URLs/checksums, and artifact lifecycle without credential
+   values. Commit this post-release bookkeeping. Before pushing, run a scripted diff
+   from RC through the bookkeeping commit and prove no changes to `site/public/`,
+   `site/middleware.js`, `site/vercel.json`, `site/package.json`,
+   `site/.vercelignore`, or either file in `site/artifact/`. Do not redeploy the
+   bookkeeping commit. Share URL/password/artifact access only out of band.
+9. Push the finish branch's evidence commit, then fetch remote state. Fast-forward
+   local `main` to the finish branch only if `origin/main` is still the audited base
+   and all evidence is green. If main moved, stop and re-audit rather than merging
+   blindly. Push the fast-forwarded main while Vercel Git remains disconnected; do
+   not create a merge commit.
+
+## Definition of done
+
+The site is finished only when all statements below are true:
+
+- M3, M4, M5, M6, and Ship are ticked with dated evidence.
+- No site page contains placeholder copy, forbidden identity-derived content,
+  operational coordinates, secrets, probe scenarios, stale status, or an em-dash.
+- Every non-excluded tracked path has exactly one complete Atlas anchor; every
+  declared exclusion has one documented Atlas home; live drift is zero.
+- Five-hub navigation, contextual rails, search, reading lens, three tracks, theme,
+  no-JS, print, file URLs, and both artifact editions work as specified.
+- Accessibility and responsive checks pass at every listed viewport and mode;
+  the tracked QA matrix records the automated, Narrator, keyboard, no-JS, print,
+  and screenshot evidence.
+- Both artifacts are deterministic, self-contained, under 15 MiB, and preferably
+  under the 2 MiB warning threshold.
+- Default, live, redaction, release, and full-repository verification are green.
+- S0, S1, and S2 have explicit recorded closure against their required evidence.
+- The release candidate has Alan's recorded M6 approval and no later public-byte
+  changes.
+- Production is gated, hardened, manually deployed from the approved commit, and
+  smoke-tested; the old password fails; Vercel Git remains disconnected.
+- The private lite Artifact or recorded checksum-verified direct-file fallback and
+  the gated site contain RC's exact approved bytes.
+- Secrets, state, recovery patch, password, and runtime credentials remain
+  untracked. Root `AGENTS.md` remains unstaged unless separately decided and mapped.
+- The finish branch is fast-forwarded to main only after the orchestrator verifies
+  all evidence and confirms remote main has not moved. The final session commits
+  and pushes per repository convention while Vercel Git remains disconnected.
+
+---
+
+## Approved v3 design specification (retained)
+
+The sections below preserve the original scope and rationale. Where the old build
+sequence conflicts with v4's current-state sequence, follow F0-F7 above.
 
 ## Context
 Alan wants a website for the team (and trusted outsiders) giving a complete
@@ -326,7 +916,7 @@ Checks:
 Also: node scripts/verify/run-all.mjs stays green (no regression to the other
 ~30 verifiers).
 
-## Build sequence
+## Historical build sequence (superseded by v4 F0-F7)
 [A] = agent-run, [ALAN] = interactive, [CONFIRM] = hard stop for explicit go.
 Commit policy: site work is committed and pushed PER SESSION from M0 onward (repo
 is private; verifier + secret scan are green from the first stub commit; an
@@ -467,3 +1057,17 @@ Alan; silence means proceed.
 - Convergence: declared by round 2; remaining defects were enumerable and are
   folded; approved by Alan 2026-07-09 with three in-session line items (lite
   artifact, MIT code license, known-gaps disclosure yes).
+- v4 current-state audit (2026-07-09): three independent read-only passes mapped
+  implementation state, authority/privacy risk, and UX/accessibility. They found
+  M3 and much of M5 present only in the dirty tree, all M4 prose absent despite
+  green wiring checks, a missed M1 hard approval, semantic redaction breaches,
+  status drift, deployment-auto-connect risk, and missing search/accessibility
+  contracts.
+- v4 decisions: keep G3 birth-blocking; publish mechanisms without operational
+  coordinates; preserve stable URLs and the field-guide voice; add five hubs,
+  local search, an optional Both-default reading lens, tiered Atlas depth, gate
+  hardening, and release-only semantic checks.
+- v4 execution design: Luna is the exclusive lead/integrator, two Atlas authors
+  split 243 anchors 122/121, and root orchestrates file ownership, freezes, Git,
+  Alan stops, and release. The original v3 scope remains below the handoff; F0-F7
+  is the only active finish sequence.

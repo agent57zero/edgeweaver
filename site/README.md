@@ -5,6 +5,23 @@ The explainer wiki for the whole project (decision D21; plan + adversarial trail
 both children's views, like FAMILY.md and village/. Snapshot date for all content:
 2026-07-09.
 
+## Resume here
+
+The current execution handoff is `runs/site-plan.md` v4, from **How Luna must use
+this plan** through **Definition of done**. Its F0-F7 sequence supersedes the
+historical M0-M6 build sequence retained later in that file.
+
+Do not discard the current working tree. It contains all nine M3 pages plus
+Reproduction and the expanded Glossary as uncommitted drafts, together with their
+fresh generated artifacts. The Repo Atlas anchors are wired but all 26 Atlas pages
+still need their explanatory content. Root `AGENTS.md` is unrelated and remains
+unstaged unless Alan separately decides to track and map it.
+
+Parallel execution uses one orchestrator, Luna as lead/integrator, and two balanced
+Atlas authors. Only Luna may touch shared/generated site surfaces; only the
+orchestrator authorizes Git and release actions. See the v4 ownership table before
+assigning any writer.
+
 ## Build, verify, preview
 
 ```
