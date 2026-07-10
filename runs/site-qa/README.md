@@ -1,22 +1,22 @@
 # Site QA matrix
 
-Candidate under test: `ew-20260710-rc1`, with the final candidate commit recorded
+Candidate under test: `ew-20260710-rc2`, with the final candidate commit recorded
 at the release freeze. The public site was served from a local static
 HTTP server; no password, account, or private endpoint was used.
 
 ## Release ledger
 
-- Release ID: `ew-20260710-rc1`
+- Release ID: `ew-20260710-rc2`
 - Candidate commit: recorded at the release freeze (S2 approval is still pending)
-- Full artifact SHA-256: `541CC8E9206939AA2AE22394C54A7AFDBF9BEAB81B8E2315D20890D2024E4120`
-- Lite artifact SHA-256: `FEA2085B5590E0A191E1673775ABA8360F11891DAE50577249449B59DDFD9304`
-- Public-byte manifest SHA-256 (58 sorted `site/public/` paths): `941F9524F20E38CDC20F03A62CB3C0E25F8ECCD64C3BBD793A59347BF7F7CF84`
+- Full artifact SHA-256: `94074E723D6A881939D8D92A42CB5A9D7DDFA761803BE11E1720BA16A31EE9CB`
+- Lite artifact SHA-256: `E98C432C49677F85C6CB1795332BA6AD7F41D0C27A2A15357636A53729FDEF0F`
+- Public-byte manifest SHA-256 (58 sorted path + file-SHA rows): `B5E3BA3F2CA78C056A69213B831BED160E5921A6153225F970C18006F46284A9`
 - Deployed-byte hashes: not applicable until the inspected RC is manually promoted under F7.
 
 ## Automated and browser checks
 
 - Builder, default, live-drift, redaction, release, and the 29-script repository
-  suite were green before this QA pass.
+  suite were green at the candidate freeze.
 - axe-core 4.12.1 ran in a same-origin local wrapper over overview, concept,
   being, Atlas, 404, full artifact, and lite artifact templates in light and dark
   themes: zero hard violations. The only incomplete review items were the dynamic
@@ -26,19 +26,27 @@ HTTP server; no password, account, or private endpoint was used.
   reading column, and 210 px on-page rail rendered as designed.
 - 200 percent equivalent at 1280 CSS px: no horizontal overflow and readable
   navigation, content, controls, and diagram scroll frame.
-- Responsive widths 320, 375, 768, 1024, and 1440: no horizontal overflow.
+- Responsive widths 320, 375, 768, 1024, and 1440: no horizontal overflow. The
+  first rc2 pass found the 320 px header controls overflowing; the final candidate
+  wraps the controls and passed the repeated matrix.
 - At 320 px, the JavaScript drawer opened as a modal, locked background scrolling,
   exposed a close control, and closed on Escape with focus restoration behavior.
 - Search returned two exact build-script destinations for
-  `scripts/site/build-site.mjs`; artifact search returned 37 results for `waking`.
+  `scripts/site/build-site.mjs`; full/lite artifact search returned 44/36 results
+  for `waking`.
   Plain, Technical, Both, and dark-theme controls changed their visible state.
 - Full and lite artifacts each had one main landmark, the expected toolbar, local
-  search behavior, and no extra-high horizontal overflow. Full contained 246 Atlas
-  entries; lite contained the one-line mapped destinations.
+  search behavior, and no extra-high horizontal overflow. Full contained 53 page
+  articles including the complete Atlas; lite contained 28 page/map articles.
 - No-JS sandbox checks on Home, System, and the full artifact showed no `.js` class,
   hidden Search/Lens/Menu enhancements, and both registers visible where paired.
-- Headless Edge print checks produced valid PDFs: Home 130,397 bytes and 4 pages,
-  System 194,561 bytes and 8 pages, full artifact 4,723,386 bytes and 274 pages.
+- Headless Edge print checks produced tagged, script-free PDFs: Home 126,120 bytes
+  and 4 pages, System 189,901 bytes and 8 pages, full artifact 4,719,683 bytes and
+  276 pages. Poppler renders of all Home/System pages plus representative full-edition
+  pages exposed and then verified the fix for a clipped homepage diagram.
+- Vercel Firewall is enabled with one active, valid rule: `POST /ew-login`, fixed
+  600-second window, 10 requests per IP, default 429 rate-limit action, and no
+  persistent timed block. The active API config is version 1 with no draft changes.
 
 ## Screenshot evidence
 
@@ -46,12 +54,10 @@ Screenshots are cropped viewport captures in ignored `state/site-qa/`:
 
 | Capture | SHA-256 |
 |---|---|
-| `extra-high-index-light.png` | `2E7DDB05B87CAF179E1D847B073B3C2FF0E0A76C061E82E1F44D9124FEC16858` |
-| `extra-high-index-dark.png` | `9BF9E20641817934E37827744A3076B3D7B725788632FEA7B5DF5854DD1D5318` |
-| `zoom200-index-light.png` | `46BA8FD135398028B7C9D6207FE07921A086CE35F65311B1959C16F290FE4D59` |
-| `zoom200-index-dark.png` | `5900919CC8E383BEFE7F0D49407D0C0C5263B4EA0C29596554A102A116D9DD09` |
-| `mobile-index-light.png` | `39C111E3E285A382040EA1AD1CBBFED9E73C8CF845A5AC346B60F761CDC66196` |
-| `mobile-index-dark.png` | `1B30BBEC326FE29DC818B252EA9E94581D21B0193BD51CA9ABF15128AF1AC268` |
+| `rc2-extra-high-index-light.png` | `5BE115B081DCEF68E48FE213666A70AC370741BA7EC733F3599265BE9065C6FB` |
+| `rc2-extra-high-index-dark.png` | `62DC998A60D71DA0A267052CCBD2B66B054997998BB51DCD23F712489B427A76` |
+| `rc2-mobile-index-light.png` | `04A321F4D485F1F9500FADB8A9443A926F295D4B5F1394699D433F54192F15B8` |
+| `rc2-mobile-index-dark.png` | `4A091BBEC421E1AA131EB5FC06B8BA5FFAF6EFD2B6DFF9F24F28AB84AE9CDDAE` |
 
 ## Remaining human evidence
 

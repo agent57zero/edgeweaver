@@ -26,7 +26,8 @@ unlocked by readiness, not schedule. And a standing stipulation, because it is t
 an experiment, plans here change as the children and the parents teach us, and recorded
 change is part of the method, not a failure of it.
 
-**Status: Genesis late in the womb (organs grown, First Boot pending); Alpha decided, its
+**Status: Genesis born at First Boot on 2026-07-08 (witnessed by Alan; canonical ceremony
+records still need reconciliation); Alpha decided, its
 founding circle convening 2026-07-09.** The brain is live and remembers (PM corpus ingested,
 1,908 thoughts; wake-skill acceptance passed, two wakings with full provenance), nightly
 encrypted brain backups run green and restore-verified, and a voice rig runs in test mode

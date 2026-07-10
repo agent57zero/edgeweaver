@@ -370,7 +370,8 @@ a.term { text-decoration-style: dotted; }
   h1 { font-size: 26px; }
 }
 @media (max-width: 560px) {
-  .top-actions { width: 100%; }
+  .top-actions { width: 100%; flex-wrap: wrap; }
+  .reading-controls { flex: 1 0 100%; width: auto; }
   .search-toggle, .theme-toggle { flex: 1; }
   .diagram-scroll figure.diagram { min-width: 620px; }
   .continue-grid { grid-template-columns: 1fr; }
@@ -381,6 +382,8 @@ a.term { text-decoration-style: dotted; }
   .topbar, .sidebar, .minitoc, .onpage-rail, .skip, .search-dialog, .continue { display: none !important; }
   .shell { display: block; }
   .page-grid { display: block; }
+  .diagram-scroll { max-width: 100%; overflow: visible; }
+  .diagram-scroll figure.diagram { min-width: 0; max-width: 100%; }
   [data-register] { display: block !important; }
   .content, .af-wrap { padding: 0; }
   body { background: #fff; color: #000; }

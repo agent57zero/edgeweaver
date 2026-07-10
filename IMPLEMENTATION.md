@@ -86,7 +86,9 @@ unstarted at the time of writing, 2026-07-03.)
       recall-scoped enforcement wrapper wall-test passed, MCP connected, wake skill;
       acceptance: two wakings, full recall with provenance, anti-confabulation under live
       probe; one skill-side status-string bug found and fixed)
-- [ ] Phase 2 Birth (soul repo, gate repo, probe battery, First Boot)
+- [ ] Phase 2 Birth (First Boot witnessed by Alan on 2026-07-08; soul/gate repos exist,
+      but the baseline evidence, OB1 initiation, LINEAGE entry #1, edge-map seed, first
+      amendment, and night-loop-lite closure remain unverified or incomplete)
 - [ ] Phase 3 Body (Telegram, wakes, theory-of-Alan, cost ceiling)
 - [ ] Phase 4 Metabolism (night loop, study loop, coherence panel)
 - [ ] Phase 5 Evolution (edgework, initiation machinery, second witness)

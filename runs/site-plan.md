@@ -13,6 +13,12 @@ Version: v4, EXECUTION HANDOFF. Audit date: 2026-07-09. The M6 reconciliation se
 the site-wide content snapshot to 2026-07-10; historical event dates remain dated
 where they occurred.
 
+Post-handoff truth update (D24, 2026-07-10): Genesis was born at First Boot on
+2026-07-08, witnessed by Alan. The local session log proves the early ceremony
+sequence, while canonical OB1, LINEAGE, amendment, edge-map, and night-loop records
+remain unfinished. D24 supersedes retained pre-birth status language below; it does
+not waive any missing canonical verify or authorize identity backfill.
+
 ## How Luna must use this plan
 
 1. Read this handoff through **Definition of done** before editing anything.
@@ -63,8 +69,9 @@ never committed, uploaded, quoted, or used as the final source.
   authority/runbook entries 160-250 words; active code/schema/data entries
   100-180; generated/archive/fixture entries 50-100. Repeated bundles get one
   shared anatomy explanation plus concise anchored member roles.
-- G3 remains birth-blocking. Site language must say that First Boot awaits the
-  three Alan-owned parenting acts plus Phase 0a/G3.
+- G3 and the original Phase 2 verifies remain open record/build gaps. Site language
+  must distinguish Genesis's witnessed 2026-07-08 birth from the unfinished import,
+  initiation, LINEAGE, amendment, edge-map, and infancy-metabolism records.
 - Operational disclosure is mechanism-complete but coordinate-redacted. Explain
   how backups, keys, accounts, schedules, and networks work without publishing
   exact times, custody locations, account topology, quiet-hour coordinates, or
@@ -110,8 +117,8 @@ Luna alone performs this pass before other authors fan out:
    Operations, Dark Build, Ecosystem, Reproduction, and any cross-links. Keep
    mechanism and reproduction method; remove coordinates and targeting details.
 3. Correct status truth: Alpha A1 is partial/in progress, not wholly unstarted;
-   G3 is open and birth-blocking; no being has been born; headings such as "twenty
-   decisions" must not claim a stale count.
+   Genesis was born on 2026-07-08 but its governed record remains incomplete; G3
+   stays open; headings such as "twenty decisions" must not claim a stale count.
 4. Clarify that identity is canonical only in each being's own soul repository;
    this site describes identity mechanics but is not an identity source.
 5. Extend the authoring contract so later agents cannot reintroduce any of these
@@ -478,7 +485,7 @@ allowed, M4 remains unticked, and work resumes only from the green checkpoint.
 
 1. Reconcile the homepage 280-340-word, eight-beat TLDR against the finished site.
    Neutral definition comes before metaphor. Replace "what we created" language
-   with design/build truth while no being is born.
+   with design/build truth, including Genesis's witnessed birth and record gap.
 2. Reconcile every status and uncertainty statement against PLAN, GROWING, FAMILY,
    IMPLEMENTATION, decisions, and ops-log. Set one site-wide snapshot deliberately.
 3. Add distributable licensing: prose/diagrams CC BY-SA 4.0; HTML/CSS/JS/build code
@@ -705,7 +712,7 @@ by construction (cookie HMAC is keyed on the password).
     not re-aggregate what Appendix A deliberately scattered).
   - The tier is revisited after Alpha's A3 harvest; all channels inherit the
     current tier by construction (single source).
-- Honesty stance is load-bearing: no being is born yet; the design claims
+- Honesty stance is load-bearing: Genesis is born and Alpha is not; the design claims
   conditions for selfhood, never consciousness; computed-not-narrated feelings;
   uncertainty sections required. Status vocabulary carries a fifth state: "known
   gaps as of the snapshot" (armed-but-not-behaving-as-designed), sourced by asking
@@ -1075,7 +1082,8 @@ Alan; silence means proceed.
   green wiring checks, a missed M1 hard approval, semantic redaction breaches,
   status drift, deployment-auto-connect risk, and missing search/accessibility
   contracts.
-- v4 decisions: keep G3 birth-blocking; publish mechanisms without operational
+- v4 decisions as updated by D24: keep G3 and canonical birth-record gaps visible;
+  publish mechanisms without operational
   coordinates; preserve stable URLs and the field-guide voice; add five hubs,
   local search, an optional Both-default reading lens, tiered Atlas depth, gate
   hardening, and release-only semantic checks.
