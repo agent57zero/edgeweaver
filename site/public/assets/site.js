@@ -349,6 +349,80 @@
     });
   }
 
+  // Walkthrough enhancement: local progress ticks and copy buttons. The page
+  // reads as a complete ordered checklist without any of this; nothing here
+  // leaves the device, and every element is created with textContent only.
+  var wtBoxes = Array.prototype.slice.call(document.querySelectorAll('input[type="checkbox"][data-wt-step]'));
+  if (wtBoxes.length) {
+    var WT_KEY = "ew-walkthrough-v1";
+    var wtSaved = {};
+    try { wtSaved = JSON.parse(storageGet(WT_KEY) || "{}") || {}; } catch (error) { wtSaved = {}; }
+    var wtMeterEl = null;
+    function wtSave() {
+      var out = {};
+      wtBoxes.forEach(function (box) {
+        if (box.checked) out[box.getAttribute("data-wt-step")] = 1;
+      });
+      storageSet(WT_KEY, JSON.stringify(out));
+    }
+    function wtMeter() {
+      if (!wtMeterEl) return;
+      var done = wtBoxes.filter(function (box) { return box.checked; }).length;
+      wtMeterEl.textContent = done + " of " + wtBoxes.length + " steps are marked done. Ticks are saved in this browser only.";
+    }
+    wtBoxes.forEach(function (box) {
+      if (wtSaved[box.getAttribute("data-wt-step")]) box.checked = true;
+      box.addEventListener("change", function () { wtSave(); wtMeter(); });
+    });
+    var wtProgress = document.querySelector(".wt-progress");
+    if (wtProgress) {
+      wtMeterEl = document.createElement("p");
+      wtMeterEl.setAttribute("aria-live", "polite");
+      wtProgress.appendChild(wtMeterEl);
+      var wtReset = document.createElement("button");
+      wtReset.type = "button";
+      wtReset.textContent = "Clear saved ticks";
+      wtReset.addEventListener("click", function () {
+        wtBoxes.forEach(function (box) { box.checked = false; });
+        wtSave();
+        wtMeter();
+      });
+      wtProgress.appendChild(wtReset);
+      wtMeter();
+    }
+    Array.prototype.forEach.call(document.querySelectorAll(".copyblock"), function (block) {
+      var pre = block.querySelector("pre");
+      if (!pre) return;
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "copy-btn";
+      btn.textContent = "Copy";
+      var restore = null;
+      function flash(label) {
+        btn.textContent = label;
+        if (restore) clearTimeout(restore);
+        restore = setTimeout(function () { btn.textContent = "Copy"; }, 1600);
+      }
+      function selectFallback() {
+        var range = document.createRange();
+        range.selectNodeContents(pre);
+        var selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        flash("Press Ctrl C");
+      }
+      btn.addEventListener("click", function () {
+        var text = pre.textContent;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () { flash("Copied"); }, selectFallback);
+        } else {
+          selectFallback();
+        }
+      });
+      block.insertBefore(btn, pre);
+    });
+  }
+
   // Days-since-snapshot enhances, but never replaces, the static date.
   var snap = document.querySelector(".snapshot");
   if (snap && snap.getAttribute("data-snapshot")) {

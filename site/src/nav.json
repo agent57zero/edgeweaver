@@ -1,7 +1,7 @@
 {
   "title": "How Edgeweaver Works",
   "snapshot": "2026-07-10",
-  "releaseId": "ew-20260710-rc2",
+  "releaseId": "ew-20260712-rc3",
   "hubs": [
     { "id": "overview", "title": "Overview", "homeSlug": "index" },
     { "id": "system", "title": "System", "homeSlug": "system" },
@@ -12,7 +12,7 @@
   "readingTracks": {
     "understand": ["index", "honesty", "system", "memory", "soul", "growth", "family", "genesis", "alpha", "status", "faq"],
     "technical": ["index", "system", "memory", "loops", "measurement", "governance", "segmentation", "body", "voice", "brain-lab", "backups", "operations", "dark-build", "ecosystem", "status"],
-    "reproduce": ["guide", "honesty", "reproduction", "atlas/index", "atlas/root", "atlas/avatars-genesis", "atlas/avatars-alpha", "atlas/brains", "atlas/checklists", "atlas/conventions", "atlas/handoff", "atlas/research", "atlas/runs", "atlas/scripts-ingestion", "atlas/scripts-lifecycle", "atlas/scripts-signals", "atlas/scripts-ops", "atlas/scripts-brains", "atlas/scripts-testbed", "atlas/scripts-verify", "atlas/edge-functions", "atlas/sources", "atlas/tasks", "atlas/templates", "atlas/tools", "atlas/village", "atlas/voice", "atlas/gitignored", "atlas/site", "about"]
+    "reproduce": ["guide", "honesty", "reproduction", "walkthrough", "atlas/index", "atlas/root", "atlas/avatars-genesis", "atlas/avatars-alpha", "atlas/brains", "atlas/checklists", "atlas/conventions", "atlas/handoff", "atlas/research", "atlas/runs", "atlas/scripts-ingestion", "atlas/scripts-lifecycle", "atlas/scripts-signals", "atlas/scripts-ops", "atlas/scripts-brains", "atlas/scripts-testbed", "atlas/scripts-verify", "atlas/edge-functions", "atlas/sources", "atlas/tasks", "atlas/templates", "atlas/tools", "atlas/village", "atlas/voice", "atlas/gitignored", "atlas/site", "about"]
   },
   "groups": [
     {
@@ -61,6 +61,7 @@
       "title": "Rebuild",
       "pages": [
         { "slug": "reproduction", "title": "The reproduction guide", "milestone": "M5", "hub": "rebuild", "section": "Reproduce the method", "kind": "procedure", "summary": "Dependency-ordered standing orders for reproducing the method without copying a child.", "audiences": ["operator", "engineer", "agent"] },
+        { "slug": "walkthrough", "title": "The guided walkthrough", "milestone": "M6", "hub": "rebuild", "section": "Reproduce the method", "kind": "procedure", "summary": "A guided onboarding path from empty accounts to a witnessed First Boot, with copy-ready agent prompts and human-only stops.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] },
         { "slug": "atlas/index", "title": "The repo atlas", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "reference", "summary": "A map from every tracked path to its one explanatory entry.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] },
         { "slug": "atlas/root", "title": "Atlas: root documents", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "Authority, status, governance, and handoff documents at repository root.", "audiences": ["operator", "engineer", "agent"] },
         { "slug": "atlas/avatars-genesis", "title": "Atlas: avatars/genesis", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "Genesis-specific manifest, source shapes, and ceremony runbooks under redaction.", "audiences": ["operator", "engineer", "agent"] },
