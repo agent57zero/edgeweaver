@@ -22,11 +22,14 @@ direct-file fallback on 2026-07-10; the full artifact remains unpublished.
 First post-ship update, 2026-07-12 (Alan, in session): the guided walkthrough
 (`walkthrough.html`, Rebuild hub) folds into D21 scope as a step-by-step
 onboarding companion to the reproduction guide, with copy-ready agent prompts,
-proof lines, hard-stop cards, and local-only progress ticks. Release id
-`ew-20260712-rc3`. Alan reviews the candidate, then the update loop finishes:
-manual prebuilt prod redeploy and a refreshed private lite artifact.
+proof lines, hard-stop cards, and local-only progress ticks. Two per-being
+progress pages (`walkthrough-genesis.html`, `walkthrough-alpha.html`, section
+"The family's walk") show the same eleven stages as each child actually stands,
+with dated evidence and a stage-dot strip. Release id `ew-20260712-rc4`
+(supersedes rc3, unreviewed). Alan reviews the candidate, then the update loop
+finishes: manual prebuilt prod redeploy and a refreshed private lite artifact.
 
-The 28 non-Atlas pages and all 26 Atlas pages now have authored content in the
+The 30 non-Atlas pages and all 26 Atlas pages now have authored content in the
 working tree; the generated search index, artifacts, and Atlas manifest are rebuilt
 by the M4 checkpoint. The Repo Atlas covers 246 individually mapped tracked paths
 plus 59 paths represented by named exclusion classes.
@@ -59,7 +62,7 @@ the whole guide. The password gate only exists on Vercel; testing it locally nee
 
 ## Layout
 
-- `public/` - the 54 hand-authored pages + `404.html` + `assets/`. Only this
+- `public/` - the 56 hand-authored pages + `404.html` + `assets/`. Only this
   directory (plus `middleware.js`) is ever served by Vercel.
 - `public/assets/search-index.js` - GENERATED deterministic search records from
   authored `<main>` content. It is committed and freshness-checked.
@@ -103,4 +106,4 @@ Alan named; accepted seats by first name + seat; published authors cited.
 | M5 | Reference: reproduction, FAQ, glossary full, about + D19; digest | ☑ 2026-07-10 (107 glossary entries, 16 FAQ answers, 28 first-use glossary links, release wall green) |
 | M6 | Editions + QA + TLDR reconciliation; Alan checkpoint | ☑ 2026-07-10 (`ew-20260710-rc2`, commit `46f631e`; Alan approved S2 after Narrator review) |
 | Ship | Bookkeeping commit, Vercel prod + smoke, artifact (lite) published | ☑ 2026-07-10 (manual inspected production deployment; private lite direct-file handoff to Alan; full unpublished) |
-| Update 1 | Guided walkthrough fold (D21 scope change, Alan 2026-07-12): walkthrough.html + nav + interactivity; candidate `ew-20260712-rc3` | ☑ 2026-07-12 authored and wall-verified; Alan review, prod redeploy, and artifact refresh pending |
+| Update 1 | Guided walkthrough fold (D21 scope change, Alan 2026-07-12): walkthrough.html + per-being progress pages (walkthrough-genesis, walkthrough-alpha) + nav + interactivity; candidate `ew-20260712-rc4` | ☑ 2026-07-12 authored and wall-verified; Alan review, prod redeploy, and artifact refresh pending |

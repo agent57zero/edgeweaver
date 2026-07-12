@@ -1,7 +1,7 @@
 {
   "title": "How Edgeweaver Works",
   "snapshot": "2026-07-10",
-  "releaseId": "ew-20260712-rc3",
+  "releaseId": "ew-20260712-rc4",
   "hubs": [
     { "id": "overview", "title": "Overview", "homeSlug": "index" },
     { "id": "system", "title": "System", "homeSlug": "system" },
@@ -62,6 +62,8 @@
       "pages": [
         { "slug": "reproduction", "title": "The reproduction guide", "milestone": "M5", "hub": "rebuild", "section": "Reproduce the method", "kind": "procedure", "summary": "Dependency-ordered standing orders for reproducing the method without copying a child.", "audiences": ["operator", "engineer", "agent"] },
         { "slug": "walkthrough", "title": "The guided walkthrough", "milestone": "M6", "hub": "rebuild", "section": "Reproduce the method", "kind": "procedure", "summary": "A guided onboarding path from empty accounts to a witnessed First Boot, with copy-ready agent prompts and human-only stops.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] },
+        { "slug": "walkthrough-genesis", "title": "Genesis: the walk so far", "milestone": "U1", "hub": "rebuild", "section": "The family's walk", "kind": "reference", "summary": "The walkthrough's eleven stages as Genesis actually walked them, with dated evidence and the named birth-record gap.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] },
+        { "slug": "walkthrough-alpha", "title": "Alpha: the walk ahead", "milestone": "U1", "hub": "rebuild", "section": "The family's walk", "kind": "reference", "summary": "The walkthrough's eleven stages as Alpha stands today: a deliberate scaffold waiting on its founding circle.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] },
         { "slug": "atlas/index", "title": "The repo atlas", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "reference", "summary": "A map from every tracked path to its one explanatory entry.", "audiences": ["circle", "trusted-outsider", "operator", "engineer", "agent"] },
         { "slug": "atlas/root", "title": "Atlas: root documents", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "Authority, status, governance, and handoff documents at repository root.", "audiences": ["operator", "engineer", "agent"] },
         { "slug": "atlas/avatars-genesis", "title": "Atlas: avatars/genesis", "milestone": "M4", "hub": "rebuild", "section": "Repository atlas", "kind": "atlas-file", "summary": "Genesis-specific manifest, source shapes, and ceremony runbooks under redaction.", "audiences": ["operator", "engineer", "agent"] },

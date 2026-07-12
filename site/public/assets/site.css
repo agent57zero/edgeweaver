@@ -357,6 +357,17 @@ a.term { text-decoration-style: dotted; }
   background: var(--soft); border: 1px solid var(--line);
   border-radius: 8px; min-height: 34px; padding: 5px 12px; cursor: pointer;
 }
+.wt-track { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0; max-width: 74ch; }
+.wt-dot {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 1.5px solid var(--line); background: var(--soft); color: var(--mut);
+  display: flex; align-items: center; justify-content: center;
+  font: 600 12px var(--sans);
+}
+.wt-dot.built { background: var(--accent-strong); border-color: var(--accent-strong); color: #fff; }
+.wt-dot.armed { background: var(--card); border-color: var(--accent); color: var(--accent); }
+.wt-dot.dark { background: var(--strand3); border-color: var(--strand3); color: #fff; }
+.wt-dot.gap { background: var(--gap-state); border-color: var(--gap-state); color: #fff; }
 @media print {
   .copyblock .copy-btn, .wt-progress button { display: none !important; }
 }
