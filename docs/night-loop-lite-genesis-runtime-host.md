@@ -14,6 +14,8 @@ reconstruction, not a recovered copy of the original installed skill.
 - Node, PowerShell, and the `claude` CLI are on the scheduled user's PATH; headless Sonnet
   authentication succeeds.
 - The live `agent-memory-api` health route succeeds with the configured access key.
+- The runtime credential can access the build repository but cannot access the protected gates
+  repository.
 
 ## Install and verify, without writing a night
 
@@ -25,6 +27,11 @@ $Repo = (Resolve-Path 'C:\path\to\Edgeweaver').Path
 Set-Location -LiteralPath $Repo
 node scripts\verify\verify-night-loop-lite-genesis.mjs
 if ($LASTEXITCODE -ne 0) { throw 'Reconstruction verification failed' }
+
+gh api repos/agent57zero/edgeweaver --silent *> $null
+if ($LASTEXITCODE -ne 0) { throw 'Runtime GitHub credential cannot reach the build repository' }
+gh api repos/alanshurafa/edgeweaver-gates --silent *> $null
+if ($LASTEXITCODE -eq 0) { throw 'Runtime GitHub credential can reach the protected gates repository; stop and revoke that access' }
 
 $Template = Get-Content -Raw (Join-Path $Repo 'templates\night-loop-lite-genesis-SKILL.md')
 $Match = [regex]::Match($Template, '(?s)````markdown\r?\n(.*?)\r?\n````')
@@ -44,7 +51,8 @@ if ($LASTEXITCODE -ne 0 -or $Ready.Trim() -ne 'READY') { throw 'Headless Sonnet 
 
 `prepare` is read-only. It proves deterministic orientation, runtime paths, credentials, API
 health, and episode query access. It does not count as a night and must not be described as
-one.
+one. The two `gh api` checks request repository metadata only, never gates contents; the first
+distinguishes a broken runtime credential/network from the required gates-access denial.
 
 ## Run one live manual preflight
 
@@ -67,7 +75,9 @@ this manual bundle toward the two consecutive scheduled nights.
 
 Still in the same ordinary account, run the following only after the checks above pass. This
 uses least privilege, ignores overlapping runs, starts after a missed trigger, requires the
-network, wakes the host, and does not stop on battery power.
+network, wakes the host, and does not stop on battery power. The runner performs the read-only
+`status` verification after Claude exits successfully, so Task Scheduler receives success only
+for a complete verified current run.
 
 ```powershell
 $TaskName = 'EdgeweaverGenesisNightLoopLite'

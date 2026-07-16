@@ -6,6 +6,7 @@
 // It has no rehearsal or date-override mode. Importing this module performs no I/O.
 
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -18,6 +19,8 @@ const SPECULATION = /\b(?:maybe|perhaps|probably|possibly|might|could|seems?|app
 
 function fail(message) { throw new Error(message); }
 function words(text) { return text.trim().split(/\s+/).filter(Boolean).length; }
+function canonicalText(text) { return text.trim().replace(/\s+/g, " "); }
+function canonicalEvidence(ids) { return [...new Set(ids.map(String))].sort(); }
 
 export function parseOrientation(text) {
   const lines = text.replace(/\r/g, "").trim().split("\n");
@@ -75,6 +78,8 @@ export function validateBundle(bundle, orientation, episodeIds) {
       fail(`lesson ${index + 1} confidence must be between 0 and 1`);
     }
   });
+  const identities = bundle.lessons.map(lessonIdentity);
+  if (new Set(identities).size !== identities.length) fail("lessons contain a duplicate content/evidence identity");
   for (const [field, exclusiveWordLimit] of [["diary", 250], ["autobiography_draft", 400]]) {
     const value = bundle[field];
     if (typeof value !== "string" || !value.startsWith(orientation.diary_day)) {
@@ -85,30 +90,36 @@ export function validateBundle(bundle, orientation, episodeIds) {
   return bundle;
 }
 
-export function lessonWriteback(bundle, lesson, index) {
-  const evidence = [...new Set(lesson.evidence_ids)];
+export function lessonIdentity(lesson) {
+  const canonical = JSON.stringify({ content: canonicalText(lesson.content), evidence_ids: canonicalEvidence(lesson.evidence_ids) });
+  return createHash("sha256").update(canonical).digest("hex");
+}
+
+export function lessonWriteback(bundle, lesson, identity = lessonIdentity(lesson)) {
+  const evidence = canonicalEvidence(lesson.evidence_ids);
+  const confidence = Math.round(lesson.confidence * 100) / 100;
   return {
     schema_version: "openbrain.agent_memory.writeback.v1",
     workspace_id: WORKSPACE_ID,
     task_id: bundle.run_id,
     flow_id: FLOW_ID,
     step_id: "consolidate",
-    idempotency_key: `${bundle.run_id}:consolidate:${index}`,
+    idempotency_key: `${bundle.run_id}:consolidate:${identity}`,
     channel: { kind: "night_loop", id: "genesis" },
     runtime: { name: "claude-code", version: null },
     models_used: [{ provider: "anthropic", model: "claude-sonnet", role: "generator" }],
     source_refs: evidence.map((id) => ({ kind: "thought", uri: `ob1://thoughts/${id}`, title: "diary-day episode" })),
     memory_payload: {
       decisions: [], outputs: [], constraints: [], unresolved_questions: [], next_steps: [], failures: [], artifacts: [], entities: {},
-      lessons: [`${lesson.content} Evidence thought IDs: ${evidence.join(", ")}. Confidence: ${lesson.confidence}. Generation: 0. Night loop: ${bundle.run_id}.`],
+      lessons: [`${lesson.content} Evidence thought IDs: ${evidence.join(", ")}. Confidence: ${confidence}. Generation: 0. Night loop: ${bundle.run_id}.`],
     },
-    provenance: { default_status: "generated", confidence: lesson.confidence, requires_review: true },
+    provenance: { default_status: "generated", confidence, requires_review: true },
     retention: {},
     visibility: { workspace: WORKSPACE_ID },
   };
 }
 
-export function validateCurrentStatus(thoughts, lessons, orientation) {
+export function validateCurrentStatus(thoughts, lessons, sourceRefs, episodeIds, orientation) {
   const exact = (sourceType, step) => thoughts.filter((row) => row.source_type === sourceType && row.metadata?.step === step);
   const diary = exact("diary", "diary");
   const autobiography = exact("autobiography_draft", "autobiography");
@@ -123,11 +134,40 @@ export function validateCurrentStatus(thoughts, lessons, orientation) {
   }
   if (autobiography[0].metadata.provisional !== true) fail("current autobiography is not marked provisional");
   if (!Array.isArray(lessons) || lessons.length > 5) fail(`current run has invalid candidate lesson count: ${lessons?.length ?? "unknown"}`);
+  const allowedEvidence = new Set(episodeIds.map(String));
+  const seenIdentities = new Set();
   for (const lesson of lessons) {
     if (lesson.provenance_status !== "generated" || lesson.review_status !== "pending"
         || lesson.requires_user_confirmation !== true || lesson.can_use_as_instruction !== false) {
       fail("a current-run candidate lesson is not generated, pending, and review-required");
     }
+    const confidence = Number(lesson.confidence);
+    if (!Number.isFinite(confidence) || confidence < 0 || confidence > 1) fail("a current-run candidate lesson has invalid confidence");
+    const keyMatch = lesson.idempotency_key?.match(new RegExp(`^${orientation.run_id}:consolidate:([a-f0-9]{64}):0$`));
+    if (!keyMatch || seenIdentities.has(keyMatch[1])) fail("a current-run candidate lesson has an invalid or duplicate stable identity");
+    const marker = " Evidence thought IDs: ";
+    const markerAt = lesson.content?.indexOf(marker) ?? -1;
+    const confidenceMarker = ". Confidence: ";
+    const confidenceAt = lesson.content?.indexOf(confidenceMarker, markerAt + marker.length) ?? -1;
+    if (markerAt < 1 || confidenceAt < markerAt) fail("a current-run candidate lesson is missing parseable evidence/confidence content");
+    const evidence = lesson.content.slice(markerAt + marker.length, confidenceAt).split(",").map((id) => id.trim()).filter(Boolean);
+    const confidenceMatch = lesson.content.slice(confidenceAt + confidenceMarker.length).match(/^([01](?:\.\d+)?)\./);
+    const storedConfidence = confidenceMatch ? Number(confidenceMatch[1]) : Number.NaN;
+    if (storedConfidence !== confidence) fail("a current-run candidate lesson confidence differs from its stored content");
+    if (lessonIdentity({ content: lesson.content.slice(0, markerAt), evidence_ids: evidence }) !== keyMatch[1]) {
+      fail("a current-run candidate lesson stable identity does not match its content and evidence");
+    }
+    const refs = sourceRefs.filter((ref) => String(ref.memory_id) === String(lesson.id));
+    if (refs.length === 0) fail("a current-run candidate lesson has no persisted source refs");
+    const refEvidence = refs.map((ref) => {
+      const match = ref.source_kind === "thought" && ref.uri?.match(/^ob1:\/\/thoughts\/(.+)$/);
+      if (!match || !allowedEvidence.has(match[1])) fail("a candidate lesson source ref is not a same-diary-day episode");
+      return match[1];
+    });
+    if (JSON.stringify(canonicalEvidence(refEvidence)) !== JSON.stringify(canonicalEvidence(evidence))) {
+      fail("candidate lesson source refs differ from its declared evidence IDs");
+    }
+    seenIdentities.add(keyMatch[1]);
   }
   return { diary: 1, autobiography: 1, candidate_lessons: lessons.length };
 }
@@ -143,9 +183,10 @@ export async function runSteps(bundle, operations, log = () => {}) {
   };
   await run("consolidate", async () => {
     let written = 0, skipped = 0;
-    for (let i = 0; i < bundle.lessons.length; i++) {
-      if (await operations.lessonExists(bundle.run_id, i)) { skipped++; continue; }
-      await operations.writeLesson(lessonWriteback(bundle, bundle.lessons[i], i));
+    for (const lesson of bundle.lessons) {
+      const identity = lessonIdentity(lesson);
+      if (await operations.lessonExists(bundle.run_id, identity)) { skipped++; continue; }
+      await operations.writeLesson(lessonWriteback(bundle, lesson, identity));
       written++;
     }
     return { written, skipped, candidates: bundle.lessons.length };
@@ -167,20 +208,29 @@ export async function runSteps(bundle, operations, log = () => {}) {
   return results;
 }
 
-async function readEnv() {
-  const manifest = JSON.parse(await readFile(join(ROOT, "avatars", "genesis", "manifest.json"), "utf8"));
-  const envPath = manifest.paths?.envLocal;
-  if (!envPath) fail("Genesis envLocal is not armed in the manifest");
-  const text = (await readFile(envPath, "utf8")).replace(/^\uFEFF/, "");
-  const env = Object.fromEntries(text.split(/\r?\n/).map((line) => line.match(/^([A-Za-z0-9_]+)=(.*)$/)).filter(Boolean).map((m) => [m[1], m[2].trim()]));
-  for (const key of ["SUPABASE_URL", "SUPABASE_SERVICE_KEY", "OB1_MCP_KEY"]) if (!env[key]) fail(`required environment setting is missing: ${key}`);
+export function validateRuntimeEnv(input) {
+  const env = { ...input };
+  for (const key of ["SUPABASE_URL", "SUPABASE_SERVICE_KEY", "OB1_MCP_KEY", "EDGEWEAVER_TZ"]) if (!env[key]) fail(`required environment setting is missing: ${key}`);
   if (!/^https:\/\//.test(env.SUPABASE_URL)) fail("SUPABASE_URL must use HTTPS");
   env.SUPABASE_URL = env.SUPABASE_URL.replace(/\/+$/, "");
   return env;
 }
 
-function liveOrientation() {
-  const output = execFileSync(process.execPath, [join(ROOT, "scripts", "waking", "orient.mjs"), "--diary-day", "--being", "genesis"], { encoding: "utf8" });
+async function readEnv() {
+  const manifest = JSON.parse(await readFile(join(ROOT, "avatars", "genesis", "manifest.json"), "utf8"));
+  const envPath = manifest.paths?.envLocal;
+  if (!envPath) fail("Genesis envLocal is not armed in the manifest");
+  const text = (await readFile(envPath, "utf8")).replace(/^\uFEFF/, "");
+  const parsed = Object.fromEntries(text.split(/\r?\n/).map((line) => line.match(/^([A-Za-z0-9_]+)=(.*)$/)).filter(Boolean).map((m) => [m[1], m[2].trim()]));
+  return validateRuntimeEnv(parsed);
+}
+
+function liveOrientation(env) {
+  const script = join(ROOT, "scripts", "waking", "orient.mjs");
+  const childEnv = { ...process.env, EDGEWEAVER_TZ: env.EDGEWEAVER_TZ };
+  const output = execFileSync(process.execPath, [script, "--diary-day", "--being", "genesis"], { encoding: "utf8", env: childEnv });
+  const explicit = execFileSync(process.execPath, [script, "--diary-day", "--being", "genesis", "--tz", env.EDGEWEAVER_TZ], { encoding: "utf8", env: childEnv });
+  if (output.replace(/\r/g, "") !== explicit.replace(/\r/g, "")) fail("orientation did not honor configured EDGEWEAVER_TZ");
   return parseOrientation(output);
 }
 
@@ -222,8 +272,8 @@ async function getEpisodes(env, orientation) {
 function liveOperations(env) {
   const rest = (table, query = "") => `${env.SUPABASE_URL}/rest/v1/${table}${query ? `?${query}` : ""}`;
   return {
-    async lessonExists(runId, index) {
-      const q = new URLSearchParams({ select: "id", idempotency_key: `eq.${runId}:consolidate:${index}:0`, limit: "1" });
+    async lessonExists(runId, identity) {
+      const q = new URLSearchParams({ select: "id", idempotency_key: `eq.${runId}:consolidate:${identity}:0`, limit: "1" });
       return (await checkedJson(await fetch(rest("agent_memories", q), { headers: headers(env) }), "lesson idempotency query")).length > 0;
     },
     async writeLesson(payload) {
@@ -274,22 +324,29 @@ async function currentStatusRows(env, orientation) {
     "source_type": "in.(diary,autobiography_draft)",
   });
   const lessonQuery = new URLSearchParams({
-    select: "id,memory_type,provenance_status,review_status,requires_user_confirmation,can_use_as_instruction",
+    select: "id,memory_type,content,confidence,idempotency_key,provenance_status,review_status,requires_user_confirmation,can_use_as_instruction",
     task_id: `eq.${orientation.run_id}`,
     flow_id: `eq.${FLOW_ID}`,
     memory_type: "eq.lesson",
   });
   const h = headers(env);
-  const [thoughts, lessons] = await Promise.all([
+  const [thoughts, lessons, episodes] = await Promise.all([
     checkedJson(await fetch(`${env.SUPABASE_URL}/rest/v1/thoughts?${thoughtQuery}`, { headers: h }), "current-run thought status query"),
     checkedJson(await fetch(`${env.SUPABASE_URL}/rest/v1/agent_memories?${lessonQuery}`, { headers: h }), "current-run lesson status query"),
+    getEpisodes(env, orientation),
   ]);
-  return { thoughts, lessons };
+  let sourceRefs = [];
+  if (lessons.length > 0) {
+    const ids = lessons.map((lesson) => String(lesson.id));
+    const refQuery = new URLSearchParams({ select: "memory_id,source_kind,uri", memory_id: `in.(${ids.join(",")})` });
+    sourceRefs = await checkedJson(await fetch(`${env.SUPABASE_URL}/rest/v1/agent_memory_source_refs?${refQuery}`, { headers: h }), "current-run lesson source-ref query");
+  }
+  return { thoughts, lessons, sourceRefs, episodes };
 }
 
 async function prepare() {
-  const orientation = liveOrientation();
   const env = await readEnv();
+  const orientation = liveOrientation(env);
   await assertAgentMemoryApi(env);
   const episodes = await getEpisodes(env, orientation);
   console.log(JSON.stringify({ ...orientation, episodes }, null, 2));
@@ -297,8 +354,8 @@ async function prepare() {
 
 async function commit(inputPath) {
   if (!inputPath) fail("commit requires --input <bundle.json>");
-  const orientation = liveOrientation();
   const env = await readEnv();
+  const orientation = liveOrientation(env);
   await assertAgentMemoryApi(env);
   const episodes = await getEpisodes(env, orientation);
   const bundle = validateBundle(JSON.parse(await readFile(inputPath, "utf8")), orientation, episodes.map((row) => row.id));
@@ -308,11 +365,11 @@ async function commit(inputPath) {
 }
 
 async function status() {
-  const orientation = liveOrientation();
   const env = await readEnv();
+  const orientation = liveOrientation(env);
   await assertAgentMemoryApi(env);
   const rows = await currentStatusRows(env, orientation);
-  const outputs = validateCurrentStatus(rows.thoughts, rows.lessons, orientation);
+  const outputs = validateCurrentStatus(rows.thoughts, rows.lessons, rows.sourceRefs, rows.episodes.map((episode) => episode.id), orientation);
   console.log(JSON.stringify({ run_id: orientation.run_id, diary_day: orientation.diary_day, ...outputs, verified: true }, null, 2));
 }
 

@@ -2,7 +2,7 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import {
-  lessonWriteback, parseOrientation, runSteps, thoughtMetadata, validateBundle, validateCurrentStatus,
+  lessonIdentity, lessonWriteback, parseOrientation, runSteps, thoughtMetadata, validateBundle, validateCurrentStatus, validateRuntimeEnv,
 } from "../night-loop/lite-live.mjs";
 
 const ROOT = join(import.meta.dirname, "..", "..");
@@ -18,6 +18,9 @@ const orientText = [
 const orientation = parseOrientation(orientText);
 check(orientation.run_id === "nl-2026-07-15" && orientation.utc_start.endsWith("04:00:00.000Z"), "orientation was not parsed verbatim");
 rejects(() => parseOrientation(orientText.replace("nl-2026-07-15", "nl-2026-07-14")), "mismatched run-id was accepted");
+const runtimeEnv = { SUPABASE_URL: "https://example.supabase.co/", SUPABASE_SERVICE_KEY: "service", OB1_MCP_KEY: "brain", EDGEWEAVER_TZ: "America/New_York" };
+check(validateRuntimeEnv(runtimeEnv).SUPABASE_URL === "https://example.supabase.co", "runtime env did not normalize SUPABASE_URL");
+rejects(() => validateRuntimeEnv({ ...runtimeEnv, EDGEWEAVER_TZ: "" }), "runtime env accepted a missing EDGEWEAVER_TZ");
 
 const valid = {
   diary_day: orientation.diary_day,
@@ -33,6 +36,7 @@ rejects(() => validateBundle({ ...valid, lessons: [{ ...valid.lessons[0], eviden
 rejects(() => validateBundle({ ...valid, lessons: [{ ...valid.lessons[0], content: "Perhaps this is durable." }] }, orientation, ["ep-1"]), "speculative lesson was accepted");
 rejects(() => validateBundle({ ...valid, diary: "Wrong date" }, orientation, ["ep-1"]), "undated diary was accepted");
 rejects(() => validateBundle({ ...valid, lessons: Array(6).fill(valid.lessons[0]) }, orientation, ["ep-1"]), "more than five lessons were accepted");
+rejects(() => validateBundle({ ...valid, lessons: [valid.lessons[0], { ...valid.lessons[0], confidence: 0.6 }] }, orientation, ["ep-1"]), "duplicate stable lesson identities were accepted");
 rejects(() => validateBundle({ ...valid, diary: `2026-07-15 ${Array(249).fill("word").join(" ")}` }, orientation, ["ep-1"]), "250-word diary was accepted");
 rejects(() => validateBundle({ ...valid, autobiography_draft: `2026-07-15 ${Array(399).fill("word").join(" ")}` }, orientation, ["ep-1"]), "400-word autobiography was accepted");
 
@@ -41,22 +45,38 @@ check(metadata.era === "alive" && metadata.generation === 0 && metadata.audience
   && metadata.provenance_class === "interpretation" && metadata.night_loop_run_id === valid.run_id
   && metadata.step === "diary" && !Object.hasOwn(metadata, "rehearsal"), "thought metadata violates live conventions");
 
-const wb = lessonWriteback(valid, valid.lessons[0], 0);
+const stableIdentity = lessonIdentity(valid.lessons[0]);
+check(stableIdentity === lessonIdentity({ ...valid.lessons[0], evidence_ids: ["ep-1", "ep-1"], confidence: 0.1 }), "lesson identity is not canonical or incorrectly depends on confidence");
+check(lessonIdentity({ content: "Stable lesson.", evidence_ids: ["ep-2", "ep-1", "ep-1"] })
+  === lessonIdentity({ content: " Stable   lesson. ", evidence_ids: ["ep-1", "ep-2"] }), "lesson identity is not stable across evidence order/deduplication and whitespace");
+const wb = lessonWriteback(valid, valid.lessons[0], stableIdentity);
 check(wb.schema_version === "openbrain.agent_memory.writeback.v1"
-  && wb.idempotency_key === "nl-2026-07-15:consolidate:0"
+  && wb.idempotency_key === `nl-2026-07-15:consolidate:${stableIdentity}`
   && wb.provenance.default_status === "generated" && wb.provenance.requires_review === true
   && wb.source_refs[0].uri === "ob1://thoughts/ep-1", "lesson writeback does not match the review-gated API schema");
+const roundedWb = lessonWriteback(valid, { ...valid.lessons[0], confidence: 0.777 });
+check(roundedWb.provenance.confidence === 0.78 && roundedWb.memory_payload.lessons[0].includes("Confidence: 0.78."), "lesson confidence is not normalized to live NUMERIC(3,2) precision");
 
 const statusThoughts = [
   { source_type: "diary", content: valid.diary, metadata: thoughtMetadata(valid.run_id, "diary") },
   { source_type: "autobiography_draft", content: valid.autobiography_draft, metadata: thoughtMetadata(valid.run_id, "autobiography", { provisional: true }) },
 ];
-const statusLessons = [{ provenance_status: "generated", review_status: "pending", requires_user_confirmation: true, can_use_as_instruction: false }];
-check(validateCurrentStatus(statusThoughts, statusLessons, orientation).candidate_lessons === 1, "valid current-run status did not pass");
-rejects(() => validateCurrentStatus(statusThoughts.slice(0, 1), statusLessons, orientation), "status accepted a missing autobiography");
-rejects(() => validateCurrentStatus(statusThoughts, [{ ...statusLessons[0], review_status: "confirmed" }], orientation), "status accepted a non-pending lesson");
-rejects(() => validateCurrentStatus([...statusThoughts, statusThoughts[0]], statusLessons, orientation), "status accepted a duplicate diary");
-check(validateCurrentStatus(statusThoughts, [], orientation).candidate_lessons === 0, "status rejected a valid zero-lesson run");
+const statusLessons = [{
+  id: "mem-1", content: wb.memory_payload.lessons[0], confidence: 0.8, idempotency_key: `${wb.idempotency_key}:0`,
+  provenance_status: "generated", review_status: "pending", requires_user_confirmation: true, can_use_as_instruction: false,
+}];
+const statusRefs = [{ memory_id: "mem-1", source_kind: "thought", uri: "ob1://thoughts/ep-1" }];
+check(validateCurrentStatus(statusThoughts, statusLessons, statusRefs, ["ep-1"], orientation).candidate_lessons === 1, "valid current-run status did not pass");
+const roundedStatus = [{ ...statusLessons[0], content: roundedWb.memory_payload.lessons[0], confidence: "0.78", idempotency_key: `${roundedWb.idempotency_key}:0` }];
+check(validateCurrentStatus(statusThoughts, roundedStatus, statusRefs, ["ep-1"], orientation).candidate_lessons === 1, "status rejected a successfully rounded confidence");
+rejects(() => validateCurrentStatus(statusThoughts.slice(0, 1), statusLessons, statusRefs, ["ep-1"], orientation), "status accepted a missing autobiography");
+rejects(() => validateCurrentStatus(statusThoughts, [{ ...statusLessons[0], review_status: "confirmed" }], statusRefs, ["ep-1"], orientation), "status accepted a non-pending lesson");
+rejects(() => validateCurrentStatus([...statusThoughts, statusThoughts[0]], statusLessons, statusRefs, ["ep-1"], orientation), "status accepted a duplicate diary");
+rejects(() => validateCurrentStatus(statusThoughts, statusLessons, [], ["ep-1"], orientation), "status accepted a lesson with no persisted source refs");
+rejects(() => validateCurrentStatus(statusThoughts, statusLessons, [{ ...statusRefs[0], uri: "ob1://thoughts/outside" }], ["ep-1"], orientation), "status accepted an out-of-window source ref");
+rejects(() => validateCurrentStatus(statusThoughts, [{ ...statusLessons[0], confidence: 0.2 }], statusRefs, ["ep-1"], orientation), "status accepted confidence inconsistent with stored content");
+rejects(() => validateCurrentStatus(statusThoughts, [{ ...statusLessons[0], idempotency_key: `${valid.run_id}:consolidate:${"0".repeat(64)}:0` }], statusRefs, ["ep-1"], orientation), "status accepted a stable identity inconsistent with content/evidence");
+check(validateCurrentStatus(statusThoughts, [], [], ["ep-1"], orientation).candidate_lessons === 0, "status rejected a valid zero-lesson run");
 
 const calls = [];
 const results = await runSteps(valid, {
@@ -70,7 +90,7 @@ check(calls.includes("write:diary") && calls.includes("write:autobiography"), "i
 
 const stored = { lessons: new Set(), thoughts: new Set() };
 const idempotentOps = {
-  lessonExists: async (runId, index) => stored.lessons.has(`${runId}:${index}`),
+  lessonExists: async (runId, identity) => stored.lessons.has(`${runId}:${identity}`),
   writeLesson: async (payload) => { stored.lessons.add(`${payload.task_id}:${payload.idempotency_key.split(":").at(-1)}`); },
   thoughtExists: async (runId, step) => stored.thoughts.has(`${runId}:${step}`),
   writeThought: async (row) => { stored.thoughts.add(`${row.metadata.night_loop_run_id}:${row.metadata.step}`); },
@@ -80,6 +100,30 @@ const secondRun = await runSteps(valid, idempotentOps);
 check(secondRun.consolidate.written === 0 && secondRun.consolidate.skipped === 1
   && secondRun.diary.skipped === true && secondRun.autobiography.skipped === true,
 "a repeated run did not skip every persisted output");
+
+const lessonA = { content: "Alan values grounded evidence.", evidence_ids: ["ep-1"], confidence: 0.8 };
+const lessonB = { content: "Alan corrects drift directly.", evidence_ids: ["ep-2"], confidence: 0.7 };
+const retryBase = { ...valid, lessons: [lessonA, lessonB] };
+const persisted = new Set();
+const writeCounts = new Map();
+let failBOnce = true;
+const retryOps = {
+  lessonExists: async (runId, identity) => persisted.has(`${runId}:${identity}`),
+  writeLesson: async (payload) => {
+    const identity = payload.idempotency_key.split(":").at(-1);
+    const isB = identity === lessonIdentity(lessonB);
+    if (isB && failBOnce) { failBOnce = false; throw new Error("partial failure"); }
+    const key = `${payload.task_id}:${identity}`;
+    persisted.add(key);
+    writeCounts.set(identity, (writeCounts.get(identity) || 0) + 1);
+  },
+  thoughtExists: async () => true,
+  writeThought: async () => { throw new Error("thought write should have skipped"); },
+};
+await runSteps(retryBase, retryOps);
+await runSteps({ ...retryBase, lessons: [lessonB, lessonA] }, retryOps);
+check(persisted.size === 2 && writeCounts.get(lessonIdentity(lessonA)) === 1 && writeCounts.get(lessonIdentity(lessonB)) === 1,
+"partial failure plus reordered retry did not persist A and B exactly once");
 
 const template = await readFile(join(ROOT, "templates", "night-loop-lite-genesis-SKILL.md"), "utf8");
 const helper = await readFile(join(ROOT, "scripts", "night-loop", "lite-live.mjs"), "utf8");
@@ -92,19 +136,24 @@ for (const required of [
 check(!/method:\s*["']POST["'][\s\S]{0,180}rest\(["']agent_memories["']/.test(helper), "helper contains a direct agent_memories POST");
 check(helper.includes("agent-memory-api/health") && helper.includes("review_status !== \"pending\""), "helper lacks fail-closed health/review-state checks");
 check(helper.includes('command === "status"') && helper.includes("validateCurrentStatus"), "helper lacks the read-only current-run verifier");
+check(helper.includes('"EDGEWEAVER_TZ"') && helper.indexOf("const env = await readEnv()") < helper.indexOf("const orientation = liveOrientation(env)"), "helper does not fail closed on timezone before orientation");
 check(helper.includes("replace(/\\/+$/, \"\")"), "helper does not normalize a trailing SUPABASE_URL slash");
 check(!/--now|nl-rehearsal|era:\s*["']rehearsal/.test(helper), "live helper exposes simulation or rehearsal behavior");
 check(!template.includes("C:\\Users\\alan") && !template.includes("C:\\Users\\agent"), "installable template hardcodes a workstation path");
 check(!runner.includes("C:\\Users\\") && runner.includes("$PSScriptRoot")
   && runner.includes("-p '/night-loop-lite-genesis'") && runner.includes("--model sonnet")
-  && runner.includes("genesis-night.log") && runner.includes("exit $LASTEXITCODE"),
+  && runner.includes("genesis-night.log") && runner.includes("lite-live.mjs status") && runner.includes("exit $LASTEXITCODE"),
 "scheduled runner is not path-neutral or does not pin the skill/model/log/exit code");
+check(runner.indexOf("lite-live.mjs status") > runner.indexOf("-p '/night-loop-lite-genesis'")
+  && runner.indexOf("if ($claudeExit -ne 0)") < runner.indexOf("lite-live.mjs status"),
+"scheduled runner does not gate status on a successful Claude invocation");
 check(handoff.includes("New-ScheduledTaskPrincipal") && handoff.includes("-RunLevel Limited")
   && handoff.includes("-WakeToRun") && handoff.includes("-StartWhenAvailable")
   && handoff.includes("-RunOnlyIfNetworkAvailable") && handoff.includes("-MultipleInstances IgnoreNew")
   && handoff.includes("WindowsIdentity]::GetCurrent().Name") && handoff.includes("Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue")
   && !handoff.includes("Register-ScheduledTask -TaskName $TaskName -Action $Action -Trigger $Trigger `\n  -Principal $Principal -Settings $Settings -Description 'Edgeweaver Genesis night-loop-lite steps 1, 9, and 10' -Force")
   && handoff.includes("lite-live.mjs status") && handoff.includes("not scheduled night one")
+  && handoff.includes("gh api repos/agent57zero/edgeweaver --silent") && handoff.includes("gh api repos/alanshurafa/edgeweaver-gates --silent")
   && handoff.includes("two distinct real scheduled"), "runtime-host handoff is missing preflight, scheduler, no-overwrite, or two-night safeguards");
 
 if (fails.length) { console.log("FAIL:\n - " + fails.join("\n - ")); process.exit(1); }

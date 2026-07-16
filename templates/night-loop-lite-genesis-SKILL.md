@@ -32,7 +32,8 @@ From `<EDGEWEAVER_REPO>`, run:
 node scripts/night-loop/lite-live.mjs prepare
 ```
 
-The helper obtains `diary_day`, `utc_window`, and `run_id` verbatim from:
+The helper first requires a configured `EDGEWEAVER_TZ`, then obtains `diary_day`,
+`utc_window`, and `run_id` verbatim from:
 
 ```powershell
 node scripts/waking/orient.mjs --diary-day --being genesis
@@ -84,8 +85,11 @@ node scripts/night-loop/lite-live.mjs commit --input <temporary-bundle.json>
 ```
 
 The helper recomputes orientation and rejects changed time fields. It validates evidence IDs,
-content dates, lesson count, confidence, and non-speculative wording. It queries each
-run-plus-step idempotency key before writing. Candidate lessons go only through
+content dates, lesson count, confidence, and non-speculative wording. Each lesson's stable
+idempotency identity is derived from canonicalized content plus sorted, deduplicated evidence
+IDs, so a partial failure can be retried in any order without duplicates. It queries each
+run-plus-step identity before writing and normalizes confidence to the live store's two-decimal
+precision. Candidate lessons go only through
 `/functions/v1/agent-memory-api/writeback` with `x-brain-key`; the helper verifies they remain
 `generated`, `pending`, review-required, and unusable as instruction. Never POST directly to
 `agent_memories`.

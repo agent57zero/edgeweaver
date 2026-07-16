@@ -7,6 +7,9 @@ Set-Location -LiteralPath $repoRoot
 
 try {
   & claude -p '/night-loop-lite-genesis' --model sonnet --output-format text *>> $logPath
+  $claudeExit = $LASTEXITCODE
+  if ($claudeExit -ne 0) { exit $claudeExit }
+  & node scripts/night-loop/lite-live.mjs status *>> $logPath
   exit $LASTEXITCODE
 }
 catch {
