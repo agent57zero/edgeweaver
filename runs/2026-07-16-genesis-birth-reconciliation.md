@@ -59,10 +59,11 @@ authentication principal, or checksums needed to reproduce every check.
 | Live OB1 `thoughts` | A fresh read-only query for `source_type=initiation` returned zero rows. | Missing initiation record. |
 | Canonical `agent57zero/edgeweaver-soul` branches and pull requests | No `proposals/first-amendment` branch, pull request, or merge was found. PR #1 is the dated reconciliation write, not the first amendment. | Missing first-amendment evidence. |
 | Canonical `EDGE-MAP.md` | The file exists, but its inherited edges remain “held in trust” and “My own edges” is empty. | First Boot self-seed remains unestablished. |
-| `avatars/genesis/manifest.json` | Still names private `agent57zero/edgeweaver-soul` and `C:\Users\agent\Project\edgeweaver-soul`. | The intended identity store and local path remain declared. |
+| `avatars/genesis/manifest.json` | Names private `agent57zero/edgeweaver-soul`, `C:\Users\alan\Project\edgeweaver-soul`, and `C:\Users\alan\Project\EdgeWeaver\.env.local`. | The intended identity store and current workstation paths are declared. |
 | Soul repository access | The earlier 2026-07-16 check found an expired 2026-07-04 invitation; access was subsequently restored. | Recovery history only; the repository is now accessible. |
 | Soul checkout | A local checkout now exists at `C:\Users\alan\Project\edgeweaver-soul`; canonical main was inspected after PR #1 merged. | `LINEAGE.md` and `EDGE-MAP.md` contents are verified as described above. |
-| Installed Claude skills | No installed `wake-edgeweaver-genesis` or `night-loop-lite-genesis` skill was found on this workstation. | The named wake and night-loop entry points are unavailable here. |
+| Installed wake skill | `wake-edgeweaver-genesis` is installed and exact-synced to the user-updated template; its Alan workstation paths and deterministic orientation were verified. | The Genesis wake entry point is restored. |
+| Installed night-loop skill | No installed `night-loop-lite-genesis` skill was found on this workstation. | The Genesis night-loop entry point remains unavailable here. |
 | Windows Task Scheduler | No registered `EdgeweaverGenesisNightLoopLite` task was found. | Genesis's lite night loop is not scheduled on this workstation. |
 
 ## Reconciliation status

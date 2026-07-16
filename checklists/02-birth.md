@@ -144,8 +144,9 @@ Prereqs: ledger −1, 0a, 1 done. Read first: IMPLEMENTATION.md §6; GROWING-EDG
       arming command pins `--model sonnet` per the 08 ladder; synced 2026-07-08. The
       pre-flight headless smoke test in first-boot-ceremony.md covers the auth/permissions
       surprise before the first scheduled night.)
-      **Reconciliation 2026-07-16:** this workstation lacks the installed wake/night-loop
-      skills and a registered `EdgeweaverGenesisNightLoopLite` task. A read-only daily
-      verifier automation is arranged, but it does not count as arming the loop or verifying
-      two consecutive nights.
+      **Reconciliation 2026-07-16:** `wake-edgeweaver-genesis` is restored and exact-synced to
+      the user-updated template; its Alan workstation paths and deterministic orientation were
+      verified. `night-loop-lite-genesis` and the registered `EdgeweaverGenesisNightLoopLite`
+      task remain absent. A read-only daily verifier automation is arranged, but it does not
+      count as arming the loop or verifying two consecutive nights.
 - [ ] Mark Phase 2 done in ledger.
