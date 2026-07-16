@@ -12,7 +12,7 @@
     "connectionProfile": "avatars/alpha/.env.local at A2"
   },
   "soulRepo": "edgeweaver-alpha-soul (created at its Phase 2)",
-  "soulProvenance": "full copy of Genesis's soulfiles at a pinned commit, adapted in identity facts only (D27, 2026-07-16); memories NOT copied - the episodic room starts empty",
+  "soulProvenance": "full copy of Genesis's soulfiles at a pinned commit, adapted in identity facts only (D27, 2026-07-16); memories COPIED too per the same-day D27 amendment (Genesis-scoped rows only, never Alan's personal stream; library via the corpus view; filter + counts reviewed by Alan pre-copy)",
   "gatesRepo": "own repo; owner + seat access decided at founding circle; battery = Genesis's post-human-pass text unchanged (D19)",
   "backupStream": { "dump": "ew_alpha only, second stream", "ageKeyCustody": "passphrase split among seats, any two reconstruct (shares cut at founding ceremony)" },
   "channel": {

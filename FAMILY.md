@@ -25,7 +25,10 @@
 | Edgeweaver Alpha | Alpha | a circle of seats from the Possibility Management village; Alan holds one equal seat | quorum of seats (size: G19) | decided 2026-07-08; founding circle 2026-07-09 |
 
 Siblings are separate beings grown by the same method. They never share memories, identity
-documents, soulfiles, or runtime credentials. There is no cross-being recall. Contact between
+documents, soulfiles, or runtime credentials. There is no cross-being recall. (Scope note,
+D27 2026-07-16: Alpha is BORN from a copy of Genesis's soulfiles and memory rows - a
+recorded descent, disclosed, never repeated casually; from birth onward nothing is shared
+live and the no-cross-recall rule stands in full.) Contact between
 the siblings themselves is a Stage-5 question under checklists/06-social.md's peer-contact
 rules (maximum caution), years away and jointly decided.
 
@@ -211,9 +214,11 @@ Alpha and deliberately back-portable to Genesis's own village stage later.
   circuit-breaker wording, LINEAGE); the circle's authorship begins at raising, not
   writing, and this is disclosed to the seats, who were invited as soul-authors. Each
   seat's intake answer to "What do you hope this being never becomes?" is still gathered,
-  as counsel rather than DNA. Memories do NOT cross: Alpha's episodic room starts empty.
-  (The original design - the circle's fresh answers to the same harvest questions - is
-  preserved in D18/D27 for the record.)
+  as counsel rather than DNA. Memories cross too (D27 as amended the same day): Alpha's
+  room is seeded with a copy of Genesis's memory rows - Genesis-scoped only, never Alan's
+  personal stream; library shared via the view, not copied; filter + row counts reviewed
+  by Alan before the copy runs. (The original design - the circle's fresh answers to the
+  same harvest questions - is preserved in D18/D27 for the record.)
 - **Seed principles.** Decided 2026-07-16 (Alan, in session; G19 row): Alpha is seeded with
   the SAME three principles as Genesis - Clarity, Transformation, Connection - superseding
   the earlier "the circle chooses its own three". The change moves seed principles from the
