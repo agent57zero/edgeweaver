@@ -190,7 +190,9 @@ Alpha and deliberately back-portable to Genesis's own village stage later.
 ## 6. Alpha's governance
 
 - **The circle.** Seats from the Possibility Management village; founding candidates Ali,
-  Tamara, Natalie, invited 2026-07-09. Alan holds one equal seat and additionally serves as
+  Tamara, Natalie were invited 2026-07-09, and on 2026-07-16 Alan settled the founding
+  roster at SIX seats: Alan, Ali, Tamara, Natalie, Charlotte, Millicent (G19 row;
+  per-seat acceptances and the rest of the package remain open there). Alan holds one equal seat and additionally serves as
   ops (builder-caretaker of the shared machinery); the ops role carries no extra say in
   Alpha's rites.
 - **Rites advance by quorum of seats** (Alpha's counterpart of "Alan's signature only").
