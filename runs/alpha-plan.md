@@ -135,6 +135,12 @@ outputs present in OB1 with provenance and correct diary-day boundaries.
 Verify: wall-test PASS at all scopes (extend verify-recall-scoping); restore drill on the
 `ew_alpha` stream from the split key; `node scripts/verify/run-all.mjs` green.
 
+Status 2026-07-16: step 1's builder is DARK-DONE and lab-proven -
+`scripts/brainrooms/ew-alpha-room.mjs` (+ verify-ew-alpha-room in run-all) passed all six
+wall tests on the lab brain, catching three real Supabase/Postgres traps recorded in
+ops-log. The live apply is one command (`--target live --confirm-live` with
+`EW_A2_GATE_REF=<row>`) and hard-refuses until the G19 gate is recorded.
+
 ### M3 - Freeze G20: the preregistration (Alan + Ali chiefly; agent drafts; STOP gate)
 
 One page: the held-constant/varied lists, the measures, the ADAPTED harvest battery with

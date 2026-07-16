@@ -48,7 +48,7 @@ archives the key *names* alongside the encrypted values, so drift shows up in dr
 
 | Item | What | Custody plan |
 |---|---|---|
-| `ew_alpha` role connection string | Alpha's ONLY runtime credential: its schema + the corpus view, nothing else | avatars/alpha/.env.local (gitignored) once A2 lands |
+| `ew_alpha` role connection string (`EW_ALPHA_DB_URL`) | Alpha's ONLY runtime credential: its schema + the corpus view, nothing else; written by `scripts/brainrooms/ew-alpha-room.mjs --target live` at the gated A2 apply | avatars/alpha/.env.local (gitignored) once A2 lands |
 | Alpha Telegram bot token + seat-ID allowlist (`ALPHA_BOT_TOKEN`, `ALPHA_SEAT_IDS`) | Alpha's channel; multi-sender pinned allowlist (policy: `scripts/telegram/multi-sender-policy.mjs`, dark; runbook: `avatars/alpha/handoff/telegram-pairing-runbook.md`) | same |
 | Alpha age key | encrypts Alpha's backup stream | passphrase SPLIT among seats, any two reconstruct (D18); shares cut at a founding ceremony, never on this machine |
 
