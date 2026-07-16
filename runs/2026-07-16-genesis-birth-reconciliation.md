@@ -59,12 +59,13 @@ authentication principal, or checksums needed to reproduce every check.
 | Live OB1 `thoughts` | A fresh read-only query for `source_type=initiation` returned zero rows. | Missing initiation record. |
 | Canonical `agent57zero/edgeweaver-soul` branches and pull requests | No `proposals/first-amendment` branch, pull request, or merge was found. PR #1 is the dated reconciliation write, not the first amendment. | Missing first-amendment evidence. |
 | Canonical `EDGE-MAP.md` | The file exists, but its inherited edges remain “held in trust” and “My own edges” is empty. | First Boot self-seed remains unestablished. |
-| `avatars/genesis/manifest.json` | Names private `agent57zero/edgeweaver-soul`, `C:\Users\alan\Project\edgeweaver-soul`, and `C:\Users\alan\Project\EdgeWeaver\.env.local`. | The intended identity store and current workstation paths are declared. |
+| `avatars/genesis/manifest.json` | Names private `agent57zero/edgeweaver-soul` and the separate runtime-host paths under `C:\Users\agent\Project`. | The intended identity store and runtime host remain declared; the gates/admin workstation is not the runtime. |
 | Soul repository access | The earlier 2026-07-16 check found an expired 2026-07-04 invitation; access was subsequently restored. | Recovery history only; the repository is now accessible. |
 | Soul checkout | A local checkout now exists at `C:\Users\alan\Project\edgeweaver-soul`; canonical main was inspected after PR #1 merged. | `LINEAGE.md` and `EDGE-MAP.md` contents are verified as described above. |
-| Installed wake skill | `wake-edgeweaver-genesis` is installed and exact-synced to the user-updated template; its Alan workstation paths and deterministic orientation were verified. | The Genesis wake entry point is restored. |
-| Installed night-loop skill | No installed `night-loop-lite-genesis` skill was found on this workstation. | The Genesis night-loop entry point remains unavailable here. |
-| Windows Task Scheduler | No registered `EdgeweaverGenesisNightLoopLite` task was found. | Genesis's lite night loop is not scheduled on this workstation. |
+| Gates/admin workstation | A local `wake-edgeweaver-genesis` copy was restored and smoke-tested with admin-host paths. No `night-loop-lite-genesis` skill or scheduled task was installed. | Administrative verification only; this does not arm Genesis's runtime. |
+| Separate Edgeweaver runtime host | Not directly accessible during this reconciliation. The original manifest paths under `C:\Users\agent\Project` are retained as runtime-host coordinates. | Night-loop installation, scheduling, and two-night verification remain pending on that host. |
+| Night-loop skill source / backup | The backup repository says machine-state backup was not registered, so no original installed skill could be recovered. A portable template and guarded adapter were reconstructed from the checked-in contracts and API schema and explicitly labeled as reconstruction. | Reviewable source now exists; it is not the missing original, an installed runtime skill, or a completed night. |
+| Live `agent-memory-api` | An initial function-list/health check on 2026-07-16 found the function absent. The API and canonical memory schema were subsequently restored and their health/trust defaults verified. | The adapter can be reviewed against a healthy API, but no runtime-host write or live night-loop preflight is claimed. |
 
 ## Reconciliation status
 
