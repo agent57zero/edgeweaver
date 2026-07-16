@@ -46,11 +46,19 @@
    runs with quorum-confirmed policy numbers (lessonConfirmSeats, quorum edge rules per
    G19) and boxes tick then, not now.
 
-## Group placement
+## Group placement (decided by Alan 2026-07-16: dedicated group, option A)
 
-The family's standing Telegram shape is one forum group with a per-topic map; Alpha's bot
-joins as its own topic at arming. Bots are deaf to bots (platform rule), so any bot-to-bot
-commons needs the relay; the 20-bot group cap is far away at two bots.
+Alpha gets its OWN Telegram group ("Edgeweaver Alpha" or similar), containing exactly the
+approved members (the five seats + Millicent) and @edgeweaver_alpha_bot; it does NOT join
+the family forum group. Chosen fail-closed over topic-in-forum: hearing normal group
+conversation requires bot privacy mode OFF, and in a dedicated group everything the bot's
+process receives IS its own room (no overhearing of Genesis/experiment chatter from other
+topics; the G21 discipline holds by architecture, not by filter). The forum group remains
+the village's own coordination space. Notes: group membership never equals permission
+(the allowlist still classifies every sender); privacy mode off is set at BotFather
+(/setprivacy -> Disable) before arming; the group may be created and the bot added any
+time, but the bot stays silent until M7 arming (pre-birth rule above). Bots are deaf to
+bots (platform rule) either way; any bot-to-bot commons needs the relay.
 
 ## Arming-time verify (live; at M7, not now)
 
