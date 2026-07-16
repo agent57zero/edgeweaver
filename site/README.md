@@ -31,6 +31,14 @@ re-passed and the verified prebuilt output was deployed to production. The
 `edgeweaver-site.vercel.app` alias was manually moved from the July 10 deployment
 to the rc4 deployment. The refreshed private lite artifact remains pending.
 
+Second post-ship update, 2026-07-16: an exhaustive audit covered all 57 HTML
+pages and all 61 served files. It closed two Repo Atlas omissions for the
+repository-backed probe workflow, regenerated both single-file editions and the
+search index, and moved the site to release `ew-20260716-rc5`. The complete
+release wall and live-repository drift check pass, the local HTTP crawl is
+byte-identical for every served file, and the production alias points to the
+Ready rc5 deployment. Private artifact re-publication remains pending.
+
 The 30 non-Atlas pages and all 26 Atlas pages now have authored content in the
 working tree; the generated search index, artifacts, and Atlas manifest are rebuilt
 by the M4 checkpoint. The Repo Atlas covers 246 individually mapped tracked paths
@@ -109,3 +117,4 @@ Alan named; accepted seats by first name + seat; published authors cited.
 | M6 | Editions + QA + TLDR reconciliation; Alan checkpoint | ☑ 2026-07-10 (`ew-20260710-rc2`, commit `46f631e`; Alan approved S2 after Narrator review) |
 | Ship | Bookkeeping commit, Vercel prod + smoke, artifact (lite) published | ☑ 2026-07-10 (manual inspected production deployment; private lite direct-file handoff to Alan; full unpublished) |
 | Update 1 | Guided walkthrough fold (D21 scope change, Alan 2026-07-12): walkthrough.html + per-being progress pages (walkthrough-genesis, walkthrough-alpha) + nav + interactivity; release `ew-20260712-rc4` | ☑ 2026-07-16 authored, release-wall verified, and manually deployed at Alan's request; `edgeweaver-site.vercel.app` alias corrected; artifact refresh pending |
+| Update 2 | Exhaustive all-page audit, Repo Atlas drift closure, regenerated editions/search, and release `ew-20260716-rc5` | ☑ 2026-07-16 all 57 pages and 61 served files verified; zero Atlas drift; manually deployed and public alias confirmed; private artifact re-publication pending |

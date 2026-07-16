@@ -42,6 +42,34 @@ both the local static candidate and the manually promoted production deployment.
   deployed prebuilt output and the final alias assignment succeeded.
 - The private lite artifact refresh remains pending.
 
+## Update 2 all-page audit and release evidence (2026-07-16)
+
+- The complete `verify-site --release --against-live` wall passed across all 57
+  HTML pages. It verified generated freshness, internal links and anchors,
+  navigation and search wiring, accessible structure, Atlas coverage, external
+  link policy, artifacts, redaction, and release completeness.
+- The audit found two tracked paths awaiting Repo Atlas entries:
+  `tools/probe-runner.md` and `tools/probe-runner-targets.json`. Both now have
+  five-field, non-sensitive entries on `atlas/tools.html`; the final drift count
+  is zero.
+- A local HTTP crawl fetched all 61 served files byte-for-byte with 61 successful
+  responses. Shared JavaScript and the generated search index passed syntax
+  checks. The two external destinations returned HTTP 200.
+- All 29 repository verification scripts passed during the audit. After the
+  Atlas repair and release-ID bump, the final site release wall, freshness check,
+  JavaScript checks, and 61-file HTTP crawl passed again.
+- Vercel prebuilt output contained 57 HTML pages and four shared assets, with
+  release marker `ew-20260716-rc5` on every HTML page and the middleware function
+  present. Boundary checks found no source, artifact, state, README, environment,
+  or gitignore content in the static upload.
+- Production deployment `dpl_2NXstzkaATCEvBNR3SX8zNDeDz26` reached Ready, and
+  `edgeweaver-site.vercel.app` was explicitly assigned to it. Post-deploy
+  unauthenticated checks of the root, walkthrough, repaired Atlas page, and a
+  missing route returned the expected 401 with `private, no-store`.
+- The signed-in live-page smoke was not run because the production password
+  remains in Alan's custody. The deployed bytes were exhaustively verified before
+  upload; private artifact re-publication remains pending.
+
 ## Automated and browser checks
 
 - Builder, default, live-drift, redaction, release, and the 29-script repository
