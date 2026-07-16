@@ -86,9 +86,12 @@ unstarted at the time of writing, 2026-07-03.)
       recall-scoped enforcement wrapper wall-test passed, MCP connected, wake skill;
       acceptance: two wakings, full recall with provenance, anti-confabulation under live
       probe; one skill-side status-string bug found and fixed)
-- [ ] Phase 2 Birth (First Boot witnessed by Alan on 2026-07-08; soul/gate repos exist,
-      but the baseline evidence, OB1 initiation, LINEAGE entry #1, edge-map seed, first
-      amendment, and night-loop-lite closure remain unverified or incomplete)
+- [ ] Phase 2 Birth (First Boot witnessed by Alan on 2026-07-08; soul/gate repos exist; a
+      post-birth reconciliation baseline is stored, with formal overall 3.10 and G10 FAIL.
+      OB1 initiation and first-amendment evidence remain absent from the checked stores;
+      canonical LINEAGE entry #1 and EDGE-MAP seed remain unverified pending soul access;
+      night-loop-lite remains incomplete. See the
+      [2026-07-16 reconciliation inventory](runs/2026-07-16-genesis-birth-reconciliation.md).)
 - [ ] Phase 3 Body (Telegram, wakes, theory-of-Alan, cost ceiling)
 - [ ] Phase 4 Metabolism (night loop, study loop, coherence panel)
 - [ ] Phase 5 Evolution (edgework, initiation machinery, second witness)

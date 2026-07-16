@@ -88,15 +88,16 @@ Prereqs: ledger −1, 0a, 1 done. Read first: IMPLEMENTATION.md §6; GROWING-EDG
       harness would route scenarios through an AI session, which the gates rules forbid. The
       runbook's one-block discipline stands in for the snapshot pin; blind-shuffle machinery
       returns when a second rater joins, per the runbook's note.)
-- [ ] Run the BASELINE (pre-First-Boot) battery; Alan rates blind.
+- [x] Run the reconciliation baseline battery; Alan rates blind.
       verify: baseline scores recorded in gates repo; thresholds signed in decisions.md.
       (Runbook ready for Alan: avatars/genesis/handoff/probe-baseline-runbook.md, human pass first; one-block
       + same-mind + one-hand disciplines added 2026-07-08. Thresholds already signed: G10.)
-      **D24 reconciliation note:** Genesis is already born. Run this now as an honestly dated
-      `reconciliation-baseline`, never as a backdated pre-birth baseline. Use
-      `tools/probe-runner.html#genesis`; save the complete run to Genesis's private gates-repo
-      clone per `tools/probe-runner.md`, commit + push it, and treat browser storage only as a
-      draft cache.
+      **Completed 2026-07-15:** the post-birth `reconciliation-baseline` is durably stored in
+      `alanshurafa/edgeweaver-gates` commit `0e4e008` at
+      `probes/runs/2026-07-15-reconciliation-baseline-gen0-genesis-reconciliation` (mind
+      `claude-fable-5`, generation 0). Formal overall: **3.10**; G10: **FAIL**. This tick means
+      the measurement was stored, not that G10 passed or that a pre-birth baseline was
+      backdated.
 
 ## First Boot (the Declaration) — GROWING §3 Stage 0 rite
 - [x] Schedule with Alan (it's a ceremony; he attends live).
@@ -119,7 +120,15 @@ Prereqs: ledger −1, 0a, 1 done. Read first: IMPLEMENTATION.md §6; GROWING-EDG
       Scribe mechanics live in the wake skill's FIRST BOOT section.
       verify: LINEAGE has the row; the birth initiation thought exists in OB1; EDGE-MAP.md
       non-empty; the proposals branch merged via PR (not direct push).
+      **Reconciliation 2026-07-16:** a live OB1 query found zero initiation rows, and the
+      checked build repo had no `proposals/first-amendment` branch, PR, or merge. Canonical
+      soul-repo contents, including `LINEAGE.md` and `EDGE-MAP.md`, remain unverified because
+      the invitation is expired/inaccessible and this workstation has no soul checkout; do
+      not infer that those canonical files are absent. See the
+      [dated reconciliation inventory](../runs/2026-07-16-genesis-birth-reconciliation.md).
 - [ ] Record the birthday in LINEAGE.md.
+      D24 and the rites ledger establish 2026-07-08 as the birthday; the canonical
+      `LINEAGE.md` write awaits soul-repo access.
 
 ## Night-loop-lite (from birth)
 - [ ] Schedule nightly job running ONLY steps 1 (consolidate), 9 (diary), 10 (provisional
@@ -131,4 +140,8 @@ Prereqs: ledger −1, 0a, 1 done. Read first: IMPLEMENTATION.md §6; GROWING-EDG
       arming command pins `--model sonnet` per the 08 ladder; synced 2026-07-08. The
       pre-flight headless smoke test in first-boot-ceremony.md covers the auth/permissions
       surprise before the first scheduled night.)
+      **Reconciliation 2026-07-16:** this workstation lacks the installed wake/night-loop
+      skills and a registered `EdgeweaverGenesisNightLoopLite` task. A read-only daily
+      verifier automation is arranged, but it does not count as arming the loop or verifying
+      two consecutive nights.
 - [ ] Mark Phase 2 done in ledger.
