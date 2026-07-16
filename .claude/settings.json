@@ -1,4 +1,6 @@
 {
+  "model": "claude-fable-5",
+  "effortLevel": "medium",
   "hooks": {
     "UserPromptSubmit": [
       {
@@ -12,8 +14,12 @@
     ]
   },
   "permissions": {
+    "additionalDirectories": [
+      "C:\\Users\\agent\\Project\\edgeweaver-soul"
+    ],
     "allow": [
       "Bash(*)",
+      "Read(//c/Users/agent/Project/edgeweaver-soul/**)",
       "mcp__plugin_telegram_telegram__reply",
       "mcp__plugin_telegram_telegram__react",
       "mcp__plugin_telegram_telegram__edit_message"

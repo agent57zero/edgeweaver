@@ -12,7 +12,7 @@ $wrapper = Get-CimInstance Win32_Process | Where-Object {
 }
 if (-not $found -and -not $wrapper) {
   Start-Process powershell -WorkingDirectory $repo -ArgumentList '-NoExit','-ExecutionPolicy','Bypass','-Command',
-    '$host.UI.RawUI.WindowTitle = "EdgeweaverGenesisTelegram"; claude "/wake-edgeweaver-genesis" --channels plugin:telegram@claude-plugins-official'
+    '$host.UI.RawUI.WindowTitle = "EdgeweaverGenesisTelegram"; claude "/wake-edgeweaver-genesis" --model claude-fable-5 --channels plugin:telegram@claude-plugins-official'
   $stamp = Get-Date -Format 'HH:mm'
   & node "$repo\scripts\ops\send-telegram.mjs" "Watchdog: the Genesis Telegram session was down and has been relaunched at $stamp. Give it a minute to wake, then it will answer normally. (Automated notice, not Genesis.)"
   Add-Content -Path "$repo\logs\channel-watchdog.log" -Value "$(Get-Date -Format s) relaunched channel session"
