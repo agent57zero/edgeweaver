@@ -535,7 +535,7 @@ article.af-page { margin-top: 44px; }
   <strong class="brand">How Edgeweaver Works</strong>
   <div class="top-actions">
     <button class="search-toggle" type="button" aria-haspopup="dialog" aria-controls="site-search" aria-keyshortcuts="Control+K Meta+K" hidden>Search</button>
-    <div class="reading-controls" role="group" aria-label="Reading detail" hidden><button type="button" data-reading-choice="plain" aria-pressed="false">Plain</button><button type="button" data-reading-choice="technical" aria-pressed="false">Technical</button><button type="button" data-reading-choice="both" aria-pressed="true">Both</button></div>
+    <div class="reading-controls" role="group" aria-label="Reading detail" hidden><button type="button" data-reading-choice="plain" aria-pressed="true">Plain</button><button type="button" data-reading-choice="technical" aria-pressed="false">Technical</button><button type="button" data-reading-choice="both" aria-pressed="false">Both</button></div>
     <button class="theme-toggle" type="button" aria-pressed="false" hidden>Theme</button>
   </div>
 </header>

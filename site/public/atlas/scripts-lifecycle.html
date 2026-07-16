@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<meta name="edgeweaver-release" content="ew-20260716-rc5">
+<meta name="edgeweaver-release" content="ew-20260716-rc6">
 <title>Atlas: lifecycle scripts | How Edgeweaver Works</title>
 <link rel="stylesheet" href="../assets/site.css">
 <script defer src="../assets/search-index.js"></script>
@@ -26,9 +26,9 @@
   <div class="top-actions">
     <button class="search-toggle" type="button" aria-haspopup="dialog" aria-controls="site-search" aria-keyshortcuts="Control+K Meta+K" hidden>Search</button>
     <div class="reading-controls" role="group" aria-label="Reading detail" hidden>
-      <button type="button" data-reading-choice="plain" aria-pressed="false">Plain</button>
+      <button type="button" data-reading-choice="plain" aria-pressed="true">Plain</button>
       <button type="button" data-reading-choice="technical" aria-pressed="false">Technical</button>
-      <button type="button" data-reading-choice="both" aria-pressed="true">Both</button>
+      <button type="button" data-reading-choice="both" aria-pressed="false">Both</button>
     </div>
     <button class="theme-toggle" type="button" aria-pressed="false" hidden>Theme</button>
     <form class="logout-form" method="post" action="/ew-logout"><button type="submit">Log out</button></form>
@@ -48,7 +48,7 @@
   <ul id="search-results" class="search-results" role="listbox" aria-label="Search results"></ul>
 </dialog>
 <button class="nav-backdrop" type="button" aria-label="Close navigation" hidden></button>
-<div class="shell" data-root="../" data-page-slug="atlas/scripts-lifecycle" data-release-id="ew-20260716-rc5">
+<div class="shell" data-root="../" data-page-slug="atlas/scripts-lifecycle" data-release-id="ew-20260716-rc6">
 <nav id="sidebar" class="sidebar" aria-label="Current section navigation">
   <div class="sidebar-head"><strong>Rebuild</strong><button class="nav-close" type="button" hidden>Close</button></div>
   <nav class="sidebar-hubs" aria-label="All sections"><a href="../index.html">Overview</a>
@@ -196,6 +196,30 @@
 <div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Supply ordered input, confirm only its first ten entries remain without selection or sorting, then prove unarmed delivery never invokes the sender.</div>
 <div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../operations.html">steady-state review</a> and <a href="../governance.html">confirmation</a>.</div>
 </article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-docs-night-loop-lite-genesis-runtime-host-md"><code>docs/night-loop-lite-genesis-runtime-host.md</code> <span class="badge">runbook</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> Runtime-host installation handoff for the reconstructed Genesis lite night loop.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It defines host prerequisites, credential-wall checks, skill installation, dry verification, scheduler setup, logging, and rollback without exposing values or creating a simulated night.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The runtime operator uses it only on the separate execution host.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Follow its fail-closed preflight and confirm build access, gates denial, ignored state, health, and task identity before arming.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../loops.html">night loops</a> and <a href="../operations.html">operations</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-night-loop-lite-live-mjs"><code>scripts/night-loop/lite-live.mjs</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> Narrow live adapter for Genesis night-loop-lite steps.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It validates deterministic orientation, governed bundle paths, runtime environment names, evidence-linked lessons, diary and provisional autobiography shapes, health, and controlled API writeback. Importing it performs no I/O.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The installed skill invokes it on the runtime host; maintainers inspect it before arming.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Run the hermetic verifier, then require live health and ignored state before any real-night write.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../loops.html">metabolism</a> and <a href="scripts-verify.html#file-scripts-verify-verify-night-loop-lite-genesis-mjs">its verifier</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-scripts-night-loop-run-genesis-lite-ps1"><code>scripts/night-loop/run-genesis-lite.ps1</code> <span class="badge">active-code</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> Windows scheduler wrapper for the Genesis lite night loop.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It resolves the repository root, marks scheduled origin, invokes the installed Claude skill with the pinned model class, appends output to the governed log, checks adapter status, and preserves nonzero failures.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Task Scheduler executes it; operators inspect logs during runtime checks.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Run only after the runtime-host handoff passes, then confirm exit propagation and status output without printing credentials.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../operations.html">scheduling</a> and <a href="../loops.html">night loops</a>.</div>
+</article>
 </main>
 <!-- EW-FOOTER-START -->
 <section class="continue" aria-labelledby="atlas-scripts-lifecycle-continue"><h2 id="atlas-scripts-lifecycle-continue">Continue</h2><div class="continue-grid"><article class="continue-card"><p class="continue-label">Reproduce track</p><a href="../atlas/scripts-signals.html">Next: Atlas: signal + evolution scripts <span aria-hidden="true">&rarr;</span></a></article></div></section>
@@ -207,7 +231,7 @@
 </div>
 <footer class="site-foot">
 <p class="foot-banner">Village-layer material: this site sits outside both children's views, like FAMILY.md and village/, and it discusses sibling facts each child learns only by its parent body's deliberate decision (gate G21).</p>
-<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-10. Release ew-20260716-rc5.</p>
+<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-10. Release ew-20260716-rc6.</p>
 </footer>
 </div>
 </div>

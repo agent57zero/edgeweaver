@@ -75,8 +75,50 @@
   var lensAnnouncer = document.getElementById("lens-announcer");
   var hasPlain = !!document.querySelector('[data-register="plain"]');
   var hasTechnical = !!document.querySelector('[data-register="technical"]');
+  var READING_PARAM = "view";
+  function validReading(choice) {
+    return choice === "plain" || choice === "technical" || choice === "both";
+  }
+  function urlReadingChoice() {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      if (!params.has(READING_PARAM)) return null;
+      var choice = params.get(READING_PARAM);
+      return validReading(choice) ? choice : "plain";
+    } catch (error) {
+      return null;
+    }
+  }
   var storedReading = storageGet("ew-reading");
-  if (storedReading !== "plain" && storedReading !== "technical" && storedReading !== "both") storedReading = "both";
+  if (!validReading(storedReading)) storedReading = "plain";
+  var requestedReading = urlReadingChoice();
+  var initialReading = requestedReading || storedReading;
+
+  function hrefWithReading(href, choice) {
+    try {
+      var next = new URL(href, window.location.href);
+      var sameSite = next.origin === window.location.origin ||
+        (next.protocol === "file:" && window.location.protocol === "file:");
+      if (!sameSite) return href;
+      next.searchParams.set(READING_PARAM, choice);
+      return next.href;
+    } catch (error) {
+      return href;
+    }
+  }
+  function syncReadingUrl(choice) {
+    var next = hrefWithReading(window.location.href, choice);
+    if (next === window.location.href) return;
+    try { window.history.replaceState(window.history.state, "", next); } catch (error) {}
+  }
+  function syncReadingLinks(choice) {
+    Array.prototype.forEach.call(document.querySelectorAll("a[href]"), function (link) {
+      var href = link.getAttribute("href");
+      if (!href || href.charAt(0) === "#") return;
+      var next = hrefWithReading(href, choice);
+      if (next !== href) link.setAttribute("href", next);
+    });
+  }
 
   function syncReadingButtons(choice) {
     if (!readingControls) return;
@@ -88,18 +130,22 @@
     root.setAttribute("data-reading", choice);
     syncReadingButtons(choice);
     if (persist) storageSet("ew-reading", choice);
+    syncReadingUrl(choice);
+    syncReadingLinks(choice);
+    if (persist && typeof renderSearch === "function" && searchInput && searchInput.value) renderSearch();
     if (announce && lensAnnouncer) lensAnnouncer.textContent = announce;
   }
   if (readingControls && hasPlain && hasTechnical) {
     readingControls.hidden = false;
-    setReading(storedReading, false, "");
+    setReading(initialReading, false, "");
     readingControls.addEventListener("click", function (event) {
       var button = event.target.closest("[data-reading-choice]");
       if (!button) return;
       setReading(button.getAttribute("data-reading-choice"), true, "Reading detail changed.");
+      revealHashTarget();
     });
   } else {
-    setReading("both", false, "");
+    setReading(initialReading, false, "");
   }
 
   function revealHashTarget() {
@@ -109,9 +155,10 @@
     var target = document.getElementById(id);
     if (!target) return;
     var register = target.closest("[data-register]");
-    var choice = root.getAttribute("data-reading") || "both";
+    var choice = root.getAttribute("data-reading") || "plain";
     if (register && choice !== "both" && register.getAttribute("data-register") !== choice) {
-      setReading("both", false, "Both reading registers were shown so the linked section is visible.");
+      var hiddenChoice = register.getAttribute("data-register") === "technical" ? "Technical" : "Plain";
+      if (lensAnnouncer) lensAnnouncer.textContent = "This link points to " + hiddenChoice + " detail. Choose " + hiddenChoice + " or Both to reveal it.";
     }
   }
   window.addEventListener("hashchange", revealHashTarget);
@@ -232,7 +279,7 @@
   }
   function hrefFor(record) {
     if (artifact) return "#" + record.anchor;
-    return rootPrefix + record.slug + ".html#" + record.anchor;
+    return hrefWithReading(rootPrefix + record.slug + ".html#" + record.anchor, root.getAttribute("data-reading") || "plain");
   }
   function setActiveResult(next) {
     if (!resultState.length) next = -1;
@@ -262,7 +309,10 @@
       return;
     }
     var tokens = query.split(" ").filter(Boolean);
-    resultState = searchData.records.map(function (record, order) {
+    var readingChoice = root.getAttribute("data-reading") || "plain";
+    resultState = searchData.records.filter(function (record) {
+      return !record.register || readingChoice === "both" || record.register === readingChoice;
+    }).map(function (record, order) {
       return { record: record, order: order, score: scoreRecord(record, query, tokens) };
     }).filter(function (item) { return item.score >= 0; })
       .sort(function (a, b) { return b.score - a.score || a.order - b.order; })

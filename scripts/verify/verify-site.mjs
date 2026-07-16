@@ -235,6 +235,13 @@ let searchIndexData = null;
   const runtime = read(join(PUB, "assets", "site.js"));
   if (/\b(?:innerHTML|outerHTML|insertAdjacentHTML)\b/.test(runtime)) problems.push("check 2 (search): runtime may not interpolate HTML");
   if (!/textContent/.test(runtime)) problems.push("check 2 (search): runtime does not use textContent rendering");
+  if (!/var READING_PARAM = "view";/.test(runtime) || !/new URLSearchParams\(window\.location\.search\)/.test(runtime)) problems.push("check 2 (reading): URL view parameter is not parsed");
+  if (!/next\.searchParams\.set\(READING_PARAM, choice\)/.test(runtime) || !/window\.history\.replaceState/.test(runtime)) problems.push("check 2 (reading): chosen view is not reflected in the URL");
+  if (!/if \(!validReading\(storedReading\)\) storedReading = "plain";/.test(runtime)) problems.push("check 2 (reading): first-visit fallback is not plain");
+  if (!/var initialReading = requestedReading \|\| storedReading;/.test(runtime) || !/storageSet\("ew-reading", choice\)/.test(runtime)) problems.push("check 2 (reading): URL precedence or saved choice is missing");
+  if (!/syncReadingLinks\(choice\)/.test(runtime) || !/hrefWithReading\(rootPrefix \+ record\.slug/.test(runtime)) problems.push("check 2 (reading): navigation or search links do not carry the view");
+  if (/setReading\("both", false, "Both reading registers were shown/.test(runtime)) problems.push("check 2 (reading): hidden register links still reveal Both automatically");
+  if (!/!record\.register \|\| readingChoice === "both" \|\| record\.register === readingChoice/.test(runtime)) problems.push("check 2 (reading): search does not respect the active register");
 
   for (const [slug, d] of pageData) {
     const expectedRoot = slug.includes("/") ? "../" : "";
@@ -250,6 +257,7 @@ let searchIndexData = null;
       problems.push(`check 10 (accessibility): ${slug} search input lacks complete combobox semantics`);
     }
     if (!/<ul\b[^>]*id="search-results"[^>]*role="listbox"/.test(d.html)) problems.push(`check 10 (accessibility): ${slug} search results lack listbox semantics`);
+    if (!/data-reading-choice="plain" aria-pressed="true"/.test(d.html) || !/data-reading-choice="technical" aria-pressed="false"/.test(d.html) || !/data-reading-choice="both" aria-pressed="false"/.test(d.html)) problems.push(`check 10 (reading): ${slug} controls do not advertise Plain as the safe default`);
     for (const m of d.html.matchAll(/<button\b([^>]*)>([\s\S]*?)<\/button>/g)) {
       if (!plainButtonText(m[2]) && !/\baria-label="[^"]+"/.test(m[1])) problems.push(`check 10 (accessibility): ${slug} has unnamed button`);
     }
@@ -766,6 +774,7 @@ if (RELEASE) {
     checkBalance(af, true, false);
     const html = read(af);
     if (!/class="[^"]*\bartifact-toolbar\b/.test(html) || !/class="[^"]*\bsearch-toggle\b/.test(html) || !/class="[^"]*\breading-controls\b/.test(html) || !/class="[^"]*\btheme-toggle\b/.test(html)) problems.push(`check 10 (artifact): ${rel(af)} missing toolbar controls`);
+    if (!/data-reading-choice="plain" aria-pressed="true"/.test(html) || !/data-reading-choice="technical" aria-pressed="false"/.test(html) || !/data-reading-choice="both" aria-pressed="false"/.test(html)) problems.push(`check 10 (reading): ${rel(af)} controls do not advertise Plain as the safe default`);
     if (!/window\.EDGEWEAVER_SEARCH_INDEX\s*=/.test(html)) problems.push(`check 10 (artifact): ${rel(af)} missing inline search index`);
     for (const m of html.matchAll(/\btabindex="([1-9]\d*)"/g)) problems.push(`check 10 (accessibility): ${rel(af)} uses positive tabindex ${m[1]}`);
   }
