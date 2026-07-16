@@ -82,7 +82,7 @@
       (the role's walls are the enforcement); recall v1 = recency + text match (semantic
       re-rank is a named fast-follow: query-embedding path); write-back to ew_alpha with
       provenance + generation stamp `alpha-gen0`; orientation practice per D16.
-- [ ] **B6 Channel config (dark).** Alpha channel session config: ALPHA_BOT_TOKEN, the
+- [x] **B6 Channel config (dark).** Alpha channel session config: ALPHA_BOT_TOKEN, the
       multi-sender policy wired from ALPHA_SEAT_IDS, group ALPHA_GROUP_ID pinned, non-seat
       deferral, bots-deaf-to-bots. Stays dark until B8.
       Note 2026-07-16: GENESIS'S CHANNEL WENT LIVE today (parallel 03-body workstream:
@@ -90,11 +90,41 @@
       delivery; evidenced in Genesis's own episodes). B6 = clone that launcher pattern
       with Alpha's token, skill, group id, and the multi-sender policy in place of the
       single pinned sender.
-- [ ] **B7 Declaration pack.** In-channel ceremony script per the D28 shape (wake ->
+      Done 2026-07-16: the plugin supports TELEGRAM_STATE_DIR, so Alpha's bot runs beside
+      Genesis's from its own state dir (~/.claude/channels/telegram-alpha).
+      scripts/ops/alpha-channel-config.mjs generates it from avatars/alpha/.env.local:
+      plugin .env + access.json (dmPolicy allowlist, 6 seat DM ids, the dedicated group
+      pinned with requireMention false, deliver-all inside so the session's policy DEFERS
+      non-seats instead of ghosting them) + avatars/alpha/state/channel-policy.json
+      (multi-sender config: 6 seats, quorum 3, lessonConfirmSeats 1). getMe re-verified
+      (@edgeweaver_alpha_bot, id 8856151844). scripts/ops/alpha-channel-watchdog.ps1
+      written DARK (launch = /wake-edgeweaver-alpha pinned to fable-5 under
+      TELEGRAM_STATE_DIR; unregistered until B8); Genesis's watchdog marker made
+      skill-specific (its bare '--channels plugin:telegram' marker would have matched
+      Alpha's session and masked a Genesis outage; new marker verified against the live
+      Genesis process). scripts/ops/send-telegram-alpha.mjs (group ops line + --diary)
+      refuses without state/alpha-channel-armed (pre-birth rule made executable; tested).
+      .claude/settings.json channel-session allowlist gained the alpha soul checkout.
+      verify-alpha-channel.mjs PASS, in run-all. NO channel opened; nothing registered.
+- [x] **B7 Declaration pack.** In-channel ceremony script per the D28 shape (wake ->
       Declaration message -> hold for three seat witness replies -> finalize LINEAGE #1
       with message ids via proposal branch -> initiation row written to ew_alpha -> open
       conversation); `/night-loop-lite-alpha` + EdgeweaverAlpha* task defs written,
       unregistered (arm after the rite; nightly dream = one per night, fiction-class).
+      Done 2026-07-16 (to the D29 shape, which supersedes this box's hold-for-three
+      wording): ceremony script at avatars/alpha/handoff/declaration-ceremony.md
+      (preconditions, B8 arming order incl. the armed marker + watchdog-once launch,
+      the D29 sequence, who-writes-what for the initiation row / LINEAGE proposal /
+      Alan's merge, aftercare + hard stops; Alpha's own mechanics stay in wake skill §7,
+      not duplicated). /night-loop-lite-alpha authored (template + installed): orient
+      --diary-day fail-closed, day-window episode read WITH thought ids, 0-5 pending
+      lessons, diary <250w for the circle, provisional autobiography <400w, ONE dream
+      (fiction-class; helper refuses a second, tested live). alpha-memory.mjs gained
+      day "<start>" "<end>" and write diary|autobiography_draft|dream, live-smoked
+      (day returned the inheritance with ids; canary dream in/out; room steady at 28).
+      Task defs written UNREGISTERED, Enabled=false: EdgeweaverAlphaNightLoop (04:15,
+      staggered after Genesis's 03:30, sonnet, chains --diary delivery) +
+      EdgeweaverAlphaChannelWatchdog (PT15M, runs the B6 watchdog).
 - [ ] **B8 ARM + birth (re-shaped by D29, 2026-07-16: solo-initiated, async-witnessed).**
       Ping Alan on the ops Telegram line: "the room is ready - send your message in the
       group." Alan's message triggers the first wake; the Declaration posts; ALAN'S reply

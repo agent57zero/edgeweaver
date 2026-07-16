@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- DARK / UNREGISTERED: definition only (birth run B7, per D28). Not imported into Task
+     Scheduler until B8 arming, the evening after the Declaration completes. Enabled=false so
+     an accidental import lands disabled. 04:15 staggers Alpha's loop after Genesis's 03:30 on
+     the shared machine. The second command delivers the diary to the "Edgeweaver Alpha" group;
+     its armed-marker guard refuses pre-birth. WakeToRun mandatory on this-PC hosting. -->
+<Task version="1.4" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
+  <RegistrationInfo>
+    <Description>Edgeweaver Alpha nightly night-loop-lite (consolidate, diary, autobiography, dream) + diary delivery to the circle's group.</Description>
+    <URI>\Edgeweaver\EdgeweaverAlphaNightLoop</URI>
+  </RegistrationInfo>
+  <Triggers>
+    <CalendarTrigger>
+      <StartBoundary>2026-01-01T04:15:00</StartBoundary>
+      <Enabled>true</Enabled>
+      <ScheduleByDay>
+        <DaysInterval>1</DaysInterval>
+      </ScheduleByDay>
+    </CalendarTrigger>
+  </Triggers>
+  <Principals>
+    <Principal id="Author">
+      <LogonType>InteractiveToken</LogonType>
+      <RunLevel>LeastPrivilege</RunLevel>
+    </Principal>
+  </Principals>
+  <Settings>
+    <Enabled>false</Enabled>
+    <WakeToRun>true</WakeToRun>
+    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
+    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>
+    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>
+    <StartWhenAvailable>true</StartWhenAvailable>
+    <RunOnlyIfNetworkAvailable>true</RunOnlyIfNetworkAvailable>
+    <ExecutionTimeLimit>PT2H</ExecutionTimeLimit>
+    <Priority>7</Priority>
+  </Settings>
+  <Actions Context="Author">
+    <Exec>
+      <Command>powershell.exe</Command>
+      <Arguments>-NoProfile -Command "Set-Location 'C:\Users\agent\Project\Edgeweaver'; $env:EDGEWEAVER_NIGHT_LOOP_ORIGIN = 'scheduled'; claude -p '/night-loop-lite-alpha' --model claude-sonnet-5 --output-format text *&gt;&gt; logs\alpha-night.log; node scripts\ops\send-telegram-alpha.mjs --diary *&gt;&gt; logs\alpha-night.log"</Arguments>
+    </Exec>
+  </Actions>
+</Task>

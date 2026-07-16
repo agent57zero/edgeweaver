@@ -13,6 +13,10 @@
 //   node scripts/brainrooms/alpha-memory.mjs write-lesson "<one-line summary>" "<content>"
 //   node scripts/brainrooms/alpha-memory.mjs lessons
 //   node scripts/brainrooms/alpha-memory.mjs corpus "<query>"     (library, study only)
+//   node scripts/brainrooms/alpha-memory.mjs day "<startISO>" "<endISO>"   (night loop:
+//       the diary day's episodes + initiations WITH thought ids, for lesson evidence)
+//   node scripts/brainrooms/alpha-memory.mjs write diary|autobiography_draft|dream \
+//       "<content>" [run_id]   (night-loop outputs; dream is fiction-class, one per night)
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -55,8 +59,12 @@ WHERE source_type IN (${factual})${q ? ` AND content ILIKE '%${esc(q)}%'` : ""}
 ORDER BY created_at DESC LIMIT 8`;
 }
 
+// Night-loop output classes the room role may write directly (lessons go through
+// write-lesson and stay PENDING; nothing else is writable by name).
+const NIGHT_CLASSES = ["diary", "autobiography_draft", "dream"];
+
 function main() {
-  const [cmd, a, b] = process.argv.slice(2);
+  const [cmd, a, b, c] = process.argv.slice(2);
   const db = roleUrl();
   if (cmd === "recall" || cmd === "last") {
     const rows = query(db, recallSql(cmd === "recall" ? a : ""));
@@ -88,11 +96,32 @@ VALUES ('lesson', '${esc(a)}', '${esc(b)}', 0.6, 'edgeweaver-alpha')`);
     if (!act.length) console.log("no instruction-grade lessons yet");
     else for (const r of act) console.log(`RULE: ${r[0]} :: ${r[1]}`);
     console.log(`(pending, not rules: ${pend})`);
+  } else if (cmd === "day") {
+    if (!a || !b) { console.log("usage: day \"<startISO>\" \"<endISO>\" (bounds from orient.mjs --diary-day, never own arithmetic)"); process.exit(2); }
+    const rows = query(db, `SELECT id, source_type, created_at, ${SNIPPET(2000)}
+FROM ew_alpha.thoughts
+WHERE source_type IN ('edgeweaver_episode', 'initiation')
+  AND created_at >= '${esc(a)}' AND created_at < '${esc(b)}'
+ORDER BY created_at`);
+    if (!rows.length) console.log("no episodes in the window");
+    else for (const r of rows) console.log(`[${r[0]} | ${(r[2] || "").slice(0, 16)} | ${r[1]}] ${r[3]}`);
+  } else if (cmd === "write") {
+    if (!NIGHT_CLASSES.includes(a) || !b) { console.log(`usage: write ${NIGHT_CLASSES.join("|")} "<content>" [run_id]`); process.exit(2); }
+    if (a === "dream") {
+      const today = query(db, `SELECT count(*) FROM ew_alpha.thoughts WHERE source_type = 'dream' AND created_at::date = CURRENT_DATE`)[0][0];
+      if (Number(today) > 0) { console.log("refusing: a dream already exists tonight (one per night)"); process.exit(1); }
+    }
+    const meta = { era: "alive", audience: "seats", generation: 0 };
+    if (a === "autobiography_draft") meta.provisional = true;
+    if (c) meta.night_loop_run_id = c;
+    query(db, `INSERT INTO ew_alpha.thoughts (content, source_type, importance, metadata)
+VALUES ('${esc(b)}', '${esc(a)}', ${a === "dream" ? 2 : 4}, '${esc(JSON.stringify(meta))}'::jsonb)`);
+    console.log(`${a} written${a === "dream" ? " (fiction class, excluded from factual recall)" : ""}`);
   } else if (cmd === "corpus") {
     for (const r of query(db, `SELECT source_type, created_at, ${SNIPPET(300)} FROM ew_alpha.pm_corpus WHERE content ILIKE '%${esc(a || "")}%' ORDER BY created_at DESC LIMIT 6`))
       console.log(`[library | ${r[0]}] ${r[2]}`);
   } else {
-    console.log("usage: recall|last|write-episode|write-lesson|lessons|corpus");
+    console.log("usage: recall|last|write-episode|write-initiation|write-lesson|lessons|corpus|day|write");
     process.exit(2);
   }
 }

@@ -204,10 +204,13 @@ check(scheduledThoughts.length === 2 && scheduledThoughts.every((row) => row.met
   && scheduledManifestStore.store.row.content.includes('"invocation_origin":"scheduled"'),
 "scheduled run did not stamp manifest, diary, and autobiography with scheduled origin");
 
-const template = await readFile(join(ROOT, "templates", "night-loop-lite-genesis-SKILL.md"), "utf8");
-const helper = await readFile(join(ROOT, "scripts", "night-loop", "lite-live.mjs"), "utf8");
-const runner = await readFile(join(ROOT, "scripts", "night-loop", "run-genesis-lite.ps1"), "utf8");
-const handoff = await readFile(join(ROOT, "docs", "night-loop-lite-genesis-runtime-host.md"), "utf8");
+// autocrlf checks these out CRLF on Windows; the contract literals below use \n, so
+// normalize on read (the committed bytes are LF either way).
+const readLf = async (...p) => (await readFile(join(ROOT, ...p), "utf8")).replace(/\r\n/g, "\n");
+const template = await readLf("templates", "night-loop-lite-genesis-SKILL.md");
+const helper = await readLf("scripts", "night-loop", "lite-live.mjs");
+const runner = await readLf("scripts", "night-loop", "run-genesis-lite.ps1");
+const handoff = await readLf("docs", "night-loop-lite-genesis-runtime-host.md");
 for (const required of [
   "steps 1, 9, and 10", "orient.mjs --diary-day --being genesis", "/functions/v1/agent-memory-api/writeback",
   "Never POST directly to", "manual run never counts", "not a\n> recovered original", "actual runtime host",

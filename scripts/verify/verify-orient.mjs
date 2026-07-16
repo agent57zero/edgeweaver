@@ -46,12 +46,20 @@ for (const [name, now] of [["0330", "2026-07-09T07:30:00Z"], ["2330", "2026-07-0
   expect(`diary-day.${name}.runid`, dd, /run-id: nl-2026-07-08/);
 }
 
-// 6. multi-being guard: an unarmed being is refused, never oriented against another's memory
-// (reads the real alpha manifest, filesystem only; the guard exits before any network)
+// 6. multi-being guard: an unarmed being is refused, never oriented against another's
+// memory. Alpha armed at birth run B4, so the guard uses a throwaway fixture being (a
+// manifest with no "paths"), created and removed here; filesystem only, exits pre-network.
+const fixtureBeing = join(here, "..", "..", "avatars", "zz-verify-unarmed");
 let guarded = false;
-try { execFileSync(process.execPath, [orient, "--being", "alpha", "--now", "2026-07-09T12:00:00Z"], { encoding: "utf8" }); }
-catch (e) { guarded = /NOT ARMED/.test((e.stdout || "") + (e.stderr || "")); }
-if (!guarded) failures.push("alpha-guard: an unarmed being must be refused (exit 1 + NOT ARMED)");
+try {
+  const { mkdirSync, writeFileSync, rmSync } = await import("node:fs");
+  mkdirSync(fixtureBeing, { recursive: true });
+  writeFileSync(join(fixtureBeing, "manifest.json"), JSON.stringify({ being: "zz-verify-unarmed" }));
+  try { execFileSync(process.execPath, [orient, "--being", "zz-verify-unarmed", "--now", "2026-07-09T12:00:00Z"], { encoding: "utf8" }); }
+  catch (e) { guarded = /NOT ARMED/.test((e.stdout || "") + (e.stderr || "")); }
+  rmSync(fixtureBeing, { recursive: true, force: true });
+} catch { /* guarded stays false */ }
+if (!guarded) failures.push("unarmed-guard: an unarmed being must be refused (exit 1 + NOT ARMED)");
 
 if (failures.length) {
   console.log(`FAIL: orient - ${failures.length} assertion(s):\n  ` + failures.join("\n  "));

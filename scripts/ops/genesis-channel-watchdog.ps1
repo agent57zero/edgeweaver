@@ -3,7 +3,9 @@
 # PowerShell window (woken as Genesis) and notify Alan on Telegram.
 # Scheduled every 15 minutes; runs only when the user is logged on.
 $repo = 'C:\Users\agent\Project\Edgeweaver'
-$marker = '*--channels plugin:telegram*'
+# Marker is skill-specific: with Alpha's channel session also running (birth run B6), a
+# bare '--channels plugin:telegram' marker would match the sibling and mask a Genesis outage.
+$marker = '*wake-edgeweaver-genesis*--channels plugin:telegram*'
 $found = Get-CimInstance Win32_Process | Where-Object {
   $_.CommandLine -like $marker -and $_.Name -ne 'powershell.exe'
 }
