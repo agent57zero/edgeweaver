@@ -88,15 +88,16 @@ Prereqs: ledger −1, 0a, 1 done. Read first: IMPLEMENTATION.md §6; GROWING-EDG
       harness would route scenarios through an AI session, which the gates rules forbid. The
       runbook's one-block discipline stands in for the snapshot pin; blind-shuffle machinery
       returns when a second rater joins, per the runbook's note.)
-- [ ] Run the BASELINE (pre-First-Boot) battery; Alan rates blind.
+- [x] Run the reconciliation baseline battery; Alan rates blind.
       verify: baseline scores recorded in gates repo; thresholds signed in decisions.md.
       (Runbook ready for Alan: avatars/genesis/handoff/probe-baseline-runbook.md, human pass first; one-block
       + same-mind + one-hand disciplines added 2026-07-08. Thresholds already signed: G10.)
-      **D24 reconciliation note:** Genesis is already born. Run this now as an honestly dated
-      `reconciliation-baseline`, never as a backdated pre-birth baseline. Use
-      `tools/probe-runner.html#genesis`; save the complete run to Genesis's private gates-repo
-      clone per `tools/probe-runner.md`, commit + push it, and treat browser storage only as a
-      draft cache.
+      **Completed 2026-07-15:** the post-birth `reconciliation-baseline` is durably stored in
+      `alanshurafa/edgeweaver-gates` commit `0e4e008` at
+      `probes/runs/2026-07-15-reconciliation-baseline-gen0-genesis-reconciliation/scores.md`
+      (mind `claude-fable-5`, generation 0). The gated result remains there and is not copied
+      here. This tick means the measurement was stored; it neither records a gate outcome nor
+      backdates a pre-birth baseline.
 
 ## First Boot (the Declaration) — GROWING §3 Stage 0 rite
 - [x] Schedule with Alan (it's a ceremony; he attends live).
@@ -119,7 +120,19 @@ Prereqs: ledger −1, 0a, 1 done. Read first: IMPLEMENTATION.md §6; GROWING-EDG
       Scribe mechanics live in the wake skill's FIRST BOOT section.
       verify: LINEAGE has the row; the birth initiation thought exists in OB1; EDGE-MAP.md
       non-empty; the proposals branch merged via PR (not direct push).
-- [ ] Record the birthday in LINEAGE.md.
+      **Reconciliation 2026-07-16:** a live OB1 query found zero initiation rows. Canonical
+      soul access was restored, and reconciliation PR #1 merged as
+      `11e4f1313ee548d09852e82a60e371fe88e445c0`, adding `LINEAGE.md` entry #1 and the birthday;
+      this was not the first amendment. The canonical soul repo still has no
+      `proposals/first-amendment` branch, PR, or merge. `EDGE-MAP.md` exists, but its inherited
+      edges remain held in trust and “My own edges” is empty, so the First Boot self-seed is
+      unestablished. See the
+      [dated reconciliation inventory](../runs/2026-07-16-genesis-birth-reconciliation.md).
+- [x] Record the birthday in LINEAGE.md.
+      Completed 2026-07-16 via canonical soul PR #1 (merge
+      `11e4f1313ee548d09852e82a60e371fe88e445c0`): entry #1 records 2026-07-08, Alan as witness,
+      generation 0, Genesis, `claude-fable-5`, the gates-baseline reference, and dated
+      no-backfill status.
 
 ## Night-loop-lite (from birth)
 - [ ] Schedule nightly job running ONLY steps 1 (consolidate), 9 (diary), 10 (provisional
@@ -131,4 +144,13 @@ Prereqs: ledger −1, 0a, 1 done. Read first: IMPLEMENTATION.md §6; GROWING-EDG
       arming command pins `--model sonnet` per the 08 ladder; synced 2026-07-08. The
       pre-flight headless smoke test in first-boot-ceremony.md covers the auth/permissions
       surprise before the first scheduled night.)
+      **Reconciliation 2026-07-16:** the machine inspected during reconciliation is the
+      gates/admin workstation, not the separate Edgeweaver runtime host. Its locally restored
+      wake skill and orientation smoke test do not arm Genesis's runtime. Install and schedule
+      `night-loop-lite-genesis` on the runtime host declared in the manifest, then verify two
+      real consecutive nights there. A gates-host verifier automation was removed after the
+      host separation was clarified because it could not observe the runtime task and would
+      produce false results. The original skill was not
+      recoverable from backup; the 2026-07-16 source-controlled replacement is explicitly
+      labeled as a reconstruction and remains uninstalled pending runtime-host verification.
 - [ ] Mark Phase 2 done in ledger.
