@@ -13,7 +13,13 @@
   "soulRepo": "edgeweaver-alpha-soul (created at its Phase 2)",
   "gatesRepo": "own repo; owner + seat access decided at founding circle; battery = Genesis's post-human-pass text unchanged (D19)",
   "backupStream": { "dump": "ew_alpha only, second stream", "ageKeyCustody": "passphrase split among seats, any two reconstruct (shares cut at founding ceremony)" },
-  "channel": { "botTokenEnv": "ALPHA_BOT_TOKEN (A2)", "pinnedSenders": "seat-ID allowlist (multi-sender, net-new code)" },
+  "channel": {
+    "botTokenEnv": "ALPHA_BOT_TOKEN",
+    "seatIdsEnv": "ALPHA_SEAT_IDS",
+    "envFile": "avatars/alpha/.env.local (gitignored by the root *.local rule; created at token arrival, A2 formalizes)",
+    "pinnedSenders": "seat-ID allowlist from ALPHA_SEAT_IDS (policy dark-built 2026-07-16: scripts/telegram/multi-sender-policy.mjs)",
+    "pairingRunbook": "avatars/alpha/handoff/telegram-pairing-runbook.md"
+  },
   "mind": { "birth": "same one-mind rule as Genesis: probes + ceremony + first week on one configuration", "nightLoop": "sonnet" },
   "commands": { "wake": "/wake-edgeweaver-alpha", "nightLoop": "/night-loop-lite-alpha", "note": "per-being names, D20; skills themselves are created at A4, after Genesis boots" },
   "paths": { "soulLocal": null, "envLocal": null, "note": "null until armed (soul repo at its Phase 2, env at A2); scripts REFUSE to run alpha against another being's paths while null" },

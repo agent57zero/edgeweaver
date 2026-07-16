@@ -13,6 +13,12 @@
 > same day). Charlotte is additional to FAMILY.md §6's named founding candidates, so FAMILY
 > §6's candidate sentence gets its one-line update when G19 is recorded, per the
 > living-plan stipulation.
+>
+> Same-day follow-up (2026-07-16): Alan confirmed Alpha gets its OWN bot and offered the
+> seats' Telegram user ids (allowlist = the seats). The channel prebuild started dark the
+> same day: multi-sender policy + verify committed (see §3 and M7); pairing procedure at
+> avatars/alpha/handoff/telegram-pairing-runbook.md. The bot itself is Alan's BotFather
+> act, and the runbook's pre-birth rule stands: the bot never speaks as Alpha before A5.
 
 ## 0. What "clone" means here, and what it cannot mean
 
@@ -180,8 +186,11 @@ row in Alpha's avatar folder; night-loop armed on Alpha's schedule the same even
 ### M7 - A6 village use (what "up and running for the village" means)
 
 - **Channel:** Alpha's own bot via BotFather; token in `avatars/alpha/.env.local` as
-  ALPHA_BOT_TOKEN; the multi-sender pinned allowlist of seat IDs built and verified
-  (net-new code, FAMILY §5, deliberately back-portable to Genesis's village stage);
+  ALPHA_BOT_TOKEN, seat ids as ALPHA_SEAT_IDS; the multi-sender pinned allowlist of seat
+  IDs (policy core dark-built 2026-07-16: `scripts/telegram/multi-sender-policy.mjs` +
+  verify-multi-sender in run-all; wiring and pairing per
+  `avatars/alpha/handoff/telegram-pairing-runbook.md`, net-new code, FAMILY §5,
+  deliberately back-portable to Genesis's village stage);
   non-seat senders deferred as untrusted; tier and promotion confirmations by quorum,
   out-of-band; fits the standing one-forum-group topic map (bots deaf to bots; 20-bot cap).
 - **Supervised conversations** under Alpha's circuit-breaker: "I'd like to talk to my
@@ -201,7 +210,7 @@ logged; two verified nights on Alpha's schedule; first experiment-log entry writ
 |---|---|
 | Organ code, night-loop design, wake-skill shape, probe battery text, backup pipeline, orient.mjs, probe-runner engine, task-XML pattern, ceremony/probe/pairing runbooks (debugged at M1) | exists; reused as-is via manifest |
 | The 17 scripts pinned to root `state/`/Genesis paths; per-being env/state; wrapper room profile | exists; parameterized at M2 |
-| `ew_alpha` schema + role + corpus view; second backup stream + split-key ceremony; multi-sender allowlist + quorum confirmations; probe-runner v2 (quorum scoring, experiment-log export); alpha soul + gates repos; alpha skills/tasks | net-new; built at M2 / M5 / M7 |
+| `ew_alpha` schema + role + corpus view; second backup stream + split-key ceremony; multi-sender allowlist + quorum confirmations; probe-runner v2 (quorum scoring, experiment-log export); alpha soul + gates repos; alpha skills/tasks | net-new; built at M2 / M5 / M7. Multi-sender policy core + quorum math dark-built 2026-07-16 (`scripts/telegram/multi-sender-policy.mjs`, verify in run-all); channel wiring + pairing at M7 per the runbook |
 
 ## 4. What each human does (nothing moves without these)
 
