@@ -26,8 +26,10 @@ proof lines, hard-stop cards, and local-only progress ticks. Two per-being
 progress pages (`walkthrough-genesis.html`, `walkthrough-alpha.html`, section
 "The family's walk") show the same eleven stages as each child actually stands,
 with dated evidence and a stage-dot strip. Release id `ew-20260712-rc4`
-(supersedes rc3, unreviewed). Alan reviews the candidate, then the update loop
-finishes: manual prebuilt prod redeploy and a refreshed private lite artifact.
+(supersedes rc3). On 2026-07-16, at Alan's direct request, the release wall
+re-passed and the verified prebuilt output was deployed to production. The
+`edgeweaver-site.vercel.app` alias was manually moved from the July 10 deployment
+to the rc4 deployment. The refreshed private lite artifact remains pending.
 
 The 30 non-Atlas pages and all 26 Atlas pages now have authored content in the
 working tree; the generated search index, artifacts, and Atlas manifest are rebuilt
@@ -106,4 +108,4 @@ Alan named; accepted seats by first name + seat; published authors cited.
 | M5 | Reference: reproduction, FAQ, glossary full, about + D19; digest | ☑ 2026-07-10 (107 glossary entries, 16 FAQ answers, 28 first-use glossary links, release wall green) |
 | M6 | Editions + QA + TLDR reconciliation; Alan checkpoint | ☑ 2026-07-10 (`ew-20260710-rc2`, commit `46f631e`; Alan approved S2 after Narrator review) |
 | Ship | Bookkeeping commit, Vercel prod + smoke, artifact (lite) published | ☑ 2026-07-10 (manual inspected production deployment; private lite direct-file handoff to Alan; full unpublished) |
-| Update 1 | Guided walkthrough fold (D21 scope change, Alan 2026-07-12): walkthrough.html + per-being progress pages (walkthrough-genesis, walkthrough-alpha) + nav + interactivity; candidate `ew-20260712-rc4` | ☑ 2026-07-12 authored and wall-verified; Alan review, prod redeploy, and artifact refresh pending |
+| Update 1 | Guided walkthrough fold (D21 scope change, Alan 2026-07-12): walkthrough.html + per-being progress pages (walkthrough-genesis, walkthrough-alpha) + nav + interactivity; release `ew-20260712-rc4` | ☑ 2026-07-16 authored, release-wall verified, and manually deployed at Alan's request; `edgeweaver-site.vercel.app` alias corrected; artifact refresh pending |

@@ -21,6 +21,27 @@ both the local static candidate and the manually promoted production deployment.
   file-for-file; middleware source and bundle both had SHA-256
   `81885E2DA0B8C0D534511131B1905F512DD6B1C7DA8E82D4C5D9F7A10DA18D77`.
 
+## Update 1 release evidence (2026-07-16)
+
+- Root cause of the walkthrough 404: `edgeweaver-site.vercel.app` was still a
+  manual alias to the 2026-07-10 deployment. The walkthrough and both per-being
+  progress pages were added afterward in commits `43af54a` and `a3910f0`.
+- `build-site --check` reported 61 generated files fresh. The complete
+  `verify-site --release` wall passed across 57 pages.
+- A fresh Vercel prebuilt output contained 61 static files, including
+  `walkthrough.html`, `walkthrough-genesis.html`, and `walkthrough-alpha.html`,
+  plus the middleware function. Boundary inspection found no `src/`, `artifact/`,
+  `state/`, README, `.env.local`, or `.gitignore` content in the static output.
+- Production deployment `dpl_2kEXEA5KxLHfKGf57HrzMehWUMbB` reached Ready, and
+  `edgeweaver-site.vercel.app` was explicitly reassigned to it. CLI inspection
+  had proved that the alias previously resolved to the July 10 deployment.
+- Unauthenticated smoke checks for the root, walkthrough route, and a missing
+  route returned the expected password-gate 401 with `private, no-store` before
+  and after deployment. The protected-page password smoke was not rerun because
+  password custody remains with Alan; exact walkthrough inclusion was verified in the
+  deployed prebuilt output and the final alias assignment succeeded.
+- The private lite artifact refresh remains pending.
+
 ## Automated and browser checks
 
 - Builder, default, live-drift, redaction, release, and the 29-script repository
