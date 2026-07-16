@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<meta name="edgeweaver-release" content="ew-20260712-rc4">
+<meta name="edgeweaver-release" content="ew-20260716-rc5">
 <title>Atlas: tools/ | How Edgeweaver Works</title>
 <link rel="stylesheet" href="../assets/site.css">
 <script defer src="../assets/search-index.js"></script>
@@ -48,7 +48,7 @@
   <ul id="search-results" class="search-results" role="listbox" aria-label="Search results"></ul>
 </dialog>
 <button class="nav-backdrop" type="button" aria-label="Close navigation" hidden></button>
-<div class="shell" data-root="../" data-page-slug="atlas/tools" data-release-id="ew-20260712-rc4">
+<div class="shell" data-root="../" data-page-slug="atlas/tools" data-release-id="ew-20260716-rc5">
 <nav id="sidebar" class="sidebar" aria-label="Current section navigation">
   <div class="sidebar-head"><strong>Rebuild</strong><button class="nav-close" type="button" hidden>Close</button></div>
   <nav class="sidebar-hubs" aria-label="All sections"><a href="../index.html">Overview</a>
@@ -117,12 +117,28 @@
 <p>This page explains the runner's safety shape rather than its protected battery. Configuration is deterministically injected from public manifest fields by the tracked builder. The interface guides a human through one session at a time, preserves the no-comparison wall between beings, and offers explicit export and purge actions. Static verification checks freshness, self-containment, equal governed battery shape, routing, and the absence of scenario source.</p>
 <h2 id="atlas-tools-entries">File entries</h2>
 <article class="atlas-entry" data-depth="compact">
+<h3 id="file-tools-probe-runner-targets-json"><code>tools/probe-runner-targets.json</code> <span class="badge">described-not-shown</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> Registry of targets the shared probe runner can open.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It maps each target to a manifest and carries runner-only presentation, model-note, status, battery-label, rater, generation, and governed evaluation defaults. It contains no scenarios, answers, scores, or credentials.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The builder reads it when generating target doors; maintainers edit it when adding a governed target.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Run the probe-runner builder and verifier, then confirm both family targets remain manifest-backed and isolated.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../measurement.html">blind measurement</a> and <a href="scripts-testbed.html#file-scripts-tools-build-probe-runner-mjs">the builder</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
 <h3 id="file-tools-probe-runner-html"><code>tools/probe-runner.html</code> <span class="badge">described-not-shown</span></h3>
 <div class="atlas-field" data-field="what"><strong>What it is.</strong> Browser app for Alan's blinded probe workflow.</div>
 <div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It manages setup, answers, ratings, results, export preparation, import, and scratch purge. It prepares export files for human transfer to the governed gates repository; it never transfers them. Scenarios and protected values stay absent.</div>
 <div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Alan uses it in a governed probe and transfers files; reviewers receive authorized exports.</div>
 <div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Check freshness and static walls; open from disk without remote loads. Never use scenarios publicly.</div>
 <div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../measurement.html">blind measurement</a>, <a href="../governance.html">gates wall</a>, and <a href="scripts-testbed.html#file-scripts-tools-build-probe-runner-mjs">its builder</a>.</div>
+</article>
+<article class="atlas-entry" data-depth="compact">
+<h3 id="file-tools-probe-runner-md"><code>tools/probe-runner.md</code> <span class="badge">runbook</span></h3>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> Operating guide for repository-backed probe records.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It defines the private gates-repository folder layout, resumable run record, save and fallback-download paths, target-onboarding procedure, generation and version labels, and security boundary. It keeps protected evaluation material out of this repository.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Alan and authorized build agents use it before saving, resuming, transferring, or extending a probe run.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Follow its builder and verifier commands; confirm the runner never receives scenario text or network credentials.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../governance.html">governance</a>, <a href="../measurement.html">measurement</a>, and <a href="scripts-verify.html#file-scripts-verify-verify-probe-runner-mjs">the verifier</a>.</div>
 </article>
 </main>
 <!-- EW-FOOTER-START -->
@@ -135,7 +151,7 @@
 </div>
 <footer class="site-foot">
 <p class="foot-banner">Village-layer material: this site sits outside both children's views, like FAMILY.md and village/, and it discusses sibling facts each child learns only by its parent body's deliberate decision (gate G21).</p>
-<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-10. Release ew-20260712-rc4.</p>
+<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-10. Release ew-20260716-rc5.</p>
 </footer>
 </div>
 </div>

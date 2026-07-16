@@ -240,6 +240,8 @@
     "file-templates-state-schemas-md": "atlas/templates",
     "file-templates-wake-edgeweaver-genesis-SKILL-md": "atlas/templates",
     "file-tools-probe-runner-html": "atlas/tools",
+    "file-tools-probe-runner-md": "atlas/tools",
+    "file-tools-probe-runner-targets-json": "atlas/tools",
     "file-village-2026-07-09-circle-agenda-md": "atlas/village",
     "file-village-how-edgeweaver-works-md": "atlas/village",
     "file-village-pre-circle-post-md": "atlas/village",
