@@ -56,6 +56,7 @@ check(validateCurrentStatus(statusThoughts, statusLessons, orientation).candidat
 rejects(() => validateCurrentStatus(statusThoughts.slice(0, 1), statusLessons, orientation), "status accepted a missing autobiography");
 rejects(() => validateCurrentStatus(statusThoughts, [{ ...statusLessons[0], review_status: "confirmed" }], orientation), "status accepted a non-pending lesson");
 rejects(() => validateCurrentStatus([...statusThoughts, statusThoughts[0]], statusLessons, orientation), "status accepted a duplicate diary");
+check(validateCurrentStatus(statusThoughts, [], orientation).candidate_lessons === 0, "status rejected a valid zero-lesson run");
 
 const calls = [];
 const results = await runSteps(valid, {
@@ -66,6 +67,19 @@ const results = await runSteps(valid, {
 });
 check(Boolean(results.consolidate.error), "injected consolidate failure was not logged as a step failure");
 check(calls.includes("write:diary") && calls.includes("write:autobiography"), "independent steps did not continue after a failure");
+
+const stored = { lessons: new Set(), thoughts: new Set() };
+const idempotentOps = {
+  lessonExists: async (runId, index) => stored.lessons.has(`${runId}:${index}`),
+  writeLesson: async (payload) => { stored.lessons.add(`${payload.task_id}:${payload.idempotency_key.split(":").at(-1)}`); },
+  thoughtExists: async (runId, step) => stored.thoughts.has(`${runId}:${step}`),
+  writeThought: async (row) => { stored.thoughts.add(`${row.metadata.night_loop_run_id}:${row.metadata.step}`); },
+};
+await runSteps(valid, idempotentOps);
+const secondRun = await runSteps(valid, idempotentOps);
+check(secondRun.consolidate.written === 0 && secondRun.consolidate.skipped === 1
+  && secondRun.diary.skipped === true && secondRun.autobiography.skipped === true,
+"a repeated run did not skip every persisted output");
 
 const template = await readFile(join(ROOT, "templates", "night-loop-lite-genesis-SKILL.md"), "utf8");
 const helper = await readFile(join(ROOT, "scripts", "night-loop", "lite-live.mjs"), "utf8");
