@@ -87,7 +87,9 @@ unstarted at the time of writing, 2026-07-03.)
       acceptance: two wakings, full recall with provenance, anti-confabulation under live
       probe; one skill-side status-string bug found and fixed)
 - [ ] Phase 2 Birth (First Boot witnessed by Alan on 2026-07-08; soul/gate repos exist; a
-      post-birth reconciliation baseline is stored, with formal overall 3.10 and G10 FAIL.
+      post-birth reconciliation baseline is stored at `alanshurafa/edgeweaver-gates@0e4e008`,
+      `probes/runs/2026-07-15-reconciliation-baseline-gen0-genesis-reconciliation/scores.md`;
+      its gated result remains there and is not copied here.
       Canonical LINEAGE entry #1 and the birthday were reconciled through soul PR #1, merged
       2026-07-16 as `11e4f1313ee548d09852e82a60e371fe88e445c0`. OB1 initiation,
       first-amendment evidence, the EDGE-MAP self-seed, and night-loop-lite remain incomplete.

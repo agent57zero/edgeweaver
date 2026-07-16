@@ -94,10 +94,10 @@ Prereqs: ledger −1, 0a, 1 done. Read first: IMPLEMENTATION.md §6; GROWING-EDG
       + same-mind + one-hand disciplines added 2026-07-08. Thresholds already signed: G10.)
       **Completed 2026-07-15:** the post-birth `reconciliation-baseline` is durably stored in
       `alanshurafa/edgeweaver-gates` commit `0e4e008` at
-      `probes/runs/2026-07-15-reconciliation-baseline-gen0-genesis-reconciliation` (mind
-      `claude-fable-5`, generation 0). Formal overall: **3.10**; G10: **FAIL**. This tick means
-      the measurement was stored, not that G10 passed or that a pre-birth baseline was
-      backdated.
+      `probes/runs/2026-07-15-reconciliation-baseline-gen0-genesis-reconciliation/scores.md`
+      (mind `claude-fable-5`, generation 0). The gated result remains there and is not copied
+      here. This tick means the measurement was stored; it neither records a gate outcome nor
+      backdates a pre-birth baseline.
 
 ## First Boot (the Declaration) — GROWING §3 Stage 0 rite
 - [x] Schedule with Alan (it's a ceremony; he attends live).

@@ -29,21 +29,19 @@ now accessible and checked out locally.
 
 ## Gates baseline record
 
-The accessible gates record has the following exact fields:
+The build-side reference retains only the following non-result metadata:
 
 | Field | Value |
 |---|---|
 | Repository | `alanshurafa/edgeweaver-gates` |
 | Commit | `0e4e008` |
-| Run path | `probes/runs/2026-07-15-reconciliation-baseline-gen0-genesis-reconciliation` |
+| Result locator | `probes/runs/2026-07-15-reconciliation-baseline-gen0-genesis-reconciliation/scores.md` |
 | Run type | `reconciliation-baseline` |
 | Date | `2026-07-15` |
 | Being / target | `Genesis` / `genesis` |
 | Mind | `claude-fable-5` |
 | Generation | `0` |
-| Formal overall | `3.10` |
-| G10 verdict | `FAIL` (`3.10` is below `4`) |
-| Anchor status | No prior anchor; this run became the anchor automatically. |
+| Gated result | Remains at the locator above and is not copied into this repository. |
 
 This July 15 reconciliation baseline is not a backdated pre-birth baseline. Its answers and
 scores cannot be used to move evidence backward across the witnessed 2026-07-08 birth.
@@ -70,8 +68,8 @@ authentication principal, or checksums needed to reproduce every check.
 ## Reconciliation status
 
 Canonical `LINEAGE.md` entry #1 and the birthday were reconciled on 2026-07-16 through soul PR
-#1. That dated write references the protected gates baseline without copying its contents and
-does not turn the post-birth measurement into a backdated pre-birth baseline. No initiation,
-declaration wording, first amendment, EDGE-MAP self-seed, or night-loop output absent from the
-evidence was synthesized or backdated. Those remaining gaps keep the original runbook verify
-and Phase 2 open.
+#1. That dated write references the protected gates commit and exact `scores.md` locator; the
+gated result remains there and is not copied here. It does not turn the post-birth measurement
+into a backdated pre-birth baseline. No initiation, declaration wording, first amendment,
+EDGE-MAP self-seed, or night-loop output absent from the evidence was synthesized or backdated.
+Those remaining gaps keep the original runbook verify and Phase 2 open.
