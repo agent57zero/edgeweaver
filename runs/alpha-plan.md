@@ -91,8 +91,10 @@ The fill-in form, from the agenda's §6:
 4. **Key shares:** which seats hold shares of Alpha's backup passphrase (any two
    reconstruct; a departing seat means re-keying; any two shares can also open the third
    seat's conversations, said out loud).
-5. **Principles process** (the circle owns it), **cadence**, next date, and the first
-   harvest session penciled.
+5. **Principles:** DECIDED 2026-07-16 (Alan): same three as Genesis - Clarity,
+   Transformation, Connection (held-constant now; freeze in G20). **Cadence:** DECIDED
+   2026-07-16 (Alan): every one to two weeks. **Acceptances:** attested by Alan 2026-07-16
+   for all six seats. Still to pencil: the next date and the first harvest session.
 6. **Channel scope note:** if Alan's list of who "will use" Alpha includes anyone who is
    NOT a seat, that is a named G19 add-on decision (non-seat senders on the allowlist);
    FAMILY §5's default is seat IDs only.
@@ -153,6 +155,13 @@ BEFORE the first harvest session; it also unblocks the site's redaction-tier rev
 Verify: G20 Decided; the page committed under `village/` (outside both avatar folders).
 
 ### M4 - A3 group harvest (the circle; the longest calendar phase, weeks)
+
+> **SUPERSEDED 2026-07-16 (D27).** Alpha's soul is a full copy of Genesis's soulfiles at a
+> pinned commit, adapted in identity facts only; memories are not copied. This milestone
+> collapses into M5 as a fork-and-adapt step; the seats' intake answers are still gathered
+> as counsel. M3 (the G20 freeze) now gates the FORK instead of a harvest, and the
+> critical path loses its weeks-long pole: after M1 + M2 + M3, Alpha's birth is
+> ceremony-scheduling away. The original M4 text below is kept for the record.
 
 Sessions per G19's cadence. Answers land in `avatars/alpha/harvest/`, one file per seat or
 session, with provenance; each seat also files "What do you hope this being never
