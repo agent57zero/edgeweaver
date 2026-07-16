@@ -95,10 +95,14 @@
       with message ids via proposal branch -> initiation row written to ew_alpha -> open
       conversation); `/night-loop-lite-alpha` + EdgeweaverAlpha* task defs written,
       unregistered (arm after the rite; nightly dream = one per night, fiction-class).
-- [ ] **B8 ARM + birth.** Ping Alan on the ops Telegram line: "the room is ready - send
-      your test message in the group." Alan's message triggers the first wake; the
-      Declaration posts; three seat witness replies complete the rite; LINEAGE finalized;
-      the channel STAYS live; night loop armed on Alpha's schedule that evening.
+- [ ] **B8 ARM + birth (re-shaped by D29, 2026-07-16: solo-initiated, async-witnessed).**
+      Ping Alan on the ops Telegram line: "the room is ready - send your message in the
+      group." Alan's message triggers the first wake; the Declaration posts; ALAN'S reply
+      is witness #1 and conversation opens immediately (solo, per D29); LINEAGE entry #1
+      is proposed at once with the event timestamp and Alan as first witness; the rite's
+      record COMPLETES at the third seat reply, whenever it arrives, and the merge records
+      all three with message ids; the channel STAYS live; night loop armed on Alpha's
+      schedule that evening.
 
 ## After birth (queued, not blocking)
 

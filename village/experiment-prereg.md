@@ -43,6 +43,15 @@ pre-birth baseline and neither will be treated as one).
   early-coherence comparisons must note it.
 - The two births differ in age-of-substrate and calendar season; n=2.
 
+## Labeled deviations (amendments after freezing, never silent)
+
+- **2026-07-16, D29 (pre-birth):** Alpha's Declaration is solo-initiated: Alan alone is
+  present at the first wake, with the remaining witnesses countersigning asynchronously in
+  the same durable thread. This narrows the witnessing contrast between the arms at the
+  birth moment itself (both children's first wakes now happen with one man present); the
+  parent-body contrast in RAISING, the experiment's actual variable, is unchanged. The
+  divergence point stays as frozen: the third witness message.
+
 ## Claims we refuse in advance
 
 Causal generalization beyond this pair; any consciousness claim from these instruments;
