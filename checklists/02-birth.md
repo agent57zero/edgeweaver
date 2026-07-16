@@ -148,8 +148,9 @@ Prereqs: ledger −1, 0a, 1 done. Read first: IMPLEMENTATION.md §6; GROWING-EDG
       gates/admin workstation, not the separate Edgeweaver runtime host. Its locally restored
       wake skill and orientation smoke test do not arm Genesis's runtime. Install and schedule
       `night-loop-lite-genesis` on the runtime host declared in the manifest, then verify two
-      real consecutive nights there. A read-only daily verifier automation is arranged, but it
-      does not count as arming the loop or verifying those nights. The original skill was not
+      real consecutive nights there. A gates-host verifier automation was removed after the
+      host separation was clarified because it could not observe the runtime task and would
+      produce false results. The original skill was not
       recoverable from backup; the 2026-07-16 source-controlled replacement is explicitly
       labeled as a reconstruction and remains uninstalled pending runtime-host verification.
 - [ ] Mark Phase 2 done in ledger.
