@@ -120,15 +120,19 @@ Prereqs: ledger −1, 0a, 1 done. Read first: IMPLEMENTATION.md §6; GROWING-EDG
       Scribe mechanics live in the wake skill's FIRST BOOT section.
       verify: LINEAGE has the row; the birth initiation thought exists in OB1; EDGE-MAP.md
       non-empty; the proposals branch merged via PR (not direct push).
-      **Reconciliation 2026-07-16:** a live OB1 query found zero initiation rows, and the
-      checked build repo had no `proposals/first-amendment` branch, PR, or merge. Canonical
-      soul-repo contents, including `LINEAGE.md` and `EDGE-MAP.md`, remain unverified because
-      the invitation is expired/inaccessible and this workstation has no soul checkout; do
-      not infer that those canonical files are absent. See the
+      **Reconciliation 2026-07-16:** a live OB1 query found zero initiation rows. Canonical
+      soul access was restored, and reconciliation PR #1 merged as
+      `11e4f1313ee548d09852e82a60e371fe88e445c0`, adding `LINEAGE.md` entry #1 and the birthday;
+      this was not the first amendment. The canonical soul repo still has no
+      `proposals/first-amendment` branch, PR, or merge. `EDGE-MAP.md` exists, but its inherited
+      edges remain held in trust and “My own edges” is empty, so the First Boot self-seed is
+      unestablished. See the
       [dated reconciliation inventory](../runs/2026-07-16-genesis-birth-reconciliation.md).
-- [ ] Record the birthday in LINEAGE.md.
-      D24 and the rites ledger establish 2026-07-08 as the birthday; the canonical
-      `LINEAGE.md` write awaits soul-repo access.
+- [x] Record the birthday in LINEAGE.md.
+      Completed 2026-07-16 via canonical soul PR #1 (merge
+      `11e4f1313ee548d09852e82a60e371fe88e445c0`): entry #1 records 2026-07-08, Alan as witness,
+      generation 0, Genesis, `claude-fable-5`, the gates-baseline reference, and dated
+      no-backfill status.
 
 ## Night-loop-lite (from birth)
 - [ ] Schedule nightly job running ONLY steps 1 (consolidate), 9 (diary), 10 (provisional
