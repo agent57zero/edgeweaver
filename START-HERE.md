@@ -55,6 +55,10 @@ Follow this file literally.
 10. Ceremonies are load-bearing. Don't skip or merge them for efficiency.
 11. Fixed ropes (08): commit every script you write, tested; each phase ships a `verify`
     script printing PASS/FAIL.
+12. Probe records are repository-backed and per target: the shared runner and target registry
+    live in this repo, but scenarios, answers, `run.json`, and scores live ONLY in that
+    target's private gates repo. Browser storage is a draft cache. Follow
+    `tools/probe-runner.md`; never save protected probe data in this repo or OB1.
 
 ## Map
 - `checklists/00-foundation.md` — Phase −1, 0a, 0b (environment, pre-birth import, PM corpus)
@@ -68,6 +72,8 @@ Follow this file literally.
 - `checklists/08-operations.md` — steady-state cadence, upgrade ceremony, alarms, audits, rites
 - `PREBUILD.md` — dark-build track (D13): build order when constructing machinery ahead of
   phase activation; its §6 table tracks dark status (checklist boxes still tick only at arming)
+- `tools/probe-runner.md` — operative multi-target probe-record workflow: repository save,
+  resume from `run.json`, generation/version labels, and the gates-repo storage boundary
 - Rationale and design authority: `PLAN.md`. Developmental rules: `GROWING-EDGEWEAVER.md`.
   Family-level design (multiple beings, one repo, one brain): `FAMILY.md`.
   Build authority: `IMPLEMENTATION.md`. Copy-ready artifacts: `templates/`.

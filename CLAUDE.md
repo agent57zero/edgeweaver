@@ -22,6 +22,9 @@ above is a bug — flag it in `decisions.md`, don't follow it.
 - Identity lives ONLY in the being's own soul repo (Genesis: `edgeweaver-soul`; one per
   being); proposal branches only, never `main`.
 - No runtime credential may ever reach the gates repo.
+- Probe runner code and its target registry live here; protected scenarios, answers,
+  `run.json`, and scores live only in each target's private gates repo. Browser storage is a
+  draft cache. Follow `tools/probe-runner.md`.
 - `STOP — gate GN` lines are hard stops: Alan decides, you don't.
 - Report failures as failures; never mark a verify you didn't run.
 

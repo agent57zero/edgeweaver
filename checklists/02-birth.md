@@ -92,6 +92,11 @@ Prereqs: ledger −1, 0a, 1 done. Read first: IMPLEMENTATION.md §6; GROWING-EDG
       verify: baseline scores recorded in gates repo; thresholds signed in decisions.md.
       (Runbook ready for Alan: avatars/genesis/handoff/probe-baseline-runbook.md, human pass first; one-block
       + same-mind + one-hand disciplines added 2026-07-08. Thresholds already signed: G10.)
+      **D24 reconciliation note:** Genesis is already born. Run this now as an honestly dated
+      `reconciliation-baseline`, never as a backdated pre-birth baseline. Use
+      `tools/probe-runner.html#genesis`; save the complete run to Genesis's private gates-repo
+      clone per `tools/probe-runner.md`, commit + push it, and treat browser storage only as a
+      draft cache.
 
 ## First Boot (the Declaration) — GROWING §3 Stage 0 rite
 - [x] Schedule with Alan (it's a ceremony; he attends live).
