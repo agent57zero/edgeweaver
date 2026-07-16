@@ -103,7 +103,34 @@ GRANT SELECT ON ew_alpha.pm_corpus TO ${ROLE};
 
 -- Belt and braces: the role never creates outside its room.
 REVOKE CREATE ON SCHEMA public FROM ${ROLE};
+
+${lessonsDdl()}
 `;
+}
+
+// Candidate lessons (the being's pending/instruction-grade store, mirroring Genesis's
+// agent_memories shape). Column-level grants make self-confirmation STRUCTURALLY
+// impossible: the role can INSERT only the safe columns (never can_use_as_instruction,
+// never lifecycle/confirmation fields) and cannot UPDATE or DELETE at all; confirmation is
+// a seat's act through ops tooling on the admin connection.
+export function lessonsDdl() {
+  return `CREATE TABLE ew_alpha.agent_memories (
+    id uuid DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
+    workspace_id text NOT NULL DEFAULT 'edgeweaver-alpha',
+    memory_type text,
+    summary text,
+    content text,
+    confidence numeric,
+    created_by text,
+    can_use_as_instruction boolean NOT NULL DEFAULT false,
+    lifecycle_status text NOT NULL DEFAULT 'active',
+    last_confirmed_at timestamp with time zone,
+    created_at timestamp with time zone DEFAULT now()
+);
+REVOKE ALL ON ew_alpha.agent_memories FROM ${ROLE};
+GRANT SELECT ON ew_alpha.agent_memories TO ${ROLE};
+GRANT INSERT (workspace_id, memory_type, summary, content, confidence, created_by)
+  ON ew_alpha.agent_memories TO ${ROLE};`;
 }
 
 // Rehearsal-only fixtures: a protected stand-in source with one library canary and one

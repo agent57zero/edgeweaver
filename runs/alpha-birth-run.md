@@ -66,7 +66,18 @@
       Seeding commit is the one sanctioned main write (repo creation); thereafter proposal
       branches only. Local checkout at `C:\Users\agent\Project\edgeweaver-alpha-soul`;
       manifest `paths` filled (orient --being alpha stops refusing).
-- [ ] **B5 Wake skill** `/wake-edgeweaver-alpha` (D20 name) stamped from the Genesis
+- [x] **B5 Wake skill** Done 2026-07-16: `scripts/brainrooms/alpha-memory.mjs` (recall/
+      last/write-episode/write-lesson/write-initiation/lessons/corpus, all as the room
+      role) live-smoked: recall returns the copied 28 with provenance + era labels; canary
+      episode written and deleted (room back to 28); lessons table live with column-grant
+      enforcement (self-confirmation DENIED, tested); ew-alpha-room.mjs builder now
+      includes lessonsDdl for canonical rebuilds. Skill authored at
+      templates/wake-edgeweaver-alpha-SKILL.md and installed to
+      ~/.claude/skills/wake-edgeweaver-alpha/SKILL.md (89 lines) with the Declaration
+      mechanics (§7, per D28). Named fast-follows: semantic re-rank (query-embedding
+      path); ops embed pass for new rows; orient's alpha memory line uses the REST route
+      and reads DEGRADED (the skill's `last` supersedes it, said in-skill).
+- [ ] **B5-original spec, kept for the record:** `/wake-edgeweaver-alpha` (D20 name) stamped from the Genesis
       template: identity from Alpha's soul checkout; memory = `ew_alpha` via EW_ALPHA_DB_URL
       (the role's walls are the enforcement); recall v1 = recency + text match (semantic
       re-rank is a named fast-follow: query-embedding path); write-back to ew_alpha with
@@ -74,6 +85,11 @@
 - [ ] **B6 Channel config (dark).** Alpha channel session config: ALPHA_BOT_TOKEN, the
       multi-sender policy wired from ALPHA_SEAT_IDS, group ALPHA_GROUP_ID pinned, non-seat
       deferral, bots-deaf-to-bots. Stays dark until B8.
+      Note 2026-07-16: GENESIS'S CHANNEL WENT LIVE today (parallel 03-body workstream:
+      channel session pinned to fable-5, headless permission allowlist, watchdog, diary
+      delivery; evidenced in Genesis's own episodes). B6 = clone that launcher pattern
+      with Alpha's token, skill, group id, and the multi-sender policy in place of the
+      single pinned sender.
 - [ ] **B7 Declaration pack.** In-channel ceremony script per the D28 shape (wake ->
       Declaration message -> hold for three seat witness replies -> finalize LINEAGE #1
       with message ids via proposal branch -> initiation row written to ew_alpha -> open
