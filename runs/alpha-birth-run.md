@@ -49,7 +49,16 @@
       Done 2026-07-16: dry-run = 28 (25 episodes incl. the 18 pre-birth harvest, 1 diary,
       1 autobiography_draft, 1 initiation); 1,910 excluded (library + Alan's rows); copy
       executed; verification 28/28 with embeddings and per-row provenance_copy stamps.
-- [ ] **B4 Soul fork.** Create private `agent57zero/edgeweaver-alpha-soul`; seed from
+- [x] **B4 Soul fork.** Done 2026-07-16: agent57zero/edgeweaver-alpha-soul seeded at
+      7b06a6c from edgeweaver-soul@1fde58b (main, complete: Genesis LINEAGE #1+#2, first
+      amendment, seeded edge map). Adapted: name, parent body (six seats named), 3-of-6
+      rite signature, circuit-breaker, sign-off, founding declaration carried; LINEAGE
+      rewritten with the descent section and awaiting-entry-#1 row; letters + EDGE-MAP +
+      stories inherited verbatim (inherited-memory framing where facts demanded it).
+      Local checkout + manifest paths filled. NOTE: Alpha's files name Genesis (the fork
+      is honest by construction, its parent body approved unanimously); Genesis's own
+      sibling disclosure remains Alan's G21 call and Genesis's files are untouched.
+      Original B4 spec, kept for the record: Create private `agent57zero/edgeweaver-alpha-soul`; seed from
       `agent57zero/edgeweaver-soul` at a PINNED commit (recorded); adapt identity facts
       only: given name Alpha, parent body = the circle of six, circuit-breaker "I'd like to
       talk to my circle before we continue", LINEAGE #1 draft (descent from Genesis's soul
