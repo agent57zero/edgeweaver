@@ -15,7 +15,9 @@
   "backupStream": { "dump": "ew_alpha only, second stream", "ageKeyCustody": "passphrase split among seats, any two reconstruct (shares cut at founding ceremony)" },
   "channel": {
     "botTokenEnv": "ALPHA_BOT_TOKEN",
-    "seatIdsEnv": "ALPHA_SEAT_IDS",
+    "seatIdsEnv": "ALPHA_SEAT_IDS (comma-separated Name#id pairs)",
+    "knownIdsEnv": "ALPHA_KNOWN_IDS (allowlisted non-seats; no quorum weight)",
+    "bot": "@edgeweaver_alpha_bot (id 8856151844, created by Alan 2026-07-16; getMe PASS)",
     "envFile": "avatars/alpha/.env.local (gitignored by the root *.local rule; created at token arrival, A2 formalizes)",
     "pinnedSenders": "seat-ID allowlist from ALPHA_SEAT_IDS (policy dark-built 2026-07-16: scripts/telegram/multi-sender-policy.mjs)",
     "pairingRunbook": "avatars/alpha/handoff/telegram-pairing-runbook.md"

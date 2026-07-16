@@ -20,10 +20,14 @@
    "Edgeweaver Alpha", handle e.g. @EdgeweaverAlpha_bot.
 2. **Collect numeric ids:** each seat messages @userinfobot and sends Alan the number.
    Seats as of 2026-07-16 (G19 candidates): Alan, Ali, Tamara, Natalie, Charlotte.
-3. **Paste, never in git:** `ALPHA_BOT_TOKEN=<token>` and `ALPHA_SEAT_IDS=<id,id,id,id,id>`
-   into `avatars/alpha/.env.local`. The root `.gitignore`'s `*.local` rule already covers
-   that path (verified 2026-07-16). Iron rule 1: values only ever live there; documents
-   carry names only.
+3. **Paste, never in git:** `ALPHA_BOT_TOKEN=<token>` and `ALPHA_SEAT_IDS=` as
+   comma-separated `Name#id` pairs into `avatars/alpha/.env.local`. Allowlisted senders who
+   are NOT seats go on `ALPHA_KNOWN_IDS` (same format): they can talk once the channel is
+   live but count toward no quorum (fail-closed; moving someone to a seat is a G19-recorded
+   act). The root `.gitignore`'s `*.local` rule already covers that path (verified
+   2026-07-16). Iron rule 1: values only ever live there; documents carry names only.
+   Executed 2026-07-16: token + list landed; getMe PASS (@edgeweaver_alpha_bot,
+   "Edgeweaver - Alpha", id 8856151844).
 
 ## Agent steps (on arrival; still dark)
 
