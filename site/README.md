@@ -39,6 +39,14 @@ release wall and live-repository drift check pass, the local HTTP crawl is
 byte-identical for every served file, and the production alias points to the
 Ready rc5 deployment. Private artifact re-publication remains pending.
 
+Third post-ship update, 2026-07-16: reading detail is now explicit in each URL
+as `?view=plain`, `?view=technical`, or `?view=both`. A first-time visit defaults
+to Plain; a deliberate change is saved on that device; and an explicit shared
+URL overrides the saved choice. Internal navigation and search destinations keep
+the active view. Plain-mode search excludes technical-register results, and a
+deep link cannot silently reveal hidden technical content. Release
+`ew-20260716-rc6` is live at the production alias.
+
 The 30 non-Atlas pages and all 26 Atlas pages now have authored content in the
 working tree; the generated search index, artifacts, and Atlas manifest are rebuilt
 by the M4 checkpoint. The Repo Atlas covers 246 individually mapped tracked paths
@@ -118,3 +126,4 @@ Alan named; accepted seats by first name + seat; published authors cited.
 | Ship | Bookkeeping commit, Vercel prod + smoke, artifact (lite) published | ☑ 2026-07-10 (manual inspected production deployment; private lite direct-file handoff to Alan; full unpublished) |
 | Update 1 | Guided walkthrough fold (D21 scope change, Alan 2026-07-12): walkthrough.html + per-being progress pages (walkthrough-genesis, walkthrough-alpha) + nav + interactivity; release `ew-20260712-rc4` | ☑ 2026-07-16 authored, release-wall verified, and manually deployed at Alan's request; `edgeweaver-site.vercel.app` alias corrected; artifact refresh pending |
 | Update 2 | Exhaustive all-page audit, Repo Atlas drift closure, regenerated editions/search, and release `ew-20260716-rc5` | ☑ 2026-07-16 all 57 pages and 61 served files verified; zero Atlas drift; manually deployed and public alias confirmed; private artifact re-publication pending |
+| Update 3 | URL-backed reading detail with Plain-first opt-in, saved deliberate choices, register-aware search, and release `ew-20260716-rc6` | ☑ 2026-07-16 behavior scenarios and release wall green; newly tracked paths mapped with zero Atlas drift; manually deployed and public alias confirmed; private artifact re-publication pending |

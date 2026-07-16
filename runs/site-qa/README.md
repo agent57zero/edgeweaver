@@ -70,6 +70,42 @@ both the local static candidate and the manually promoted production deployment.
   remains in Alan's custody. The deployed bytes were exhaustively verified before
   upload; private artifact re-publication remains pending.
 
+## Update 3 URL-backed reading detail evidence (2026-07-16)
+
+- A first visit with no saved choice resolves to Plain. Deliberate Plain,
+  Technical, and Both choices persist in `ew-reading`; explicit `?view=` values
+  take precedence over saved state, and invalid explicit values fail safe to
+  Plain.
+- The runtime replaces the current URL with `?view=plain`, `?view=technical`, or
+  `?view=both` while preserving fragments. Internal page and search links carry
+  the active view; external links remain unchanged.
+- Plain-mode search excludes technical-register results. A fragment targeting a
+  hidden register announces the conflict but does not switch to Both, so
+  technical content remains opt-in.
+- Eight direct URL-state scenarios passed: first visit, remembered Technical,
+  explicit Plain and Both overrides, invalid-value fallback, internal-link
+  propagation, external-link preservation, and fragment preservation.
+- The final `verify-site --release --against-live` wall passed across all 57 HTML
+  pages with zero Atlas drift. The 61-file local HTTP crawl was byte-identical,
+  and both shared JavaScript files passed syntax checks.
+- The latest upstream build added eight tracked paths during this session. Each
+  now has a mapped, non-sensitive Repo Atlas entry; no runtime or identity source
+  was changed to close that drift.
+- The broader 30-script aggregate repository run was not green for an unrelated
+  upstream reason: `verify-night-loop-lite-genesis.mjs` requires the contiguous
+  phrase `not a recovered original`, while its template wraps those words across
+  a line; the disaster-recovery drill repeats the same failure. The site release
+  checks themselves pass, and this update does not alter that runtime machinery.
+- Vercel prebuilt output contained 57 rc6 HTML pages, four shared assets, and the
+  middleware function, with source, artifact, state, README, environment, and
+  gitignore content absent from the static upload. Production deployment
+  `dpl_AajijEDD7PW5CEsf37ofVmX9TbEk` reached Ready and was assigned to
+  `edgeweaver-site.vercel.app`.
+- Post-deploy unauthenticated checks for Plain, Technical, and Both URLs plus a
+  missing route returned the expected password-gate 401 with `private, no-store`.
+  Signed-in live behavior remains untested because the password stays in Alan's
+  custody; private artifact re-publication remains pending.
+
 ## Automated and browser checks
 
 - Builder, default, live-drift, redaction, release, and the 29-script repository
