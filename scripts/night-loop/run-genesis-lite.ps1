@@ -4,6 +4,7 @@ $logDir = Join-Path $repoRoot 'logs'
 $logPath = Join-Path $logDir 'genesis-night.log'
 New-Item -ItemType Directory -Force -Path $logDir | Out-Null
 Set-Location -LiteralPath $repoRoot
+$env:EDGEWEAVER_NIGHT_LOOP_ORIGIN = 'scheduled'
 
 try {
   & claude -p '/night-loop-lite-genesis' --model sonnet --output-format text *>> $logPath

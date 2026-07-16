@@ -15,6 +15,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const FLOW_ID = "night-loop-lite-genesis";
 const WORKSPACE_ID = "edgeweaver";
 const STEP_NAMES = ["consolidate", "diary", "autobiography"];
+const MANIFEST_SCHEMA = "edgeweaver.night_loop.consolidate_manifest.v1";
 const SPECULATION = /\b(?:maybe|perhaps|probably|possibly|might|could|seems?|appears?|I think|I guess)\b/i;
 
 function fail(message) { throw new Error(message); }
@@ -95,6 +96,56 @@ export function lessonIdentity(lesson) {
   return createHash("sha256").update(canonical).digest("hex");
 }
 
+export function invocationOrigin(value = process.env.EDGEWEAVER_NIGHT_LOOP_ORIGIN || "manual") {
+  if (value !== "manual" && value !== "scheduled") fail("EDGEWEAVER_NIGHT_LOOP_ORIGIN must be manual or scheduled");
+  return value;
+}
+
+function manifestContent(runId, identities, origin) {
+  return `Genesis night-loop consolidate manifest\n${JSON.stringify({
+    schema_version: MANIFEST_SCHEMA,
+    run_id: runId,
+    invocation_origin: origin,
+    lesson_identities: [...identities].sort(),
+  })}`;
+}
+
+export function consolidateManifestWriteback(bundle, origin = "manual") {
+  const identities = bundle.lessons.map(lessonIdentity).sort();
+  return {
+    schema_version: "openbrain.agent_memory.writeback.v1",
+    workspace_id: WORKSPACE_ID,
+    task_id: bundle.run_id,
+    flow_id: FLOW_ID,
+    step_id: "consolidate-manifest",
+    idempotency_key: `${bundle.run_id}:consolidate-manifest`,
+    channel: { kind: "night_loop", id: "genesis" },
+    runtime: { name: "edgeweaver-night-loop-lite", version: null },
+    models_used: [],
+    source_refs: [],
+    memory_payload: {
+      decisions: [], lessons: [], constraints: [], unresolved_questions: [], next_steps: [], failures: [], artifacts: [], entities: {},
+      outputs: [manifestContent(bundle.run_id, identities, invocationOrigin(origin))],
+    },
+    provenance: { default_status: "generated", confidence: 1, requires_review: true },
+    retention: {},
+    visibility: { workspace: WORKSPACE_ID },
+  };
+}
+
+export function validateConsolidateManifest(rows, runId, identities, origin) {
+  if (!Array.isArray(rows) || rows.length !== 1) fail(`current run must have exactly one consolidate manifest; found ${rows?.length ?? "unknown"}`);
+  const row = rows[0];
+  const expectedKey = `${runId}:consolidate-manifest:0`;
+  const expectedContent = manifestContent(runId, [...identities].sort(), invocationOrigin(origin));
+  if (row.memory_type !== "output" || row.idempotency_key !== expectedKey || row.content !== expectedContent
+      || row.provenance_status !== "generated" || row.review_status !== "pending"
+      || row.requires_user_confirmation !== true || row.can_use_as_instruction !== false) {
+    fail("consolidate manifest differs from the locked run identity set or review state");
+  }
+  return row;
+}
+
 export function lessonWriteback(bundle, lesson, identity = lessonIdentity(lesson)) {
   const evidence = canonicalEvidence(lesson.evidence_ids);
   const confidence = Math.round(lesson.confidence * 100) / 100;
@@ -119,7 +170,8 @@ export function lessonWriteback(bundle, lesson, identity = lessonIdentity(lesson
   };
 }
 
-export function validateCurrentStatus(thoughts, lessons, sourceRefs, episodeIds, orientation) {
+export function validateCurrentStatus(thoughts, lessons, sourceRefs, episodeIds, manifests, orientation, expectedOrigin = "manual") {
+  const origin = invocationOrigin(expectedOrigin);
   const exact = (sourceType, step) => thoughts.filter((row) => row.source_type === sourceType && row.metadata?.step === step);
   const diary = exact("diary", "diary");
   const autobiography = exact("autobiography_draft", "autobiography");
@@ -130,6 +182,7 @@ export function validateCurrentStatus(thoughts, lessons, sourceRefs, episodeIds,
     if (!row.content?.startsWith(orientation.diary_day) || metadata.era !== "alive" || metadata.generation !== 0
         || metadata.audience !== "alan" || metadata.provenance_class !== "interpretation"
         || metadata.night_loop_run_id !== orientation.run_id || metadata.run_id !== orientation.run_id
+        || metadata.invocation_origin !== origin
         || Object.hasOwn(metadata, "rehearsal")) fail(`${name} does not satisfy live metadata/date requirements`);
   }
   if (autobiography[0].metadata.provisional !== true) fail("current autobiography is not marked provisional");
@@ -169,10 +222,12 @@ export function validateCurrentStatus(thoughts, lessons, sourceRefs, episodeIds,
     }
     seenIdentities.add(keyMatch[1]);
   }
+  validateConsolidateManifest(manifests, orientation.run_id, [...seenIdentities], origin);
   return { diary: 1, autobiography: 1, candidate_lessons: lessons.length };
 }
 
-export async function runSteps(bundle, operations, log = () => {}) {
+export async function runSteps(bundle, operations, log = () => {}, expectedOrigin = "manual") {
+  const origin = invocationOrigin(expectedOrigin);
   const results = {};
   const run = async (step, fn) => {
     try { results[step] = await fn(); }
@@ -182,6 +237,7 @@ export async function runSteps(bundle, operations, log = () => {}) {
     }
   };
   await run("consolidate", async () => {
+    await operations.ensureManifest(consolidateManifestWriteback(bundle, origin));
     let written = 0, skipped = 0;
     for (const lesson of bundle.lessons) {
       const identity = lessonIdentity(lesson);
@@ -189,11 +245,11 @@ export async function runSteps(bundle, operations, log = () => {}) {
       await operations.writeLesson(lessonWriteback(bundle, lesson, identity));
       written++;
     }
-    return { written, skipped, candidates: bundle.lessons.length };
+    return { manifest: "verified", written, skipped, candidates: bundle.lessons.length };
   });
   await run("diary", async () => {
     if (await operations.thoughtExists(bundle.run_id, "diary")) return { skipped: true };
-    await operations.writeThought({ content: bundle.diary, source_type: "diary", metadata: thoughtMetadata(bundle.run_id, "diary") });
+    await operations.writeThought({ content: bundle.diary, source_type: "diary", metadata: thoughtMetadata(bundle.run_id, "diary", { invocation_origin: origin }) });
     return { written: 1 };
   });
   await run("autobiography", async () => {
@@ -201,7 +257,7 @@ export async function runSteps(bundle, operations, log = () => {}) {
     await operations.writeThought({
       content: bundle.autobiography_draft,
       source_type: "autobiography_draft",
-      metadata: thoughtMetadata(bundle.run_id, "autobiography", { provisional: true }),
+      metadata: thoughtMetadata(bundle.run_id, "autobiography", { provisional: true, invocation_origin: origin }),
     });
     return { written: 1 };
   });
@@ -271,7 +327,38 @@ async function getEpisodes(env, orientation) {
 
 function liveOperations(env) {
   const rest = (table, query = "") => `${env.SUPABASE_URL}/rest/v1/${table}${query ? `?${query}` : ""}`;
+  const manifestRows = async (runId) => {
+    const q = new URLSearchParams({
+      select: "id,memory_type,content,idempotency_key,provenance_status,review_status,requires_user_confirmation,can_use_as_instruction",
+      idempotency_key: `eq.${runId}:consolidate-manifest:0`,
+    });
+    return checkedJson(await fetch(rest("agent_memories", q), { headers: headers(env) }), "consolidate manifest query");
+  };
   return {
+    async ensureManifest(payload) {
+      let rows = await manifestRows(payload.task_id);
+      if (rows.length === 0) {
+        const response = await fetch(`${env.SUPABASE_URL}/functions/v1/agent-memory-api/writeback`, {
+          method: "POST", headers: headers(env, true), body: JSON.stringify(payload),
+        });
+        if (response.ok) {
+          const body = await checkedJson(response, "consolidate manifest writeback");
+          const memory = body?.memories?.[0];
+          if (body?.schema_version !== "openbrain.agent_memory.writeback_response.v1" || !memory
+              || memory.provenance?.status !== "generated" || memory.use_policy?.requires_user_confirmation !== true
+              || memory.use_policy?.can_use_as_instruction !== false) fail("consolidate manifest writeback returned an invalid trust state");
+        }
+        // Whether the POST created the row, returned an idempotent existing row, or lost a
+        // uniqueness race, the governed row is the authority and must match exactly.
+        rows = await manifestRows(payload.task_id);
+        if (!response.ok && rows.length === 0) fail(`consolidate manifest writeback failed with HTTP ${response.status}`);
+      }
+      const identities = payload.memory_payload.outputs[0]
+        .split("\n").slice(1).join("\n");
+      let parsed;
+      try { parsed = JSON.parse(identities); } catch { fail("generated consolidate manifest is invalid JSON"); }
+      validateConsolidateManifest(rows, payload.task_id, parsed.lesson_identities, parsed.invocation_origin);
+    },
     async lessonExists(runId, identity) {
       const q = new URLSearchParams({ select: "id", idempotency_key: `eq.${runId}:consolidate:${identity}:0`, limit: "1" });
       return (await checkedJson(await fetch(rest("agent_memories", q), { headers: headers(env) }), "lesson idempotency query")).length > 0;
@@ -329,10 +416,18 @@ async function currentStatusRows(env, orientation) {
     flow_id: `eq.${FLOW_ID}`,
     memory_type: "eq.lesson",
   });
+  const manifestQuery = new URLSearchParams({
+    select: "id,memory_type,content,idempotency_key,provenance_status,review_status,requires_user_confirmation,can_use_as_instruction",
+    task_id: `eq.${orientation.run_id}`,
+    flow_id: `eq.${FLOW_ID}`,
+    memory_type: "eq.output",
+    idempotency_key: `eq.${orientation.run_id}:consolidate-manifest:0`,
+  });
   const h = headers(env);
-  const [thoughts, lessons, episodes] = await Promise.all([
+  const [thoughts, lessons, manifests, episodes] = await Promise.all([
     checkedJson(await fetch(`${env.SUPABASE_URL}/rest/v1/thoughts?${thoughtQuery}`, { headers: h }), "current-run thought status query"),
     checkedJson(await fetch(`${env.SUPABASE_URL}/rest/v1/agent_memories?${lessonQuery}`, { headers: h }), "current-run lesson status query"),
+    checkedJson(await fetch(`${env.SUPABASE_URL}/rest/v1/agent_memories?${manifestQuery}`, { headers: h }), "current-run consolidate manifest query"),
     getEpisodes(env, orientation),
   ]);
   let sourceRefs = [];
@@ -341,7 +436,7 @@ async function currentStatusRows(env, orientation) {
     const refQuery = new URLSearchParams({ select: "memory_id,source_kind,uri", memory_id: `in.(${ids.join(",")})` });
     sourceRefs = await checkedJson(await fetch(`${env.SUPABASE_URL}/rest/v1/agent_memory_source_refs?${refQuery}`, { headers: h }), "current-run lesson source-ref query");
   }
-  return { thoughts, lessons, sourceRefs, episodes };
+  return { thoughts, lessons, manifests, sourceRefs, episodes };
 }
 
 async function prepare() {
@@ -349,7 +444,7 @@ async function prepare() {
   const orientation = liveOrientation(env);
   await assertAgentMemoryApi(env);
   const episodes = await getEpisodes(env, orientation);
-  console.log(JSON.stringify({ ...orientation, episodes }, null, 2));
+  console.log(JSON.stringify({ ...orientation, invocation_origin: invocationOrigin(), episodes }, null, 2));
 }
 
 async function commit(inputPath) {
@@ -359,7 +454,7 @@ async function commit(inputPath) {
   await assertAgentMemoryApi(env);
   const episodes = await getEpisodes(env, orientation);
   const bundle = validateBundle(JSON.parse(await readFile(inputPath, "utf8")), orientation, episodes.map((row) => row.id));
-  const results = await runSteps(bundle, liveOperations(env), (message) => console.error(message));
+  const results = await runSteps(bundle, liveOperations(env), (message) => console.error(message), invocationOrigin());
   console.log(JSON.stringify({ run_id: bundle.run_id, steps: results }, null, 2));
   if (Object.values(results).some((result) => result.error)) process.exitCode = 1;
 }
@@ -369,8 +464,9 @@ async function status() {
   const orientation = liveOrientation(env);
   await assertAgentMemoryApi(env);
   const rows = await currentStatusRows(env, orientation);
-  const outputs = validateCurrentStatus(rows.thoughts, rows.lessons, rows.sourceRefs, rows.episodes.map((episode) => episode.id), orientation);
-  console.log(JSON.stringify({ run_id: orientation.run_id, diary_day: orientation.diary_day, ...outputs, verified: true }, null, 2));
+  const origin = invocationOrigin();
+  const outputs = validateCurrentStatus(rows.thoughts, rows.lessons, rows.sourceRefs, rows.episodes.map((episode) => episode.id), rows.manifests, orientation, origin);
+  console.log(JSON.stringify({ run_id: orientation.run_id, diary_day: orientation.diary_day, invocation_origin: origin, ...outputs, verified: true }, null, 2));
 }
 
 async function main() {

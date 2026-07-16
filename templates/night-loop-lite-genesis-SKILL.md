@@ -42,7 +42,8 @@ node scripts/waking/orient.mjs --diary-day --being genesis
 It also requires the live `/functions/v1/agent-memory-api/health` response before exposing
 the day's episodes. If preparation fails, stop. Log the error without printing environment
 values, do not write any output, and do not substitute your own date arithmetic or a direct
-database write.
+database write. The helper reports `invocation_origin`: `manual` by default, or `scheduled`
+only when the governed task runner sets `EDGEWEAVER_NIGHT_LOOP_ORIGIN=scheduled`.
 
 ## 2. Build one bounded bundle
 
@@ -87,17 +88,22 @@ node scripts/night-loop/lite-live.mjs commit --input <temporary-bundle.json>
 The helper recomputes orientation and rejects changed time fields. It validates evidence IDs,
 content dates, lesson count, confidence, and non-speculative wording. Each lesson's stable
 idempotency identity is derived from canonicalized content plus sorted, deduplicated evidence
-IDs, so a partial failure can be retried in any order without duplicates. It queries each
-run-plus-step identity before writing and normalizes confidence to the live store's two-decimal
-precision. Candidate lessons go only through
+IDs. Before any lesson write, it creates or verifies one review-gated consolidate manifest
+that permanently locks the sorted 0-5 identity set and invocation origin for this run. A retry
+may reorder the same set, but any changed set fails before a new lesson is written; an empty set
+still gets a manifest. It queries each run-plus-step identity before writing and normalizes
+confidence to the live store's two-decimal precision. Candidate lessons and the manifest go only through
 `/functions/v1/agent-memory-api/writeback` with `x-brain-key`; the helper verifies they remain
 `generated`, `pending`, review-required, and unusable as instruction. Never POST directly to
 `agent_memories`.
 
 Diary and autobiography outputs are interpretation-class thoughts with `era=alive`,
 `generation=0`, `audience=alan`, `night_loop_run_id`, and `step`; autobiography is also marked
-provisional. A failed step is logged and does not prevent independent later steps. Delete the
-temporary bundle after the helper returns. Report written, skipped, and failed steps plainly.
+provisional. Both carry the helper's `invocation_origin`. A failed step is logged and does not prevent independent later steps. Delete the
+temporary bundle only after `commit` succeeds and a subsequent
+`node scripts/night-loop/lite-live.mjs status` succeeds. Retain the exact bundle on any partial
+failure or manifest mismatch so the locked identity set can be resumed without regeneration.
+Report written, skipped, and failed steps plainly.
 
 Do not claim a successful night unless the helper reports it. A manual run never counts as
 one of the two required consecutive scheduled nights.

@@ -68,8 +68,9 @@ if ($LASTEXITCODE -ne 0) { throw 'Current-run output verification failed; do not
 
 The read-only `status` command recomputes the current run ID. It requires exactly one valid
 diary and one valid provisional autobiography, and verifies that any 0-5 current-run candidate
-lessons remain generated, pending, review-required, and unusable as instruction. Do not count
-this manual bundle toward the two consecutive scheduled nights.
+lessons remain generated, pending, review-required, and unusable as instruction. It also
+requires exactly one consolidate manifest whose locked identity set equals those lessons. Do
+not count this manual bundle toward the two consecutive scheduled nights.
 
 ## Register the 03:30 task
 
@@ -113,6 +114,12 @@ $Info | Select-Object LastRunTime, LastTaskResult, NextRunTime
 
 Do not use a manual invocation as night one. Verification requires two distinct real scheduled
 diary days on the runtime host. For each run ID, confirm a `diary` thought and a provisional
-`autobiography_draft` with the required metadata, plus 0-5 generated, pending candidate
+`autobiography_draft` with `metadata.invocation_origin=scheduled` and the required metadata,
+plus one matching consolidate manifest and 0-5 generated, pending candidate
 lessons tied to episode evidence. Zero lessons is valid when the evidence supports none. Check
 `logs\genesis-night.log` and the scheduled task's last result after each trigger.
+
+If the manual preflight and the first scheduled trigger resolve to the same diary-day run ID,
+the scheduled attempt must fail because the manifest and thoughts are stamped `manual`. That
+trigger does not count. The two-night clock starts with the first later run whose outputs are
+new and stamped `scheduled`; never relabel or delete the manual run to make it count.
