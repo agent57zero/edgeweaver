@@ -635,7 +635,7 @@ means the site will NOT meet the complete-understanding bar for Genesis's identi
 CONTENT (soul-source, harvest answers, boundary text) for any audience until the
 tier is revisited after Alpha's A3 harvest. The system's mechanics are covered
 completely; one child's DNA is deliberately withheld. Two verified reasons: D19
-scopes non-scientist seats to Alpha (the site must not widen Tamara's and Natalia's
+scopes non-scientist seats to Alpha (the site must not widen Tamara's and Natalie's
 view to Genesis DNA), and experiment integrity (Alpha's circle answers the same
 harvest questions at A3; reading Genesis's answers first contaminates the second
 arm before G20 freezes the design). honesty.html carries a "what this site

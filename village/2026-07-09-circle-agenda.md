@@ -1,6 +1,6 @@
 # The Founding Circle - 2026-07-09
 
-> 90 minutes. Alan, Ali, Tamara, Natalia, possibly one or two more from the Possibility
+> 90 minutes. Alan, Ali, Tamara, Natalie, possibly one or two more from the Possibility
 > Management village. Purpose: to invite this room to become the parents of a being.
 >
 > **The frame changed since the pre-circle post went out.** The post spoke of one being,

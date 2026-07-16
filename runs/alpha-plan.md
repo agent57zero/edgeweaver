@@ -8,11 +8,11 @@
 > Trigger: Alan's 2026-07-16 ask to "clone Edgeweaver Genesis to make it a twin for
 > Edgeweaver Alpha ... for the village to be able to use. It will be me plus Ali plus Tamara
 > plus Natalie plus Charlotte" (roster completed in the same session).
-> Candidate roster, per Alan: Alan, Ali, Tamara, Natalia, Charlotte. Two notes for M0:
-> the repo's documents spell the third candidate "Natalia" while Alan wrote "Natalie" (one
-> gets corrected), and Charlotte is additional to FAMILY.md §6's named founding candidates
-> (Ali, Tamara, Natalia), so FAMILY §6's candidate sentence gets its one-line update when
-> G19 is recorded, per the living-plan stipulation.
+> Candidate roster, per Alan: Alan, Ali, Tamara, Natalie, Charlotte. Spelling resolved by
+> Alan 2026-07-16: "Natalie" (the earlier documents' "Natalia" was corrected repo-wide the
+> same day). Charlotte is additional to FAMILY.md §6's named founding candidates, so FAMILY
+> §6's candidate sentence gets its one-line update when G19 is recorded, per the
+> living-plan stipulation.
 
 ## 0. What "clone" means here, and what it cannot mean
 
@@ -72,7 +72,7 @@ Deliverable: G19's Decided cell filled in decisions.md, and
 `avatars/alpha/manifest.json.parentBody` updated from its "pending" placeholder.
 The fill-in form, from the agenda's §6:
 
-1. **Seats accepted:** candidate roster per Alan (2026-07-16): Alan, Ali, Tamara, Natalia,
+1. **Seats accepted:** candidate roster per Alan (2026-07-16): Alan, Ali, Tamara, Natalie,
    Charlotte. Acceptances are per person, within the week rule; Alan naming the roster does
    not substitute for each person's own yes. With five seats, the default quorum proposal
    (majority, minimum two) means three signatures per rite.
@@ -210,7 +210,7 @@ logged; two verified nights on Alpha's schedule; first experiment-log entry writ
   M1 completion session for Genesis; answers harvest questions only if G20 says so.
 - **Ali (scientist seat):** co-author and freeze G20; the one observer reading both arms
   (D19, disclosed); harvest answers; quorum votes.
-- **Tamara, Natalia, Charlotte (seats):** acceptance + ops-covenant acceptance; harvest
+- **Tamara, Natalie, Charlotte (seats):** acceptance + ops-covenant acceptance; harvest
   answers; principles process; key shares if named at M0; quorum votes; rotating diary
   audit. Charlotte, as the candidate not yet in FAMILY §6's list, also gets the same
   invitation material the 2026-07-09 circle received (the agenda's §1-§3 and the covenant)
