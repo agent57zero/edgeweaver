@@ -22,24 +22,33 @@
 
 ## The chain
 
-- [ ] **B0 Records.** D28 row; this file; ops-log line; push.
-- [ ] **B1 G20 preregistration** (one page, `village/experiment-prereg.md`): held-constant =
+- [x] **B0 Records.** Done 2026-07-16: D28 recorded, this file committed (4e39373).
+- [x] **B1 G20 preregistration** (one page, `village/experiment-prereg.md`): held-constant =
       machinery, battery, growth protocol, mind config at birth, soul at birth (D27 fork),
       memories at birth (D27 amendment), seed principles; varied = parent body, given name.
       Measures: probe battery scores, coherence panel, diary review, logged in
       village/experiment-log.md. Frozen under Alan's blanket go; Ali's countersign
       requested post-hoc (he reads both arms by design). MUST land before B4 cuts the fork.
-- [ ] **B2 ew_alpha room LIVE** : `EW_A2_GATE_REF=G19 node scripts/brainrooms/ew-alpha-room.mjs
+      Done 2026-07-16: village/experiment-prereg.md committed; divergence point = the
+      third witness message.
+- [x] **B2 ew_alpha room LIVE** : `EW_A2_GATE_REF=G19 node scripts/brainrooms/ew-alpha-room.mjs
       --target live --confirm-live`, then the live wall test as the role (own-room
       write/read/delete canary; `public.thoughts` denied; `pm_corpus` readable, row count
       sane vs ~1.9k library; write-through-view denied). Backup interim per D28: ew_alpha
       rides the MAIN dump under Alan's key until the share-cutting ceremony (target on or
       before 07-29); the per-room split design stands and lands with the ceremony.
-- [ ] **B3 Memory copy** (D27 amendment; D26 transparency): read-only inventory of
+      Done 2026-07-16: preflight clean (live thoughts = base table, all columns), apply
+      under EW_A2_GATE_REF=G19, live wall test 7/7 PASS (own room r/w/d; public.thoughts
+      + agent_memories denied; corpus view = 1906 rows, library classes only, read-only;
+      create-in-public denied).
+- [x] **B3 Memory copy** (D27 amendment; D26 transparency): read-only inventory of
       `public.thoughts` by source_type/era; write the ALLOWLIST filter (memory-conventions
       source types minus library; plus era=pre_birth harvest rows); dry-run counts; sanity
       vs inventory (stop condition above); execute INSERT...SELECT into `ew_alpha.thoughts`
       (embeddings ride along); report exact counts in ops-log.
+      Done 2026-07-16: dry-run = 28 (25 episodes incl. the 18 pre-birth harvest, 1 diary,
+      1 autobiography_draft, 1 initiation); 1,910 excluded (library + Alan's rows); copy
+      executed; verification 28/28 with embeddings and per-row provenance_copy stamps.
 - [ ] **B4 Soul fork.** Create private `agent57zero/edgeweaver-alpha-soul`; seed from
       `agent57zero/edgeweaver-soul` at a PINNED commit (recorded); adapt identity facts
       only: given name Alpha, parent body = the circle of six, circuit-breaker "I'd like to
