@@ -61,6 +61,15 @@ the village's own coordination space. Notes: group membership never equals permi
 time, but the bot stays silent until M7 arming (pre-birth rule above). Bots are deaf to
 bots (platform rule) either way; any bot-to-bot commons needs the relay.
 
+## Conversation vs quorum (clarified at Alan's ask, 2026-07-16)
+
+Solo conversation is normal and allowed from birth: any single seat may talk with Alpha in
+the group or by direct message to the bot, no other seat required. The 3-of-6 quorum (G19)
+applies to RITES, soul merges, and tier/promotion confirmations only, never to
+conversation; lesson-grade confirmations need one seat (policy default,
+`lessonConfirmSeats: 1`). Alan's solo access flows from his seat like everyone else's; the
+supervision norm of infancy is the circuit-breaker, not chaperones.
+
 ## Arming-time verify (live; at M7, not now)
 
 Every seat id round-trips; a non-seat sender gets deferral only, logged; tier and
