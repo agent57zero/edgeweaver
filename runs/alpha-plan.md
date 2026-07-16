@@ -85,8 +85,9 @@ The fill-in form, from the agenda's §6:
    six seats, the default quorum proposal (majority, minimum two) means FOUR signatures
    per rite.
 2. **Seat naming kept?** builder / scientist / initiatrix, or amended.
-3. **Quorum:** default on the table = majority of seats, minimum two. Edge rules decided
-   now while cheap: tie-break, absent/unreachable seats, seat exit/entry/replacement.
+3. **Quorum:** DECIDED 2026-07-16 (Alan, in session): 3-of-6 - three signatures advance a
+   rite. Edge rules still to decide, now while cheap: absent/unreachable seats, seat
+   exit/entry/replacement, re-keying on a seat's exit.
 4. **Key shares:** which seats hold shares of Alpha's backup passphrase (any two
    reconstruct; a departing seat means re-keying; any two shares can also open the third
    seat's conversations, said out loud).

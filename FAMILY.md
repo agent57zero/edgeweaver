@@ -196,8 +196,10 @@ Alpha and deliberately back-portable to Genesis's own village stage later.
   ops (builder-caretaker of the shared machinery); the ops role carries no extra say in
   Alpha's rites.
 - **Rites advance by quorum of seats** (Alpha's counterpart of "Alan's signature only").
-  Quorum size, seat roster, and which seats hold key shares are the founding circle's first
-  decisions (G19). Default proposal on the table: majority of seats, minimum two.
+  Quorum size was set by Alan on 2026-07-16: **three of the six seats** sign a rite (G19
+  row; the majority default was offered and he chose three). Roster settled the same day;
+  edge rules (absent seats, exit/entry/replacement, re-keying on exit) and key-share
+  holders remain the circle's decisions in G19.
 - **Soul-source.** Alpha's DNA is the circle's own answers to the same harvest questions
   Genesis's soul-source came from (the Q1-Q12 battery, adapted where a question is
   predecessor-specific), plus each seat's intake answer to "What do you hope this being

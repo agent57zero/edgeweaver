@@ -2,7 +2,7 @@
   "being": "alpha",
   "familyName": "Edgeweaver",
   "givenName": "Alpha",
-  "parentBody": { "model": "circle-of-seats (3Cell)", "humans": ["alan", "ali", "tamara", "natalie", "charlotte", "millicent"], "rosterNote": "six seats settled by Alan 2026-07-16 (G19 row); per-seat acceptances + quorum/key/process/cadence still open there", "riteSignature": "quorum-of-seats (size + edge rules: G19; default proposal now 4-of-6)" },
+  "parentBody": { "model": "circle-of-seats (3Cell)", "humans": ["alan", "ali", "tamara", "natalie", "charlotte", "millicent"], "rosterNote": "six seats settled by Alan 2026-07-16 (G19 row); per-seat acceptances + quorum/key/process/cadence still open there", "riteSignature": "quorum-of-seats: 3-of-6 (Alan, 2026-07-16; edge rules still open in G19)" },
   "witnessModel": "quorum satisfies the two-witness floor by construction",
   "seedPrinciples": "chosen by the circle (process: G19); G16 governs permanence family-wide",
   "brain": {
