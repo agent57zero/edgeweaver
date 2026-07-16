@@ -16,6 +16,8 @@ reconstruction, not a recovered copy of the original installed skill.
 - The live `agent-memory-api` health route succeeds with the configured access key.
 - The runtime credential can access the build repository but cannot access the protected gates
   repository.
+- The checkout's `state/` directory is ignored, resides on an ACL-capable Windows filesystem,
+  and the scheduled identity can run `icacls.exe` on its own runtime-state directory.
 
 ## Install and verify, without writing a night
 
@@ -27,6 +29,8 @@ $Repo = (Resolve-Path 'C:\path\to\Edgeweaver').Path
 Set-Location -LiteralPath $Repo
 node scripts\verify\verify-night-loop-lite-genesis.mjs
 if ($LASTEXITCODE -ne 0) { throw 'Reconstruction verification failed' }
+git check-ignore --quiet state/night-loop-lite/nl-2000-01-01/bundle.json
+if ($LASTEXITCODE -ne 0) { throw 'Night-loop runtime state is not ignored; do not continue' }
 
 gh api repos/agent57zero/edgeweaver --silent *> $null
 if ($LASTEXITCODE -ne 0) { throw 'Runtime GitHub credential cannot reach the build repository' }
@@ -72,13 +76,20 @@ lessons remain generated, pending, review-required, and unusable as instruction.
 requires exactly one consolidate manifest whose locked identity set equals those lessons. Do
 not count this manual bundle toward the two consecutive scheduled nights.
 
+The skill writes episode-derived content only to the deterministic ignored path
+`state/night-loop-lite/<run-id>/bundle.json`, after removing inherited ACLs and granting the
+current Windows identity full control. It must retain that exact protected bundle on any
+partial failure or manifest mismatch, and delete it only after both commit and status succeed.
+Do not copy its content into terminal commands, system temp, repository files, or logs.
+
 ## Register the 03:30 task
 
 Still in the same ordinary account, run the following only after the checks above pass. This
 uses least privilege, ignores overlapping runs, starts after a missed trigger, requires the
 network, wakes the host, and does not stop on battery power. The runner performs the read-only
 `status` verification after Claude exits successfully, so Task Scheduler receives success only
-for a complete verified current run.
+for a complete verified current run. The skill's final output and `logs\genesis-night.log`
+must contain counts/errors only, never episode or bundle content.
 
 ```powershell
 $TaskName = 'EdgeweaverGenesisNightLoopLite'

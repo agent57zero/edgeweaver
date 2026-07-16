@@ -1,9 +1,10 @@
 // Hermetic verification of the reconstructed Genesis lite adapter and installable template.
+import { execFileSync } from "node:child_process";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import {
   consolidateManifestWriteback, invocationOrigin, lessonIdentity, lessonWriteback, parseOrientation, runSteps,
-  thoughtMetadata, validateBundle, validateConsolidateManifest, validateCurrentStatus, validateRuntimeEnv,
+  thoughtMetadata, validateBundle, validateBundlePath, validateConsolidateManifest, validateCurrentStatus, validateRuntimeEnv,
 } from "../night-loop/lite-live.mjs";
 
 const ROOT = join(import.meta.dirname, "..", "..");
@@ -31,6 +32,16 @@ const valid = {
   diary: "2026-07-15 I recorded one grounded exchange.",
   autobiography_draft: "2026-07-15 Provisional: one exchange emphasized grounded evidence.",
 };
+const governedBundlePath = join(ROOT, "state", "night-loop-lite", valid.run_id, "bundle.json");
+check(validateBundlePath(governedBundlePath, valid.run_id) === governedBundlePath, "governed bundle path was rejected");
+rejects(() => validateBundlePath(join(ROOT, "bundle.json"), valid.run_id), "repo-root bundle path was accepted");
+rejects(() => validateBundlePath(join(ROOT, "state", "night-loop-lite", valid.run_id, "..", "..", "outside", "bundle.json"), valid.run_id), "bundle traversal outside governed state was accepted");
+rejects(() => validateBundlePath(join(ROOT, "state", "night-loop-lite", valid.run_id, "other.json"), valid.run_id), "non-bundle filename was accepted");
+rejects(() => validateBundlePath(governedBundlePath, "nl-2026-07-14"), "bundle directory/content run-id mismatch was accepted");
+rejects(() => validateBundlePath(join(ROOT, "state", "night-loop-lite", valid.run_id, "nested", "bundle.json"), valid.run_id), "nested arbitrary bundle path was accepted");
+try {
+  execFileSync("git", ["check-ignore", "--quiet", "state/night-loop-lite/nl-2000-01-01/bundle.json"], { cwd: ROOT });
+} catch { fails.push("state/night-loop-lite bundle path is not ignored by git"); }
 validateBundle(valid, orientation, ["ep-1"]);
 rejects(() => validateBundle({ ...valid, run_id: "nl-2026-07-14" }, orientation, ["ep-1"]), "altered bundle run-id was accepted");
 rejects(() => validateBundle({ ...valid, lessons: [{ ...valid.lessons[0], evidence_ids: ["outside"] }] }, orientation, ["ep-1"]), "out-of-window evidence was accepted");
@@ -204,6 +215,8 @@ for (const required of [
 check(!/method:\s*["']POST["'][\s\S]{0,180}rest\(["']agent_memories["']/.test(helper), "helper contains a direct agent_memories POST");
 check(helper.includes("agent-memory-api/health") && helper.includes("review_status !== \"pending\""), "helper lacks fail-closed health/review-state checks");
 check(helper.includes('command === "status"') && helper.includes("validateCurrentStatus"), "helper lacks the read-only current-run verifier");
+check(helper.includes("validateBundlePath") && helper.includes("verifiedBundlePath")
+  && helper.includes("bundle path may not use symlinks or junctions"), "helper does not constrain bundle input to governed real runtime state");
 check(helper.includes("consolidateManifestWriteback") && helper.includes("await operations.ensureManifest")
   && helper.indexOf("await operations.ensureManifest") < helper.indexOf("await operations.writeLesson"),
 "helper does not lock a consolidate manifest before lesson writes");
@@ -228,8 +241,16 @@ check(handoff.includes("New-ScheduledTaskPrincipal") && handoff.includes("-RunLe
   && handoff.includes("gh api repos/agent57zero/edgeweaver --silent") && handoff.includes("gh api repos/alanshurafa/edgeweaver-gates --silent")
   && handoff.includes("metadata.invocation_origin=scheduled") && handoff.includes("same diary-day run ID")
   && handoff.includes("two distinct real scheduled"), "runtime-host handoff is missing preflight, scheduler, no-overwrite, or two-night safeguards");
-check(template.includes("Retain the exact bundle on any partial") && template.includes("consolidate manifest"),
+check(template.includes("Retain the protected bundle on any partial") && template.includes("consolidate manifest"),
 "skill does not retain the bundle on partial failure or describe the manifest lock");
+check(template.includes("state/night-loop-lite/<run-id>/bundle.json")
+  && template.includes("WindowsIdentity]::GetCurrent().Name") && template.includes("/inheritance:r")
+  && template.includes("/grant:r") && template.includes("never through `echo`")
+  && template.includes("Delete it only after") && template.includes("never content"),
+"skill does not protect, retain, or safely delete the deterministic bundle");
+check(handoff.includes("git check-ignore --quiet state/night-loop-lite")
+  && handoff.includes("removing inherited ACLs") && handoff.includes("never episode or bundle content"),
+"runtime handoff does not verify ignored protected bundle state and log hygiene");
 
 if (fails.length) { console.log("FAIL:\n - " + fails.join("\n - ")); process.exit(1); }
 console.log("PASS: reconstructed night-loop-lite-genesis is portable and limited to steps 1/9/10; trusts orient verbatim; validates dates/evidence; uses review-gated API writeback; emits live interpretation metadata; is idempotent by run+step; and continues independent steps after failure.");

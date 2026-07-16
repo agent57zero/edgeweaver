@@ -47,7 +47,26 @@ only when the governed task runner sets `EDGEWEAVER_NIGHT_LOOP_ORIGIN=scheduled`
 
 ## 2. Build one bounded bundle
 
-Use only the episodes returned by `prepare`. Create a temporary JSON file with exactly this
+Use only the episodes returned by `prepare`. The bundle has exactly one permitted location:
+`state/night-loop-lite/<run-id>/bundle.json` beneath `<EDGEWEAVER_REPO>`. `state/` is ignored
+runtime state. Never put the bundle in the repository root, a system temp directory, a log, or
+any other path.
+
+Before writing the bundle, create and lock its directory to the current Windows identity,
+copying `<run-id>` exactly from `prepare`:
+
+```powershell
+$RunId = '<run-id>'
+$BundleDir = Join-Path (Resolve-Path '.').Path "state\night-loop-lite\$RunId"
+New-Item -ItemType Directory -Force -Path $BundleDir | Out-Null
+$Identity = [Security.Principal.WindowsIdentity]::GetCurrent().Name
+icacls.exe $BundleDir /inheritance:r /grant:r "${Identity}:(OI)(CI)F" | Out-Null
+if ($LASTEXITCODE -ne 0) { throw 'Could not restrict the night-loop bundle ACL' }
+$BundlePath = Join-Path $BundleDir 'bundle.json'
+```
+
+Write the JSON directly to `$BundlePath` with the file-writing tool, never as inline shell
+text and never through `echo`, command arguments, stdout, or a transcript. It has exactly this
 shape, copying the three time fields byte for byte from the helper:
 
 ```json
@@ -76,13 +95,15 @@ shape, copying the three time fields byte for byte from the helper:
   supported material in under 400 words. It is scratch, not lineage or a canonical identity
   claim.
 - Both text fields begin with the human `diary_day` date. Never add a rehearsal marker.
+- Never copy, echo, summarize, or log episode or bundle content outside this protected ignored
+  runtime-state file. Final/status output names counts and failures only, never content.
 
 ## 3. Commit through the guarded adapter
 
 Run:
 
 ```powershell
-node scripts/night-loop/lite-live.mjs commit --input <temporary-bundle.json>
+node scripts/night-loop/lite-live.mjs commit --input "state/night-loop-lite/<run-id>/bundle.json"
 ```
 
 The helper recomputes orientation and rejects changed time fields. It validates evidence IDs,
@@ -99,11 +120,20 @@ confidence to the live store's two-decimal precision. Candidate lessons and the 
 
 Diary and autobiography outputs are interpretation-class thoughts with `era=alive`,
 `generation=0`, `audience=alan`, `night_loop_run_id`, and `step`; autobiography is also marked
-provisional. Both carry the helper's `invocation_origin`. A failed step is logged and does not prevent independent later steps. Delete the
-temporary bundle only after `commit` succeeds and a subsequent
-`node scripts/night-loop/lite-live.mjs status` succeeds. Retain the exact bundle on any partial
-failure or manifest mismatch so the locked identity set can be resumed without regeneration.
-Report written, skipped, and failed steps plainly.
+provisional. Both carry the helper's `invocation_origin`. A failed step is logged and does not
+prevent independent later steps. Retain the protected bundle on any partial failure or manifest
+mismatch so the locked identity set can be resumed without regeneration. Delete it only after
+`commit` succeeds and a subsequent `node scripts/night-loop/lite-live.mjs status` succeeds:
+
+```powershell
+$BundlePath = Join-Path (Resolve-Path '.').Path 'state/night-loop-lite/<run-id>/bundle.json'
+$BundleDir = Split-Path -Parent $BundlePath
+Remove-Item -LiteralPath $BundlePath
+if (-not (Get-ChildItem -LiteralPath $BundleDir -Force)) { Remove-Item -LiteralPath $BundleDir }
+```
+
+Report written, skipped, and failed steps plainly without episode, lesson, diary, or
+autobiography content.
 
 Do not claim a successful night unless the helper reports it. A manual run never counts as
 one of the two required consecutive scheduled nights.

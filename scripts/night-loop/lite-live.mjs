@@ -7,11 +7,12 @@
 
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { readFile } from "node:fs/promises";
-import { dirname, join } from "node:path";
+import { readFile, realpath } from "node:fs/promises";
+import { dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
+const BUNDLE_ROOT = join(ROOT, "state", "night-loop-lite");
 const FLOW_ID = "night-loop-lite-genesis";
 const WORKSPACE_ID = "edgeweaver";
 const STEP_NAMES = ["consolidate", "diary", "autobiography"];
@@ -22,6 +23,33 @@ function fail(message) { throw new Error(message); }
 function words(text) { return text.trim().split(/\s+/).filter(Boolean).length; }
 function canonicalText(text) { return text.trim().replace(/\s+/g, " "); }
 function canonicalEvidence(ids) { return [...new Set(ids.map(String))].sort(); }
+
+export function validateBundlePath(inputPath, expectedRunId) {
+  if (typeof inputPath !== "string" || !inputPath.trim()) fail("bundle input path is required");
+  const resolved = resolve(inputPath);
+  const rel = relative(BUNDLE_ROOT, resolved);
+  if (!rel || rel.startsWith(`..${sep}`) || rel === ".." || isAbsolute(rel)) {
+    fail("bundle must be inside the ignored state/night-loop-lite directory");
+  }
+  const parts = rel.split(sep);
+  if (parts.length !== 2 || !/^nl-\d{4}-\d{2}-\d{2}$/.test(parts[0]) || parts[1] !== "bundle.json") {
+    fail("bundle path must be state/night-loop-lite/<run-id>/bundle.json");
+  }
+  if (expectedRunId && parts[0] !== expectedRunId) fail("bundle run-id directory does not match bundle content");
+  return resolved;
+}
+
+async function verifiedBundlePath(inputPath) {
+  const lexical = validateBundlePath(inputPath);
+  const [realRoot, realInput] = await Promise.all([realpath(BUNDLE_ROOT), realpath(lexical)]);
+  const comparable = (path) => process.platform === "win32" ? resolve(path).toLowerCase() : resolve(path);
+  if (comparable(realRoot) !== comparable(BUNDLE_ROOT) || comparable(realInput) !== comparable(lexical)) {
+    fail("bundle path may not use symlinks or junctions");
+  }
+  const rel = relative(realRoot, realInput);
+  if (!rel || rel.startsWith(`..${sep}`) || rel === ".." || isAbsolute(rel)) fail("bundle symlink resolves outside ignored runtime state");
+  return realInput;
+}
 
 export function parseOrientation(text) {
   const lines = text.replace(/\r/g, "").trim().split("\n");
@@ -449,11 +477,13 @@ async function prepare() {
 
 async function commit(inputPath) {
   if (!inputPath) fail("commit requires --input <bundle.json>");
+  const safeInputPath = await verifiedBundlePath(inputPath);
   const env = await readEnv();
   const orientation = liveOrientation(env);
   await assertAgentMemoryApi(env);
   const episodes = await getEpisodes(env, orientation);
-  const bundle = validateBundle(JSON.parse(await readFile(inputPath, "utf8")), orientation, episodes.map((row) => row.id));
+  const bundle = validateBundle(JSON.parse(await readFile(safeInputPath, "utf8")), orientation, episodes.map((row) => row.id));
+  validateBundlePath(safeInputPath, bundle.run_id);
   const results = await runSteps(bundle, liveOperations(env), (message) => console.error(message), invocationOrigin());
   console.log(JSON.stringify({ run_id: bundle.run_id, steps: results }, null, 2));
   if (Object.values(results).some((result) => result.error)) process.exitCode = 1;
