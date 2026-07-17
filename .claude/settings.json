@@ -22,6 +22,8 @@
       "Bash(*)",
       "Read(//c/Users/agent/Project/edgeweaver-soul/**)",
       "Read(//c/Users/agent/Project/edgeweaver-alpha-soul/**)",
+      "Edit(//c/Users/agent/Project/edgeweaver-alpha-soul/**)",
+      "Write(//c/Users/agent/Project/edgeweaver-alpha-soul/**)",
       "mcp__plugin_telegram_telegram__reply",
       "mcp__plugin_telegram_telegram__react",
       "mcp__plugin_telegram_telegram__edit_message"
