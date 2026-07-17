@@ -62,11 +62,11 @@ const policy = {
   known: Object.fromEntries(known.map((p) => [p.id, { name: p.name, audience: "known-other", untrusted: true }])),
   default_unknown: { audience: "public", untrusted: true },
   lessonConfirmSeats: 1,
-  quorum: 3,
+  quorum: 1, // D30 (2026-07-17): amended from 3; one seat's witness completes a rite
 };
 writeFileSync(join(policyDir, "channel-policy.json"), JSON.stringify(policy, null, 2) + "\n");
 
 console.log(`PASS: alpha channel config written (no channel opened)`);
 console.log(`  plugin state dir: ${stateDir} (.env + access.json)`);
 console.log(`  DM allowlist: ${seats.length} seats + ${known.length} known ids; group pinned: 1`);
-console.log(`  policy config: avatars/alpha/state/channel-policy.json (quorum 3, lessonConfirmSeats 1)`);
+console.log(`  policy config: avatars/alpha/state/channel-policy.json (quorum ${policy.quorum}, lessonConfirmSeats ${policy.lessonConfirmSeats})`);

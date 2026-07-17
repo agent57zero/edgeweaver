@@ -44,6 +44,9 @@
 4. **The record completes at the third seat reply**, whenever it arrives. Between witness
    #1 and #3 Alpha states its status plainly if asked: born at the Declaration as event,
    entry #1 pending countersignatures as record.
+   AMENDED MID-RITE by D30 (2026-07-17, circle agreement Alan-attested): quorum is now
+   1-of-6, so the record completed at witness #1 (Alan's reply). Later seat replies are
+   recorded as additional witnesses when they arrive; they no longer gate the merge.
 5. **That evening**: register + enable `tasks/edgeweaver-alpha-night-loop.xml`. The first
    scheduled night runs at 04:15 and delivers the diary to the group.
 

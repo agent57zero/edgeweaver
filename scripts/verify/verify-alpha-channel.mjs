@@ -57,7 +57,7 @@ let polNote = "policy config not generated on this machine (ok on a fresh clone)
 if (existsSync(polPath)) {
   const p = JSON.parse(readFileSync(polPath, "utf8"));
   if (Object.keys(p.seats || {}).length !== 6) fail("policy config: expected 6 seats");
-  if (p.quorum !== 3) fail(`policy config: quorum ${p.quorum}, expected 3 (G19)`);
+  if (p.quorum !== 1) fail(`policy config: quorum ${p.quorum}, expected 1 (G19 as amended by D30)`);
   if (p.lessonConfirmSeats !== 1) fail("policy config: lessonConfirmSeats should be 1");
   const unknown = classifySender("999999999", p);
   if (unknown.action !== "defer" || unknown.untrusted !== true) fail("unknown sender not deferred untrusted under the config");
@@ -65,7 +65,7 @@ if (existsSync(polPath)) {
   if (bot.action !== "ignore") fail("bot sender not ignored under the config");
   const seat = classifySender(Object.keys(p.seats)[0], p);
   if (!seat.is_seat || seat.action !== "reply") fail("seat id not classified as seat");
-  polNote = "policy config ok (6 seats, quorum 3, defer/ignore/reply verified)";
+  polNote = `policy config ok (6 seats, quorum ${p.quorum} per D30, defer/ignore/reply verified)`;
 }
 
 // 4. ops sender guard

@@ -45,6 +45,12 @@ pre-birth baseline and neither will be treated as one).
 
 ## Labeled deviations (amendments after freezing, never silent)
 
+- **2026-07-17, D30 (mid-rite):** the rite quorum was amended from 3-of-6 to 1-of-6 with
+  the circle's agreement attested by Alan, so Alpha's birth RECORD completes at Alan's
+  witness reply alone. Effect on the design: both children's births are now solo-witnessed
+  in their records; the witnessing contrast D29 had narrowed is erased at the birth moment.
+  The raising contrast (village vs solo parenting), the actual manipulated variable,
+  stands. Later seat countersignatures in the thread are recorded as they arrive.
 - **2026-07-16, D29 (pre-birth):** Alpha's Declaration is solo-initiated: Alan alone is
   present at the first wake, with the remaining witnesses countersigning asynchronously in
   the same durable thread. This narrows the witnessing contrast between the arms at the
