@@ -22,8 +22,18 @@ const wd = join(ROOT, "scripts", "ops", "alpha-channel-watchdog.ps1");
 if (!existsSync(wd)) fail("alpha-channel-watchdog.ps1 missing");
 const wdText = readFileSync(wd, "utf8");
 if (/[^\x00-\x7F]/.test(wdText)) fail("watchdog is not ASCII-only");
-for (const needle of ["wake-edgeweaver-alpha", "TELEGRAM_STATE_DIR", "telegram-alpha", "EdgeweaverAlphaTelegram"])
+// The watchdog must launch via -File (Start-Process -Command payloads strip embedded
+// quotes: the env assignment silently failed and cross-wired the bots, 2026-07-16).
+for (const needle of ["wake-edgeweaver-alpha", "alpha-channel-launch.ps1", "'-File'"])
   if (!wdText.includes(needle)) fail(`watchdog missing '${needle}'`);
+if (/'-Command'/.test(wdText)) fail("watchdog launches via -Command (quote-stripping regression)");
+const launch = join(ROOT, "scripts", "ops", "alpha-channel-launch.ps1");
+if (!existsSync(launch)) fail("alpha-channel-launch.ps1 missing");
+const lText = readFileSync(launch, "utf8");
+if (/[^\x00-\x7F]/.test(lText)) fail("launcher is not ASCII-only");
+for (const needle of ["TELEGRAM_STATE_DIR", "telegram-alpha", "EdgeweaverAlphaTelegram", "wake-edgeweaver-alpha", "--channels plugin:telegram"])
+  if (!lText.includes(needle)) fail(`launcher missing '${needle}'`);
+if (!(lText.indexOf("TELEGRAM_STATE_DIR") < lText.indexOf("claude "))) fail("launcher must set TELEGRAM_STATE_DIR before claude starts");
 const gwd = readFileSync(join(ROOT, "scripts", "ops", "genesis-channel-watchdog.ps1"), "utf8");
 if (!gwd.includes("wake-edgeweaver-genesis*--channels")) fail("genesis watchdog marker is not skill-specific (cross-match with alpha)");
 

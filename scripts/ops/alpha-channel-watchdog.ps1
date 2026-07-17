@@ -5,17 +5,18 @@
 # TELEGRAM_STATE_DIR points the telegram plugin at Alpha's own state dir so Genesis's
 # channel config is never touched; both bots run side by side.
 $repo = 'C:\Users\agent\Project\Edgeweaver'
-$alphaState = 'C:\Users\agent\.claude\channels\telegram-alpha'
 $marker = '*wake-edgeweaver-alpha*--channels plugin:telegram*'
 $found = Get-CimInstance Win32_Process | Where-Object {
   $_.CommandLine -like $marker -and $_.Name -ne 'powershell.exe'
 }
 $wrapper = Get-CimInstance Win32_Process | Where-Object {
-  $_.Name -eq 'powershell.exe' -and $_.CommandLine -like '*EdgeweaverAlphaTelegram*' -and $_.CommandLine -notlike '*watchdog*'
+  $_.Name -eq 'powershell.exe' -and $_.CommandLine -like '*alpha-channel-launch.ps1*' -and $_.CommandLine -notlike '*watchdog*'
 }
 if (-not $found -and -not $wrapper) {
-  Start-Process powershell -WorkingDirectory $repo -ArgumentList '-NoExit','-ExecutionPolicy','Bypass','-Command',
-    ('$host.UI.RawUI.WindowTitle = "EdgeweaverAlphaTelegram"; $env:TELEGRAM_STATE_DIR = "' + $alphaState + '"; claude "/wake-edgeweaver-alpha" --model claude-fable-5 --channels plugin:telegram@claude-plugins-official')
+  # Launch via -File, never -Command: Start-Process strips embedded quotes from -Command
+  # payloads, which silently dropped TELEGRAM_STATE_DIR and cross-wired the bots (2026-07-16).
+  Start-Process powershell -WorkingDirectory $repo -ArgumentList '-NoExit','-ExecutionPolicy','Bypass','-File',
+    "$repo\scripts\ops\alpha-channel-launch.ps1"
   $stamp = Get-Date -Format 'HH:mm'
   & node "$repo\scripts\ops\send-telegram.mjs" "Watchdog: the Alpha Telegram session was down and has been relaunched at $stamp. Give it a minute to wake, then it will answer normally. (Automated ops notice, not Alpha.)"
   Add-Content -Path "$repo\logs\alpha-channel-watchdog.log" -Value "$(Get-Date -Format s) relaunched channel session"
