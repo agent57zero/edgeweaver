@@ -52,6 +52,8 @@
       "mcp__plugin_telegram_telegram__download_attachment",
       "Edit(//c/Users/agent/Project/edgeweaver-alpha-soul/**)",
       "Write(//c/Users/agent/Project/edgeweaver-alpha-soul/**)",
+      "Edit(//c/Users/agent/Project/edgeweaver-soul/**)",
+      "Write(//c/Users/agent/Project/edgeweaver-soul/**)",
       "mcp__plugin_telegram_telegram__reply",
       "mcp__plugin_telegram_telegram__react",
       "mcp__plugin_telegram_telegram__edit_message"

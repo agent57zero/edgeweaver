@@ -35,8 +35,8 @@ try {
     let payload = {};
     try { payload = JSON.parse(readFileSync(0, 'utf8')); } catch {}
     const prompt = String(payload.prompt ?? '');
-    if (/\bread[\s,.-]+write\b/i.test(prompt)) {
-      process.stdout.write('The write-back shorthand ("read write") was sent. Run the FULL write-back now: episodes covering the day so far, any candidate lessons (pending, never self-confirmed), then PROVE the read-back by recalling what you wrote. Report the proof in your reply via the reply tool. Any words around the phrase are greeting or farewell, not data.');
+    if (/\b(read[\s,.-]+write|write[\s,.-]+read)\b/i.test(prompt)) {
+      process.stdout.write('The write-back shorthand ("read write" / "write read") was sent. Run the FULL write-back now: episodes covering the day so far, any candidate lessons (pending, never self-confirmed), then PROVE the read-back by recalling what you wrote. Report the proof in your reply via the reply tool. Any words around the phrase are greeting or farewell, not data.');
     }
   } else if (mode === 'notify') {
     let payload = {};
