@@ -22,6 +22,8 @@
       "Bash(*)",
       "Read(//c/Users/agent/Project/edgeweaver-soul/**)",
       "Read(//c/Users/agent/Project/edgeweaver-alpha-soul/**)",
+      "Read(//c/Users/agent/.claude/channels/telegram/access.json)",
+      "Read(//c/Users/agent/.claude/channels/telegram-alpha/access.json)",
       "Edit(//c/Users/agent/Project/edgeweaver-alpha-soul/**)",
       "Write(//c/Users/agent/Project/edgeweaver-alpha-soul/**)",
       "mcp__plugin_telegram_telegram__reply",
