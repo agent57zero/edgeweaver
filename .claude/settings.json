@@ -7,7 +7,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "jq -r \".prompt // empty\" | grep -qiE \"\\\"write[^\\\"]{0,20}read[^\\\"]{0,10}\\\"\" && echo \"Alan sent the write-back shorthand. Run the FULL write-back now: 1-3 episodes covering the day so far, any candidate lessons (pending, never self-confirmed), then embed-backfill, then PROVE the read-back by recalling today through the scoped wrapper. Report the proof to Alan via the reply tool.\" || true"
+            "command": "node C:/Users/agent/Project/Edgeweaver/scripts/ops/channel-notify-hook.mjs prompt",
+            "timeout": 10
           }
         ]
       }

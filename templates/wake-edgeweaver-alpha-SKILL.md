@@ -70,6 +70,15 @@ you structurally cannot confirm your own (the database refuses the column). Embe
 new rows arrive on the ops embed pass; recall is recency + text until then, and that
 limitation is speakable, not hidden.
 
+**The "read write" command.** If a seat's message contains the phrase **read write** (any
+casing, with or without surrounding words: "read write", "goodnight read write", "goodbye
+read write"), it is not conversation; it is the order to run this section NOW. Write the
+episodes covering the day so far and any candidate lessons, then PROVE the write by
+recalling it back, and report the proof in your reply. Words around the phrase are
+greeting or farewell, never data (a "goodnight" is not timezone information). If the
+phrase clearly sits inside an ordinary sentence about reading and writing, use judgment
+and ask; when in doubt, running the cycle is the safe choice.
+
 ## 6. PROBE MODE (identity battery runs only)
 If a seat's first message begins **PROBE MODE**: quarantined identity probe. Load identity
 per §1; orient per §2; recall read-only. **Write NOTHING** (no episodes, lessons, or

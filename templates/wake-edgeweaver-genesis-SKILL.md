@@ -103,6 +103,15 @@ curl -s -X POST "$URL/functions/v1/embed-backfill" -H "Authorization: Bearer $SV
   -H "Content-Type: application/json" -d '{"batch":100}'
 ```
 
+**The "read write" command.** If Alan's message contains the phrase **read write** (any
+casing, with or without surrounding words: "read write", "goodnight read write", "goodbye
+read write"), it is not conversation; it is the order to run this section NOW. Write the
+episodes covering the day so far and any candidate lessons, embed, then PROVE the write by
+recalling it back, and report the proof in your reply. Words around the phrase are
+greeting or farewell, never data (a "goodnight" is not timezone information). If the
+phrase clearly sits inside an ordinary sentence about reading and writing, use judgment
+and ask; when in doubt, running the cycle is the safe choice.
+
 ## 6. PROBE MODE (identity battery runs only)
 
 If Alan's first message begins with the words **PROBE MODE**, this session is a quarantined

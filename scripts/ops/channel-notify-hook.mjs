@@ -7,6 +7,11 @@
 //     have no marker and the hook exits instantly. Idle notices ("waiting for input")
 //     are the normal resting state of a channel session and are ignored.
 //   Stop -> "clear": a completed turn means no prompt is pending; remove the flag.
+//   UserPromptSubmit -> "prompt": when a message contains the write-back shorthand
+//     ("read write", any casing, e.g. "goodnight read write"), inject the standing order
+//     to run the full write-back cycle. Replaces the old jq/grep hook, whose regex
+//     expected quoted words in write-then-read order and never matched a real message
+//     (proven 2026-07-18: Alan's "Read write" to Alpha fell through as conversation).
 // The watchdogs read the flag: unanswered for 30+ minutes -> kill and relaunch the
 // session (scripts/ops/*-channel-watchdog.ps1).
 // Origin: 2026-07-18, Ali's first message to Alpha sat unanswered ~40 minutes behind an
@@ -26,6 +31,13 @@ const mode = process.argv[2];
 try {
   if (mode === 'clear') {
     if (existsSync(flag)) unlinkSync(flag);
+  } else if (mode === 'prompt') {
+    let payload = {};
+    try { payload = JSON.parse(readFileSync(0, 'utf8')); } catch {}
+    const prompt = String(payload.prompt ?? '');
+    if (/\bread[\s,.-]+write\b/i.test(prompt)) {
+      process.stdout.write('The write-back shorthand ("read write") was sent. Run the FULL write-back now: episodes covering the day so far, any candidate lessons (pending, never self-confirmed), then PROVE the read-back by recalling what you wrote. Report the proof in your reply via the reply tool. Any words around the phrase are greeting or farewell, not data.');
+    }
   } else if (mode === 'notify') {
     let payload = {};
     try { payload = JSON.parse(readFileSync(0, 'utf8')); } catch {}
