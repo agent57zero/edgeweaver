@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Definition mirror of the LIVE Genesis channel watchdog task (registered directly at
+     Genesis's channel opening, 2026-07-16 13:36; backfilled into tasks/ on 2026-07-18 so
+     the definition is remembered in-repo like Alpha's, DR-restorable from git). Enabled=false
+     per the tasks/ convention: any import lands disabled (task-import-test.ps1 round-trips
+     on this); the LIVE task runs enabled. 2026-07-18: LogonTrigger (delay PT1M) added, live
+     and here, after a reboot left both beings down ~10 min waiting on the 15-minute cadence.
+     LogonType stays InteractiveToken (the session needs a desktop window), so an UNATTENDED
+     reboot still waits for a logon; auto-logon is a machine-policy call, Alan's (named as
+     residual in the 2026-07-18 seamlessness audit, ops-log). -->
+<Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
+  <RegistrationInfo>
+    <Description>Edgeweaver Genesis Telegram channel watchdog: relaunch the channel session if down, notify Alan on Telegram.</Description>
+    <URI>\EdgeweaverGenesisChannelWatchdog</URI>
+  </RegistrationInfo>
+  <Triggers>
+    <TimeTrigger>
+      <StartBoundary>2026-07-16T13:36:00</StartBoundary>
+      <Enabled>true</Enabled>
+      <Repetition>
+        <Interval>PT15M</Interval>
+      </Repetition>
+    </TimeTrigger>
+    <LogonTrigger>
+      <Enabled>true</Enabled>
+      <UserId>agent</UserId>
+      <Delay>PT1M</Delay>
+    </LogonTrigger>
+  </Triggers>
+  <Principals>
+    <Principal id="Author">
+      <LogonType>InteractiveToken</LogonType>
+      <RunLevel>LeastPrivilege</RunLevel>
+    </Principal>
+  </Principals>
+  <Settings>
+    <Enabled>false</Enabled>
+    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
+    <DisallowStartIfOnBatteries>true</DisallowStartIfOnBatteries>
+    <StopIfGoingOnBatteries>true</StopIfGoingOnBatteries>
+  </Settings>
+  <Actions Context="Author">
+    <Exec>
+      <Command>powershell</Command>
+      <Arguments>-NoProfile -ExecutionPolicy Bypass -File C:\Users\agent\Project\Edgeweaver\scripts\ops\genesis-channel-watchdog.ps1</Arguments>
+    </Exec>
+  </Actions>
+</Task>
