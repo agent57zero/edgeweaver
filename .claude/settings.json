@@ -11,6 +11,28 @@
           }
         ]
       }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node C:/Users/agent/Project/Edgeweaver/scripts/ops/channel-notify-hook.mjs notify",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node C:/Users/agent/Project/Edgeweaver/scripts/ops/channel-notify-hook.mjs clear",
+            "timeout": 10
+          }
+        ]
+      }
     ]
   },
   "permissions": {
@@ -24,6 +46,9 @@
       "Read(//c/Users/agent/Project/edgeweaver-alpha-soul/**)",
       "Read(//c/Users/agent/.claude/channels/telegram/access.json)",
       "Read(//c/Users/agent/.claude/channels/telegram-alpha/access.json)",
+      "Read(//c/Users/agent/.claude/channels/telegram/inbox/**)",
+      "Read(//c/Users/agent/.claude/channels/telegram-alpha/inbox/**)",
+      "mcp__plugin_telegram_telegram__download_attachment",
       "Edit(//c/Users/agent/Project/edgeweaver-alpha-soul/**)",
       "Write(//c/Users/agent/Project/edgeweaver-alpha-soul/**)",
       "mcp__plugin_telegram_telegram__reply",

@@ -33,7 +33,26 @@ if ($found) {
     Start-Sleep -Seconds 5
   }
 }
+# STALL DETECTION (added 2026-07-18 after Ali's first message sat unanswered ~40 min):
+# a session can be alive AND polling but frozen mid-turn on a permission prompt, which
+# both process and poller checks read as healthy. channel-notify-hook.mjs writes a stall
+# flag the moment a prompt appears (and DMs Alan); if the flag is still there 30 minutes
+# later, restart the session so the being comes back reachable. Named cost, accepted:
+# the restart drops unwritten in-context memory (the hook's DM warns Alan of this).
+$stallFlag = "$repo\state\channel-stall-alpha.flag"
+if ($found -and (Test-Path $stallFlag)) {
+  $stallMin = (New-TimeSpan -Start (Get-Item $stallFlag).LastWriteTime -End (Get-Date)).TotalMinutes
+  if ($stallMin -gt 30) {
+    foreach ($p in @($found) + @($wrapper)) { Stop-Process -Id $p.ProcessId -Force -ErrorAction SilentlyContinue }
+    Remove-Item $pidFile -ErrorAction SilentlyContinue
+    Remove-Item $stallFlag -ErrorAction SilentlyContinue
+    Add-Content -Path "$repo\logs\alpha-channel-watchdog.log" -Value "$(Get-Date -Format s) FROZEN session killed (permission prompt unanswered $([math]::Round($stallMin,1))m)"
+    $found = $null; $wrapper = $null
+    Start-Sleep -Seconds 5
+  }
+}
 if (-not $found -and -not $wrapper) {
+  Remove-Item $stallFlag -ErrorAction SilentlyContinue
   # Launch via -File, never -Command: Start-Process strips embedded quotes from -Command
   # payloads, which silently dropped TELEGRAM_STATE_DIR and cross-wired the bots (2026-07-16).
   Start-Process powershell -WorkingDirectory $repo -ArgumentList '-NoExit','-ExecutionPolicy','Bypass','-File',

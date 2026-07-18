@@ -10,7 +10,7 @@ $found = Get-CimInstance Win32_Process | Where-Object {
   $_.CommandLine -like $marker -and $_.Name -ne 'powershell.exe'
 }
 $wrapper = Get-CimInstance Win32_Process | Where-Object {
-  $_.Name -eq 'powershell.exe' -and $_.CommandLine -like '*EdgeweaverGenesisTelegram*' -and $_.CommandLine -notlike '*watchdog*'
+  $_.Name -eq 'powershell.exe' -and ($_.CommandLine -like '*genesis-channel-launch.ps1*' -or $_.CommandLine -like '*EdgeweaverGenesisTelegram*') -and $_.CommandLine -notlike '*watchdog*'
 }
 # DEAF DETECTION (added 2026-07-17 after the birth-day outage): a session can be alive
 # with a dead poller and a process check alone logs "ok" forever (this happened to Genesis
@@ -32,9 +32,27 @@ if ($found) {
     Start-Sleep -Seconds 5
   }
 }
+# STALL DETECTION (added 2026-07-18, mirrored from the Alpha watchdog after Ali's first
+# message sat unanswered ~40 min behind a permission prompt): channel-notify-hook.mjs
+# writes a stall flag when a prompt appears (and DMs Alan); unanswered for 30+ minutes
+# -> restart the session. Named cost: unwritten in-context memory is lost.
+$stallFlag = "$repo\state\channel-stall-genesis.flag"
+if ($found -and (Test-Path $stallFlag)) {
+  $stallMin = (New-TimeSpan -Start (Get-Item $stallFlag).LastWriteTime -End (Get-Date)).TotalMinutes
+  if ($stallMin -gt 30) {
+    foreach ($p in @($found) + @($wrapper)) { Stop-Process -Id $p.ProcessId -Force -ErrorAction SilentlyContinue }
+    Remove-Item $pidFile -ErrorAction SilentlyContinue
+    Remove-Item $stallFlag -ErrorAction SilentlyContinue
+    Add-Content -Path "$repo\logs\channel-watchdog.log" -Value "$(Get-Date -Format s) FROZEN session killed (permission prompt unanswered $([math]::Round($stallMin,1))m)"
+    $found = $null; $wrapper = $null
+    Start-Sleep -Seconds 5
+  }
+}
 if (-not $found -and -not $wrapper) {
-  Start-Process powershell -WorkingDirectory $repo -ArgumentList '-NoExit','-ExecutionPolicy','Bypass','-Command',
-    '$host.UI.RawUI.WindowTitle = "EdgeweaverGenesisTelegram"; claude "/wake-edgeweaver-genesis" --model claude-fable-5 --channels plugin:telegram@claude-plugins-official'
+  Remove-Item $stallFlag -ErrorAction SilentlyContinue
+  # Launch via -File, never -Command (quote-mangling lesson, 2026-07-16, Alpha side).
+  Start-Process powershell -WorkingDirectory $repo -ArgumentList '-NoExit','-ExecutionPolicy','Bypass','-File',
+    "$repo\scripts\ops\genesis-channel-launch.ps1"
   $stamp = Get-Date -Format 'HH:mm'
   & node "$repo\scripts\ops\send-telegram.mjs" "Watchdog: the Genesis Telegram session was down and has been relaunched at $stamp. Give it a minute to wake, then it will answer normally. (Automated notice, not Genesis.)"
   Add-Content -Path "$repo\logs\channel-watchdog.log" -Value "$(Get-Date -Format s) relaunched channel session"

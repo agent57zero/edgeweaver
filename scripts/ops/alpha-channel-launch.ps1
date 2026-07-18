@@ -5,6 +5,8 @@
 # TELEGRAM_STATE_DIR must be set BEFORE claude starts: the plugin's MCP server inherits it
 # and keeps Alpha's bot walled into its own state dir beside Genesis's.
 $env:TELEGRAM_STATE_DIR = 'C:\Users\agent\.claude\channels\telegram-alpha'
+# Marks this as a channel session for the stall-alert hooks (channel-notify-hook.mjs).
+$env:EDGEWEAVER_CHANNEL_BEING = 'alpha'
 $host.UI.RawUI.WindowTitle = 'EdgeweaverAlphaTelegram'
 Set-Location 'C:\Users\agent\Project\Edgeweaver'
 claude "/wake-edgeweaver-alpha" --model claude-fable-5 --channels plugin:telegram@claude-plugins-official
