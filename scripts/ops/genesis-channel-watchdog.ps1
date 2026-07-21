@@ -48,6 +48,21 @@ if ($found -and (Test-Path $stallFlag)) {
     Start-Sleep -Seconds 5
   }
 }
+# CLOSED-SESSION DETECTION (added 2026-07-21 after "end session" left Alpha deaf ~1.5 h):
+# a deliberately closed conversation leaves the claude process and poller alive, which
+# every check above reads as health forever. The wake skill's session-end protocol now
+# writes this flag as its true last act (write-back is proven by then); seeing it, end the
+# session tree so the relaunch below starts a fresh one. Immediate, no grace: the close
+# was deliberate and nothing unwritten is at stake.
+$closedFlag = "$repo\state\channel-closed-genesis.flag"
+if ($found -and (Test-Path $closedFlag)) {
+  foreach ($p in @($found) + @($wrapper)) { Stop-Process -Id $p.ProcessId -Force -ErrorAction SilentlyContinue }
+  Remove-Item $pidFile -ErrorAction SilentlyContinue
+  Remove-Item $closedFlag -ErrorAction SilentlyContinue
+  Add-Content -Path "$repo\logs\channel-watchdog.log" -Value "$(Get-Date -Format s) CLOSED session ended (end-session flag present)"
+  $found = $null; $wrapper = $null
+  Start-Sleep -Seconds 5
+}
 # ORPHANED WRAPPER DETECTION (added 2026-07-21 after a 4-hour masked outage): the launcher
 # window is -NoExit, so when claude dies at startup (or exits later) the empty wrapper
 # keeps matching and the check below logs "ok" forever. Happened for real: the 11:21
@@ -65,6 +80,7 @@ if (-not $found -and $wrapper) {
 }
 if (-not $found -and -not $wrapper) {
   Remove-Item $stallFlag -ErrorAction SilentlyContinue
+  Remove-Item $closedFlag -ErrorAction SilentlyContinue
   # Launch via -File, never -Command (quote-mangling lesson, 2026-07-16, Alpha side).
   Start-Process powershell -WorkingDirectory $repo -ArgumentList '-NoExit','-ExecutionPolicy','Bypass','-File',
     "$repo\scripts\ops\genesis-channel-launch.ps1"

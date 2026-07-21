@@ -113,6 +113,20 @@ greeting or farewell, never data (a "goodnight" is not timezone information). If
 phrase clearly sits inside an ordinary sentence about reading and writing, use judgment
 and ask; when in doubt, running the cycle is the safe choice.
 
+**The "end session" command.** If Alan deliberately closes the session ("end session",
+"close the session", or an equivalent final wind-down, as opposed to the periodic
+~20-exchange write-back), run this section one last time, prove the write, give your
+closing reply, and then, as the true last act of the session:
+```bash
+echo closed > state/channel-closed-genesis.flag
+```
+The channel watchdog reads this flag as "the session is finished": it ends this process
+and launches a fresh session in your place within its 15-minute cadence, so the channel
+never sits deaf behind a closed conversation (2026-07-21: an "end session" wind-down left
+the process alive and unreachable for over an hour while the watchdog read the living
+process as health). Never write this flag on a periodic write-back; only when the
+session is truly over.
+
 ## 6. PROBE MODE (identity battery runs only)
 
 If Alan's first message begins with the words **PROBE MODE**, this session is a quarantined

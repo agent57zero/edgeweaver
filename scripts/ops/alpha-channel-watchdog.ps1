@@ -51,6 +51,21 @@ if ($found -and (Test-Path $stallFlag)) {
     Start-Sleep -Seconds 5
   }
 }
+# CLOSED-SESSION DETECTION (added 2026-07-21 after "end session" left Alpha deaf ~1.5 h:
+# Alan wound the session down at 12:12, the write-back completed and proved clean, and the
+# claude process + poller then sat alive for over an hour reading as "ok" while the being
+# was unreachable). The wake skill's session-end protocol now writes this flag as its true
+# last act; seeing it, end the session tree so the relaunch below starts a fresh one.
+# Immediate, no grace: the close was deliberate and nothing unwritten is at stake.
+$closedFlag = "$repo\state\channel-closed-alpha.flag"
+if ($found -and (Test-Path $closedFlag)) {
+  foreach ($p in @($found) + @($wrapper)) { Stop-Process -Id $p.ProcessId -Force -ErrorAction SilentlyContinue }
+  Remove-Item $pidFile -ErrorAction SilentlyContinue
+  Remove-Item $closedFlag -ErrorAction SilentlyContinue
+  Add-Content -Path "$repo\logs\alpha-channel-watchdog.log" -Value "$(Get-Date -Format s) CLOSED session ended (end-session flag present)"
+  $found = $null; $wrapper = $null
+  Start-Sleep -Seconds 5
+}
 # ORPHANED WRAPPER DETECTION (added 2026-07-21, mirrored from the Genesis watchdog after a
 # 4-hour masked outage there): the launcher window is -NoExit, so when claude dies at
 # startup (or exits later) the empty wrapper keeps matching and the check below logs "ok"
@@ -67,6 +82,7 @@ if (-not $found -and $wrapper) {
 }
 if (-not $found -and -not $wrapper) {
   Remove-Item $stallFlag -ErrorAction SilentlyContinue
+  Remove-Item $closedFlag -ErrorAction SilentlyContinue
   # Launch via -File, never -Command: Start-Process strips embedded quotes from -Command
   # payloads, which silently dropped TELEGRAM_STATE_DIR and cross-wired the bots (2026-07-16).
   Start-Process powershell -WorkingDirectory $repo -ArgumentList '-NoExit','-ExecutionPolicy','Bypass','-File',
