@@ -17,7 +17,7 @@ $wrapper = Get-CimInstance Win32_Process | Where-Object {
 # for real). If the session is older than 3 minutes and its poller pid is missing or dead,
 # kill the session tree so the relaunch below runs. NEVER probe getUpdates for health:
 # Telegram hands the slot to the newest caller, so a probe lies and disrupts.
-$pidFile = 'C:\Users\agent\.claude\channels\telegram\bot.pid'
+$pidFile = 'C:\Users\agent\.claude\channels\telegram-genesis\bot.pid'
 if ($found) {
   $ageMin = (New-TimeSpan -Start $found[0].CreationDate -End (Get-Date)).TotalMinutes
   $pollerAlive = $false
