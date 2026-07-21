@@ -3,11 +3,15 @@
 # 2026-07-16 on the Alpha side, when a dropped env assignment cross-wired the bots).
 # EDGEWEAVER_CHANNEL_BEING marks this as a channel session for the stall-alert hooks
 # (channel-notify-hook.mjs); it must be set BEFORE claude starts so hooks inherit it.
-# Genesis's Telegram state lives in its OWN dir (moved 2026-07-21): the plugin's default
-# dir (~/.claude/channels/telegram) is deliberately tokenless now, because any stray
-# session with the telegram plugin enabled defaults there and hijacks the bot (happened
-# twice on 2026-07-21: an ops desktop session at 12:16 and the staff-program login at
-# 14:36; the plugin's stale-holder logic kills the legitimate poller each time).
+# Genesis's Telegram state lives in its OWN dir (moved 2026-07-21): any stray session
+# with the telegram plugin enabled defaults to ~/.claude/channels/telegram and hijacks
+# whatever token lives there (happened twice on 2026-07-21: an ops desktop session at
+# 12:16 and the staff-program login at 14:36; the plugin's stale-holder logic kills the
+# legitimate poller each time). TWO-LAYER GOTCHA, proven live 14:53-14:57: claude's
+# channel-attach probes the DEFAULT dir to decide the channel is configured (empty dir =
+# channel silently never attaches, no poller, no error), while the spawned server reads
+# TELEGRAM_STATE_DIR. So the default dir MUST hold the DECOY config (invalid token; see
+# its README.md) - never delete it, never put a real token in it.
 $env:TELEGRAM_STATE_DIR = 'C:\Users\agent\.claude\channels\telegram-genesis'
 $env:EDGEWEAVER_CHANNEL_BEING = 'genesis'
 # Keep OUR window title: claude overwrites the terminal title at startup unless this is
