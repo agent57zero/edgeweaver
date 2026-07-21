@@ -48,6 +48,21 @@ if ($found -and (Test-Path $stallFlag)) {
     Start-Sleep -Seconds 5
   }
 }
+# ORPHANED WRAPPER DETECTION (added 2026-07-21 after a 4-hour masked outage): the launcher
+# window is -NoExit, so when claude dies at startup (or exits later) the empty wrapper
+# keeps matching and the check below logs "ok" forever. Happened for real: the 11:21
+# relaunch's claude died without ever writing a transcript and the wrapper hid it until an
+# ops session went looking. If the wrapper is older than 5 minutes (startup grace) and no
+# session process exists, kill the wrapper so the relaunch below runs.
+if (-not $found -and $wrapper) {
+  $wAgeMin = (New-TimeSpan -Start $wrapper[0].CreationDate -End (Get-Date)).TotalMinutes
+  if ($wAgeMin -gt 5) {
+    foreach ($p in @($wrapper)) { Stop-Process -Id $p.ProcessId -Force -ErrorAction SilentlyContinue }
+    Add-Content -Path "$repo\logs\channel-watchdog.log" -Value "$(Get-Date -Format s) ORPHANED wrapper killed (no session process, wrapper age $([math]::Round($wAgeMin,1))m)"
+    $wrapper = $null
+    Start-Sleep -Seconds 3
+  }
+}
 if (-not $found -and -not $wrapper) {
   Remove-Item $stallFlag -ErrorAction SilentlyContinue
   # Launch via -File, never -Command (quote-mangling lesson, 2026-07-16, Alpha side).
