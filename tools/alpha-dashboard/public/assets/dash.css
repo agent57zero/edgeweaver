@@ -1,0 +1,107 @@
+/* Edgeweaver Alpha dashboard. Palette and voice follow the explainer site:
+   teal accent, Georgia headings, light/dark via color-scheme. */
+:root {
+  color-scheme: light dark;
+  --bg: #faf9f6;
+  --fg: #24313a;
+  --mut: #5b6a72;
+  --line: rgba(125, 125, 125, 0.32);
+  --card: #ffffff;
+  --accent: #0f766e;
+  --experienced: #0f766e;
+  --interpretation: #b45309;
+  --fiction: #7c3aed;
+  --danger: #b91c1c;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #101a1e;
+    --fg: #dde4e2;
+    --mut: #93a4a0;
+    --card: #16232a;
+    --interpretation: #d97706;
+    --fiction: #a78bfa;
+    --danger: #f87171;
+  }
+}
+
+body {
+  margin: 0 auto;
+  max-width: 760px;
+  padding: 22px 18px 60px;
+  background: var(--bg);
+  color: var(--fg);
+  font: 15.5px/1.65 system-ui, "Segoe UI", sans-serif;
+}
+
+.top { border-bottom: 1px solid var(--line); padding-bottom: 14px; margin-bottom: 14px; }
+h1 { font: 700 26px Georgia, serif; margin: 0; }
+.sub { color: var(--mut); margin: 4px 0 0; font-size: 13.5px; max-width: 62ch; }
+.meta { color: var(--mut); font-size: 13px; margin: 8px 0 0; }
+
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
+.tabs button {
+  font: inherit; font-size: 13px; padding: 5px 11px; border-radius: 999px;
+  border: 1px solid var(--line); background: transparent; color: inherit; cursor: pointer;
+}
+.tabs button[aria-current="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+.controls input {
+  width: 100%; box-sizing: border-box; font: inherit; padding: 8px 12px;
+  border: 1px solid var(--line); border-radius: 9px; background: transparent; color: inherit;
+  margin-bottom: 16px;
+}
+
+.day {
+  font: 700 15px Georgia, serif; color: var(--mut);
+  border-bottom: 1px solid var(--line); padding-bottom: 4px; margin: 26px 0 10px;
+}
+
+.card {
+  border: 1px solid var(--line); border-left: 3px solid var(--accent);
+  border-radius: 10px; background: var(--card); padding: 12px 15px; margin: 10px 0;
+}
+.card.interpretation { border-left-color: var(--interpretation); }
+.card.fiction { border-left-color: var(--fiction); }
+
+.card-head { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 8px; }
+.chip {
+  font-size: 11px; letter-spacing: 0.03em; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--mut);
+}
+.chip.class-experienced { color: var(--experienced); border-color: var(--experienced); }
+.chip.class-interpretation { color: var(--interpretation); border-color: var(--interpretation); }
+.chip.class-fiction { color: var(--fiction); border-color: var(--fiction); }
+.chip.confirmed { color: var(--experienced); border-color: var(--experienced); }
+.chip.pending { color: var(--interpretation); border-color: var(--interpretation); }
+.imp, .time { font-size: 12px; color: var(--mut); }
+.time { margin-left: auto; }
+
+.content { white-space: pre-wrap; overflow-wrap: break-word; }
+.content.clamped {
+  max-height: 180px; overflow: hidden;
+  -webkit-mask-image: linear-gradient(#000 60%, transparent);
+  mask-image: linear-gradient(#000 60%, transparent);
+}
+.reveal, .linkish {
+  font: inherit; font-size: 13px; color: var(--accent); background: none; border: none;
+  padding: 0; cursor: pointer; text-decoration: underline;
+}
+.summary { font-weight: 600; margin: 0 0 6px; }
+.witnesses, .note, .empty { color: var(--mut); font-size: 13px; }
+.note { margin: 0 0 12px; }
+
+.more-wrap { text-align: center; margin: 18px 0; }
+#more {
+  font: inherit; padding: 8px 18px; border-radius: 9px;
+  border: 1px solid var(--line); background: transparent; color: inherit; cursor: pointer;
+}
+
+.err-card { border: 1px solid var(--danger); color: var(--danger); border-radius: 10px; padding: 10px 14px; }
+
+footer {
+  margin-top: 34px; border-top: 1px solid var(--line); padding-top: 12px;
+  color: var(--mut); font-size: 12.5px;
+}
+footer .chip { text-transform: none; }
+code { font-size: 12.5px; }

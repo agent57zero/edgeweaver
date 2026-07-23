@@ -48,7 +48,8 @@ archives the key *names* alongside the encrypted values, so drift shows up in dr
 
 | Item | What | Custody plan |
 |---|---|---|
-| `ew_alpha` role connection string (`EW_ALPHA_DB_URL`) | Alpha's ONLY runtime credential: its schema + the corpus view, nothing else; written by `scripts/brainrooms/ew-alpha-room.mjs --target live` at the gated A2 apply | avatars/alpha/.env.local (gitignored) once A2 lands |
+| `ew_alpha` role connection string (`EW_ALPHA_DB_URL`) | Alpha's ONLY runtime credential: its schema + the corpus view, nothing else; written by `scripts/brainrooms/ew-alpha-room.mjs --target live` at the gated A2 apply | avatars/alpha/.env.local (gitignored) once A2 lands; at the D31 dashboard deploy also a Vercel server-side env (piped from the env file, never echoed) - a second cloud custodian, named |
+| Circle dashboard password (`ALPHA_DASH_PASSWORD`) | gates the read-only Alpha dashboard (`tools/alpha-dashboard/`, D31); fail-closed 503 while unset; cookie is an HMAC of it, so rotation revokes every session | Vercel env only, value set by Alan in the Vercel dashboard (D21 custody pattern); shared with the six seats by Alan, never in git or terminals |
 | Alpha Telegram bot token + seat-ID allowlist (`ALPHA_BOT_TOKEN`, `ALPHA_SEAT_IDS`) | Alpha's channel; multi-sender pinned allowlist (policy: `scripts/telegram/multi-sender-policy.mjs`, dark; runbook: `avatars/alpha/handoff/telegram-pairing-runbook.md`) | same |
 | Alpha age key | encrypts Alpha's backup stream | passphrase SPLIT among seats, any two reconstruct (D18); shares cut at a founding ceremony, never on this machine |
 

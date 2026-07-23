@@ -12,6 +12,18 @@
       "runtimeExecutable": "py",
       "runtimeArgs": ["-3.13", "-m", "http.server", "8874", "--directory", "site/public"],
       "port": 8874
+    },
+    {
+      "name": "ob1-dashboard",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "C:\\Users\\agent\\Project\\alanshurafa-ob1\\OB1\\dashboards\\open-brain-dashboard-pro", "run", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "alpha-dashboard",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["tools/alpha-dashboard/dev.mjs"],
+      "port": 8875
     }
   ]
 }
