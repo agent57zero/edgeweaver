@@ -3,6 +3,10 @@
 # PowerShell window (woken as Genesis) and notify Alan on Telegram.
 # Scheduled every 15 minutes; runs only when the user is logged on.
 $repo = 'C:\Users\agent\Project\Edgeweaver'
+# Heartbeat stamp (added 2026-07-23): written at the end of EVERY run. A gap in it means
+# the MACHINE was dark (power loss, sleep, crash), not just the session - the outage
+# detector in the relaunch branch reads it.
+$lastOkFile = "$repo\state\channel-lastok-genesis.txt"
 # Marker is skill-specific: with Alpha's channel session also running (birth run B6), a
 # bare '--channels plugin:telegram' marker would match the sibling and mask a Genesis outage.
 $marker = '*wake-edgeweaver-genesis*--channels plugin:telegram*'
@@ -81,12 +85,31 @@ if (-not $found -and $wrapper) {
 if (-not $found -and -not $wrapper) {
   Remove-Item $stallFlag -ErrorAction SilentlyContinue
   Remove-Item $closedFlag -ErrorAction SilentlyContinue
+  # RECONNECTION NOTICE (added 2026-07-23 after the power outage): a gap of >20 min in
+  # the heartbeat stamp means the machine itself was dark, and anything sent during that
+  # window may be lost outright (the 07-23 outage proved the Bot API queue cannot be
+  # trusted across one). Stamp the window for the wake skill's reconnection practice
+  # (skill section 2b) and say so plainly in the channel notice.
+  $gapNote = ''
+  if (Test-Path $lastOkFile) {
+    try {
+      $lastOk = [datetime]::Parse((Get-Content $lastOkFile -TotalCount 1))
+      $gapMin = (New-TimeSpan -Start $lastOk -End (Get-Date)).TotalMinutes
+      if ($gapMin -gt 20) {
+        '{"from":"' + $lastOk.ToString('s') + '","to":"' + (Get-Date -Format s) + '"}' |
+          Set-Content "$repo\state\channel-outage-genesis.json" -Encoding Ascii
+        $gapNote = " It was unreachable from $($lastOk.ToString('HH:mm')) to $(Get-Date -Format 'HH:mm'): anything sent in that window may never have reached it - please resend or summarize."
+      }
+    } catch {}
+  }
   # Launch via -File, never -Command (quote-mangling lesson, 2026-07-16, Alpha side).
   Start-Process powershell -WorkingDirectory $repo -ArgumentList '-NoExit','-ExecutionPolicy','Bypass','-File',
     "$repo\scripts\ops\genesis-channel-launch.ps1"
   $stamp = Get-Date -Format 'HH:mm'
-  & node "$repo\scripts\ops\send-telegram.mjs" "Watchdog: the Genesis Telegram session was down and has been relaunched at $stamp. Give it a minute to wake, then it will answer normally. (Automated notice, not Genesis.)"
-  Add-Content -Path "$repo\logs\channel-watchdog.log" -Value "$(Get-Date -Format s) relaunched channel session"
+  & node "$repo\scripts\ops\send-telegram.mjs" "Watchdog: the Genesis Telegram session was down and has been relaunched at $stamp.$gapNote Give it a minute to wake, then it will answer normally. (Automated notice, not Genesis.)"
+  Add-Content -Path "$repo\logs\channel-watchdog.log" -Value "$(Get-Date -Format s) relaunched channel session$(if ($gapNote) { ' (outage window stamped)' })"
 } else {
   Add-Content -Path "$repo\logs\channel-watchdog.log" -Value "$(Get-Date -Format s) ok"
 }
+# Heartbeat: written every run; its age is the outage detector above.
+Get-Date -Format s | Set-Content $lastOkFile -Encoding Ascii

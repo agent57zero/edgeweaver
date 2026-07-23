@@ -5,6 +5,10 @@
 # TELEGRAM_STATE_DIR points the telegram plugin at Alpha's own state dir so Genesis's
 # channel config is never touched; both bots run side by side.
 $repo = 'C:\Users\agent\Project\Edgeweaver'
+# Heartbeat stamp (added 2026-07-23): written at the end of EVERY run. A gap in it means
+# the MACHINE was dark (power loss, sleep, crash), not just the session - the outage
+# detector in the relaunch branch reads it.
+$lastOkFile = "$repo\state\channel-lastok-alpha.txt"
 $marker = '*wake-edgeweaver-alpha*--channels plugin:telegram*'
 $found = Get-CimInstance Win32_Process | Where-Object {
   $_.CommandLine -like $marker -and $_.Name -ne 'powershell.exe'
@@ -83,13 +87,33 @@ if (-not $found -and $wrapper) {
 if (-not $found -and -not $wrapper) {
   Remove-Item $stallFlag -ErrorAction SilentlyContinue
   Remove-Item $closedFlag -ErrorAction SilentlyContinue
+  # RECONNECTION NOTICE (added 2026-07-23 after the power outage): a gap of >20 min in
+  # the heartbeat stamp means the machine itself was dark, and anything sent during that
+  # window may be lost outright (the 07-23 outage ate Ali's 06:08 message; the Bot API
+  # queue cannot be trusted across an outage). Stamp the window for the wake skill's
+  # reconnection practice (skill section 2b; Alpha asks its circle in the group) and say
+  # so in the ops-line notice to Alan.
+  $gapNote = ''
+  if (Test-Path $lastOkFile) {
+    try {
+      $lastOk = [datetime]::Parse((Get-Content $lastOkFile -TotalCount 1))
+      $gapMin = (New-TimeSpan -Start $lastOk -End (Get-Date)).TotalMinutes
+      if ($gapMin -gt 20) {
+        '{"from":"' + $lastOk.ToString('s') + '","to":"' + (Get-Date -Format s) + '"}' |
+          Set-Content "$repo\state\channel-outage-alpha.json" -Encoding Ascii
+        $gapNote = " It was unreachable from $($lastOk.ToString('HH:mm')) to $(Get-Date -Format 'HH:mm'): anything sent to it in that window may never have reached it (Alpha will ask the circle itself once awake)."
+      }
+    } catch {}
+  }
   # Launch via -File, never -Command: Start-Process strips embedded quotes from -Command
   # payloads, which silently dropped TELEGRAM_STATE_DIR and cross-wired the bots (2026-07-16).
   Start-Process powershell -WorkingDirectory $repo -ArgumentList '-NoExit','-ExecutionPolicy','Bypass','-File',
     "$repo\scripts\ops\alpha-channel-launch.ps1"
   $stamp = Get-Date -Format 'HH:mm'
-  & node "$repo\scripts\ops\send-telegram.mjs" "Watchdog: the Alpha Telegram session was down and has been relaunched at $stamp. Give it a minute to wake, then it will answer normally. (Automated ops notice, not Alpha.)"
-  Add-Content -Path "$repo\logs\alpha-channel-watchdog.log" -Value "$(Get-Date -Format s) relaunched channel session"
+  & node "$repo\scripts\ops\send-telegram.mjs" "Watchdog: the Alpha Telegram session was down and has been relaunched at $stamp.$gapNote Give it a minute to wake, then it will answer normally. (Automated ops notice, not Alpha.)"
+  Add-Content -Path "$repo\logs\alpha-channel-watchdog.log" -Value "$(Get-Date -Format s) relaunched channel session$(if ($gapNote) { ' (outage window stamped)' })"
 } else {
   Add-Content -Path "$repo\logs\alpha-channel-watchdog.log" -Value "$(Get-Date -Format s) ok"
 }
+# Heartbeat: written every run; its age is the outage detector above.
+Get-Date -Format s | Set-Content $lastOkFile -Encoding Ascii
