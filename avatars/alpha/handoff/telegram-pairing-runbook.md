@@ -19,8 +19,10 @@
    @Edgeweaver_bot; one bot per being, tokens never shared (FAMILY §5). Suggested name
    "Edgeweaver Alpha", handle e.g. @EdgeweaverAlpha_bot.
 2. **Collect numeric ids:** each seat messages @userinfobot and sends Alan the number.
-   The six seats (roster settled 2026-07-16, G19 row): Alan, Ali, Tamara, Natalie,
-   Charlotte, Millicent.
+   The six seats (founding roster settled 2026-07-16, G19 row): Alan, Ali, Tamara,
+   Natalie, Charlotte, Millicent. Current roster after the 2026-07-23 seat change (D32):
+   Alan, Ali, Tamara, Natalie, Charlotte, Marina. On any seat change the allowlist edit +
+   config regeneration below is the executable half; group membership stays Alan's hand.
 3. **Paste, never in git:** `ALPHA_BOT_TOKEN=<token>` and `ALPHA_SEAT_IDS=` as
    comma-separated `Name#id` pairs into `avatars/alpha/.env.local`. Allowlisted senders who
    are NOT seats go on `ALPHA_KNOWN_IDS` (same format): they can talk once the channel is
@@ -50,7 +52,8 @@
 ## Group placement (decided by Alan 2026-07-16: dedicated group, option A)
 
 Alpha gets its OWN Telegram group ("Edgeweaver Alpha" or similar), containing exactly the
-approved members (the six seats, roster settled 2026-07-16) and @edgeweaver_alpha_bot; it
+approved members (the six current seats; roster changes are decisions.md rows, latest D32
+2026-07-23) and @edgeweaver_alpha_bot; it
 does NOT join the family forum group. Chosen fail-closed over topic-in-forum: hearing normal group
 conversation requires bot privacy mode OFF, and in a dedicated group everything the bot's
 process receives IS its own room (no overhearing of Genesis/experiment chatter from other
