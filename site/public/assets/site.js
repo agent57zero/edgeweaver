@@ -73,8 +73,6 @@
   // Plain / Technical / Both reading lens.
   var readingControls = document.querySelector(".reading-controls");
   var lensAnnouncer = document.getElementById("lens-announcer");
-  var hasPlain = !!document.querySelector('[data-register="plain"]');
-  var hasTechnical = !!document.querySelector('[data-register="technical"]');
   var READING_PARAM = "view";
   function validReading(choice) {
     return choice === "plain" || choice === "technical" || choice === "both";
@@ -135,7 +133,10 @@
     if (persist && typeof renderSearch === "function" && searchInput && searchInput.value) renderSearch();
     if (announce && lensAnnouncer) lensAnnouncer.textContent = announce;
   }
-  if (readingControls && hasPlain && hasTechnical) {
+  // Armed on every page, including single-register pages (hubs like the home
+  // page): there the buttons change nothing on screen, but the chosen lens is
+  // saved, written into the URL, and carried on every internal link.
+  if (readingControls) {
     readingControls.hidden = false;
     setReading(initialReading, false, "");
     readingControls.addEventListener("click", function (event) {

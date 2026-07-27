@@ -140,6 +140,9 @@ a:hover { text-decoration-thickness: 2px; }
 .top-actions { display: flex; align-items: center; gap: 6px; }
 .logout-form { margin: 0; }
 .reading-controls { display: inline-flex; gap: 2px; border: 1px solid var(--line); border-radius: 9px; padding: 2px; }
+/* The display rule above outranks the browser's [hidden] default; without this
+   line the toolbar shows unarmed (dead buttons) before/without JavaScript. */
+.reading-controls[hidden] { display: none; }
 .reading-controls button { min-height: 38px; border: 0; background: transparent; padding: 6px 8px; }
 .reading-controls button[aria-pressed="true"] { background: var(--accent-strong); color: #fff; }
 
@@ -7023,8 +7026,6 @@ window.EDGEWEAVER_SEARCH_INDEX = {"releaseId":"ew-20260716-rc6","records":[{"slu
   // Plain / Technical / Both reading lens.
   var readingControls = document.querySelector(".reading-controls");
   var lensAnnouncer = document.getElementById("lens-announcer");
-  var hasPlain = !!document.querySelector('[data-register="plain"]');
-  var hasTechnical = !!document.querySelector('[data-register="technical"]');
   var READING_PARAM = "view";
   function validReading(choice) {
     return choice === "plain" || choice === "technical" || choice === "both";
@@ -7085,7 +7086,10 @@ window.EDGEWEAVER_SEARCH_INDEX = {"releaseId":"ew-20260716-rc6","records":[{"slu
     if (persist && typeof renderSearch === "function" && searchInput && searchInput.value) renderSearch();
     if (announce && lensAnnouncer) lensAnnouncer.textContent = announce;
   }
-  if (readingControls && hasPlain && hasTechnical) {
+  // Armed on every page, including single-register pages (hubs like the home
+  // page): there the buttons change nothing on screen, but the chosen lens is
+  // saved, written into the URL, and carried on every internal link.
+  if (readingControls) {
     readingControls.hidden = false;
     setReading(initialReading, false, "");
     readingControls.addEventListener("click", function (event) {
