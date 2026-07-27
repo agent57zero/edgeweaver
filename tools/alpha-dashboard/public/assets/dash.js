@@ -11,17 +11,30 @@ const CLASS = {
   autobiography_draft: "interpretation",
   dream: "fiction",
 };
+// Slugs are the shareable names: ?tab=<slug> deep-links a tab, ?lesson=<id> a
+// lesson. Query params (not #fragments) because the login gate carries the
+// query through sign-in but a fragment never reaches the server.
 const TABS = [
-  { key: "", label: "Everything" },
-  { key: "edgeweaver_episode", label: "Episodes" },
-  { key: "diary", label: "Diary" },
-  { key: "autobiography_draft", label: "Autobiography" },
-  { key: "dream", label: "Dreams" },
-  { key: "initiation", label: "Initiations" },
-  { key: "lessons", label: "Lessons" },
+  { key: "", slug: "", label: "Everything" },
+  { key: "edgeweaver_episode", slug: "episodes", label: "Episodes" },
+  { key: "diary", slug: "diary", label: "Diary" },
+  { key: "autobiography_draft", slug: "autobiography", label: "Autobiography" },
+  { key: "dream", slug: "dreams", label: "Dreams" },
+  { key: "initiation", slug: "initiations", label: "Initiations" },
+  { key: "lessons", slug: "lessons", label: "Lessons" },
 ];
+const bySlug = (slug) => TABS.find((t) => t.slug === slug);
+const byKey = (key) => TABS.find((t) => t.key === key);
 
-const state = { view: "", q: "", items: [], hasMore: false, busy: false };
+const state = { view: "", q: "", items: [], hasMore: false, busy: false, focusLesson: null };
+
+function urlFor(slug, lessonId) {
+  const p = new URLSearchParams();
+  if (slug) p.set("tab", slug);
+  if (lessonId) p.set("lesson", lessonId);
+  const qs = p.toString();
+  return location.pathname + (qs ? "?" + qs : "");
+}
 
 const el = (tag, cls, text) => {
   const n = document.createElement(tag);
@@ -130,19 +143,54 @@ async function loadLessons() {
       "Candidate lessons are pending, not rules: a seat's confirmation is the only path to instruction-grade. Confirmation happens in the circle's existing flow, never here."));
     for (const l of data.items) {
       const c = el("article", "card lesson " + (l.can_use_as_instruction ? "" : "interpretation"));
+      c.id = "lesson-" + l.id;
       const head = el("div", "card-head");
       head.append(el("span", "chip " + (l.can_use_as_instruction ? "confirmed" : "pending"),
         l.can_use_as_instruction ? "confirmed rule" : "candidate"));
       if (l.confidence != null) head.append(el("span", "imp", "confidence " + Number(l.confidence).toFixed(2)));
       head.append(el("span", "time", dayInfo(l.created_at).pretty));
+      head.append(permalink(l.id));
       c.append(head, el("p", "summary", l.summary || ""), el("div", "content", l.content || ""));
       main.append(c);
     }
     if (!data.items.length) main.append(el("p", "empty", "No lessons yet."));
     document.getElementById("more").hidden = true;
+    if (state.focusLesson) focusLesson(state.focusLesson);
   } catch (err) {
     renderError(err);
   }
+}
+
+// Anchor with a real href so copy-link/long-press work everywhere; a plain
+// click also copies the absolute URL and highlights the card in place.
+function permalink(id) {
+  const a = el("a", "permalink", "link");
+  a.href = urlFor("lessons", id);
+  a.title = "Direct link to this lesson";
+  a.addEventListener("click", async (e) => {
+    e.preventDefault();
+    history.pushState(null, "", a.href);
+    state.focusLesson = String(id);
+    focusLesson(state.focusLesson);
+    try {
+      await navigator.clipboard.writeText(new URL(a.href, location.href).href);
+      a.textContent = "copied";
+      setTimeout(() => { a.textContent = "link"; }, 1400);
+    } catch { /* clipboard unavailable: the URL bar already holds the link */ }
+  });
+  return a;
+}
+
+function focusLesson(id) {
+  for (const prev of document.querySelectorAll(".card.focus")) prev.classList.remove("focus");
+  const target = document.getElementById("lesson-" + id);
+  if (!target) {
+    document.getElementById("timeline").prepend(
+      el("p", "note", "The linked lesson is not in the visible list (it may be old or no longer shared)."));
+    return;
+  }
+  target.classList.add("focus");
+  target.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
 async function loadSummary() {
@@ -172,12 +220,25 @@ function switchView(key) {
   else loadThoughts(true);
 }
 
+// The address bar is the single source of truth for which tab (and lesson) is
+// open; tab clicks write it, load and back/forward read it.
+function applyLocation() {
+  const p = new URLSearchParams(location.search);
+  state.focusLesson = p.get("lesson");
+  const tab = (state.focusLesson ? bySlug("lessons") : bySlug(p.get("tab") || "")) || TABS[0];
+  switchView(tab.key);
+}
+
 function init() {
   const tabs = document.getElementById("tabs");
   for (const t of TABS) {
     const b = el("button", null, t.label);
     b.dataset.key = t.key;
-    b.addEventListener("click", () => switchView(t.key));
+    b.addEventListener("click", () => {
+      state.focusLesson = null;
+      history.pushState(null, "", urlFor(t.slug));
+      switchView(t.key);
+    });
     tabs.append(b);
   }
   let timer = null;
@@ -189,7 +250,8 @@ function init() {
     }, 300);
   });
   document.getElementById("more").addEventListener("click", () => loadThoughts(false));
-  switchView("");
+  window.addEventListener("popstate", applyLocation);
+  applyLocation();
   loadSummary();
 }
 

@@ -77,6 +77,9 @@ h1 { font: 700 26px Georgia, serif; margin: 0; }
 .imp, .time { font-size: 12px; color: var(--mut); }
 .time { margin-left: auto; }
 
+.permalink { font-size: 12px; color: var(--accent); text-decoration: underline; }
+.card.focus { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+
 .content { white-space: pre-wrap; overflow-wrap: break-word; }
 .content.clamped {
   max-height: 180px; overflow: hidden;

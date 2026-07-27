@@ -15,6 +15,20 @@ Framework-less Vercel project, same shape and gate as the explainer site.
   first query. The dashboard is a window, not a hand.
 - The browser never sees a credential: `EW_ALPHA_DB_URL` lives server-side only.
 
+## Deep links (shareable URLs)
+
+Query parameters, not `#fragments`, because the gate's login redirect carries
+the query string through sign-in but a fragment never reaches the server:
+
+- `/?tab=<name>` opens a tab directly: `episodes`, `diary`, `autobiography`,
+  `dreams`, `initiations`, `lessons` (no param = Everything).
+- `/?lesson=<id>` opens the Lessons tab, scrolls to that lesson, highlights it.
+- Every lesson card has a "link" anchor: click copies the absolute URL,
+  right-click/long-press offers copy-link natively.
+
+Tab clicks and back/forward keep the address bar in sync (pushState/popstate),
+so whatever is on screen is always shareable as-is.
+
 ## Gate
 
 `middleware.js` is the site's proven D21 password gate, re-keyed:
