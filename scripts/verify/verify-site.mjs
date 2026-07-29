@@ -1,9 +1,9 @@
-// verify-site.mjs: the 12-check wall for site/ ("How Edgeweaver Works").
+// verify-site.mjs: the 13-check wall for site/ ("How Edgeweaver Works").
 // Design: runs/site-plan.md (Verification). House style: first line PASS/FAIL,
 // exit 0/1, hermetic (no network). Auto-discovered by run-all.mjs.
 //
 // Four modes:
-//   default          checks 1-12 against COMMITTED sources + the committed
+//   default          checks 1-13 against COMMITTED sources + the committed
 //                    atlas manifest only; never touches git state, so unrelated
 //                    repo commits can never redden run-all (the C3/N1 guarantee).
 //   --against-live   additionally diffs the manifest against `git ls-files`:
@@ -20,6 +20,7 @@
 
 import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { join, dirname, posix } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -75,7 +76,8 @@ const artifactFiles = [
   join(SITE, "artifact", "edgeweaver-site-lite.html"),
 ];
 const searchFiles = walk(PUB).filter((f) => /(?:^|[\\/])search(?:-index)?\.(?:js|json)$/i.test(f));
-const redactionFiles = distinct([...pageFiles, ...artifactFiles.filter(existsSync), ...searchFiles]);
+const rawMirrorFiles = existsSync(join(PUB, "raw")) ? walk(join(PUB, "raw")).filter((f) => f.endsWith(".md")) : [];
+const redactionFiles = distinct([...pageFiles, ...artifactFiles.filter(existsSync), ...searchFiles, ...rawMirrorFiles]);
 
 const nav = JSON.parse(read(join(SRC, "nav.json")));
 const atlasMap = JSON.parse(read(join(SRC, "atlas-map.json")));
@@ -354,6 +356,9 @@ if (AGAINST_LIVE && manifest) {
 {
   const EMDASH = new RegExp("\\u2014");
   for (const f of scannedFiles) {
+    // Verbatim repo mirrors under raw/ are registry-guarded copies (check 13);
+    // the em-dash ban stays absolute for site prose.
+    if (rel(f).startsWith("site/public/raw/")) continue;
     const text = read(f);
     if (EMDASH.test(text)) {
       const line = text.split("\n").findIndex((l) => EMDASH.test(l)) + 1;
@@ -821,7 +826,7 @@ if (RELEASE) {
       if (hits > 0) problems.push(`check 11 (probe): ${slug}: ${hits} overlapping 7-word window(s) with probe sources (text not shown)`);
     }
     if (REDACTION) {
-      for (const file of distinct([...artifactFiles.filter(existsSync), ...searchFiles])) {
+      for (const file of distinct([...artifactFiles.filter(existsSync), ...searchFiles, ...rawMirrorFiles])) {
         const text = file.endsWith(".html") ? visible(read(file)) : read(file);
         let hits = 0;
         for (const sh of shingles(text)) if (bank.has(sh)) hits++;
@@ -842,6 +847,61 @@ if (RELEASE) {
   }
 }
 
+// ---- check 13: raw source mirror (registry-driven; the repo is the source of truth) ----
+{
+  const cfgPath = join(SRC, "raw-sources.json");
+  if (!existsSync(cfgPath)) {
+    problems.push("check 13 (raw): site/src/raw-sources.json missing");
+  } else {
+    let cfg = null;
+    try { cfg = JSON.parse(read(cfgPath)); } catch { problems.push("check 13 (raw): raw-sources.json is not valid JSON"); }
+    if (cfg) {
+      const serve = Array.isArray(cfg.serve) ? cfg.serve : [];
+      const reference = Array.isArray(cfg.reference) ? cfg.reference : [];
+      const forbidden = [/^avatars\/[^/]+\/soul-source\//, /^SECRETS\.md$/i, /^templates\/probe-battery/];
+      for (const p of serve) {
+        if (!p.endsWith(".md")) problems.push(`check 13 (raw): serve entries must be markdown: ${p}`);
+        if (forbidden.some((re) => re.test(p))) problems.push(`check 13 (raw): protected path served: ${p}`);
+        const src = join(REPO, p);
+        const copy = join(PUB, "raw", ...p.split("/"));
+        if (!existsSync(src)) { problems.push(`check 13 (raw): source missing for ${p}`); continue; }
+        if (!existsSync(copy)) { problems.push(`check 13 (raw): served copy missing for ${p} (run the builder)`); continue; }
+        if (read(src) !== read(copy)) problems.push(`check 13 (raw): served copy differs from the repository file: ${p} (rebuild the site)`);
+      }
+      for (const p of [...serve, ...reference]) {
+        try { execFileSync("git", ["-C", REPO, "ls-files", "--error-unmatch", p], { stdio: ["ignore", "ignore", "ignore"] }); }
+        catch { problems.push(`check 13 (raw): not a git-tracked file: ${p}`); }
+      }
+      const manifestPath = join(PUB, "raw", "raw-manifest.json");
+      if (!existsSync(manifestPath)) {
+        if (serve.length) problems.push("check 13 (raw): raw-manifest.json missing (run the builder)");
+      } else {
+        try {
+          const manifest = JSON.parse(read(manifestPath));
+          for (const f of manifest.files || []) {
+            const copy = join(PUB, "raw", ...String(f.path).split("/"));
+            if (existsSync(copy)) {
+              const digest = createHash("sha256").update(read(copy), "utf8").digest("hex").match(/.{8}/g).join("-");
+              if (digest !== f.sha256) problems.push(`check 13 (raw): manifest hash mismatch for ${f.path}`);
+            }
+          }
+          const want = serve.slice().sort().join("|");
+          const got = (manifest.files || []).map((f) => f.path).sort().join("|");
+          if (want !== got) problems.push("check 13 (raw): manifest file set differs from the registry serve list");
+        } catch { problems.push("check 13 (raw): raw-manifest.json is not valid JSON"); }
+      }
+      const rawDir = join(PUB, "raw");
+      if (existsSync(rawDir)) {
+        for (const f of walk(rawDir)) {
+          const relPath = rel(f).replace(/^site\/public\/raw\//, "");
+          if (relPath === "raw-manifest.json") continue;
+          if (!serve.includes(relPath)) problems.push(`check 13 (raw): stray file under public/raw/: ${relPath}`);
+        }
+      }
+    }
+  }
+}
+
 // ---- report ---------------------------------------------------------------------------
 const sizes = artifactFiles.map((af) => (existsSync(af) ? Math.round(statSync(af).size / 1024) + " KB" : "missing"));
 if (problems.length) {
@@ -854,7 +914,7 @@ if (problems.length) {
   if (AGAINST_LIVE) modes.push("--against-live");
   if (REDACTION) modes.push(RELEASE ? "--release" : "--redaction");
   const mode = modes.length ? `, ${modes.join(", ")}` : "";
-  console.log(`PASS: site - ${pageData.size} pages, artifacts full ${sizes[0]} / lite ${sizes[1]}, checks 1-12 green${mode}`);
+  console.log(`PASS: site - ${pageData.size} pages, artifacts full ${sizes[0]} / lite ${sizes[1]}, checks 1-13 green${mode}`);
   for (const i of infos) console.log("  " + i);
   process.exit(0);
 }

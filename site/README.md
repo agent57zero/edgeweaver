@@ -64,7 +64,7 @@ assigning any writer.
 ```
 node scripts/site/build-site.mjs           # regenerate marker regions, artifact editions, atlas manifest
 node scripts/site/build-site.mjs --check   # freshness check (newline-agnostic), exit 1 if stale
-node scripts/verify/verify-site.mjs        # the 12-check wall (default mode; run-all runs this)
+node scripts/verify/verify-site.mjs        # the 13-check wall (default mode; run-all runs this)
 node scripts/verify/verify-site.mjs --against-live   # + atlas drift report vs git ls-files (read-only)
 node scripts/verify/verify-site.mjs --redaction      # + fail-closed identity and operations scans
 node scripts/verify/verify-site.mjs --release        # complete editorial, Atlas, semantic, and release wall
@@ -92,6 +92,20 @@ the whole guide. The password gate only exists on Vercel; testing it locally nee
   what ships to claude.ai (Alan, D21). Both editions inline their own search data
   and runtime, expose Search, Plain/Technical/Both, and Theme in one toolbar, and
   use one document `<main>` with a separate `<article>` for each included page.
+- `public/raw/` - GENERATED raw source mirror (D33). The GitHub repository is
+  the source of truth; `src/raw-sources.json` is the registry. `serve` entries
+  are tracked markdown files mirrored verbatim (LF-normalized) here, and their
+  Atlas filename headings link to the copy; `reference` entries link the
+  heading to the file on GitHub instead (repository access required) because
+  their full text sits behind the redaction tier; unlisted files keep unlinked
+  headings. Sync: the builder regenerates the mirror from the repo files, so
+  `--check` (and therefore verify check 1 and the release wall) fails the
+  moment a mirrored file changes upstream; re-run the builder and redeploy on
+  the standing reconciliation cadence. Verify check 13 enforces byte-identity,
+  git-trackedness, the protected-path guard, and the grouped-sha manifest
+  (`raw/raw-manifest.json`); served copies also pass the secret scan and the
+  redaction walls. To serve or reference a new file: add its path to the
+  registry, rebuild, and let the wall arbitrate.
 - `middleware.js` - the entire password gate (`EW_SITE_PASSWORD`, fail-closed).
   The password lives ONLY in Vercel project env config. Never commit it, never
   type it in a terminal or chat. Rotation: new env value + redeploy (old cookies

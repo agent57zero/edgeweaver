@@ -3,6 +3,8 @@
 // Inputs (committed sources ONLY; never git state, never the network):
 //   site/src/nav.json            page metadata, hubs, tracks, release id
 //   site/src/atlas-map.json      path-prefix coverage map + exclusion classes
+//   site/src/raw-sources.json    raw source mirror registry (serve + reference)
+//                                plus the committed repository markdown files it lists
 //   site/src/partials/*.html     head / nav / footer templates
 //   site/public/**/*.html        hand-authored pages (machine-owned marker regions)
 //   site/public/assets/site.css  inlined into the artifact editions
@@ -14,6 +16,8 @@
 //   site/artifact/edgeweaver-site-lite.html   single-file edition, atlas dir pages
 //                                             collapsed to hub one-liners
 //   site/src/atlas-manifest.json  file-* anchors scraped from atlas pages
+//   site/public/raw/**            LF-normalized mirrors of registry serve files
+//                                 + raw-manifest.json (grouped sha256 per file)
 //
 // Rules (see runs/site-plan.md):
 //   - Pure function of site/src + site/public: byte-identical regeneration.
@@ -26,6 +30,7 @@
 import { readFileSync, writeFileSync, readdirSync, statSync, mkdirSync, existsSync } from "node:fs";
 import { join, dirname, posix } from "node:path";
 import { fileURLToPath } from "node:url";
+import { createHash } from "node:crypto";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const args = process.argv.slice(2);
@@ -42,6 +47,38 @@ const readLF = (p) => lf(readFileSync(p, "utf8"));
 const nav = JSON.parse(readLF(join(SRC, "nav.json")));
 const atlasMap = JSON.parse(readLF(join(SRC, "atlas-map.json")));
 const SNAP = nav.snapshot;
+
+// Raw source mirror (registry: site/src/raw-sources.json; decision D33). The
+// repository is the source of truth: serve entries are mirrored LF-normalized
+// under public/raw/ and their atlas filename headings link to the copy;
+// reference entries link the heading to the file on the source repository.
+// Guards: markdown only, no path tricks, and no protected identity/probe path
+// may ever be served.
+const rawCfg = JSON.parse(readLF(join(SRC, "raw-sources.json")));
+const RAW_FORBIDDEN = [/^avatars\/[^/]+\/soul-source\//, /^SECRETS\.md$/i, /^templates\/probe-battery/];
+{
+  for (const key of ["repo", "branch", "serve", "reference"]) {
+    if (!(key in rawCfg)) throw new Error(`raw-sources.json: missing ${key}`);
+  }
+  const all = [...rawCfg.serve, ...rawCfg.reference];
+  if (new Set(all).size !== all.length) throw new Error("raw-sources.json: duplicate path across serve/reference");
+  for (const p of all) {
+    if (p.includes("\\") || p.startsWith("/") || p.includes("..")) throw new Error(`raw-sources.json: bad path ${p}`);
+    if (!p.endsWith(".md")) throw new Error(`raw-sources.json: markdown only: ${p}`);
+    if (!existsSync(join(REPO, p))) throw new Error(`raw-sources.json: listed file missing from repo: ${p}`);
+  }
+  for (const p of rawCfg.serve) {
+    if (RAW_FORBIDDEN.some((re) => re.test(p))) throw new Error(`raw-sources.json: protected path may not be served: ${p}`);
+  }
+}
+const rawByAnchor = new Map();
+for (const kind of ["serve", "reference"]) {
+  for (const p of rawCfg[kind]) {
+    const anchor = "file-" + p.replace(/[/.]/g, "-");
+    if (rawByAnchor.has(anchor)) throw new Error(`raw-sources.json: anchor collision ${anchor}`);
+    rawByAnchor.set(anchor, { path: p, kind });
+  }
+}
 const partial = (n) => readLF(join(SRC, "partials", n + ".html"));
 const HEAD_T = partial("head");
 const NAV_T = partial("nav");
@@ -205,6 +242,28 @@ for (const p of pages) {
   if (!existsSync(file)) throw new Error(`nav.json page missing on disk: site/public/${p.slug}.html`);
   sourceBySlug.set(p.slug, readLF(file));
 }
+
+// Atlas heading links (raw source mirror): the filename heading of a
+// registry-listed markdown file becomes a link to its served copy (serve) or
+// to the source-of-truth repository (reference). Idempotent by construction:
+// any previous atlas-src wrapper is stripped before the canonical one is
+// applied, so build(build(x)) === build(x) and de-registered files unwrap.
+function injectRawLinks(html, slug) {
+  const root = rootOf(slug);
+  return html.replace(/(<h3 id="(file-[^"]+)">)([\s\S]*?)(<\/h3>)/g, (whole, open, anchor, inner, close) => {
+    const bare = inner.replace(/^<a class="atlas-src[^"]*"[^>]*>([\s\S]*?)<\/a>$/, "$1");
+    const target = rawByAnchor.get(anchor);
+    if (!target) return open + bare + close;
+    const wrapped = target.kind === "serve"
+      ? `<a class="atlas-src atlas-src-raw" href="${root}raw/${target.path}" title="Open the served copy of this file (synced to this release; the repository is the source of truth)">${bare}</a>`
+      : `<a class="atlas-src atlas-src-git" href="${rawCfg.repo}/blob/${rawCfg.branch}/${target.path}" title="Open the source of truth on GitHub (repository access required)">${bare}</a>`;
+    return open + wrapped + close;
+  });
+}
+for (const p of pages) {
+  if (p.slug.startsWith("atlas/")) sourceBySlug.set(p.slug, injectRawLinks(sourceBySlug.get(p.slug), p.slug));
+}
+
 const webSearchRecords = pages.flatMap((p) => searchRecordsForPage(p, sourceBySlug.get(p.slug)));
 const liteExcludedSlugs = new Set(pages.filter((p) => p.slug.startsWith("atlas/") && p.slug !== "atlas/index").map((p) => p.slug));
 const liteSearchRecords = webSearchRecords.flatMap((record) => {
@@ -475,6 +534,7 @@ function artifactBodyV4(edition) {
       `<section class="continue" aria-label="${esc(`Continue from ${p.title}`)}">`
     );
     if (edition === "lite" && p.slug === "atlas/index") content += "\n" + liteFileMap();
+    content = content.replace(/<a class="atlas-src[^"]*"[^>]*>([\s\S]*?)<\/a>/g, "$1");
     content = content.replace(/<a\s([^>]*?)href="([^"#]+\.html)(#[^"]*)?"([^>]*)>([\s\S]*?)<\/a>/g, (whole, pre, target, hash, post, text) => {
       if (/^https?:\/\//.test(target)) return whole;
       const slug = resolveSlug(p.slug, target);
@@ -590,6 +650,25 @@ function buildManifest() {
   }) + "\n";
 }
 
+// ---------- raw source mirror manifest ----------
+
+// sha256 is emitted in 8-char groups so no served byte sequence can ever look
+// like a long numeric id to the verifier's secret scan.
+function buildRawManifest() {
+  const files = rawCfg.serve.slice().sort().map((p) => {
+    const content = readLF(join(REPO, p));
+    const digest = createHash("sha256").update(content, "utf8").digest("hex").match(/.{8}/g).join("-");
+    return { bytes: Buffer.byteLength(content, "utf8"), path: p, sha256: digest };
+  });
+  return stableStringify({
+    comment: "Generated by scripts/site/build-site.mjs. Served copies under raw/ are LF-normalized mirrors of the listed repository files; the repository is the source of truth and the release wall fails when a mirror drifts. Hashes are sha256 hex in 8-char groups.",
+    branch: rawCfg.branch,
+    files,
+    referenceOnly: rawCfg.reference.slice().sort(),
+    repo: rawCfg.repo,
+  }) + "\n";
+}
+
 // ---------- drive ----------
 
 function listPublicHtml() {
@@ -623,6 +702,10 @@ outputs.set(join(PUB, "assets", "search-index.js"), searchAsset(webSearchRecords
 outputs.set(join(SITE, "artifact", "edgeweaver-site-full.html"), artifactDocV4("full"));
 outputs.set(join(SITE, "artifact", "edgeweaver-site-lite.html"), artifactDocV4("lite"));
 outputs.set(join(SRC, "atlas-manifest.json"), buildManifest());
+for (const p of rawCfg.serve) {
+  outputs.set(join(PUB, "raw", ...p.split("/")), readLF(join(REPO, p)));
+}
+outputs.set(join(PUB, "raw", "raw-manifest.json"), buildRawManifest());
 
 if (CHECK) {
   const stale = [];
