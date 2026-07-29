@@ -929,7 +929,7 @@ if (RELEASE) {
         }
         for (const f of walk(rawDir)) {
           const relPath = rel(f).replace(/^site\/public\/raw\//, "");
-          if (relPath === "raw-manifest.json" || relPath === "soul/index.html") continue;
+          if (relPath === "raw-manifest.json" || relPath === "soul/index.html" || relPath === "index.html") continue;
           const isViewer = relPath.endsWith(".html");
           const base = isViewer ? relPath.replace(/\.html$/, "") : relPath;
           if (!serve.includes(base) && !soulFiles.has(base)) problems.push(`check 13 (raw): stray file under public/raw/: ${relPath}`);

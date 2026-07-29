@@ -754,6 +754,7 @@ function viewerDoc(relPath, content, ghUrl, atlasHref) {
   const name = relPath.split("/").pop();
   const links = [
     `<a href="${root}index.html">How Edgeweaver Works</a>`,
+    `<a href="${root}raw/index.html">All files</a>`,
     atlasHref ? `<a href="${atlasHref}">Atlas entry</a>` : "",
     `<a href="${ghUrl}">Source of truth on GitHub</a>`,
     `<a href="${esc(name)}">Verbatim file</a>`,
@@ -811,11 +812,74 @@ function soulHubDoc() {
 </head>
 <body>
 <div class="mirror-wrap">
-<nav class="mirror-nav" aria-label="Mirror navigation"><a href="../../index.html">How Edgeweaver Works</a> | <a href="../../soul.html">The Soul layer, explained</a><span class="mirror-note"> | your browser's Back button returns to the page you came from</span></nav>
+<nav class="mirror-nav" aria-label="Mirror navigation"><a href="../../index.html">How Edgeweaver Works</a> | <a href="../index.html">All files</a> | <a href="../../soul.html">The Soul layer, explained</a><span class="mirror-note"> | your browser's Back button returns to the page you came from</span></nav>
 <main id="mirror-main">
 <h1>Soulfiles, mirrored</h1>
 <p class="mirror-note">The identity documents of both beings, read-only, mirrored from their soul repositories (the source of truth). Identity changes travel only through witnessed proposal branches in those repositories, never through this site.</p>
 ${rows}
+</main>
+</div>
+</body>
+</html>
+`);
+}
+
+// The table of contents for the whole mirror: every markdown file, mirrored
+// or referenced, one page. Every viewer links here ("All files").
+function rawTocDoc() {
+  const groups = new Map();
+  for (const p of rawCfg.serve) {
+    const top = p.includes("/") ? p.slice(0, p.indexOf("/")) : "root";
+    if (!groups.has(top)) groups.set(top, []);
+    groups.get(top).push(p);
+  }
+  const sections = [...groups.keys()].sort().map((top) => {
+    const items = groups.get(top).sort().map((p) => `<li><a href="${esc(p)}.html"><code>${esc(p)}</code></a></li>`).join("\n");
+    const label = top === "root" ? "Repository root" : top + "/";
+    return `<section aria-labelledby="toc-${esc(top)}"><h2 id="toc-${esc(top)}">${esc(label)}</h2><ul>${items}</ul></section>`;
+  }).join("\n");
+  const soulSections = SOUL_ENTRIES.length ? (() => {
+    const byBeing = new Map();
+    for (const s of SOUL_ENTRIES) {
+      if (!byBeing.has(s.being)) byBeing.set(s.being, []);
+      byBeing.get(s.being).push(s);
+    }
+    const parts = [...byBeing.keys()].sort().map((being) => {
+      const label = being[0].toUpperCase() + being.slice(1);
+      const items = byBeing.get(being).map((s) => `<li><a href="soul/${being}/${esc(s.name)}.html"><code>${esc(s.name)}</code></a></li>`).join("\n");
+      return `<h3>Edgeweaver ${esc(label)}</h3><ul>${items}</ul>`;
+    }).join("\n");
+    return `<section aria-labelledby="toc-soul"><h2 id="toc-soul">Soulfiles</h2><p class="mirror-note">Mirrored from each being's soul repository; see the <a href="soul/index.html">soulfile hub</a> for branches and repositories.</p>${parts}</section>`;
+  })() : "";
+  const refItems = rawCfg.reference.slice().sort().map((p) =>
+    `<li><a href="${rawCfg.repo}/blob/${rawCfg.branch}/${esc(p)}" title="Open the source of truth on GitHub (repository access required)"><code>${esc(p)}</code></a></li>`
+  ).join("\n");
+  const total = rawCfg.serve.length + SOUL_ENTRIES.length;
+  return lf(`<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>All markdown files (source mirror)</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+.mirror-wrap { max-width: 900px; margin: 0 auto; padding: 24px 18px 60px; }
+.mirror-nav { font-size: 14px; padding: 10px 0 14px; border-bottom: 1px solid rgba(125,125,125,.35); }
+.mirror-note { font-size: 13.5px; opacity: .8; }
+.mirror-wrap ul { columns: 2; column-gap: 28px; }
+@media (max-width: 640px) { .mirror-wrap ul { columns: 1; } }
+</style>
+</head>
+<body>
+<div class="mirror-wrap">
+<nav class="mirror-nav" aria-label="Mirror navigation"><a href="../index.html">How Edgeweaver Works</a> | <a href="soul/index.html">Soulfiles</a><span class="mirror-note"> | your browser's Back button returns to the page you came from</span></nav>
+<main id="mirror-main">
+<h1>All markdown files</h1>
+<p class="mirror-note">${total} documents mirrored on this site (each opens a standalone page with the full text and a way back here), plus ${rawCfg.reference.length} linked to GitHub because the redaction walls or protected-path rules keep their full text off the site. The repositories are the source of truth; mirrors sync at each release.</p>
+${sections}
+${soulSections}
+<section aria-labelledby="toc-github"><h2 id="toc-github">On GitHub only</h2><p class="mirror-note">Repository access required; the links open the source of truth.</p><ul>${refItems}</ul></section>
 </main>
 </div>
 </body>
@@ -901,6 +965,7 @@ for (const s of SOUL_ENTRIES) {
   outputs.set(join(PUB, "raw", ...(s.rel + ".html").split("/")), viewerDoc(s.rel, content, s.ghUrl, ""));
 }
 if (SOUL_ENTRIES.length) outputs.set(join(PUB, "raw", "soul", "index.html"), soulHubDoc());
+outputs.set(join(PUB, "raw", "index.html"), rawTocDoc());
 outputs.set(join(PUB, "raw", "raw-manifest.json"), buildRawManifest());
 
 if (CHECK) {
