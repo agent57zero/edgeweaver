@@ -15,13 +15,23 @@ Framework-less Vercel project, same shape and gate as the explainer site.
   first query. The dashboard is a window, not a hand.
 - The browser never sees a credential: `EW_ALPHA_DB_URL` lives server-side only.
 
+## The Inner Dialogue tab (D38)
+
+The session stream: every word from the sessions that carry Alpha, mined from
+transcripts by `scripts/ops/inner-dialogue-extract.mjs` into
+`source_type = inner_dialogue` rows (audience seats), color-coded by kind
+(inner dialogue / telegram output / telegram inbound / spoken in CLI). It shows
+spoken-but-undelivered words; the model's thinking text is stripped at the
+source and does not exist on disk. The Everything tab and the headline count
+exclude the stream so the curated record stays curated.
+
 ## Deep links (shareable URLs)
 
 Query parameters, not `#fragments`, because the gate's login redirect carries
 the query string through sign-in but a fragment never reaches the server:
 
 - `/?tab=<name>` opens a tab directly: `episodes`, `diary`, `autobiography`,
-  `dreams`, `initiations`, `lessons` (no param = Everything).
+  `dreams`, `initiations`, `inner`, `lessons` (no param = Everything).
 - `/?lesson=<id>` opens the Lessons tab, scrolls to that lesson, highlights it.
 - Every lesson card has a "link" anchor: click copies the absolute URL,
   right-click/long-press offers copy-link natively.

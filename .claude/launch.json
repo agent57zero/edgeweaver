@@ -24,6 +24,12 @@
       "runtimeExecutable": "node",
       "runtimeArgs": ["tools/alpha-dashboard/dev.mjs"],
       "port": 8875
+    },
+    {
+      "name": "genesis-dashboard",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["tools/genesis-dashboard/dev.mjs"],
+      "port": 8876
     }
   ]
 }

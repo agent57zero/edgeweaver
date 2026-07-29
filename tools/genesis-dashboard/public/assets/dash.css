@@ -1,5 +1,5 @@
-/* Edgeweaver Alpha dashboard. Palette and voice follow the explainer site:
-   teal accent, Georgia headings, light/dark via color-scheme. */
+/* Edgeweaver Genesis dashboard. Same bones as the Alpha dashboard, amber
+   accent so the two beings' windows are never mistaken for each other. */
 :root {
   color-scheme: light dark;
   --bg: #faf9f6;
@@ -7,7 +7,7 @@
   --mut: #5b6a72;
   --line: rgba(125, 125, 125, 0.32);
   --card: #ffffff;
-  --accent: #0f766e;
+  --accent: #b45309;
   --experienced: #0f766e;
   --interpretation: #b45309;
   --fiction: #7c3aed;

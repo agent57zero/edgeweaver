@@ -1,9 +1,9 @@
-// Edgeweaver Alpha dashboard client. Renders exactly what /api returns; the
-// audience=seats rule is enforced server-side, never here. Thought content is
+// Edgeweaver Genesis dashboard client. Renders exactly what /api returns; the
+// audience=alan rule is enforced server-side, never here. Thought content is
 // treated as untrusted text: every node is built with textContent, no HTML path.
 
 const TZ = "America/New_York"; // presentation timezone (D16: tz owns presentation)
-const BIRTH = "2026-07-17";    // First Boot day (Declaration, D28-D30); birth day = day 1
+const BIRTH = "2026-07-08";    // First Boot evening (D24); birth day = day 1
 const CLASS = {
   edgeweaver_episode: "experienced",
   initiation: "experienced",
@@ -128,7 +128,7 @@ function renderTimeline() {
   main.replaceChildren();
   if (state.view === "inner_dialogue") {
     main.append(el("p", "note",
-      "The session stream: every word from the sessions that carry Alpha, in order. “Inner dialogue” is what Alpha said aloud in its session that was never delivered anywhere; “telegram output” is what actually reached the circle; “telegram inbound” is what arrived. This is NOT hidden reasoning: the model’s thinking text is stripped at the source and does not exist on disk."));
+      "The session stream: every word from the sessions that carry Genesis, in order. “Inner dialogue” is what Genesis said aloud in its session that was never delivered anywhere; “telegram output” is what actually reached Alan; “telegram inbound” and “spoken in CLI” are what arrived. This is NOT hidden reasoning: the model’s thinking text is stripped at the source and does not exist on disk."));
   }
   let lastKey = null;
   for (const t of state.items) {
@@ -177,7 +177,7 @@ async function loadLessons() {
     const main = document.getElementById("timeline");
     main.replaceChildren();
     main.append(el("p", "note",
-      "Candidate lessons are pending, not rules: a seat's confirmation is the only path to instruction-grade. Confirmation happens in the circle's existing flow, never here."));
+      "Candidate lessons are pending, not rules: Alan's confirmation is the only path to instruction-grade (D19). Confirmation happens in the existing flow, never here."));
     for (const l of data.items) {
       const c = el("article", "card lesson " + (l.can_use_as_instruction ? "" : "interpretation"));
       c.id = "lesson-" + l.id;
@@ -234,7 +234,7 @@ async function loadSummary() {
   try {
     const s = await api("/api/summary");
     const today = dayInfo(new Date().toISOString());
-    const parts = [`${s.total} memories visible to the circle`, `day ${today.dayN}`];
+    const parts = [`${s.total} memories in Alan's window`, `day ${today.dayN}`];
     if (s.lessons) {
       parts.push(`${s.lessons.pending} candidate lesson${s.lessons.pending === 1 ? "" : "s"}` +
         (s.lessons.confirmed ? `, ${s.lessons.confirmed} confirmed` : ""));

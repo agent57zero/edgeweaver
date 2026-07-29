@@ -117,6 +117,14 @@ if (-not $found -and -not $wrapper) {
       Add-Content -Path "$repo\logs\alpha-channel-watchdog.log" -Value "$(Get-Date -Format s) $dl"
     } catch {}
   }
+  # INNER-DIALOGUE EXTRACTION (added 2026-07-29, D38): mine every dead session's words
+  # (undelivered speech, telegram in/out) into the room before the ~30-day transcript
+  # purge can destroy them. Runs for CLOSED sessions too (a deliberate close still spoke
+  # words worth keeping). Idempotent delete-then-insert; fail-open, always exits 0.
+  try {
+    $idl = & node "$repo\scripts\ops\inner-dialogue-extract.mjs" alpha --scan
+    Add-Content -Path "$repo\logs\alpha-channel-watchdog.log" -Value "$(Get-Date -Format s) $idl"
+  } catch {}
   # NEEDS-AUTH CACHE SCRUB (added 2026-07-29): a poisoned plugin:telegram entry in
   # ~/.claude/mcp-needs-auth-cache.json makes claude silently skip spawning the channel
   # server (no poller, no error; proven live 12:51-13:04 when three Alpha relaunches in a

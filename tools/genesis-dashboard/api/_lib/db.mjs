@@ -1,20 +1,24 @@
-// Shared room access for the Alpha dashboard API. Every query runs as the
-// ew_alpha_runtime role via EW_ALPHA_DB_URL (server-side env only; no
-// credential ever reaches the browser), and every connection is forced
-// read-only before the first query: this surface is a window, not a hand.
+// Shared brain access for the Genesis dashboard API. Genesis's room is Alan's
+// OB1 instance (G1): its rows live in public.thoughts alongside the library,
+// distinguished by the Edgeweaver source_types. Every query runs through
+// EW_GENESIS_DB_URL (server-side env only; no credential ever reaches the
+// browser), and every connection is forced read-only before the first query:
+// this surface is a window, not a hand.
 //
-// Visibility rule, mirroring the D19 recall-wrapper convention: the API only
-// ever selects rows labeled audience=seats. Alan-scoped rows and unlabeled
-// rows are invisible by construction (fail closed), not filtered client-side.
+// Visibility rule, mirroring the recall wrapper (D19 fail-closed convention):
+// only rows labeled audience=alan appear (Genesis's parenting and witnessing
+// are Alan alone, D19), plus era=pre_birth rows, which default to alan exactly
+// as recall-scoped defaults them. Unlabeled post-birth rows never appear.
 import pg from "pg";
 
-export const SEATS_ONLY = "t.metadata->>'audience' = 'seats'";
+export const ALAN_ONLY =
+  "(t.metadata->>'audience' = 'alan' OR (t.metadata->>'audience' IS NULL AND t.metadata->>'era' = 'pre_birth'))";
 export const ALLOWED_TYPES = ["edgeweaver_episode", "diary", "autobiography_draft", "dream", "initiation", "inner_dialogue"];
 
 export async function withRoom(fn) {
-  const url = process.env.EW_ALPHA_DB_URL;
+  const url = process.env.EW_GENESIS_DB_URL;
   if (!url) {
-    const e = new Error("EW_ALPHA_DB_URL is not configured");
+    const e = new Error("EW_GENESIS_DB_URL is not configured");
     e.code = "ENV";
     throw e;
   }
@@ -49,6 +53,6 @@ export function fail(res, err) {
   if (err && err.code === "ENV") {
     return json(res, 503, { error: "room credential not configured; failing closed" });
   }
-  console.error("alpha-dashboard api error:", err && err.message);
+  console.error("genesis-dashboard api error:", err && err.message);
   return json(res, 500, { error: "query failed" });
 }
