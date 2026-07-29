@@ -92,7 +92,7 @@ the whole guide. The password gate only exists on Vercel; testing it locally nee
   what ships to claude.ai (Alan, D21). Both editions inline their own search data
   and runtime, expose Search, Plain/Technical/Both, and Theme in one toolbar, and
   use one document `<main>` with a separate `<article>` for each included page.
-- `public/raw/` - GENERATED raw source mirror (D33). The GitHub repository is
+- `public/raw/` - GENERATED raw source mirror (D34). The GitHub repository is
   the source of truth; `src/raw-sources.json` is the registry. `serve` entries
   are tracked markdown files mirrored verbatim (LF-normalized) here, and their
   Atlas filename headings link to the copy; `reference` entries link the
@@ -141,3 +141,4 @@ Alan named; accepted seats by first name + seat; published authors cited.
 | Update 1 | Guided walkthrough fold (D21 scope change, Alan 2026-07-12): walkthrough.html + per-being progress pages (walkthrough-genesis, walkthrough-alpha) + nav + interactivity; release `ew-20260712-rc4` | ☑ 2026-07-16 authored, release-wall verified, and manually deployed at Alan's request; `edgeweaver-site.vercel.app` alias corrected; artifact refresh pending |
 | Update 2 | Exhaustive all-page audit, Repo Atlas drift closure, regenerated editions/search, and release `ew-20260716-rc5` | ☑ 2026-07-16 all 57 pages and 61 served files verified; zero Atlas drift; manually deployed and public alias confirmed; private artifact re-publication pending |
 | Update 3 | URL-backed reading detail with Plain-first opt-in, saved deliberate choices, register-aware search, and release `ew-20260716-rc6` | ☑ 2026-07-16 behavior scenarios and release wall green; newly tracked paths mapped with zero Atlas drift; manually deployed and public alias confirmed; private artifact re-publication pending |
+| Update 4 | Raw source mirror (D34, Alan 2026-07-28): registry-driven verbatim copies of tracked markdown under `public/raw/` with linked Atlas filename headings (served copy, or GitHub source-of-truth link for tier-blocked files), grouped-sha manifest, builder-freshness sync, verifier check 13; release `ew-20260728-rc7` | ☑ 2026-07-28 release wall green (13 checks incl. redaction); deployed and `edgeweaver-site.vercel.app` alias moved by hand to the rc7 deployment (the rc4 precedent: `--prod` does not move this alias); gate 401 on `/` and `/raw/**`; the wall pruned PLAN.md, BRAINS.md, and the prereg to reference-only; home orientation section (found complete but uncommitted) shipped in the same release; private artifact re-publication still pending |

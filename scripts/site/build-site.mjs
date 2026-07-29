@@ -48,7 +48,7 @@ const nav = JSON.parse(readLF(join(SRC, "nav.json")));
 const atlasMap = JSON.parse(readLF(join(SRC, "atlas-map.json")));
 const SNAP = nav.snapshot;
 
-// Raw source mirror (registry: site/src/raw-sources.json; decision D33). The
+// Raw source mirror (registry: site/src/raw-sources.json; decision D34). The
 // repository is the source of truth: serve entries are mirrored LF-normalized
 // under public/raw/ and their atlas filename headings link to the copy;
 // reference entries link the heading to the file on the source repository.
