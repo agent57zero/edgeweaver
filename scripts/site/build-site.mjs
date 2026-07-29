@@ -392,13 +392,17 @@ function contextNavFor(current) {
     if (!section) { section = { title: p.section, pages: [] }; sections.push(section); }
     section.pages.push(p);
   }
-  return sections.map((section) => {
+  const rendered = sections.map((section) => {
     const items = section.pages.map((p) => {
       const active = p.slug === current.slug ? ' aria-current="page"' : "";
       return `<li><a href="${rootOf(current.slug)}${p.slug}.html"${active}>${esc(p.title)}</a></li>`;
     }).join("\n");
     return `<h2>${esc(section.title)}</h2>\n<ul>\n${items}\n</ul>`;
-  }).join("\n");
+  });
+  if (current.hub === "overview") {
+    rendered.push(`<h2>Primary sources</h2>\n<ul>\n<li><a href="${rootOf(current.slug)}raw/index.html">All files: the raw mirror</a></li>\n</ul>`);
+  }
+  return rendered.join("\n");
 }
 
 function breadcrumbFor(p) {
