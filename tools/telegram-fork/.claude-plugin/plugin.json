@@ -1,0 +1,11 @@
+{
+    "name":  "telegram",
+    "description":  "EDGEWEAVER FORK of telegram@0.0.6 (D33): adds update journal (STATE_DIR/journal.jsonl) and TELEGRAM_API_ROOT override. Telegram channel for Claude Code — messaging bridge with built-in access control. Manage pairing, allowlists, and policy via /telegram:access.",
+    "version":  "0.0.6-ew1",
+    "keywords":  [
+                     "telegram",
+                     "messaging",
+                     "channel",
+                     "mcp"
+                 ]
+}

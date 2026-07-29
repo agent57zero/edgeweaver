@@ -13,4 +13,9 @@ $env:EDGEWEAVER_CHANNEL_BEING = 'alpha'
 $env:CLAUDE_CODE_DISABLE_TERMINAL_TITLE = '1'
 $host.UI.RawUI.WindowTitle = 'EdgeweaverAlphaTelegram'
 Set-Location 'C:\Users\agent\Project\Edgeweaver'
-claude "/wake-edgeweaver-alpha" --model claude-fable-5 --channels plugin:telegram@claude-plugins-official
+# FORK CUTOVER (2026-07-28, D33 Tier 2): --plugin-dir makes the channel ref resolve to
+# the edgeweaver fork (journal + TELEGRAM_API_ROOT knob) - proven by the fork's startup
+# stamp in journal.jsonl during the smoke test. Rollback = remove the --plugin-dir flag.
+# Takes effect at each natural relaunch; never kill a live session for it. Genesis stays
+# on the stock plugin until this fork has a clean week on Alpha (plan section 8).
+claude "/wake-edgeweaver-alpha" --model claude-fable-5 --channels plugin:telegram@claude-plugins-official --plugin-dir 'C:\Users\agent\Project\Edgeweaver\tools\telegram-fork'
