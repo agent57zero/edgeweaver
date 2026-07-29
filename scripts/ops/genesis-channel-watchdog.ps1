@@ -114,6 +114,22 @@ if (-not $found -and -not $wrapper) {
       Add-Content -Path "$repo\logs\channel-watchdog.log" -Value "$(Get-Date -Format s) $dl"
     } catch {}
   }
+  # NEEDS-AUTH CACHE SCRUB (added 2026-07-29, mirrored from the Alpha watchdog): a
+  # poisoned plugin:telegram entry in ~/.claude/mcp-needs-auth-cache.json makes claude
+  # silently skip spawning the channel server (no poller, no error). Scrub telegram
+  # entries before every relaunch.
+  $authCache = 'C:\Users\agent\.claude\mcp-needs-auth-cache.json'
+  try {
+    if (Test-Path $authCache) {
+      $j = Get-Content $authCache -Raw | ConvertFrom-Json
+      $keys = @($j.PSObject.Properties.Name | Where-Object { $_ -like '*telegram*' })
+      if ($keys.Count -gt 0) {
+        foreach ($k in $keys) { $j.PSObject.Properties.Remove($k) }
+        ($j | ConvertTo-Json -Compress) | Set-Content $authCache -Encoding Ascii
+        Add-Content -Path "$repo\logs\channel-watchdog.log" -Value "$(Get-Date -Format s) scrubbed needs-auth cache: $($keys -join ', ')"
+      }
+    }
+  } catch {}
   # Launch via -File, never -Command (quote-mangling lesson, 2026-07-16, Alpha side).
   Start-Process powershell -WorkingDirectory $repo -ArgumentList '-NoExit','-ExecutionPolicy','Bypass','-File',
     "$repo\scripts\ops\genesis-channel-launch.ps1"

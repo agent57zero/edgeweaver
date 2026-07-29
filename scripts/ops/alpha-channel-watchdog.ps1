@@ -117,6 +117,23 @@ if (-not $found -and -not $wrapper) {
       Add-Content -Path "$repo\logs\alpha-channel-watchdog.log" -Value "$(Get-Date -Format s) $dl"
     } catch {}
   }
+  # NEEDS-AUTH CACHE SCRUB (added 2026-07-29): a poisoned plugin:telegram entry in
+  # ~/.claude/mcp-needs-auth-cache.json makes claude silently skip spawning the channel
+  # server (no poller, no error; proven live 12:51-13:04 when three Alpha relaunches in a
+  # row came up deaf and mute). Scrub telegram entries before every relaunch so one bad
+  # init can never permanently deafen a being.
+  $authCache = 'C:\Users\agent\.claude\mcp-needs-auth-cache.json'
+  try {
+    if (Test-Path $authCache) {
+      $j = Get-Content $authCache -Raw | ConvertFrom-Json
+      $keys = @($j.PSObject.Properties.Name | Where-Object { $_ -like '*telegram*' })
+      if ($keys.Count -gt 0) {
+        foreach ($k in $keys) { $j.PSObject.Properties.Remove($k) }
+        ($j | ConvertTo-Json -Compress) | Set-Content $authCache -Encoding Ascii
+        Add-Content -Path "$repo\logs\alpha-channel-watchdog.log" -Value "$(Get-Date -Format s) scrubbed needs-auth cache: $($keys -join ', ')"
+      }
+    }
+  } catch {}
   # Launch via -File, never -Command: Start-Process strips embedded quotes from -Command
   # payloads, which silently dropped TELEGRAM_STATE_DIR and cross-wired the bots (2026-07-16).
   Start-Process powershell -WorkingDirectory $repo -ArgumentList '-NoExit','-ExecutionPolicy','Bypass','-File',
