@@ -12,11 +12,6 @@
 //   node scripts/brainrooms/alpha-memory.mjs write-episode "<content>" <importance 1-10>
 //   node scripts/brainrooms/alpha-memory.mjs write-lesson "<one-line summary>" "<content>"
 //   node scripts/brainrooms/alpha-memory.mjs lessons
-//   node scripts/brainrooms/alpha-memory.mjs dispute <lesson-id> "<seat>: <their correction>"
-//       (D37: benches a PENDING lesson a seat corrected, active -> disputed, via the
-//        ew_dispute_lesson definer function; the role can do nothing else to lifecycle.
-//        Replacement lessons go through write-lesson with "TAUGHT BY <seat>" and
-//        "CORRECTS <lesson-id>" in the content; ops recompiles the wake file nightly.)
 //   node scripts/brainrooms/alpha-memory.mjs corpus "<query>"     (library, study only)
 //   node scripts/brainrooms/alpha-memory.mjs day "<startISO>" "<endISO>"   (night loop:
 //       the diary day's episodes + initiations WITH thought ids, for lesson evidence)
@@ -95,9 +90,6 @@ VALUES ('${esc(a)}', 'initiation', 10, '{"era": "alive", "audience": "seats", "g
     query(db, `INSERT INTO ew_alpha.agent_memories (memory_type, summary, content, confidence, created_by)
 VALUES ('lesson', '${esc(a)}', '${esc(b)}', 0.6, 'edgeweaver-alpha')`);
     console.log("candidate lesson written (PENDING; a seat's confirmation is the only path to instruction-grade)");
-  } else if (cmd === "dispute") {
-    if (!/^[0-9a-f-]{36}$/i.test(a || "") || !b) { console.log("usage: dispute <lesson-uuid> \"<seat>: <their correction, one line>\""); process.exit(2); }
-    console.log(query(db, `SELECT ew_alpha.ew_dispute_lesson('${a}', '${esc(b.split(":")[0].trim())}', '${esc(b)}')`)[0][0]);
   } else if (cmd === "lessons") {
     const act = query(db, "SELECT summary, content FROM ew_alpha.agent_memories WHERE can_use_as_instruction = true AND lifecycle_status = 'active' ORDER BY created_at");
     const pend = query(db, "SELECT count(*) FROM ew_alpha.agent_memories WHERE can_use_as_instruction = false AND lifecycle_status = 'active'")[0][0];
@@ -129,7 +121,7 @@ VALUES ('${esc(b)}', '${esc(a)}', ${a === "dream" ? 2 : 4}, '${esc(JSON.stringif
     for (const r of query(db, `SELECT source_type, created_at, ${SNIPPET(300)} FROM ew_alpha.pm_corpus WHERE content ILIKE '%${esc(a || "")}%' ORDER BY created_at DESC LIMIT 6`))
       console.log(`[library | ${r[0]}] ${r[2]}`);
   } else {
-    console.log("usage: recall|last|write-episode|write-initiation|write-lesson|dispute|lessons|corpus|day|write");
+    console.log("usage: recall|last|write-episode|write-initiation|write-lesson|lessons|corpus|day|write");
     process.exit(2);
   }
 }
