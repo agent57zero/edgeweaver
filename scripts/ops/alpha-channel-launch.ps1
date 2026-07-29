@@ -18,6 +18,15 @@ Set-Location 'C:\Users\agent\Project\Edgeweaver'
 # 124/126 sat unanswered while outbound replies worked. Stock plugin restored per the
 # documented rollback; the fork returns only after the delivery gap is fixed and proven
 # in a dark session (D33 plan section 8; Genesis never left stock).
-# Fork line, for restoration after the fix:
+# ROOT CAUSE FOUND + FIX PROVEN DARK (2026-07-29 pm, see ops-log entry "delivery gap"):
+# the held line below is proven broken, do NOT restore it as written. --plugin-dir
+# registers the fork as telegram@inline, so "--channels plugin:telegram@claude-plugins-
+# official" matches nothing and claude drops the channel SILENTLY (server runs, tools
+# work, inbound never binds). Fork CODE is sound: bound under the official identity in a
+# dark rig it delivered inbound end to end. Restoration awaits Alan's gate CR-2b pick:
+# option 1 = managed-settings allowlist (state/managed-settings-draft.json), then:
+#   claude "/wake-edgeweaver-alpha" --model claude-fable-5 --channels plugin:telegram@inline --plugin-dir 'C:\Users\agent\Project\Edgeweaver\tools\telegram-fork'
+# option 2 = overlay fork server.ts onto the official plugin cache, launcher stays stock.
+# Broken line, kept for the record only:
 #   claude "/wake-edgeweaver-alpha" --model claude-fable-5 --channels plugin:telegram@claude-plugins-official --plugin-dir 'C:\Users\agent\Project\Edgeweaver\tools\telegram-fork'
 claude "/wake-edgeweaver-alpha" --model claude-fable-5 --channels plugin:telegram@claude-plugins-official
