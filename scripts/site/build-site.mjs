@@ -400,7 +400,17 @@ function contextNavFor(current) {
     return `<h2>${esc(section.title)}</h2>\n<ul>\n${items}\n</ul>`;
   });
   if (current.hub === "overview") {
-    rendered.push(`<h2>Primary sources</h2>\n<ul>\n<li><a href="${rootOf(current.slug)}raw/index.html">All files: the raw mirror</a></li>\n<li><a href="${rootOf(current.slug)}raw/soul/index.html">Soulfiles: the soul hub</a></li>\n</ul>`);
+    const gh = ' title="Repository access required"';
+    const items = [
+      `<li><a href="${rootOf(current.slug)}raw/index.html">All files: the raw mirror</a></li>`,
+      `<li><a href="${rootOf(current.slug)}raw/soul/index.html">Soulfiles: the soul hub</a></li>`,
+      `<li><a href="${rawCfg.repo}"${gh}>This repository on GitHub</a></li>`,
+    ];
+    for (const [being, info] of Object.entries(rawCfg.soul ? rawCfg.soul.repos : {})) {
+      const label = being.charAt(0).toUpperCase() + being.slice(1);
+      items.push(`<li><a href="${info.repo}"${gh}>${label} soul repository on GitHub</a></li>`);
+    }
+    rendered.push(`<h2>Primary sources</h2>\n<ul>\n${items.join("\n")}\n</ul>`);
   }
   return rendered.join("\n");
 }
