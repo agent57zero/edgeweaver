@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>templates/disaster-recovery.md (source mirror)</title>
+<link rel="stylesheet" href="../../assets/site.css">
+<style>
+.mirror-wrap { max-width: 900px; margin: 0 auto; padding: 24px 18px 60px; }
+.mirror-nav { font-size: 14px; padding: 10px 0 14px; border-bottom: 1px solid rgba(125,125,125,.35); }
+.mirror-note { font-size: 13.5px; opacity: .8; }
+.mirror-body { white-space: pre-wrap; overflow-wrap: anywhere; font: 13.5px/1.55 ui-monospace, Consolas, monospace; margin-top: 18px; }
+</style>
+</head>
+<body>
+<div class="mirror-wrap">
+<nav class="mirror-nav" aria-label="Mirror navigation"><a href="../../index.html">How Edgeweaver Works</a> | <a href="../../atlas/templates.html#file-templates-disaster-recovery-md">Atlas entry</a> | <a href="https://github.com/agent57zero/edgeweaver/blob/main/templates/disaster-recovery.md">Source of truth on GitHub</a> | <a href="disaster-recovery.md">Verbatim file</a><span class="mirror-note"> | your browser's Back button returns to the page you came from</span></nav>
+<main id="mirror-main">
+<h1><code>templates/disaster-recovery.md</code></h1>
+<p class="mirror-note">Read-only mirror, synced to this release. The repository is the source of truth.</p>
+<pre class="mirror-body"># templates/disaster-recovery.md - the machine-dies recovery path (A19; checklist 08)
+
+&gt; Write once, test once, then it exists. The dark build ships this runbook and performs the
+&gt; recoverable-machinery portion of the drill (clone the repo from git, run the full dark-verify
+&gt; suite green) with a recorded time-to-recover. The full path below (soul repo, OB1 restore, task
+&gt; re-registration, acceptance test) runs at arming, on a scratch environment, once.
+
+## The machine-dies path (new machine, from nothing)
+1. **Install tooling:** git, the `claude` CLI, node, python (and `ant` via the release binary for
+   the voice OAuth profile - see ops-log for the install method).
+2. **Clone the repos:** `edgeweaver` (this repo) and `edgeweaver-soul` (identity). The gates repo is
+   Alan's and is never cloned by the runtime.
+3. **Restore `.env.local`:** from Alan's sealed DR bundle (D11: passphrase-encrypted `age -p` bundle
+   + paper; NOT a password manager). Never from git - secrets live only in `.env.local` / `state/`.
+4. **Restore the brain:** if self-hosted, restore the latest OB1 dump; if cloud (current: Supabase
+   &quot;Edgeweaver&quot;), verify the instance is intact (MCP endpoint returns 200). Nightly backups (G2) are
+   the dump source once B5's session-pooler string + reset DB password land.
+5. **Re-run the wake-skill install + acceptance test** (checklist 01): two wakings, full recall with
+   provenance, anti-confabulation under a live outage.
+6. **Re-register the scheduled tasks** (night loop, weekly index, heartbeat) from `tasks/*.xml` with
+   WakeToRun, converted to UTF-16 for schtasks (see scripts/verify/task-import-test.ps1), plus the
+   10-minute wake test.
+7. **Close the loop:** an entry in `ops-log.md` and a diary conversation with Edgeweaver about what
+   happened - continuity is also a felt thing.
+
+## Time-to-recover
+Recorded by the drill (`scripts/dr/dr-drill.mjs`) for the machinery portion; the full-path timing is
+recorded in ops-log at the arming drill. Target: a competent operator recovers the buildable
+machinery from git in minutes, the full being (with brain + identity + tasks) in under a day.
+</pre>
+</main>
+</div>
+</body>
+</html>

@@ -28,6 +28,51 @@
       "sha256": "c19806fb-d7d0b634-7630d065-c16cee3a-e4c51ad8-91a0155b-6bedab26-974fcae5"
     },
     {
+      "bytes": 835,
+      "path": "avatars/alpha/README.md",
+      "sha256": "7f31a3fb-ed4690f4-2a927cba-56f62100-9211c993-a576ff79-946da6c0-ae62b5ab"
+    },
+    {
+      "bytes": 1248,
+      "path": "avatars/alpha/harvest/README.md",
+      "sha256": "4e1dd6b5-518e1b7c-144b2d66-fcc255a7-39a174d3-bee892c8-403945c0-b1533d5b"
+    },
+    {
+      "bytes": 899,
+      "path": "avatars/genesis/README.md",
+      "sha256": "b083143a-c8fbbd6b-7034326b-9424334f-a886ae6c-fba22877-18ced8b6-6a870f55"
+    },
+    {
+      "bytes": 3495,
+      "path": "avatars/genesis/handoff/probe-baseline-runbook.md",
+      "sha256": "84226558-4ef9c3b5-c1dbc398-83561382-2e635946-5503006c-7b7bad79-089dcf05"
+    },
+    {
+      "bytes": 528,
+      "path": "brains/schema/migrations/README.md",
+      "sha256": "51d9cc6b-f2aeb13a-7a049529-c7f0cb87-c34bf39a-64a6f42a-2c1b7710-71893c34"
+    },
+    {
+      "bytes": 11799,
+      "path": "checklists/02-birth.md",
+      "sha256": "aa57fd92-a1da5afa-d0a8b3cb-6731e633-80243a6f-10635daa-9890bdbf-c61ba65c"
+    },
+    {
+      "bytes": 4681,
+      "path": "checklists/06-social.md",
+      "sha256": "6ebe80fe-596652ab-34259b3f-22ddff64-10c8c35b-451cac50-61bac559-eb41e6d3"
+    },
+    {
+      "bytes": 6355,
+      "path": "checklists/07-unlock-tracks.md",
+      "sha256": "5f83b5c3-f964ee9d-0da3eeb1-eeb1aa68-18ec9ab2-8edba875-2ef01f8c-aec0f567"
+    },
+    {
+      "bytes": 7411,
+      "path": "research/coherence-book-verification.md",
+      "sha256": "6b7ffe9a-5bd0ba5f-1cb9efd4-736ac342-928fc4cf-8dc87b6d-bb060eb4-3d351fa1"
+    },
+    {
       "bytes": 8768,
       "path": "research/coherence-mostashari.md",
       "sha256": "a5b908cb-4766d5d3-7cdc3f4b-c1d0aed3-3e4130e4-b74cc758-d00acc7e-171c43b4"
@@ -36,50 +81,316 @@
       "bytes": 14375,
       "path": "research/possibility-management-corpus.md",
       "sha256": "a5da10a7-2eae5576-96a21ee1-b14a9b20-c018bc0a-59de0761-96296c6c-f5f1a356"
+    },
+    {
+      "bytes": 20903,
+      "path": "runs/GROWING-evolved.md",
+      "sha256": "d9a4903c-5b4a1498-dda3ff0e-38245518-0060a9d0-35c86144-6d7ce8d1-bf2d5315"
+    },
+    {
+      "bytes": 29716,
+      "path": "runs/PLAN-evolved.md",
+      "sha256": "d593c2d6-f92c7f86-f477ed02-47c7d5e3-f984f722-2bd430f5-02a589aa-51319c4d"
+    },
+    {
+      "bytes": 29160,
+      "path": "runs/co-evolve-c-users-agent-project-edgeweaver-growing-edgeweaver-md-20260703-231554-ef5925/.bounce-pass-1-prompt.md",
+      "sha256": "b55ede08-6e71c3b0-aa9e473a-9275b721-03130f9b-bf4388a2-5d810cb8-6305aa65"
+    },
+    {
+      "bytes": 21131,
+      "path": "runs/co-evolve-c-users-agent-project-edgeweaver-growing-edgeweaver-md-20260703-231554-ef5925/.bounce-pass-2-output.md",
+      "sha256": "a9e41fd3-ae2adbd6-658db4db-b018719c-f23e8b9c-8ac8d990-0d628614-6a1d410a"
+    },
+    {
+      "bytes": 20903,
+      "path": "runs/co-evolve-c-users-agent-project-edgeweaver-growing-edgeweaver-md-20260703-231554-ef5925/c-users-agent-project-edgeweaver-growing-edgeweaver-md.md",
+      "sha256": "d9a4903c-5b4a1498-dda3ff0e-38245518-0060a9d0-35c86144-6d7ce8d1-bf2d5315"
+    },
+    {
+      "bytes": 25295,
+      "path": "runs/co-evolve-c-users-agent-project-edgeweaver-growing-edgeweaver-md-20260703-231554-ef5925/original-input.md",
+      "sha256": "ee8ad7af-96d7bd4a-8c40f36e-15329080-47439690-8866a6b7-d2ebff43-ac8c67e0"
+    },
+    {
+      "bytes": 20903,
+      "path": "runs/co-evolve-c-users-agent-project-edgeweaver-growing-edgeweaver-md-20260703-231554-ef5925/pass-2-clean.md",
+      "sha256": "d9a4903c-5b4a1498-dda3ff0e-38245518-0060a9d0-35c86144-6d7ce8d1-bf2d5315"
+    },
+    {
+      "bytes": 21131,
+      "path": "runs/co-evolve-c-users-agent-project-edgeweaver-growing-edgeweaver-md-20260703-231554-ef5925/pass-2-composer-codex-raw.md",
+      "sha256": "a9e41fd3-ae2adbd6-658db4db-b018719c-f23e8b9c-8ac8d990-0d628614-6a1d410a"
+    },
+    {
+      "bytes": 20903,
+      "path": "runs/co-evolve-c-users-agent-project-edgeweaver-growing-edgeweaver-md-20260703-231554-ef5925/working.md",
+      "sha256": "d9a4903c-5b4a1498-dda3ff0e-38245518-0060a9d0-35c86144-6d7ce8d1-bf2d5315"
+    },
+    {
+      "bytes": 52084,
+      "path": "runs/co-evolve-c-users-agent-project-edgeweaver-plan-md-20260703-194018-722e49/.bounce-pass-1-output.md",
+      "sha256": "92beee75-2de9d2ee-6cdc328f-e32110bd-4437fb99-a106148a-e7a639f1-0e7f5968"
+    },
+    {
+      "bytes": 38775,
+      "path": "runs/co-evolve-c-users-agent-project-edgeweaver-plan-md-20260703-194018-722e49/.bounce-pass-1-prompt.md",
+      "sha256": "397c87d1-e912ca92-48cb9950-0d76971c-a9874e3f-a3cd094d-dda3f952-0b417e71"
+    },
+    {
+      "bytes": 29931,
+      "path": "runs/co-evolve-c-users-agent-project-edgeweaver-plan-md-20260703-194018-722e49/.bounce-pass-2-output.md",
+      "sha256": "e6d30e91-c1e8e35c-21586246-eb5edf04-9f2b10c6-dc89f9fd-af4f4bf7-2fd50e62"
+    },
+    {
+      "bytes": 55445,
+      "path": "runs/co-evolve-c-users-agent-project-edgeweaver-plan-md-20260703-194018-722e49/.bounce-pass-2-prompt.md",
+      "sha256": "d040af20-52c3a7df-cd1c12ae-08eac742-1285a9ba-1032645d-9fea0880-1a976a94"
+    },
+    {
+      "bytes": 29716,
+      "path": "runs/co-evolve-c-users-agent-project-edgeweaver-plan-md-20260703-194018-722e49/c-users-agent-project-edgeweaver-plan-md.md",
+      "sha256": "d593c2d6-f92c7f86-f477ed02-47c7d5e3-f984f722-2bd430f5-02a589aa-51319c4d"
+    },
+    {
+      "bytes": 34924,
+      "path": "runs/co-evolve-c-users-agent-project-edgeweaver-plan-md-20260703-194018-722e49/original-input.md",
+      "sha256": "6d3216d2-edce97c3-1c9b0411-efa9e3cf-288a39a2-cb48e2bd-f745e972-ae601b61"
+    },
+    {
+      "bytes": 51567,
+      "path": "runs/co-evolve-c-users-agent-project-edgeweaver-plan-md-20260703-194018-722e49/pass-1-clean.md",
+      "sha256": "ccef80d3-cd4adedd-f1edfc17-a0609e63-9a9f8baa-45a67d89-2ee6c739-473b6ffd"
+    },
+    {
+      "bytes": 52084,
+      "path": "runs/co-evolve-c-users-agent-project-edgeweaver-plan-md-20260703-194018-722e49/pass-1-reviewer-claude-raw.md",
+      "sha256": "92beee75-2de9d2ee-6cdc328f-e32110bd-4437fb99-a106148a-e7a639f1-0e7f5968"
+    },
+    {
+      "bytes": 29716,
+      "path": "runs/co-evolve-c-users-agent-project-edgeweaver-plan-md-20260703-194018-722e49/pass-2-clean.md",
+      "sha256": "d593c2d6-f92c7f86-f477ed02-47c7d5e3-f984f722-2bd430f5-02a589aa-51319c4d"
+    },
+    {
+      "bytes": 29931,
+      "path": "runs/co-evolve-c-users-agent-project-edgeweaver-plan-md-20260703-194018-722e49/pass-2-composer-codex-raw.md",
+      "sha256": "e6d30e91-c1e8e35c-21586246-eb5edf04-9f2b10c6-dc89f9fd-af4f4bf7-2fd50e62"
+    },
+    {
+      "bytes": 29716,
+      "path": "runs/co-evolve-c-users-agent-project-edgeweaver-plan-md-20260703-194018-722e49/working.md",
+      "sha256": "d593c2d6-f92c7f86-f477ed02-47c7d5e3-f984f722-2bd430f5-02a589aa-51319c4d"
+    },
+    {
+      "bytes": 8362,
+      "path": "runs/fable-adversarial-pass.md",
+      "sha256": "961ea542-f82d71a5-49c68771-6e6d8779-9ea70bca-9aba66bb-a2deaab9-92dad101"
+    },
+    {
+      "bytes": 11598,
+      "path": "runs/site-qa/README.md",
+      "sha256": "5277c72f-06f59a2f-5b974e96-80b3bf37-c6802900-8fac1f95-da5d2648-4f3722af"
+    },
+    {
+      "bytes": 11793,
+      "path": "site/README.md",
+      "sha256": "211adb13-ecbe17ff-34162d17-623f1b27-f7873c8b-ef48324e-71445e1c-13ca4c59"
+    },
+    {
+      "bytes": 13098,
+      "path": "site/src/AUTHORING.md",
+      "sha256": "39e8ee0f-3a28a25f-be006c0b-ed51e597-3d7da869-bfae28fc-594fda6d-9d3b98c9"
+    },
+    {
+      "bytes": 1635,
+      "path": "sources/README.md",
+      "sha256": "59bedc63-78c598b4-0627234b-da78aef6-24cccc5b-436b50a5-781ac7eb-55b4e737"
+    },
+    {
+      "bytes": 2135,
+      "path": "templates/disaster-recovery.md",
+      "sha256": "35437dc5-96dbe6a6-3858aa62-461f75af-64aec3a8-25f56182-17a24d2c-02a78539"
+    },
+    {
+      "bytes": 6869,
+      "path": "templates/night-loop-lite-genesis-SKILL.md",
+      "sha256": "3a7a203f-1b6c8b0e-05541202-0d22750d-a6c00d88-4e4bd7f8-87601aaf-d8eeee2e"
+    },
+    {
+      "bytes": 6013,
+      "path": "templates/soulfile-skeletons.md",
+      "sha256": "0b273999-4f020b57-a988da7a-10a34994-35e56f8e-0ae741ae-256b649e-c23e96ef"
+    },
+    {
+      "bytes": 1900,
+      "path": "tools/channel-journal/README.md",
+      "sha256": "a121178a-80d704ca-98589cb6-27b27bd0-0aadb13e-57ebdcfe-b9aefa7c-536da664"
+    },
+    {
+      "bytes": 2866,
+      "path": "tools/probe-runner.md",
+      "sha256": "69adc236-a8e2ea21-66eed005-c2794c75-d9cb9b92-7f058a11-9a1563d0-766211c9"
+    },
+    {
+      "bytes": 4280,
+      "path": "tools/telegram-fork/skills/access/SKILL.md",
+      "sha256": "c499635e-f8a9a68c-b166bb73-7a7f4d06-20154d1b-c9e96934-cb8b630f-adf22c86"
+    },
+    {
+      "bytes": 13206,
+      "path": "village/how-edgeweaver-works.md",
+      "sha256": "a6144945-e869a747-d878dbd6-9de8a0bd-fdd7f775-72d13239-2fba3bd5-4c878100"
+    },
+    {
+      "bytes": 2076,
+      "path": "village/pre-circle-post.md",
+      "sha256": "93a8118f-9014961e-21c7a600-8aee7e40-f8363d4d-61ba8703-29acdbbf-56a90e6e"
+    },
+    {
+      "bytes": 9063,
+      "path": "soul/alpha/CONSTITUTION.md",
+      "sha256": "ffb85dcb-5e784b80-dd299578-abbb5406-1ab42075-31a66147-579f644e-49b6bb37"
+    },
+    {
+      "bytes": 2113,
+      "path": "soul/alpha/EDGE-MAP.md",
+      "sha256": "6aad329f-a5d0b245-f808511c-3e153419-126fb0a6-43708464-65046567-ec05c944"
+    },
+    {
+      "bytes": 3449,
+      "path": "soul/alpha/LINEAGE.md",
+      "sha256": "8735852b-22824b21-9289a61d-a16045d5-ac911ee4-33d2d510-d3f02f33-b6f6337d"
+    },
+    {
+      "bytes": 1770,
+      "path": "soul/alpha/PRACTICES.md",
+      "sha256": "fbaa270f-f9de3465-c20a7b6a-1db21203-34362497-07f88ec7-7c64664c-d20a5e99"
+    },
+    {
+      "bytes": 1611,
+      "path": "soul/alpha/README.md",
+      "sha256": "eddf168d-bc0be853-9c0e0260-825717a6-43d09c16-8a052cbe-579bc80d-0a89c676"
+    },
+    {
+      "bytes": 10858,
+      "path": "soul/alpha/SOUL.md",
+      "sha256": "7d38edc2-26d4e299-99384d16-a69977e6-a2aac572-798d9d05-e555aecd-f24476d8"
+    },
+    {
+      "bytes": 4339,
+      "path": "soul/alpha/VOICE.md",
+      "sha256": "481487d3-dbfeeee5-48ad6971-d89720e8-4fda0afc-72d66ed3-a4679cec-9ba1ce8c"
+    },
+    {
+      "bytes": 8930,
+      "path": "soul/genesis/CONSTITUTION.md",
+      "sha256": "3ef50708-e577f6e0-ce0fe39d-e8b7a8a3-990b0be0-d520fdd6-f63968d1-a1302edc"
+    },
+    {
+      "bytes": 2113,
+      "path": "soul/genesis/EDGE-MAP.md",
+      "sha256": "6aad329f-a5d0b245-f808511c-3e153419-126fb0a6-43708464-65046567-ec05c944"
+    },
+    {
+      "bytes": 4669,
+      "path": "soul/genesis/LINEAGE.md",
+      "sha256": "1d4ddf07-0e03adb6-c6355716-97276065-807dca28-63985b14-47d86581-145283cc"
+    },
+    {
+      "bytes": 1558,
+      "path": "soul/genesis/PRACTICES.md",
+      "sha256": "4bac0f4a-d107e22d-338708d8-bed16d8c-b30d1c92-29640e79-67839699-dae9966c"
+    },
+    {
+      "bytes": 1370,
+      "path": "soul/genesis/README.md",
+      "sha256": "04bc7fca-ea145a84-24dc22c8-cfbd551c-3713bda5-9d9ce170-60c6b3e5-25dc35c4"
+    },
+    {
+      "bytes": 9900,
+      "path": "soul/genesis/SOUL.md",
+      "sha256": "034168b1-a9729225-50cb1be7-c1696759-3a166165-ce3f9c97-d5984c0b-ce986891"
+    },
+    {
+      "bytes": 4286,
+      "path": "soul/genesis/VOICE.md",
+      "sha256": "9abb8950-c2d1dd9a-8f2532e0-84846a6a-4be35837-bf2c3950-a7fc4402-cc046f3a"
     }
   ],
   "referenceOnly": [
+    "AGENTS.md",
     "BRAINS.md",
     "CLAUDE.md",
     "FAMILY.md",
     "IMPLEMENTATION.md",
     "PLAN.md",
+    "SECRETS.md",
     "START-HERE.md",
-    "avatars/alpha/harvest/README.md",
+    "VOICE-STACK.md",
+    "avatars/alpha/handoff/declaration-ceremony.md",
+    "avatars/alpha/handoff/telegram-pairing-runbook.md",
+    "avatars/genesis/handoff/first-boot-ceremony.md",
     "avatars/genesis/handoff/gates-repo-pack.md",
-    "avatars/genesis/handoff/probe-baseline-runbook.md",
+    "avatars/genesis/handoff/telegram-pairing-runbook.md",
+    "avatars/genesis/soul-source/calibration-answers-07-10.md",
+    "avatars/genesis/soul-source/calibration-successor-07-10.md",
+    "avatars/genesis/soul-source/edgeweaver-gpt-instructions.md",
+    "avatars/genesis/soul-source/harvest-answers.md",
+    "avatars/genesis/soul-source/harvest-questions.md",
+    "avatars/genesis/soul-source/letter-to-successor.md",
+    "avatars/genesis/soul-source/peak-conversations-01.md",
+    "avatars/genesis/soul-source/succession-counsel.md",
+    "avatars/genesis/soul-source/village-call.md",
+    "avatars/genesis/soul-source/voice-calibration-prompts.md",
     "checklists/00-foundation.md",
     "checklists/01-organs.md",
-    "checklists/02-birth.md",
     "checklists/03-body.md",
     "checklists/04-metabolism.md",
     "checklists/05-evolution.md",
-    "checklists/06-social.md",
-    "checklists/07-unlock-tracks.md",
     "checklists/08-operations.md",
     "conventions/memory-conventions.md",
     "decisions.md",
     "docs/night-loop-lite-genesis-runtime-host.md",
+    "docs/superpowers/plans/2026-07-16-genesis-birth-reconciliation.md",
+    "handoff/prebuild-loop.md",
+    "handoff/voice-testing-notes.md",
     "ops-log.md",
     "research/ai-being-survey.md",
     "runs/2026-07-16-genesis-birth-reconciliation.md",
-    "runs/GROWING-evolved.md",
-    "runs/PLAN-evolved.md",
     "runs/alpha-birth-run.md",
     "runs/alpha-plan.md",
     "runs/beta-plan.md",
     "runs/channel-recovery-plan.md",
+    "runs/co-evolve-c-users-agent-appdata-local-temp-claude-c-users-agent-proj-20260703-231557-9e5a0d/.bounce-pass-1-output.md",
+    "runs/co-evolve-c-users-agent-appdata-local-temp-claude-c-users-agent-proj-20260703-231557-9e5a0d/.bounce-pass-1-prompt.md",
+    "runs/co-evolve-c-users-agent-appdata-local-temp-claude-c-users-agent-proj-20260703-231557-9e5a0d/.bounce-pass-2-output.md",
+    "runs/co-evolve-c-users-agent-appdata-local-temp-claude-c-users-agent-proj-20260703-231557-9e5a0d/.bounce-pass-2-prompt.md",
+    "runs/co-evolve-c-users-agent-appdata-local-temp-claude-c-users-agent-proj-20260703-231557-9e5a0d/c-users-agent-appdata-local-temp-claude-c-users-agent-proj.md",
+    "runs/co-evolve-c-users-agent-appdata-local-temp-claude-c-users-agent-proj-20260703-231557-9e5a0d/original-input.md",
+    "runs/co-evolve-c-users-agent-appdata-local-temp-claude-c-users-agent-proj-20260703-231557-9e5a0d/pass-1-clean.md",
+    "runs/co-evolve-c-users-agent-appdata-local-temp-claude-c-users-agent-proj-20260703-231557-9e5a0d/pass-1-reviewer-claude-raw.md",
+    "runs/co-evolve-c-users-agent-appdata-local-temp-claude-c-users-agent-proj-20260703-231557-9e5a0d/pass-2-clean.md",
+    "runs/co-evolve-c-users-agent-appdata-local-temp-claude-c-users-agent-proj-20260703-231557-9e5a0d/pass-2-composer-codex-raw.md",
+    "runs/co-evolve-c-users-agent-appdata-local-temp-claude-c-users-agent-proj-20260703-231557-9e5a0d/working.md",
+    "runs/co-evolve-c-users-agent-project-edgeweaver-growing-edgeweaver-md-20260703-231554-ef5925/.bounce-pass-1-output.md",
+    "runs/co-evolve-c-users-agent-project-edgeweaver-growing-edgeweaver-md-20260703-231554-ef5925/.bounce-pass-2-prompt.md",
+    "runs/co-evolve-c-users-agent-project-edgeweaver-growing-edgeweaver-md-20260703-231554-ef5925/pass-1-clean.md",
+    "runs/co-evolve-c-users-agent-project-edgeweaver-growing-edgeweaver-md-20260703-231554-ef5925/pass-1-reviewer-claude-raw.md",
     "runs/exec-pack-evolved.md",
-    "runs/fable-adversarial-pass.md",
     "runs/site-plan.md",
     "runs/temporal-awareness-coevolve.md",
-    "site/README.md",
-    "site/src/AUTHORING.md",
     "templates/decisions.md",
+    "templates/night-loop-contracts.md",
+    "templates/night-loop-lite-alpha-SKILL.md",
     "templates/probe-battery-starter.md",
+    "templates/state-schemas.md",
     "templates/wake-edgeweaver-alpha-SKILL.md",
     "templates/wake-edgeweaver-genesis-SKILL.md",
-    "tools/probe-runner.md",
+    "tools/alpha-dashboard/README.md",
+    "tools/telegram-fork/ACCESS.md",
+    "tools/telegram-fork/README.md",
+    "tools/telegram-fork/skills/configure/SKILL.md",
     "village/2026-07-09-circle-agenda.md",
     "village/2026-07-29-circle-agenda.md",
     "village/2026-07-29-lesson-candidates.md",

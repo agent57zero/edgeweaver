@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>tools/probe-runner.md (source mirror)</title>
+<link rel="stylesheet" href="../../assets/site.css">
+<style>
+.mirror-wrap { max-width: 900px; margin: 0 auto; padding: 24px 18px 60px; }
+.mirror-nav { font-size: 14px; padding: 10px 0 14px; border-bottom: 1px solid rgba(125,125,125,.35); }
+.mirror-note { font-size: 13.5px; opacity: .8; }
+.mirror-body { white-space: pre-wrap; overflow-wrap: anywhere; font: 13.5px/1.55 ui-monospace, Consolas, monospace; margin-top: 18px; }
+</style>
+</head>
+<body>
+<div class="mirror-wrap">
+<nav class="mirror-nav" aria-label="Mirror navigation"><a href="../../index.html">How Edgeweaver Works</a> | <a href="../../atlas/tools.html#file-tools-probe-runner-md">Atlas entry</a> | <a href="https://github.com/agent57zero/edgeweaver/blob/main/tools/probe-runner.md">Source of truth on GitHub</a> | <a href="probe-runner.md">Verbatim file</a><span class="mirror-note"> | your browser's Back button returns to the page you came from</span></nav>
+<main id="mirror-main">
+<h1><code>tools/probe-runner.md</code></h1>
+<p class="mirror-note">Read-only mirror, synced to this release. The repository is the source of truth.</p>
+<pre class="mirror-body"># Probe runner: repository-backed evaluation records
+
+The application is `tools/probe-runner.html`. It is committed in the main Edgeweaver
+repository because the evaluation workflow is shared infrastructure. Open it directly or
+bookmark a target door such as `probe-runner.html#genesis` or `probe-runner.html#alpha`.
+
+## Where data lives
+
+Browser storage is a draft cache, never the canonical record. The **Save to gates repo**
+action asks the operator to choose a local clone of the active target's private gates
+repository and writes:
+
+```text
+probes/runs/&lt;date&gt;-&lt;run-type&gt;-&lt;optional-version&gt;/
+  run.json
+  scenario-1.md
+  scenario-2.md
+  ...
+  scores.md
+```
+
+`run.json` is the resumable workspace. It includes target, generation, version label, run
+settings, progress, answers, and scores. On another authorized machine, pull the gates repo,
+open the runner's **Runs** page, and load that `run.json` to resume. The Markdown files remain
+the human-readable evaluation record.
+
+After saving, an authorized human or build agent commits and pushes the selected gates repo.
+Never select the main Edgeweaver repository: protected scenarios, answers, and scores do not
+belong there. GitHub visibility follows the gates repo's access policy, not the broader main
+project membership.
+
+Browsers without the local-directory writing API receive `run.json` as a download and retain
+the individual Markdown download controls. Move those files into the same gates-repo folder,
+then commit and push normally.
+
+## Adding another being or agent
+
+`tools/probe-runner-targets.json` is the committed registry. Each entry points to a manifest
+that supplies the target's name, wake command, parent or owner body, and gates repository.
+Runner-only defaults live in the registry. Add a manifest and registry entry, then run:
+
+```text
+node scripts/tools/build-probe-runner.mjs
+node scripts/verify/verify-probe-runner.mjs
+```
+
+No application-code edit is required. A target may override dimensions or thresholds only
+when its own governance explicitly allows that; the Edgeweaver family currently shares the
+identical battery and thresholds.
+
+Every run records both a numeric generation and a free-form version label. This permits
+separate baselines for future Edgeweaver generations, model candidates, and other agents
+without mixing their records or changing directory structure. Alpha is a separate being,
+not a version of Genesis, and therefore has a separate door and gates repository.
+
+## Security boundary
+
+- Scenario text never enters the runner.
+- One target is active on screen at a time.
+- The application makes no network requests and stores no GitHub credential.
+- Direct repository writing requires a human-approved local folder selection.
+- Comparison across beings belongs in `village/experiment-log.md`, never in protected run
+  records or either child's identity surface.
+</pre>
+</main>
+</div>
+</body>
+</html>

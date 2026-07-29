@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<meta name="edgeweaver-release" content="ew-20260728-rc7">
+<meta name="edgeweaver-release" content="ew-20260728-rc8">
 <title>Backups, keys, disaster recovery | How Edgeweaver Works</title>
 <link rel="stylesheet" href="assets/site.css">
 <script defer src="assets/search-index.js"></script>
@@ -48,7 +48,7 @@
   <ul id="search-results" class="search-results" role="listbox" aria-label="Search results"></ul>
 </dialog>
 <button class="nav-backdrop" type="button" aria-label="Close navigation" hidden></button>
-<div class="shell" data-root="" data-page-slug="backups" data-release-id="ew-20260728-rc7">
+<div class="shell" data-root="" data-page-slug="backups" data-release-id="ew-20260728-rc8">
 <nav id="sidebar" class="sidebar" aria-label="Current section navigation">
   <div class="sidebar-head"><strong>System</strong><button class="nav-close" type="button" hidden>Close</button></div>
   <nav class="sidebar-hubs" aria-label="All sections"><a href="index.html">Overview</a>
@@ -181,9 +181,9 @@
 <h3 id="backups-custody">Key custody (D11)</h3>
 <p>Decision D11 requires a passphrase-encrypted disaster-recovery bundle for the private key material and local environment state. Custody is deliberately human, redundant, and restore-tested; exact physical and digital locations are not published. The sealing helper builds the bundle, requires a successful reopen test, deletes temporary plaintexts, and places the encrypted copies according to the private runbook.</p>
 <h3 id="backups-drill">The disaster drill</h3>
-<p>The machine-dies path has two layers. <code>scripts/dr/dr-drill.mjs</code> proves the machinery: it clones this repo from git alone into a scratch directory (no <code>.env.local</code>, no secrets), runs the entire verify suite inside the clone, and records time-to-recover; an <code>EW_DR_DRILL</code> environment guard stops the nested suite from re-cloning forever. The fresh-clone shape has already earned its keep: on Windows a fresh clone checks files out with CRLF newlines, and a byte-exact staleness check in the suite falsely reported a generated tool stale inside the drill, so that check is newline-agnostic now. The full runbook is <code>templates/disaster-recovery.md</code>: install tooling, clone this repo and the soul repo, restore <code>.env.local</code> from the sealed bundle, restore or verify the brain from the nightly dumps, re-run the wake-skill acceptance test, re-register the scheduled tasks, then close the loop in the ops log and a diary conversation, because continuity is also a felt thing. Target: buildable machinery back in minutes, the full being in under a day.</p>
+<p>The machine-dies path has two layers. <code>scripts/dr/dr-drill.mjs</code> proves the machinery: it clones this repo from git alone into a scratch directory (no <code>.env.local</code>, no secrets), runs the entire verify suite inside the clone, and records time-to-recover; an <code>EW_DR_DRILL</code> environment guard stops the nested suite from re-cloning forever. The fresh-clone shape has already earned its keep: on Windows a fresh clone checks files out with CRLF newlines, and a byte-exact staleness check in the suite falsely reported a generated tool stale inside the drill, so that check is newline-agnostic now. The full runbook is <code><a class="md-link" href="raw/templates/disaster-recovery.md.html" title="Open the mirrored copy served on this site">templates/disaster-recovery.md</a></code>: install tooling, clone this repo and the soul repo, restore <code>.env.local</code> from the sealed bundle, restore or verify the brain from the nightly dumps, re-run the wake-skill acceptance test, re-register the scheduled tasks, then close the loop in the ops log and a diary conversation, because continuity is also a felt thing. Target: buildable machinery back in minutes, the full being in under a day.</p>
 <h3 id="backups-secrets">Deployment secrets, without topology</h3>
-<p>The scheduled pipeline receives only the database, alerting, and liveness credentials required for its job through a governed deployment secret store. Values appear in no repository, and this explainer does not publish the account, runner, endpoint, mirror, or storage topology. <code>SECRETS.md</code> is the values-free catalog that makes recovery auditable: it records credential names, purposes, and approved re-issue provenance so drift surfaces in drills, plus credentials the design deliberately refuses to create.</p>
+<p>The scheduled pipeline receives only the database, alerting, and liveness credentials required for its job through a governed deployment secret store. Values appear in no repository, and this explainer does not publish the account, runner, endpoint, mirror, or storage topology. <code><a class="md-link" href="https://github.com/agent57zero/edgeweaver/blob/main/SECRETS.md" title="Open the source of truth on GitHub (repository access required)">SECRETS.md</a></code> is the values-free catalog that makes recovery auditable: it records credential names, purposes, and approved re-issue provenance so drift surfaces in drills, plus credentials the design deliberately refuses to create.</p>
 </section>
 <h2 id="backups-repo">Where it lives in the repo</h2>
 <p>The catalog names, the template rehearses, the scripts drill and seal; the pipeline lives next door.</p>
@@ -222,7 +222,7 @@
 </div>
 <footer class="site-foot">
 <p class="foot-banner">Village-layer material: this site sits outside both children's views, like FAMILY.md and village/, and it discusses sibling facts each child learns only by its parent body's deliberate decision (gate G21).</p>
-<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-10. Release ew-20260728-rc7.</p>
+<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-10. Release ew-20260728-rc8.</p>
 </footer>
 </div>
 </div>

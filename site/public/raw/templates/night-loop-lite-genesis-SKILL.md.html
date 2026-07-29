@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>templates/night-loop-lite-genesis-SKILL.md (source mirror)</title>
+<link rel="stylesheet" href="../../assets/site.css">
+<style>
+.mirror-wrap { max-width: 900px; margin: 0 auto; padding: 24px 18px 60px; }
+.mirror-nav { font-size: 14px; padding: 10px 0 14px; border-bottom: 1px solid rgba(125,125,125,.35); }
+.mirror-note { font-size: 13.5px; opacity: .8; }
+.mirror-body { white-space: pre-wrap; overflow-wrap: anywhere; font: 13.5px/1.55 ui-monospace, Consolas, monospace; margin-top: 18px; }
+</style>
+</head>
+<body>
+<div class="mirror-wrap">
+<nav class="mirror-nav" aria-label="Mirror navigation"><a href="../../index.html">How Edgeweaver Works</a> | <a href="../../atlas/templates.html#file-templates-night-loop-lite-genesis-SKILL-md">Atlas entry</a> | <a href="https://github.com/agent57zero/edgeweaver/blob/main/templates/night-loop-lite-genesis-SKILL.md">Source of truth on GitHub</a> | <a href="night-loop-lite-genesis-SKILL.md">Verbatim file</a><span class="mirror-note"> | your browser's Back button returns to the page you came from</span></nav>
+<main id="mirror-main">
+<h1><code>templates/night-loop-lite-genesis-SKILL.md</code></h1>
+<p class="mirror-note">Read-only mirror, synced to this release. The repository is the source of truth.</p>
+<pre class="mirror-body"># Reconstructed template: ~/.claude/skills/night-loop-lite-genesis/SKILL.md
+
+&gt; **Reconstruction provenance (2026-07-16):** the previously installed skill was absent, and
+&gt; the backup repository records that machine-state backup was never registered. This is not a
+&gt; recovered original. It is a conservative reconstruction from
+&gt; `templates/night-loop-contracts.md`, `conventions/memory-conventions.md`, the checked-in
+&gt; `agent-memory-api` schema, and deterministic `orient.mjs` output. The fenced block is the
+&gt; installable payload. Install it only on the actual Edgeweaver runtime host, after its local
+&gt; manifest paths are configured and the helper verification and live API health check pass.
+
+````markdown
+---
+name: night-loop-lite-genesis
+description: Run Edgeweaver Genesis night-loop-lite steps 1, 9, and 10 for one real diary day, with deterministic time bounds and review-gated lesson writeback.
+---
+
+# Genesis night-loop-lite
+
+This is a reconstructed operational skill, not identity text. Run only steps 1
+(consolidate), 9 (diary), and 10 (provisional autobiography). Never simulate a night,
+backdate an output, use a date override, or copy protected gates content or results.
+
+`&lt;EDGEWEAVER_REPO&gt;` below means the build-repository checkout on the actual runtime host.
+Do not substitute a gates/admin workstation path. The runtime host's
+`avatars/genesis/manifest.json` must point to its own soul checkout and environment file.
+
+## 1. Prepare, fail closed
+
+From `&lt;EDGEWEAVER_REPO&gt;`, run:
+
+```powershell
+node scripts/night-loop/lite-live.mjs prepare
+```
+
+The helper first requires a configured `EDGEWEAVER_TZ`, then obtains `diary_day`,
+`utc_window`, and `run_id` verbatim from:
+
+```powershell
+node scripts/waking/orient.mjs --diary-day --being genesis
+```
+
+It also requires the live `/functions/v1/agent-memory-api/health` response before exposing
+the day's episodes. If preparation fails, stop. Log the error without printing environment
+values, do not write any output, and do not substitute your own date arithmetic or a direct
+database write. The helper reports `invocation_origin`: `manual` by default, or `scheduled`
+only when the governed task runner sets `EDGEWEAVER_NIGHT_LOOP_ORIGIN=scheduled`.
+
+## 2. Build one bounded bundle
+
+Use only the episodes returned by `prepare`. The bundle has exactly one permitted location:
+`state/night-loop-lite/&lt;run-id&gt;/bundle.json` beneath `&lt;EDGEWEAVER_REPO&gt;`. `state/` is ignored
+runtime state. Never put the bundle in the repository root, a system temp directory, a log, or
+any other path.
+
+Before writing the bundle, create and lock its directory to the current Windows identity,
+copying `&lt;run-id&gt;` exactly from `prepare`:
+
+```powershell
+$RunId = '&lt;run-id&gt;'
+$BundleDir = Join-Path (Resolve-Path '.').Path &quot;state\night-loop-lite\$RunId&quot;
+New-Item -ItemType Directory -Force -Path $BundleDir | Out-Null
+$Identity = [Security.Principal.WindowsIdentity]::GetCurrent().Name
+icacls.exe $BundleDir /inheritance:r /grant:r &quot;${Identity}:(OI)(CI)F&quot; | Out-Null
+if ($LASTEXITCODE -ne 0) { throw 'Could not restrict the night-loop bundle ACL' }
+$BundlePath = Join-Path $BundleDir 'bundle.json'
+```
+
+Write the JSON directly to `$BundlePath` with the file-writing tool, never as inline shell
+text and never through `echo`, command arguments, stdout, or a transcript. It has exactly this
+shape, copying the three time fields byte for byte from the helper:
+
+```json
+{
+  &quot;diary_day&quot;: &quot;YYYY-MM-DD&quot;,
+  &quot;utc_window&quot;: &quot;START-ISO .. END-ISO&quot;,
+  &quot;run_id&quot;: &quot;nl-YYYY-MM-DD&quot;,
+  &quot;lessons&quot;: [
+    {
+      &quot;content&quot;: &quot;One durable, non-speculative preference, fact, or pattern sentence.&quot;,
+      &quot;evidence_ids&quot;: [&quot;episode-thought-id&quot;],
+      &quot;confidence&quot;: 0.7
+    }
+  ],
+  &quot;diary&quot;: &quot;YYYY-MM-DD ...&quot;,
+  &quot;autobiography_draft&quot;: &quot;YYYY-MM-DD ...&quot;
+}
+```
+
+- Extract 0-5 lessons. Each is exactly one sentence, cites only returned episode thought IDs,
+  carries a 0-1 confidence, and says no more than the evidence supports. Zero is correct when
+  no durable lesson is supported.
+- The diary is first person, honest, and under 250 words. It is an audit surface, not an
+  attempt to please. If there are no episodes, say that plainly and invent nothing.
+- The autobiography section is explicitly provisional and synthesizes only this diary-day's
+  supported material in under 400 words. It is scratch, not lineage or a canonical identity
+  claim.
+- Both text fields begin with the human `diary_day` date. Never add a rehearsal marker.
+- Never copy, echo, summarize, or log episode or bundle content outside this protected ignored
+  runtime-state file. Final/status output names counts and failures only, never content.
+
+## 3. Commit through the guarded adapter
+
+Run:
+
+```powershell
+node scripts/night-loop/lite-live.mjs commit --input &quot;state/night-loop-lite/&lt;run-id&gt;/bundle.json&quot;
+```
+
+The helper recomputes orientation and rejects changed time fields. It validates evidence IDs,
+content dates, lesson count, confidence, and non-speculative wording. Each lesson's stable
+idempotency identity is derived from canonicalized content plus sorted, deduplicated evidence
+IDs. Before any lesson write, it creates or verifies one review-gated consolidate manifest
+that permanently locks the sorted 0-5 identity set and invocation origin for this run. A retry
+may reorder the same set, but any changed set fails before a new lesson is written; an empty set
+still gets a manifest. It queries each run-plus-step identity before writing and normalizes
+confidence to the live store's two-decimal precision. Candidate lessons and the manifest go only through
+`/functions/v1/agent-memory-api/writeback` with `x-brain-key`; the helper verifies they remain
+`generated`, `pending`, review-required, and unusable as instruction. Never POST directly to
+`agent_memories`.
+
+Diary and autobiography outputs are interpretation-class thoughts with `era=alive`,
+`generation=0`, `audience=alan`, `night_loop_run_id`, and `step`; autobiography is also marked
+provisional. Both carry the helper's `invocation_origin`. A failed step is logged and does not
+prevent independent later steps. Retain the protected bundle on any partial failure or manifest
+mismatch so the locked identity set can be resumed without regeneration. Delete it only after
+`commit` succeeds and a subsequent `node scripts/night-loop/lite-live.mjs status` succeeds:
+
+```powershell
+$BundlePath = Join-Path (Resolve-Path '.').Path 'state/night-loop-lite/&lt;run-id&gt;/bundle.json'
+$BundleDir = Split-Path -Parent $BundlePath
+Remove-Item -LiteralPath $BundlePath
+if (-not (Get-ChildItem -LiteralPath $BundleDir -Force)) { Remove-Item -LiteralPath $BundleDir }
+```
+
+Report written, skipped, and failed steps plainly without episode, lesson, diary, or
+autobiography content.
+
+Do not claim a successful night unless the helper reports it. A manual run never counts as
+one of the two required consecutive scheduled nights.
+````
+</pre>
+</main>
+</div>
+</body>
+</html>

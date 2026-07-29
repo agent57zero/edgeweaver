@@ -79,6 +79,23 @@ for (const kind of ["serve", "reference"]) {
     rawByAnchor.set(anchor, { path: p, kind });
   }
 }
+
+// Soul mirror (D35): both beings' identity documents, read from their local
+// soul-repo checkouts (separate private repositories; their main branches are
+// the source of truth). The build fails when a checkout or file is missing so
+// a stale machine cannot silently ship a hollow soul surface.
+const SOUL_ENTRIES = [];
+if (rawCfg.soul) {
+  for (const [being, info] of Object.entries(rawCfg.soul.repos)) {
+    const dir = join(REPO, info.checkout);
+    if (!existsSync(dir)) throw new Error(`raw-sources.json: soul checkout missing for ${being}: ${info.checkout}`);
+    for (const name of rawCfg.soul.files) {
+      const file = join(dir, name);
+      if (!existsSync(file)) throw new Error(`soul mirror: ${name} missing in the ${being} checkout`);
+      SOUL_ENTRIES.push({ being, name, rel: `soul/${being}/${name}`, file, ghUrl: `${info.repo}/blob/main/${name}` });
+    }
+  }
+}
 const partial = (n) => readLF(join(SRC, "partials", n + ".html"));
 const HEAD_T = partial("head");
 const NAV_T = partial("nav");
@@ -255,7 +272,7 @@ function injectRawLinks(html, slug) {
     const target = rawByAnchor.get(anchor);
     if (!target) return open + bare + close;
     const wrapped = target.kind === "serve"
-      ? `<a class="atlas-src atlas-src-raw" href="${root}raw/${target.path}" title="Open the served copy of this file (synced to this release; the repository is the source of truth)">${bare}</a>`
+      ? `<a class="atlas-src atlas-src-raw" href="${root}raw/${target.path}.html" title="Open the mirrored copy of this file (synced to this release; the repository is the source of truth)">${bare}</a>`
       : `<a class="atlas-src atlas-src-git" href="${rawCfg.repo}/blob/${rawCfg.branch}/${target.path}" title="Open the source of truth on GitHub (repository access required)">${bare}</a>`;
     return open + wrapped + close;
   });
@@ -263,6 +280,77 @@ function injectRawLinks(html, slug) {
 for (const p of pages) {
   if (p.slug.startsWith("atlas/")) sourceBySlug.set(p.slug, injectRawLinks(sourceBySlug.get(p.slug), p.slug));
 }
+
+// Anchor -> atlas page map (viewer back-links), scraped from the loaded sources.
+const anchorPage = new Map();
+for (const p of pages.filter((x) => x.slug.startsWith("atlas/"))) {
+  for (const m of sourceBySlug.get(p.slug).matchAll(/\bid="(file-[^"]+)"/g)) anchorPage.set(m[1], p.slug);
+}
+
+// Site-wide markdown-name linkify (D35): every mention of a known md file in
+// page prose becomes a link to its mirror viewer (serve), its GitHub source
+// (reference), or the soulfile hub (bare soulfile names, shared by two
+// beings). Operates on text segments inside <main> only, never inside an
+// existing anchor, script, style, or svg; idempotent via an unwrap pass.
+// Bare basenames resolve when globally unique, or to the repo-root file when
+// a root file shares the name; ambiguous basenames stay unlinked until
+// written as full paths.
+const SOUL_BASENAMES = new Set((rawCfg.soul ? rawCfg.soul.files : []).filter((n) => n !== "README.md"));
+const mdTargets = new Map();
+{
+  const targets = [...rawByAnchor.values()];
+  for (const t of targets) mdTargets.set(t.path, t);
+  const byBase = new Map();
+  for (const t of targets) {
+    const base = t.path.split("/").pop();
+    if (!byBase.has(base)) byBase.set(base, []);
+    byBase.get(base).push(t);
+  }
+  for (const [base, list] of byBase) {
+    if (SOUL_BASENAMES.has(base) || mdTargets.has(base)) continue;
+    if (list.length === 1) { mdTargets.set(base, list[0]); continue; }
+    const rootFile = list.find((t) => !t.path.includes("/"));
+    if (rootFile) mdTargets.set(base, rootFile);
+  }
+  for (const name of SOUL_BASENAMES) mdTargets.set(name, { kind: "soul-hub", path: name });
+}
+function mdHref(target, root) {
+  if (target.kind === "serve") return `${root}raw/${target.path}.html`;
+  if (target.kind === "soul-hub") return `${root}raw/soul/index.html`;
+  return `${rawCfg.repo}/blob/${rawCfg.branch}/${target.path}`;
+}
+function mdTitle(target) {
+  if (target.kind === "serve") return "Open the mirrored copy served on this site";
+  if (target.kind === "soul-hub") return "Open the soulfile mirror (both beings)";
+  return "Open the source of truth on GitHub (repository access required)";
+}
+function linkifyMd(html, slug) {
+  const root = rootOf(slug);
+  const mainMatch = html.match(/<main\b[^>]*>[\s\S]*?<\/main>/);
+  if (!mainMatch) return html;
+  let region = mainMatch[0].replace(/<a class="md-link"[^>]*>([\s\S]*?)<\/a>/g, "$1");
+  const parts = region.split(/(<[^>]+>)/);
+  let aDepth = 0;
+  let skipDepth = 0;
+  for (let i = 0; i < parts.length; i++) {
+    const part = parts[i];
+    if (part.startsWith("<")) {
+      const tag = ((part.match(/^<\/?([a-zA-Z][a-zA-Z0-9-]*)/) || [])[1] || "").toLowerCase();
+      if (tag === "a") aDepth += part.startsWith("</") ? -1 : 1;
+      if (tag === "script" || tag === "style" || tag === "svg") skipDepth += part.startsWith("</") ? -1 : 1;
+      continue;
+    }
+    if (aDepth > 0 || skipDepth > 0 || !part.includes(".md")) continue;
+    parts[i] = part.replace(/[\w./-]*[\w-]\.md\b/g, (token) => {
+      const target = mdTargets.get(token);
+      if (!target) return token;
+      return `<a class="md-link" href="${mdHref(target, root)}" title="${mdTitle(target)}">${token}</a>`;
+    });
+  }
+  region = parts.join("");
+  return html.slice(0, mainMatch.index) + region + html.slice(mainMatch.index + mainMatch[0].length);
+}
+for (const p of pages) sourceBySlug.set(p.slug, linkifyMd(sourceBySlug.get(p.slug), p.slug));
 
 const webSearchRecords = pages.flatMap((p) => searchRecordsForPage(p, sourceBySlug.get(p.slug)));
 const liteExcludedSlugs = new Set(pages.filter((p) => p.slug.startsWith("atlas/") && p.slug !== "atlas/index").map((p) => p.slug));
@@ -650,6 +738,84 @@ function buildManifest() {
   }) + "\n";
 }
 
+// ---------- raw mirror viewer pages ----------
+
+// Every served file gets a standalone gated page: the full text plus a
+// navigation bar (guide home, its Atlas entry when one exists, the GitHub
+// source of truth, and the verbatim file). The verbatim .md stays beside it.
+function viewerDoc(relPath, content, ghUrl, atlasHref) {
+  const depth = ("raw/" + relPath).split("/").length - 1;
+  const root = "../".repeat(depth);
+  const name = relPath.split("/").pop();
+  const links = [
+    `<a href="${root}index.html">How Edgeweaver Works</a>`,
+    atlasHref ? `<a href="${atlasHref}">Atlas entry</a>` : "",
+    `<a href="${ghUrl}">Source of truth on GitHub</a>`,
+    `<a href="${esc(name)}">Verbatim file</a>`,
+  ].filter(Boolean).join(" | ");
+  return lf(`<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>${esc(relPath)} (source mirror)</title>
+<link rel="stylesheet" href="${root}assets/site.css">
+<style>
+.mirror-wrap { max-width: 900px; margin: 0 auto; padding: 24px 18px 60px; }
+.mirror-nav { font-size: 14px; padding: 10px 0 14px; border-bottom: 1px solid rgba(125,125,125,.35); }
+.mirror-note { font-size: 13.5px; opacity: .8; }
+.mirror-body { white-space: pre-wrap; overflow-wrap: anywhere; font: 13.5px/1.55 ui-monospace, Consolas, monospace; margin-top: 18px; }
+</style>
+</head>
+<body>
+<div class="mirror-wrap">
+<nav class="mirror-nav" aria-label="Mirror navigation">${links}<span class="mirror-note"> | your browser's Back button returns to the page you came from</span></nav>
+<main id="mirror-main">
+<h1><code>${esc(relPath)}</code></h1>
+<p class="mirror-note">Read-only mirror, synced to this release. The repository is the source of truth.</p>
+<pre class="mirror-body">${esc(content)}</pre>
+</main>
+</div>
+</body>
+</html>
+`);
+}
+
+function soulHubDoc() {
+  const rows = Object.entries(rawCfg.soul.repos).map(([being, info]) => {
+    const label = being[0].toUpperCase() + being.slice(1);
+    const items = rawCfg.soul.files.map((n) => `<li><a href="${being}/${esc(n)}.html"><code>${esc(n)}</code></a></li>`).join("\n");
+    return `<section aria-labelledby="soul-${being}"><h2 id="soul-${being}">Edgeweaver ${esc(label)}</h2><p><a href="${info.repo}">Soul repository on GitHub</a></p><ul>${items}</ul></section>`;
+  }).join("\n");
+  return lf(`<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Soulfiles (source mirror)</title>
+<link rel="stylesheet" href="../../assets/site.css">
+<style>
+.mirror-wrap { max-width: 900px; margin: 0 auto; padding: 24px 18px 60px; }
+.mirror-nav { font-size: 14px; padding: 10px 0 14px; border-bottom: 1px solid rgba(125,125,125,.35); }
+.mirror-note { font-size: 13.5px; opacity: .8; }
+</style>
+</head>
+<body>
+<div class="mirror-wrap">
+<nav class="mirror-nav" aria-label="Mirror navigation"><a href="../../index.html">How Edgeweaver Works</a> | <a href="../../soul.html">The Soul layer, explained</a><span class="mirror-note"> | your browser's Back button returns to the page you came from</span></nav>
+<main id="mirror-main">
+<h1>Soulfiles, mirrored</h1>
+<p class="mirror-note">The identity documents of both beings, read-only, mirrored from their soul repositories (the source of truth). Identity changes travel only through witnessed proposal branches in those repositories, never through this site.</p>
+${rows}
+</main>
+</div>
+</body>
+</html>
+`);
+}
+
 // ---------- raw source mirror manifest ----------
 
 // sha256 is emitted in 8-char groups so no served byte sequence can ever look
@@ -660,6 +826,11 @@ function buildRawManifest() {
     const digest = createHash("sha256").update(content, "utf8").digest("hex").match(/.{8}/g).join("-");
     return { bytes: Buffer.byteLength(content, "utf8"), path: p, sha256: digest };
   });
+  for (const s of SOUL_ENTRIES.slice().sort((a, b) => (a.rel < b.rel ? -1 : 1))) {
+    const content = readLF(s.file);
+    const digest = createHash("sha256").update(content, "utf8").digest("hex").match(/.{8}/g).join("-");
+    files.push({ bytes: Buffer.byteLength(content, "utf8"), path: s.rel, sha256: digest });
+  }
   return stableStringify({
     comment: "Generated by scripts/site/build-site.mjs. Served copies under raw/ are LF-normalized mirrors of the listed repository files; the repository is the source of truth and the release wall fails when a mirror drifts. Hashes are sha256 hex in 8-char groups.",
     branch: rawCfg.branch,
@@ -693,9 +864,15 @@ for (const p of pages) {
 const nf = join(PUB, "404.html");
 if (existsSync(nf)) outputs.set(nf, render404(readLF(nf), nf));
 
-// Orphan check: every public page must be nav.json-listed (or 404).
+// Orphan check: every public page must be nav.json-listed (or 404). Mirror
+// viewer pages under raw/ are outputs, not nav pages; strays there are
+// check 13's domain, never a build failure.
+const RAW_DIR_PREFIX = join(PUB, "raw");
 for (const file of listPublicHtml()) {
-  if (!outputs.has(file)) throw new Error(`page on disk but not in nav.json: ${file}`);
+  if (!outputs.has(file)) {
+    if (file.startsWith(RAW_DIR_PREFIX)) continue;
+    throw new Error(`page on disk but not in nav.json: ${file}`);
+  }
 }
 
 outputs.set(join(PUB, "assets", "search-index.js"), searchAsset(webSearchRecords));
@@ -703,8 +880,20 @@ outputs.set(join(SITE, "artifact", "edgeweaver-site-full.html"), artifactDocV4("
 outputs.set(join(SITE, "artifact", "edgeweaver-site-lite.html"), artifactDocV4("lite"));
 outputs.set(join(SRC, "atlas-manifest.json"), buildManifest());
 for (const p of rawCfg.serve) {
-  outputs.set(join(PUB, "raw", ...p.split("/")), readLF(join(REPO, p)));
+  const content = readLF(join(REPO, p));
+  outputs.set(join(PUB, "raw", ...p.split("/")), content);
+  const anchor = "file-" + p.replace(/[/.]/g, "-");
+  const aPage = anchorPage.get(anchor);
+  const depth = ("raw/" + p).split("/").length - 1;
+  const atlasHref = aPage ? "../".repeat(depth) + aPage + ".html#" + anchor : "";
+  outputs.set(join(PUB, "raw", ...(p + ".html").split("/")), viewerDoc(p, content, `${rawCfg.repo}/blob/${rawCfg.branch}/${p}`, atlasHref));
 }
+for (const s of SOUL_ENTRIES) {
+  const content = readLF(s.file);
+  outputs.set(join(PUB, "raw", ...s.rel.split("/")), content);
+  outputs.set(join(PUB, "raw", ...(s.rel + ".html").split("/")), viewerDoc(s.rel, content, s.ghUrl, ""));
+}
+if (SOUL_ENTRIES.length) outputs.set(join(PUB, "raw", "soul", "index.html"), soulHubDoc());
 outputs.set(join(PUB, "raw", "raw-manifest.json"), buildRawManifest());
 
 if (CHECK) {

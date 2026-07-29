@@ -70,13 +70,17 @@ const scannedFiles = [
   join(REPO, "scripts", "site", "build-site.mjs"),
   join(HERE, "verify-site.mjs"),
 ];
-const pageFiles = walk(PUB).filter((f) => f.endsWith(".html"));
+const pageFiles = walk(PUB).filter((f) => f.endsWith(".html") && !rel(f).startsWith("site/public/raw/"));
 const artifactFiles = [
   join(SITE, "artifact", "edgeweaver-site-full.html"),
   join(SITE, "artifact", "edgeweaver-site-lite.html"),
 ];
 const searchFiles = walk(PUB).filter((f) => /(?:^|[\\/])search(?:-index)?\.(?:js|json)$/i.test(f));
-const rawMirrorFiles = existsSync(join(PUB, "raw")) ? walk(join(PUB, "raw")).filter((f) => f.endsWith(".md")) : [];
+// Served mirrors join the redaction walls; the soul surface is exempt from
+// them by D35's scoped decision (it still passes the secret scans).
+const rawMirrorFiles = existsSync(join(PUB, "raw"))
+  ? walk(join(PUB, "raw")).filter((f) => f.endsWith(".md") && !rel(f).startsWith("site/public/raw/soul/"))
+  : [];
 const redactionFiles = distinct([...pageFiles, ...artifactFiles.filter(existsSync), ...searchFiles, ...rawMirrorFiles]);
 
 const nav = JSON.parse(read(join(SRC, "nav.json")));
@@ -422,7 +426,7 @@ if (AGAINST_LIVE && manifest) {
         if (re.test(l)) problems.push(`check 8 (secrets): ${name} shape at ${rel(f)}:${i + 1}`);
       });
     }
-    if (f.endsWith(".html")) {
+    if (f.endsWith(".html") && !rel(f).startsWith("site/public/raw/")) {
       lines.forEach((l, i) => {
         const m = l.match(HANDLE);
         if (m && !CSS_AT.test(m[0].slice(1))) problems.push(`check 8 (secrets): @handle shape at ${rel(f)}:${i + 1}`);
@@ -453,7 +457,14 @@ if (AGAINST_LIVE && manifest) {
   }
   for (const f of scannedFiles) {
     const text = read(f);
+    const soulMirror = rel(f).startsWith("site/public/raw/soul/");
     for (const { label, value } of valueSources) {
+      // D35: identity text may name accounts (denylist categories); actual
+      // credential values from .env.local stay barred everywhere. One named
+      // exception: a timezone is calendar context, not a credential, and a
+      // being's LINEAGE legitimately records its birth timezone.
+      if (soulMirror && !label.startsWith(".env.local:")) continue;
+      if (soulMirror && label === ".env.local:EDGEWEAVER_TZ") continue;
       if (text.includes(value)) problems.push(`check 8 (secrets): VALUE of ${label} found in ${rel(f)} (value not shown)`);
     }
   }
@@ -867,6 +878,22 @@ if (RELEASE) {
         if (!existsSync(src)) { problems.push(`check 13 (raw): source missing for ${p}`); continue; }
         if (!existsSync(copy)) { problems.push(`check 13 (raw): served copy missing for ${p} (run the builder)`); continue; }
         if (read(src) !== read(copy)) problems.push(`check 13 (raw): served copy differs from the repository file: ${p} (rebuild the site)`);
+        const viewer = join(PUB, "raw", ...(p + ".html").split("/"));
+        if (!existsSync(viewer)) problems.push(`check 13 (raw): viewer page missing for ${p} (run the builder)`);
+      }
+      if (cfg.soul && cfg.soul.repos) {
+        for (const [being, info] of Object.entries(cfg.soul.repos)) {
+          const dir = join(REPO, info.checkout);
+          if (!existsSync(dir)) { infos.push(`note: soul checkout absent for ${being} (${info.checkout}); soul mirror freshness not checkable on this machine`); continue; }
+          for (const name of cfg.soul.files || []) {
+            const src = join(dir, name);
+            const copy = join(PUB, "raw", "soul", being, name);
+            if (!existsSync(src)) { problems.push(`check 13 (raw): soul source missing: ${being}/${name}`); continue; }
+            if (!existsSync(copy)) { problems.push(`check 13 (raw): soul mirror missing: ${being}/${name} (run the builder)`); continue; }
+            if (read(src) !== read(copy)) problems.push(`check 13 (raw): soul mirror differs from the ${being} checkout: ${name} (rebuild the site)`);
+            if (!existsSync(copy + ".html")) problems.push(`check 13 (raw): soul viewer missing: ${being}/${name}`);
+          }
+        }
       }
       for (const p of [...serve, ...reference]) {
         try { execFileSync("git", ["-C", REPO, "ls-files", "--error-unmatch", p], { stdio: ["ignore", "ignore", "ignore"] }); }
@@ -885,17 +912,27 @@ if (RELEASE) {
               if (digest !== f.sha256) problems.push(`check 13 (raw): manifest hash mismatch for ${f.path}`);
             }
           }
-          const want = serve.slice().sort().join("|");
+          const soulPaths = [];
+          if (cfg.soul && cfg.soul.repos) {
+            for (const being of Object.keys(cfg.soul.repos)) for (const name of cfg.soul.files || []) soulPaths.push(`soul/${being}/${name}`);
+          }
+          const want = [...serve, ...soulPaths].sort().join("|");
           const got = (manifest.files || []).map((f) => f.path).sort().join("|");
-          if (want !== got) problems.push("check 13 (raw): manifest file set differs from the registry serve list");
+          if (want !== got) problems.push("check 13 (raw): manifest file set differs from the registry serve plus soul lists");
         } catch { problems.push("check 13 (raw): raw-manifest.json is not valid JSON"); }
       }
       const rawDir = join(PUB, "raw");
       if (existsSync(rawDir)) {
+        const soulFiles = new Set();
+        if (cfg.soul && cfg.soul.repos) {
+          for (const being of Object.keys(cfg.soul.repos)) for (const name of cfg.soul.files || []) soulFiles.add(`soul/${being}/${name}`);
+        }
         for (const f of walk(rawDir)) {
           const relPath = rel(f).replace(/^site\/public\/raw\//, "");
-          if (relPath === "raw-manifest.json") continue;
-          if (!serve.includes(relPath)) problems.push(`check 13 (raw): stray file under public/raw/: ${relPath}`);
+          if (relPath === "raw-manifest.json" || relPath === "soul/index.html") continue;
+          const isViewer = relPath.endsWith(".html");
+          const base = isViewer ? relPath.replace(/\.html$/, "") : relPath;
+          if (!serve.includes(base) && !soulFiles.has(base)) problems.push(`check 13 (raw): stray file under public/raw/: ${relPath}`);
         }
       }
     }

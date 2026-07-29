@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<meta name="edgeweaver-release" content="ew-20260728-rc7">
+<meta name="edgeweaver-release" content="ew-20260728-rc8">
 <title>Atlas: root documents | How Edgeweaver Works</title>
 <link rel="stylesheet" href="../assets/site.css">
 <script defer src="../assets/search-index.js"></script>
@@ -48,7 +48,7 @@
   <ul id="search-results" class="search-results" role="listbox" aria-label="Search results"></ul>
 </dialog>
 <button class="nav-backdrop" type="button" aria-label="Close navigation" hidden></button>
-<div class="shell" data-root="../" data-page-slug="atlas/root" data-release-id="ew-20260728-rc7">
+<div class="shell" data-root="../" data-page-slug="atlas/root" data-release-id="ew-20260728-rc8">
 <nav id="sidebar" class="sidebar" aria-label="Current section navigation">
   <div class="sidebar-head"><strong>Rebuild</strong><button class="nav-close" type="button" hidden>Close</button></div>
   <nav class="sidebar-hubs" aria-label="All sections"><a href="../index.html">Overview</a>
@@ -111,10 +111,10 @@
 <main id="atlas-root-main">
 <h1 id="atlas-root-top">Atlas: root documents</h1>
 <div class="tldr"><span class="label">TLDR</span>
-<p>The root files define what Edgeweaver is, which documents outrank others, how an agent executes work, and how decisions and status are recorded. Start with START-HERE.md, then use the implementation ledger and the matching checklist. Design documents answer why; runbooks answer what to do next. This page names each file's authority and shows how to verify it without exposing credentials or governed identity material.</p>
+<p>The root files define what Edgeweaver is, which documents outrank others, how an agent executes work, and how decisions and status are recorded. Start with <a class="md-link" href="https://github.com/agent57zero/edgeweaver/blob/main/START-HERE.md" title="Open the source of truth on GitHub (repository access required)">START-HERE.md</a>, then use the implementation ledger and the matching checklist. Design documents answer why; runbooks answer what to do next. This page names each file's authority and shows how to verify it without exposing credentials or governed identity material.</p>
 </div>
 <h2 id="atlas-root-about">What this page covers</h2>
-<p>These files form the repository's front desk and constitution. A newcomer can use the badges to distinguish design authority, execution procedure, machine-readable policy, and historical record. When two texts disagree, follow the authority order in START-HERE.md and record the conflict rather than quietly improvising.</p>
+<p>These files form the repository's front desk and constitution. A newcomer can use the badges to distinguish design authority, execution procedure, machine-readable policy, and historical record. When two texts disagree, follow the authority order in <a class="md-link" href="https://github.com/agent57zero/edgeweaver/blob/main/START-HERE.md" title="Open the source of truth on GitHub (repository access required)">START-HERE.md</a> and record the conflict rather than quietly improvising.</p>
 <h2 id="atlas-root-entries">File entries</h2>
 <article class="atlas-entry" data-depth="compact">
 <h3 id="file--claude-launch-json"><code>.claude/launch.json</code></h3>
@@ -149,7 +149,7 @@
 <div class="atlas-field" data-field="what"><strong>What it is.</strong> Repository instructions for agents that execute Edgeweaver work.</div>
 <div class="atlas-field" data-field="contains"><strong>What it contains.</strong> The build entrypoint, document authority order, iron rules, local tool facts, and commit convention.</div>
 <div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> An agent reads it at the start of work and whenever instructions appear to conflict.</div>
-<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Confirm its entrypoint and authority chain match START-HERE.md, then run only verified procedures from the current ledger. Review status language against the implementation ledger so prepared, dark, partial, pending, and live states remain distinct. Treat any contradiction with higher-authority design as a decision-log issue, not permission to choose whichever instruction is easier.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Confirm its entrypoint and authority chain match <a class="md-link" href="https://github.com/agent57zero/edgeweaver/blob/main/START-HERE.md" title="Open the source of truth on GitHub (repository access required)">START-HERE.md</a>, then run only verified procedures from the current ledger. Review status language against the implementation ledger so prepared, dark, partial, pending, and live states remain distinct. Treat any contradiction with higher-authority design as a decision-log issue, not permission to choose whichever instruction is easier.</div>
 <div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">Reading Guide</a>, <a href="../governance.html">governance</a>, and <a href="../status.html">status</a>.</div>
 </article>
 <article class="atlas-entry" data-depth="deep">
@@ -162,7 +162,7 @@
 <div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">Reading Guide</a>, <a href="../governance.html">governance</a>, and <a href="../status.html">status</a>.</div>
 </article>
 <article class="atlas-entry" data-depth="deep">
-<h3 id="file-GROWING-EDGEWEAVER-md"><a class="atlas-src atlas-src-raw" href="../raw/GROWING-EDGEWEAVER.md" title="Open the served copy of this file (synced to this release; the repository is the source of truth)"><code>GROWING-EDGEWEAVER.md</code></a></h3>
+<h3 id="file-GROWING-EDGEWEAVER-md"><a class="atlas-src atlas-src-raw" href="../raw/GROWING-EDGEWEAVER.md.html" title="Open the mirrored copy of this file (synced to this release; the repository is the source of truth)"><code>GROWING-EDGEWEAVER.md</code></a></h3>
 <span class="badge">authority</span>
 <div class="atlas-field" data-field="what"><strong>What it is.</strong> The developmental authority that frames Edgeweaver as being raised through stages rather than assembled as a finished product.</div>
 <div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Developmental stages, readiness evidence, initiations, safeguards, relationships, and the conditions under which capabilities may become available.</div>
@@ -176,11 +176,11 @@
 <div class="atlas-field" data-field="what"><strong>What it is.</strong> The executable build plan and status ledger beneath the design authorities.</div>
 <div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Current phase state, credential names, ordered build work, verification commands, gate references, and explicit ownership of blocked decisions.</div>
 <div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Every build agent reads the status ledger at session start before selecting one checklist step.</div>
-<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Reconcile checked items with command evidence and repository state, never mark an unrun verification, and escalate contradictions to decisions.md. Review status language against the implementation ledger so prepared, dark, partial, pending, and live states remain distinct. Treat any contradiction with higher-authority design as a decision-log issue, not permission to choose whichever instruction is easier. A clean reproduction records commands and evidence, preserves failed checks as failures, and leaves human-owned gates untouched. Keep credentials, runtime coordinates, protected identity material, and private human details outside every review artifact. Use repository history to inspect changes, but rely on current authority and verified behavior for present-tense claims.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Reconcile checked items with command evidence and repository state, never mark an unrun verification, and escalate contradictions to <a class="md-link" href="https://github.com/agent57zero/edgeweaver/blob/main/decisions.md" title="Open the source of truth on GitHub (repository access required)">decisions.md</a>. Review status language against the implementation ledger so prepared, dark, partial, pending, and live states remain distinct. Treat any contradiction with higher-authority design as a decision-log issue, not permission to choose whichever instruction is easier. A clean reproduction records commands and evidence, preserves failed checks as failures, and leaves human-owned gates untouched. Keep credentials, runtime coordinates, protected identity material, and private human details outside every review artifact. Use repository history to inspect changes, but rely on current authority and verified behavior for present-tense claims.</div>
 <div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">Reading Guide</a>, <a href="../governance.html">governance</a>, and <a href="../status.html">status</a>.</div>
 </article>
 <article class="atlas-entry" data-depth="compact">
-<h3 id="file-LICENSE-md"><a class="atlas-src atlas-src-raw" href="../raw/LICENSE.md" title="Open the served copy of this file (synced to this release; the repository is the source of truth)"><code>LICENSE.md</code></a></h3>
+<h3 id="file-LICENSE-md"><a class="atlas-src atlas-src-raw" href="../raw/LICENSE.md.html" title="Open the mirrored copy of this file (synced to this release; the repository is the source of truth)"><code>LICENSE.md</code></a></h3>
 <span class="badge">authority</span>
 <div class="atlas-field" data-field="what"><strong>What it is.</strong> The repository license notice that states the legal terms for reuse.</div>
 <div class="atlas-field" data-field="contains"><strong>What it contains.</strong> The applicable grant and conditions for repository materials, separate from third-party source rights.</div>
@@ -194,11 +194,11 @@
 <div class="atlas-field" data-field="what"><strong>What it is.</strong> The primary system design for Genesis and the mechanisms intended to support persistent development.</div>
 <div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Architecture, principles, memory, embodiment, measurement, safety, operations, and design decisions at the system level.</div>
 <div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Designers and implementers consult it to understand why a mechanism exists and which invariants its implementation must preserve.</div>
-<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Trace each implemented component to a plan invariant, then use IMPLEMENTATION.md and checklists for procedure; record any design conflict before acting. Review status language against the implementation ledger so prepared, dark, partial, pending, and live states remain distinct. Treat any contradiction with higher-authority design as a decision-log issue, not permission to choose whichever instruction is easier. A clean reproduction records commands and evidence, preserves failed checks as failures, and leaves human-owned gates untouched. Keep credentials, runtime coordinates, protected identity material, and private human details outside every review artifact.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Trace each implemented component to a plan invariant, then use <a class="md-link" href="https://github.com/agent57zero/edgeweaver/blob/main/IMPLEMENTATION.md" title="Open the source of truth on GitHub (repository access required)">IMPLEMENTATION.md</a> and checklists for procedure; record any design conflict before acting. Review status language against the implementation ledger so prepared, dark, partial, pending, and live states remain distinct. Treat any contradiction with higher-authority design as a decision-log issue, not permission to choose whichever instruction is easier. A clean reproduction records commands and evidence, preserves failed checks as failures, and leaves human-owned gates untouched. Keep credentials, runtime coordinates, protected identity material, and private human details outside every review artifact.</div>
 <div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">Reading Guide</a>, <a href="../governance.html">governance</a>, and <a href="../status.html">status</a>.</div>
 </article>
 <article class="atlas-entry" data-depth="standard">
-<h3 id="file-PREBUILD-md"><a class="atlas-src atlas-src-raw" href="../raw/PREBUILD.md" title="Open the served copy of this file (synced to this release; the repository is the source of truth)"><code>PREBUILD.md</code></a></h3>
+<h3 id="file-PREBUILD-md"><a class="atlas-src atlas-src-raw" href="../raw/PREBUILD.md.html" title="Open the mirrored copy of this file (synced to this release; the repository is the source of truth)"><code>PREBUILD.md</code></a></h3>
 <span class="badge">runbook</span>
 <div class="atlas-field" data-field="what"><strong>What it is.</strong> The dark-build plan for constructing known machinery while keeping it disabled.</div>
 <div class="atlas-field" data-field="contains"><strong>What it contains.</strong> A classification of work that can be built without live activation, rules for feature flags, and verification expectations before handoff.</div>
@@ -207,7 +207,7 @@
 <div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">Reading Guide</a>, <a href="../governance.html">governance</a>, and <a href="../status.html">status</a>.</div>
 </article>
 <article class="atlas-entry" data-depth="standard">
-<h3 id="file-README-md"><a class="atlas-src atlas-src-raw" href="../raw/README.md" title="Open the served copy of this file (synced to this release; the repository is the source of truth)"><code>README.md</code></a></h3>
+<h3 id="file-README-md"><a class="atlas-src atlas-src-raw" href="../raw/README.md.html" title="Open the mirrored copy of this file (synced to this release; the repository is the source of truth)"><code>README.md</code></a></h3>
 <span class="badge">authority</span>
 <div class="atlas-field" data-field="what"><strong>What it is.</strong> The shortest repository orientation for Edgeweaver and its central documents.</div>
 <div class="atlas-field" data-field="contains"><strong>What it contains.</strong> A project summary, the seed framing, and links that direct different readers toward design, development, and execution material.</div>
@@ -216,7 +216,7 @@
 <div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">Reading Guide</a>, <a href="../governance.html">governance</a>, and <a href="../status.html">status</a>.</div>
 </article>
 <article class="atlas-entry" data-depth="standard">
-<h3 id="file-SECRETS-md"><code>SECRETS.md</code></h3>
+<h3 id="file-SECRETS-md"><a class="atlas-src atlas-src-git" href="https://github.com/agent57zero/edgeweaver/blob/main/SECRETS.md" title="Open the source of truth on GitHub (repository access required)"><code>SECRETS.md</code></a></h3>
 <span class="badge">schema-data</span>
 <div class="atlas-field" data-field="what"><strong>What it is.</strong> A names-only manifest for required credentials and their approved provenance.</div>
 <div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Environment-variable names, expected custody locations by class, and explicit reminders that values never enter tracked files.</div>
@@ -234,7 +234,7 @@
 <div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">Reading Guide</a>, <a href="../governance.html">governance</a>, and <a href="../status.html">status</a>.</div>
 </article>
 <article class="atlas-entry" data-depth="standard">
-<h3 id="file-VERSIONS-md"><a class="atlas-src atlas-src-raw" href="../raw/VERSIONS.md" title="Open the served copy of this file (synced to this release; the repository is the source of truth)"><code>VERSIONS.md</code></a></h3>
+<h3 id="file-VERSIONS-md"><a class="atlas-src atlas-src-raw" href="../raw/VERSIONS.md.html" title="Open the mirrored copy of this file (synced to this release; the repository is the source of truth)"><code>VERSIONS.md</code></a></h3>
 <span class="badge">authority</span>
 <div class="atlas-field" data-field="what"><strong>What it is.</strong> The generation and versioning policy for beings, brains, and software.</div>
 <div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Separate version axes, naming rules, cut criteria, and the evidence required when changing a generation label.</div>
@@ -243,7 +243,7 @@
 <div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">Reading Guide</a>, <a href="../governance.html">governance</a>, and <a href="../status.html">status</a>.</div>
 </article>
 <article class="atlas-entry" data-depth="standard">
-<h3 id="file-VOICE-STACK-md"><code>VOICE-STACK.md</code></h3>
+<h3 id="file-VOICE-STACK-md"><a class="atlas-src atlas-src-git" href="https://github.com/agent57zero/edgeweaver/blob/main/VOICE-STACK.md" title="Open the source of truth on GitHub (repository access required)"><code>VOICE-STACK.md</code></a></h3>
 <span class="badge">authority</span>
 <div class="atlas-field" data-field="what"><strong>What it is.</strong> The technical design for the optional realtime voice track.</div>
 <div class="atlas-field" data-field="contains"><strong>What it contains.</strong> Quality goals, developmental placement, component boundaries, latency and safety concerns, and the relationship between voice transport and the one-mind rule.</div>
@@ -270,12 +270,12 @@
 <div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">Reading Guide</a>, <a href="../governance.html">governance</a>, and <a href="../status.html">status</a>.</div>
 </article>
 <article class="atlas-entry" data-depth="compact">
-<h3 id="file-AGENTS-md"><code>AGENTS.md</code></h3>
+<h3 id="file-AGENTS-md"><a class="atlas-src atlas-src-git" href="https://github.com/agent57zero/edgeweaver/blob/main/AGENTS.md" title="Open the source of truth on GitHub (repository access required)"><code>AGENTS.md</code></a></h3>
 <span class="badge">authority</span>
 <div class="atlas-field" data-field="what"><strong>What it is.</strong> Repository-local operating instructions for build agents.</div>
 <div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It routes builders through the session protocol, states document authority and iron rules, records local tool facts without credential values, and pins the commit convention.</div>
 <div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Any agent entering this repository reads it before acting.</div>
-<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Compare it with <code>START-HERE.md</code> and higher-authority design documents; treat disagreements as bugs rather than alternate instructions.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Compare it with <code><a class="md-link" href="https://github.com/agent57zero/edgeweaver/blob/main/START-HERE.md" title="Open the source of truth on GitHub (repository access required)">START-HERE.md</a></code> and higher-authority design documents; treat disagreements as bugs rather than alternate instructions.</div>
 <div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="#file-START-HERE-md">session protocol</a> and <a href="../governance.html">governance</a>.</div>
 </article>
 </main>
@@ -289,7 +289,7 @@
 </div>
 <footer class="site-foot">
 <p class="foot-banner">Village-layer material: this site sits outside both children's views, like FAMILY.md and village/, and it discusses sibling facts each child learns only by its parent body's deliberate decision (gate G21).</p>
-<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-10. Release ew-20260728-rc7.</p>
+<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-10. Release ew-20260728-rc8.</p>
 </footer>
 </div>
 </div>
