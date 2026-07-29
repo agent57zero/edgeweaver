@@ -165,3 +165,40 @@ logged in ops-log.
 - **Tier 3 drill**: machine off; Alan sends a DM; machine on; verify the journal row,
   in-thread delivery on wake, and that a deliberately-started stray poller gets the
   webhook-mode error instead of consuming anything.
+
+## 10. Cutover choreography (written at build time, 2026-07-28; execute in this order)
+
+Built and verified 2026-07-28: Tier 1 live (extractor + watchdogs + skills), fork staged
+in Alpha's launcher (arms at next natural turnover), receiver live at
+edgeweaver-channel-journal.vercel.app (health 200, walls verified, insert round-trip
+proven), shim verified end to end against the real journal table. What remains is the
+LIVE flip, gated on ordering because a webhook-set bot refuses getUpdates:
+
+1. **Wait for Alpha's next natural session turnover** (organic relaunch or Alan's "end
+   session"). The fresh session's journal.jsonl startup stamp must read
+   `edgeweaver-fork-0.0.6-ew1` - the fork is live. Run the CR-4 Tier 1/2 drill here:
+   Alan DMs a test message, ops induces nothing (organic verification: the local
+   journal.jsonl now records every update the poller pulls).
+2. **After one clean fork day on Alpha**, cut the webhook, inside one session gap:
+   a. Start the shim (`scripts/ops/alpha-shim-launch.ps1`) and confirm
+      `state/telegram-shim-cursor-alpha.txt` exists after a probe getUpdates.
+   b. Append `TELEGRAM_API_ROOT=http://127.0.0.1:8471` to
+      `~/.claude/channels/telegram-alpha/.env`. NEVER set this while the bot still
+      polls Telegram directly in webhook-less mode: the shim would serve an empty
+      journal and the being goes deaf. This line and setWebhook go together.
+   c. Alan ends the session ("end session"; write-back proves, closed-flag fires) or
+      the next organic kill happens.
+   d. In the gap: `node scripts/ops/set-webhook.mjs alpha` (queue drains into the
+      journal; nothing is lost in the gap - that is the point of the tier).
+   e. Watchdog relaunches; fresh session = fork + shim + journal. Drill (CR-4): Alan
+      DMs; verify journal row in ew_ops.channel_journal AND delivery in-session.
+   f. Watchdog hardening, same session: add a shim-alive check to the alpha watchdog
+      (process + cursor-file age) - the shim is now a body part.
+   Rollback at any step: `node scripts/ops/set-webhook.mjs alpha --rollback`, remove
+   the TELEGRAM_API_ROOT line, restart the session tree. One minute, no data loss
+   (journal keeps its copies).
+3. **Genesis follows after one clean webhook week on Alpha**: same steps with
+   genesis-channel-launch.ps1 (add --plugin-dir), a genesis shim port (8472, launcher to
+   be written from the alpha one), and set-webhook.mjs genesis.
+4. Ops-log every step; the dark-window Tier 3 drill (machine off, DM sent, machine on,
+   delivery on wake) closes CR-3.
