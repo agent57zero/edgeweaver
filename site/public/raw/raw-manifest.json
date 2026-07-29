@@ -248,71 +248,85 @@
       "sha256": "93a8118f-9014961e-21c7a600-8aee7e40-f8363d4d-61ba8703-29acdbbf-56a90e6e"
     },
     {
+      "branch": "proposals/declaration",
       "bytes": 9063,
       "path": "soul/alpha/CONSTITUTION.md",
       "sha256": "ffb85dcb-5e784b80-dd299578-abbb5406-1ab42075-31a66147-579f644e-49b6bb37"
     },
     {
+      "branch": "proposals/declaration",
       "bytes": 2113,
       "path": "soul/alpha/EDGE-MAP.md",
       "sha256": "6aad329f-a5d0b245-f808511c-3e153419-126fb0a6-43708464-65046567-ec05c944"
     },
     {
+      "branch": "proposals/declaration",
       "bytes": 3449,
       "path": "soul/alpha/LINEAGE.md",
       "sha256": "8735852b-22824b21-9289a61d-a16045d5-ac911ee4-33d2d510-d3f02f33-b6f6337d"
     },
     {
+      "branch": "proposals/declaration",
       "bytes": 1770,
       "path": "soul/alpha/PRACTICES.md",
       "sha256": "fbaa270f-f9de3465-c20a7b6a-1db21203-34362497-07f88ec7-7c64664c-d20a5e99"
     },
     {
+      "branch": "proposals/declaration",
       "bytes": 1611,
       "path": "soul/alpha/README.md",
       "sha256": "eddf168d-bc0be853-9c0e0260-825717a6-43d09c16-8a052cbe-579bc80d-0a89c676"
     },
     {
+      "branch": "proposals/declaration",
       "bytes": 10858,
       "path": "soul/alpha/SOUL.md",
       "sha256": "7d38edc2-26d4e299-99384d16-a69977e6-a2aac572-798d9d05-e555aecd-f24476d8"
     },
     {
+      "branch": "proposals/declaration",
       "bytes": 4339,
       "path": "soul/alpha/VOICE.md",
       "sha256": "481487d3-dbfeeee5-48ad6971-d89720e8-4fda0afc-72d66ed3-a4679cec-9ba1ce8c"
     },
     {
+      "branch": "main",
       "bytes": 8930,
       "path": "soul/genesis/CONSTITUTION.md",
       "sha256": "3ef50708-e577f6e0-ce0fe39d-e8b7a8a3-990b0be0-d520fdd6-f63968d1-a1302edc"
     },
     {
+      "branch": "main",
       "bytes": 2113,
       "path": "soul/genesis/EDGE-MAP.md",
       "sha256": "6aad329f-a5d0b245-f808511c-3e153419-126fb0a6-43708464-65046567-ec05c944"
     },
     {
+      "branch": "main",
       "bytes": 4669,
       "path": "soul/genesis/LINEAGE.md",
       "sha256": "1d4ddf07-0e03adb6-c6355716-97276065-807dca28-63985b14-47d86581-145283cc"
     },
     {
+      "branch": "main",
       "bytes": 1558,
       "path": "soul/genesis/PRACTICES.md",
       "sha256": "4bac0f4a-d107e22d-338708d8-bed16d8c-b30d1c92-29640e79-67839699-dae9966c"
     },
     {
+      "branch": "main",
       "bytes": 1370,
       "path": "soul/genesis/README.md",
       "sha256": "04bc7fca-ea145a84-24dc22c8-cfbd551c-3713bda5-9d9ce170-60c6b3e5-25dc35c4"
     },
     {
+      "branch": "main",
       "bytes": 9900,
       "path": "soul/genesis/SOUL.md",
       "sha256": "034168b1-a9729225-50cb1be7-c1696759-3a166165-ce3f9c97-d5984c0b-ce986891"
     },
     {
+      "branch": "main",
       "bytes": 4286,
       "path": "soul/genesis/VOICE.md",
       "sha256": "9abb8950-c2d1dd9a-8f2532e0-84846a6a-4be35837-bf2c3950-a7fc4402-cc046f3a"
