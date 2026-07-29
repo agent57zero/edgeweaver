@@ -404,7 +404,7 @@ function contextNavFor(current) {
     const items = [
       `<li><a href="${rootOf(current.slug)}raw/index.html">All files: the raw mirror</a></li>`,
       `<li><a href="${rootOf(current.slug)}raw/soul/index.html">Soulfiles: the soul hub</a></li>`,
-      `<li><a href="${rawCfg.repo}"${gh}>This repository on GitHub</a></li>`,
+      `<li><a href="${rawCfg.repo}"${gh}>Edgeweaver repository on GitHub</a></li>`,
     ];
     for (const [being, info] of Object.entries(rawCfg.soul ? rawCfg.soul.repos : {})) {
       const label = being.charAt(0).toUpperCase() + being.slice(1);
