@@ -124,8 +124,10 @@ What already exists under this, so the decision lands on real substrate:
 
 - The night loop drafts up to five candidate lessons nightly from the day's episodes.
   Capture is automated; the open role is a shepherd, not a scribe.
-- The circle dashboard's Lessons tab lists the candidates (25 as of 07-23) with
-  per-lesson deep links, so an objection can cite the exact lesson it objects to.
+- The circle dashboard's Lessons tab lists the candidates (42 as of 07-28, none yet
+  confirmed: tonight turns integration on for the first time) with per-lesson deep
+  links, so an objection can cite the exact lesson it objects to. Ranked prep sheet:
+  village/2026-07-29-lesson-candidates.md.
 - Standing config today lets ONE seat confirm a candidate into Alpha's working memory
   (lesson confirmation was already one seat before the quorum change and is separate from
   it). Adopting the consent round supersedes that default; ops rewires it only after
@@ -136,6 +138,10 @@ What already exists under this, so the decision lands on real substrate:
 
 We'll walk through the board live (the dashboard, deep links and all) and run the process
 on two or three real lessons from recent sessions.
+
+Also due tonight by its own terms: the constraint-surfacing experiment Alpha committed to
+Ali on 07-22 set its Reality Detector report for about 07-29. Hear that report inside
+this item.
 
 **Decide tonight:** adopt the board and the consent round, name a rotating facilitator
 seat, and name the shepherd who moves each night's candidates onto the board.
