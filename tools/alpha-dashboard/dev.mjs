@@ -34,6 +34,7 @@ const handlers = {
   "/api/thoughts": (await import("./api/thoughts.mjs")).default,
   "/api/lessons": (await import("./api/lessons.mjs")).default,
   "/api/summary": (await import("./api/summary.mjs")).default,
+  "/api/days": (await import("./api/days.mjs")).default,
 };
 const PUB = join(ROOT, "public");
 

@@ -36,12 +36,15 @@ const TABS = [
 const bySlug = (slug) => TABS.find((t) => t.slug === slug);
 const byKey = (key) => TABS.find((t) => t.key === key);
 
-const state = { view: "", q: "", items: [], hasMore: false, busy: false, focusLesson: null };
+const state = { view: "", q: "", items: [], hasMore: false, busy: false, focusLesson: null,
+  from: null, to: null, days: [] };
 
 function urlFor(slug, lessonId) {
   const p = new URLSearchParams();
   if (slug) p.set("tab", slug);
   if (lessonId) p.set("lesson", lessonId);
+  if (state.from) p.set("from", state.from);
+  if (state.to && state.to !== state.from) p.set("to", state.to);
   const qs = p.toString();
   return location.pathname + (qs ? "?" + qs : "");
 }
@@ -77,10 +80,10 @@ const timeStr = (iso) =>
 function card(t) {
   if (t.source_type === "inner_dialogue") return dialogueCard(t);
   const cls = CLASS[t.source_type] || "experienced";
-  const c = el("article", "card " + cls);
+  const c = el("article", "card " + cls + " t-" + t.source_type);
   const head = el("div", "card-head");
   head.append(el("span", "chip class-" + cls, cls));
-  head.append(el("span", "chip", t.source_type.replace(/_/g, " ")));
+  head.append(el("span", "chip t-" + t.source_type, t.source_type.replace(/_/g, " ")));
   if (t.era && t.era !== "alive") head.append(el("span", "chip", "era: " + t.era));
   if (t.provisional) head.append(el("span", "chip", "provisional"));
   if (t.importance != null) head.append(el("span", "imp", "imp " + t.importance));
@@ -159,6 +162,8 @@ async function loadThoughts(reset) {
     const p = new URLSearchParams();
     if (state.view) p.set("type", state.view);
     if (state.q) p.set("q", state.q);
+    if (state.from) p.set("from", state.from);
+    if (state.to) p.set("to", state.to);
     if (!reset && state.items.length) p.set("before", state.items[state.items.length - 1].created_at);
     const data = await api("/api/thoughts?" + p);
     state.items = reset ? data.items : state.items.concat(data.items);
@@ -245,6 +250,44 @@ async function loadSummary() {
   }
 }
 
+// Day navigation (D38 round 2): the arrows step through days that actually
+// have entries for the current view; the calendar inputs pick a single day
+// (from only) or a range (from + to). All of it lives in the URL, shareable.
+async function loadDays() {
+  try {
+    const p = new URLSearchParams();
+    if (state.view) p.set("type", state.view);
+    const data = await api("/api/days?" + p);
+    state.days = data.items.map((r) => r.d); // newest first
+  } catch {
+    state.days = [];
+  }
+}
+
+function syncDateInputs() {
+  document.getElementById("d-from").value = state.from || "";
+  document.getElementById("d-to").value = state.to && state.to !== state.from ? state.to : "";
+  document.getElementById("day-clear").hidden = !state.from && !state.to;
+}
+
+function applyDates(from, to, push) {
+  state.from = from || null;
+  state.to = to || from || null;
+  syncDateInputs();
+  if (push) history.pushState(null, "", urlFor((byKey(state.view) || TABS[0]).slug, null));
+  loadThoughts(true);
+}
+
+function stepDay(dir) { // -1 = earlier day with entries, +1 = later
+  if (!state.days.length) return;
+  const cur = state.from && state.from === state.to ? state.from : null;
+  let target = null;
+  if (!cur) target = dir < 0 ? state.days[0] : null; // no selection: ‹ jumps to the latest day
+  else if (dir < 0) target = state.days.find((d) => d < cur);
+  else target = [...state.days].reverse().find((d) => d > cur);
+  if (target) applyDates(target, target, true);
+}
+
 function switchView(key) {
   state.view = key;
   state.items = [];
@@ -253,8 +296,12 @@ function switchView(key) {
     b.setAttribute("aria-current", b.dataset.key === key ? "true" : "false");
   }
   document.getElementById("search-wrap").hidden = key === "lessons";
+  document.getElementById("datebar").hidden = key === "lessons";
   if (key === "lessons") loadLessons();
-  else loadThoughts(true);
+  else {
+    loadDays();
+    loadThoughts(true);
+  }
 }
 
 // The address bar is the single source of truth for which tab (and lesson) is
@@ -262,6 +309,11 @@ function switchView(key) {
 function applyLocation() {
   const p = new URLSearchParams(location.search);
   state.focusLesson = p.get("lesson");
+  const DATE = /^\d{4}-\d{2}-\d{2}$/;
+  const from = p.get("from"), to = p.get("to");
+  state.from = DATE.test(from || "") ? from : null;
+  state.to = DATE.test(to || "") ? to : state.from;
+  syncDateInputs();
   const tab = (state.focusLesson ? bySlug("lessons") : bySlug(p.get("tab") || "")) || TABS[0];
   switchView(tab.key);
 }
@@ -286,6 +338,16 @@ function init() {
       if (state.view !== "lessons") loadThoughts(true);
     }, 300);
   });
+  document.getElementById("day-prev").addEventListener("click", () => stepDay(-1));
+  document.getElementById("day-next").addEventListener("click", () => stepDay(1));
+  document.getElementById("day-clear").addEventListener("click", () => applyDates(null, null, true));
+  const onDate = () => {
+    const f = document.getElementById("d-from").value || null;
+    const t = document.getElementById("d-to").value || null;
+    applyDates(f || t, t, true);
+  };
+  document.getElementById("d-from").addEventListener("change", onDate);
+  document.getElementById("d-to").addEventListener("change", onDate);
   document.getElementById("more").addEventListener("click", () => loadThoughts(false));
   window.addEventListener("popstate", applyLocation);
   applyLocation();

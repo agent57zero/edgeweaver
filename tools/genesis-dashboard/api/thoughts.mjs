@@ -27,6 +27,20 @@ export default async function handler(req, res) {
     args.push(before);
     where.push(`t.created_at < $${args.length}`);
   }
+  // Optional day filter (presentation-timezone dates, D16): from/to are
+  // YYYY-MM-DD; a single day is from=to. Powers the arrows and the calendar.
+  const DATE = /^\d{4}-\d{2}-\d{2}$/;
+  const from = p.get("from") || null;
+  const to = p.get("to") || null;
+  if ((from && !DATE.test(from)) || (to && !DATE.test(to))) return json(res, 400, { error: "bad date" });
+  if (from) {
+    args.push(from);
+    where.push(`(t.created_at AT TIME ZONE 'America/New_York')::date >= $${args.length}::date`);
+  }
+  if (to) {
+    args.push(to);
+    where.push(`(t.created_at AT TIME ZONE 'America/New_York')::date <= $${args.length}::date`);
+  }
   args.push(limit + 1);
 
   try {

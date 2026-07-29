@@ -20,6 +20,15 @@
   <input type="search" id="q" placeholder="Search the visible room&hellip;" aria-label="Search Genesis's visible memories">
 </div>
 
+<div class="datebar" id="datebar">
+  <button id="day-prev" title="Earlier day with entries" aria-label="Earlier day">&#8249;</button>
+  <input type="date" id="d-from" aria-label="From date">
+  <span class="datesep">to</span>
+  <input type="date" id="d-to" aria-label="To date (leave empty for a single day)">
+  <button id="day-next" title="Later day with entries" aria-label="Later day">&#8250;</button>
+  <button id="day-clear" class="linkish" hidden>all time</button>
+</div>
+
 <main id="timeline" aria-live="polite"></main>
 <div class="more-wrap"><button id="more" hidden>Load more</button></div>
 

@@ -17,6 +17,15 @@
   --k-tgout: #0f766e;
   --k-tgin: #64748b;
   --k-cli: #b45309;
+  /* One color per memory type (D38 round 2): tabs, chips, card edges */
+  --t-all: #6b7280;
+  --t-episode: #0f766e;
+  --t-diary: #b45309;
+  --t-autobio: #4d7c0f;
+  --t-dream: #7c3aed;
+  --t-initiation: #db2777;
+  --t-inner: #4f46e5;
+  --t-lessons: #0284c7;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -31,6 +40,14 @@
     --k-tgout: #2dd4bf;
     --k-tgin: #94a3b8;
     --k-cli: #d97706;
+    --t-all: #9ca3af;
+    --t-episode: #2dd4bf;
+    --t-diary: #d97706;
+    --t-autobio: #84cc16;
+    --t-dream: #a78bfa;
+    --t-initiation: #f472b6;
+    --t-inner: #818cf8;
+    --t-lessons: #38bdf8;
   }
 }
 
@@ -50,10 +67,20 @@ h1 { font: 700 26px Georgia, serif; margin: 0; }
 
 .tabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
 .tabs button {
+  --tab: var(--t-all);
   font: inherit; font-size: 13px; padding: 5px 11px; border-radius: 999px;
-  border: 1px solid var(--line); background: transparent; color: inherit; cursor: pointer;
+  border: 1px solid color-mix(in srgb, var(--tab) 60%, transparent);
+  background: color-mix(in srgb, var(--tab) 7%, transparent);
+  color: var(--tab); cursor: pointer; font-weight: 600;
 }
-.tabs button[aria-current="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.tabs button[aria-current="true"] { background: var(--tab); border-color: var(--tab); color: #fff; }
+.tabs button[data-key="edgeweaver_episode"] { --tab: var(--t-episode); }
+.tabs button[data-key="diary"] { --tab: var(--t-diary); }
+.tabs button[data-key="autobiography_draft"] { --tab: var(--t-autobio); }
+.tabs button[data-key="dream"] { --tab: var(--t-dream); }
+.tabs button[data-key="initiation"] { --tab: var(--t-initiation); }
+.tabs button[data-key="inner_dialogue"] { --tab: var(--t-inner); }
+.tabs button[data-key="lessons"] { --tab: var(--t-lessons); }
 
 .controls input {
   width: 100%; box-sizing: border-box; font: inherit; padding: 8px 12px;
@@ -73,16 +100,46 @@ h1 { font: 700 26px Georgia, serif; margin: 0; }
 .card.interpretation { border-left-color: var(--interpretation); }
 .card.fiction { border-left-color: var(--fiction); }
 
-/* Session-stream cards: one color per kind, border + faint wash, so the
-   stream reads at a glance (inner = indigo, out = teal, in = slate, CLI = amber). */
-.card.dlg.kind-inner { border-left-color: var(--k-inner); background: color-mix(in srgb, var(--k-inner) 5%, var(--card)); }
-.card.dlg.kind-tgout { border-left-color: var(--k-tgout); background: color-mix(in srgb, var(--k-tgout) 5%, var(--card)); }
-.card.dlg.kind-tgin  { border-left-color: var(--k-tgin);  background: color-mix(in srgb, var(--k-tgin) 5%, var(--card)); }
-.card.dlg.kind-cli   { border-left-color: var(--k-cli);   background: color-mix(in srgb, var(--k-cli) 5%, var(--card)); }
-.chip.kind-inner { color: var(--k-inner); border-color: var(--k-inner); }
-.chip.kind-tgout { color: var(--k-tgout); border-color: var(--k-tgout); }
-.chip.kind-tgin  { color: var(--k-tgin);  border-color: var(--k-tgin); }
-.chip.kind-cli   { color: var(--k-cli);   border-color: var(--k-cli); }
+/* Per-type coloring (D38 round 2): every card edge and type chip carries its
+   type's color, so mixed views (Everything) read at a glance. These come after
+   the class rules so the type color wins the card edge. */
+.card.t-edgeweaver_episode { border-left-color: var(--t-episode); background: color-mix(in srgb, var(--t-episode) 4%, var(--card)); }
+.card.t-diary { border-left-color: var(--t-diary); background: color-mix(in srgb, var(--t-diary) 4%, var(--card)); }
+.card.t-autobiography_draft { border-left-color: var(--t-autobio); background: color-mix(in srgb, var(--t-autobio) 4%, var(--card)); }
+.card.t-dream { border-left-color: var(--t-dream); background: color-mix(in srgb, var(--t-dream) 4%, var(--card)); }
+.card.t-initiation { border-left-color: var(--t-initiation); background: color-mix(in srgb, var(--t-initiation) 4%, var(--card)); }
+.chip.t-edgeweaver_episode { color: var(--t-episode); border-color: var(--t-episode); background: color-mix(in srgb, var(--t-episode) 10%, transparent); font-weight: 600; }
+.chip.t-diary { color: var(--t-diary); border-color: var(--t-diary); background: color-mix(in srgb, var(--t-diary) 10%, transparent); font-weight: 600; }
+.chip.t-autobiography_draft { color: var(--t-autobio); border-color: var(--t-autobio); background: color-mix(in srgb, var(--t-autobio) 10%, transparent); font-weight: 600; }
+.chip.t-dream { color: var(--t-dream); border-color: var(--t-dream); background: color-mix(in srgb, var(--t-dream) 10%, transparent); font-weight: 600; }
+.chip.t-initiation { color: var(--t-initiation); border-color: var(--t-initiation); background: color-mix(in srgb, var(--t-initiation) 10%, transparent); font-weight: 600; }
+
+/* Session-stream cards: one color per kind, border + a PRONOUNCED wash, so
+   the stream reads at a glance (inner = indigo, out = teal, in = slate,
+   CLI = amber). After the type rules so the kind wash wins on the stream. */
+.card.dlg { border-left-width: 4px; }
+.card.dlg.kind-inner { border-left-color: var(--k-inner); background: color-mix(in srgb, var(--k-inner) 13%, var(--card)); }
+.card.dlg.kind-tgout { border-left-color: var(--k-tgout); background: color-mix(in srgb, var(--k-tgout) 13%, var(--card)); }
+.card.dlg.kind-tgin  { border-left-color: var(--k-tgin);  background: color-mix(in srgb, var(--k-tgin) 13%, var(--card)); }
+.card.dlg.kind-cli   { border-left-color: var(--k-cli);   background: color-mix(in srgb, var(--k-cli) 13%, var(--card)); }
+.chip.kind-inner { color: var(--k-inner); border-color: var(--k-inner); background: color-mix(in srgb, var(--k-inner) 14%, transparent); font-weight: 700; }
+.chip.kind-tgout { color: var(--k-tgout); border-color: var(--k-tgout); background: color-mix(in srgb, var(--k-tgout) 14%, transparent); font-weight: 700; }
+.chip.kind-tgin  { color: var(--k-tgin);  border-color: var(--k-tgin);  background: color-mix(in srgb, var(--k-tgin) 14%, transparent); font-weight: 700; }
+.chip.kind-cli   { color: var(--k-cli);   border-color: var(--k-cli);   background: color-mix(in srgb, var(--k-cli) 14%, transparent); font-weight: 700; }
+
+/* Date navigation (D38 round 2) */
+.datebar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 16px; }
+.datebar button {
+  font: inherit; font-size: 15px; line-height: 1; padding: 6px 12px; border-radius: 999px;
+  border: 1px solid var(--line); background: transparent; color: inherit; cursor: pointer;
+}
+.datebar button:hover { border-color: var(--accent); color: var(--accent); }
+.datebar button.linkish { border: none; font-size: 13px; }
+.datebar input[type="date"] {
+  font: inherit; font-size: 13px; padding: 5px 9px; border: 1px solid var(--line);
+  border-radius: 9px; background: transparent; color: inherit;
+}
+.datesep { color: var(--mut); font-size: 13px; }
 
 .card-head { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 8px; }
 .chip {
