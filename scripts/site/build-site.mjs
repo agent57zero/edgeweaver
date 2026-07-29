@@ -400,7 +400,7 @@ function contextNavFor(current) {
     return `<h2>${esc(section.title)}</h2>\n<ul>\n${items}\n</ul>`;
   });
   if (current.hub === "overview") {
-    rendered.push(`<h2>Primary sources</h2>\n<ul>\n<li><a href="${rootOf(current.slug)}raw/index.html">All files: the raw mirror</a></li>\n</ul>`);
+    rendered.push(`<h2>Primary sources</h2>\n<ul>\n<li><a href="${rootOf(current.slug)}raw/index.html">All files: the raw mirror</a></li>\n<li><a href="${rootOf(current.slug)}raw/soul/index.html">Soulfiles: the soul hub</a></li>\n</ul>`);
   }
   return rendered.join("\n");
 }
