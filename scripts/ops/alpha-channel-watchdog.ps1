@@ -67,6 +67,7 @@ if ($found -and (Test-Path $closedFlag)) {
   Remove-Item $pidFile -ErrorAction SilentlyContinue
   Remove-Item $closedFlag -ErrorAction SilentlyContinue
   Add-Content -Path "$repo\logs\alpha-channel-watchdog.log" -Value "$(Get-Date -Format s) CLOSED session ended (end-session flag present)"
+  $skipDeadletter = $true
   $found = $null; $wrapper = $null
   Start-Sleep -Seconds 5
 }
@@ -103,6 +104,17 @@ if (-not $found -and -not $wrapper) {
           Set-Content "$repo\state\channel-outage-alpha.json" -Encoding Ascii
         $gapNote = " It was unreachable from $($lastOk.ToString('HH:mm')) to $(Get-Date -Format 'HH:mm'): anything sent to it in that window may never have reached it (Alpha will ask the circle itself once awake)."
       }
+    } catch {}
+  }
+  # DEAD-LETTER EXTRACTION (added 2026-07-28, D33 gate CR-1): before relaunching, mine
+  # the victim transcript for received-but-unanswered messages so the fresh session can
+  # answer them itself (wake skill section 2c). A CLOSED session answered its
+  # conversation by definition, so that branch sets the skip flag. Fail-open: the
+  # extractor always exits 0 and a failure never blocks the relaunch.
+  if (-not $skipDeadletter) {
+    try {
+      $dl = & node "$repo\scripts\ops\channel-deadletter.mjs" alpha
+      Add-Content -Path "$repo\logs\alpha-channel-watchdog.log" -Value "$(Get-Date -Format s) $dl"
     } catch {}
   }
   # Launch via -File, never -Command: Start-Process strips embedded quotes from -Command

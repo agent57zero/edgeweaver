@@ -1,8 +1,10 @@
-# Channel message recovery - plan (PROPOSAL)
+# Channel message recovery - plan (APPROVED, executing)
 
-> Status: **proposal, nothing decided.** Drafted 2026-07-27 at Alan's request ("come up
+> Status: **approved 2026-07-28** - Alan: "Go ahead and execute this plan start to
+> finish" (D33). Gates CR-1..CR-4 are decided as written; execution is underway with
+> results logged in ops-log. Drafted 2026-07-27 at Alan's request ("come up
 > with a plan to reply to messages that are dropped when connection is lost"). Every item
-> marked `STOP - gate` is Alan's call; agents do not advance past one. Authority order
+> marked `STOP - gate` was Alan's call; agents do not advance past an undecided one. Authority order
 > applies as always: PLAN.md / GROWING-EDGEWEAVER.md / FAMILY.md govern; this file is
 > procedure once approved. Triggering incidents: Ali's lost 06:08 message (2026-07-23,
 > ops-log) and Marina's lost first hello (2026-07-27, ops-log).
