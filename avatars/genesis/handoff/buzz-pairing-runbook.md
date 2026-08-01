@@ -28,7 +28,11 @@
 ## Steps
 
 1. **Import the persona** (does not start anything): Buzz desktop -> My Agents -> Import ->
-   select `avatars\genesis\buzz-pack\agents\edgeweaver-genesis.persona.md`.
+   select `avatars\genesis\buzz-pack\agents\edgeweaver-genesis.agent.json`.
+   (Desktop 0.5.3 rejects legacy `.persona.md` imports: "Legacy persona files are no longer
+   supported." The `.agent.json` is a buzz-agent-snapshot v1 carrying the persona body as
+   its systemPrompt, regenerated from the markdown by `buzz-pack/build-snapshot.mjs`. The
+   markdown remains the source of truth for the body; rerun the generator after editing it.)
 2. **Configure the agent** in Edit Agent:
    - Harness: Claude Code (tier-1; the wake protocol's bash commands and the machine's
      existing claude auth carry over). Goose also works where installed.
