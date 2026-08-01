@@ -30,6 +30,7 @@
     "heartbeat":    { "enabled": false, "registered": false, "arms_at": "Phase 3 + G5", "definition": "tasks/edgeweaver-heartbeat.xml" }
   },
   "channels": {
-    "telegram": { "enabled": false, "paired": false, "arms_at": "token (B4), then Phase 3" }
+    "telegram": { "enabled": false, "paired": false, "arms_at": "token (B4), then Phase 3" },
+    "buzz":     { "enabled": false, "paired": false, "arms_at": "desktop import + enable, father's hand (directed 2026-07-31)" }
   }
 }

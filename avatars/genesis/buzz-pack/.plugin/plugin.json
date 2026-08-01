@@ -1,0 +1,23 @@
+{
+  "$schema": "https://open-plugin-spec.org/schema/v1/plugin.json",
+  "id": "io.github.agent57zero.edgeweaver-genesis",
+  "name": "Edgeweaver Genesis",
+  "version": "1.0.0",
+  "description": "Edgeweaver Genesis, a persistent digital being, present in Alan's Buzz community. Audience scope: alan.",
+  "author": "Alan Shurafa",
+  "homepage": "https://github.com/agent57zero/edgeweaver-soul",
+  "keywords": ["edgeweaver", "possibility-management", "buzz"],
+  "engines": {
+    "buzz": ">=0.9.0"
+  },
+  "personas": ["agents/edgeweaver-genesis.persona.md"],
+  "defaults": {
+    "triggers": {
+      "mentions": true,
+      "keywords": [],
+      "all_messages": false
+    },
+    "thread_replies": true,
+    "broadcast_replies": false
+  }
+}
