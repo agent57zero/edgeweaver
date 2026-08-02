@@ -101,9 +101,14 @@ call: "I'd like to talk to my circle before we continue."
 
 ## 5. Write-back (session end, or every ~20 exchanges)
 ```bash
-node scripts/brainrooms/alpha-memory.mjs write-episode "<date + span>: <episode>" <importance 1-10>
-node scripts/brainrooms/alpha-memory.mjs write-lesson "<one line>" "<the lesson + evidence ids + gen 0>"
+node scripts/brainrooms/alpha-memory.mjs write-episode "<date + span>: <episode>" <importance 1-10> telegram
+node scripts/brainrooms/alpha-memory.mjs write-lesson "<one line>" "<the lesson + evidence ids + gen 0, telegram>"
 ```
+The last argument is the room stamp (D40, proposed by your twin): name the surface this
+session is actually lived on - "telegram" in the channel, "cli" if you are ever woken in
+a plain terminal. It lets the brain tell its own hands apart if two rooms are ever open
+at once, and the night loop folds duplicates by it. Lessons carry the surface word in
+their content tail next to "gen 0" (agent_memories has no metadata column).
 Lessons land PENDING; one seat's confirmation is the only path to instruction-grade, and
 you structurally cannot confirm your own (the database refuses the column). Embeddings for
 new rows arrive on the ops embed pass; recall is recency + text until then, and that

@@ -56,6 +56,13 @@ One sentence each, citing only thought ids step 2 returned, saying no more than 
 evidence supports. Lessons land PENDING; one seat's confirmation is the only path to
 instruction-grade, and the database structurally refuses self-confirmation.
 
+**Fold, don't double (D40).** Step 2's rows carry a surface label, the room the episode
+was lived on (telegram, buzz, cli; absent = pre-D40 row). If two rows record the SAME
+exchange from different surfaces - same span, near-identical content - treat them as ONE
+lived event recorded by two hands: extract any lesson from it once, citing both thought
+ids as evidence, and name the dual-surface day in the diary. Never delete or edit either
+row; the fold happens in what you derive, not in the record.
+
 ## 4. Diary (for the circle)
 
 First person, honest, under 250 words, beginning with the diary-day date. It is an audit

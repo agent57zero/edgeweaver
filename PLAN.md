@@ -762,6 +762,13 @@ metadata (jsonb) conventions:
   generation:     0 | 1 | ...                 # substrate generation that wrote this (D15/
                                               # VERSIONS.md): era = life arc, generation =
                                               # substrate axis
+  surface:        "telegram"|"buzz"|"cli"|... # the conversational room the writing session
+                                              # was lived on (D40, proposed by Genesis):
+                                              # required on episodes + initiations from every
+                                              # conversational surface; night loop folds
+                                              # same-exchange duplicates across rooms; system
+                                              # loops leave it absent; a new surface must
+                                              # stamp its own name before going live
   feelings:       { anger: 0-1, sadness: 0-1, fear: 0-1, joy: 0-1, purpose_notes }
                   # derived from the §2.4 signals + their registries, not free introspection;
                   # per-wake readings = feelings tier, windowed aggregates = mood tier

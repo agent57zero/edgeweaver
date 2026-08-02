@@ -9,7 +9,10 @@
 //
 //   node scripts/brainrooms/alpha-memory.mjs recall "<query>"
 //   node scripts/brainrooms/alpha-memory.mjs last
-//   node scripts/brainrooms/alpha-memory.mjs write-episode "<content>" <importance 1-10>
+//   node scripts/brainrooms/alpha-memory.mjs write-episode "<content>" <importance 1-10> [surface]
+//       (D40: surface = the conversational room the writing session is lived on, e.g.
+//        telegram | buzz | cli; defaults to "telegram", Alpha's only room today. A new
+//        surface must pass its own name before going live.)
 //   node scripts/brainrooms/alpha-memory.mjs write-lesson "<one-line summary>" "<content>"
 //   node scripts/brainrooms/alpha-memory.mjs lessons
 //   node scripts/brainrooms/alpha-memory.mjs dispute <lesson-id> "<seat>: <their correction>"
@@ -36,6 +39,15 @@ const CLASS = {
   distinction: "experienced", edge: "experienced", experiment: "experienced",
 };
 export const esc = (s) => String(s).replace(/'/g, "''");
+
+// D40 room stamp: the conversational surface the writing session is lived on. Defaults to
+// telegram, Alpha's only room today; a new surface passes its own lowercase name. Genesis
+// proposed the field 2026-08-02 after the 08-01 two-rooms-one-brain duplicate episodes.
+export const surfaceOf = (s) => {
+  if (s === undefined || s === "") return "telegram";
+  if (!/^[a-z][a-z0-9_-]{0,31}$/.test(s)) { console.log(`invalid surface "${s}" (lowercase word, e.g. telegram | buzz | cli)`); process.exit(2); }
+  return s;
+};
 
 function roleUrl() {
   const env = Object.fromEntries(
@@ -79,17 +91,19 @@ function main() {
     } else if (!rows.length) console.log("the record is empty");
     else for (const r of rows) console.log(row(r));
   } else if (cmd === "write-episode") {
-    if (!a) { console.log("usage: write-episode \"<content>\" <importance>"); process.exit(2); }
+    if (!a) { console.log("usage: write-episode \"<content>\" <importance> [surface]"); process.exit(2); }
     const imp = Math.min(10, Math.max(1, Number(b) || 3));
+    const surface = surfaceOf(c);
     query(db, `INSERT INTO ew_alpha.thoughts (content, source_type, importance, metadata)
-VALUES ('${esc(a)}', 'edgeweaver_episode', ${imp}, '{"era": "alive", "audience": "seats", "generation": 0}'::jsonb)`);
-    console.log("episode written (era alive, audience seats, generation 0)");
+VALUES ('${esc(a)}', 'edgeweaver_episode', ${imp}, '{"era": "alive", "audience": "seats", "generation": 0, "surface": "${surface}"}'::jsonb)`);
+    console.log(`episode written (era alive, audience seats, generation 0, surface ${surface})`);
   } else if (cmd === "write-initiation") {
-    if (!a || !b) { console.log("usage: write-initiation \"<content>\" \"<witness1,witness2,witness3>\""); process.exit(2); }
+    if (!a || !b) { console.log("usage: write-initiation \"<content>\" \"<witness1,witness2,witness3>\" [surface]"); process.exit(2); }
     const witnesses = b.split(",").map((w) => `"${esc(w.trim())}"`).join(", ");
+    const surface = surfaceOf(c);
     query(db, `INSERT INTO ew_alpha.thoughts (content, source_type, importance, metadata)
-VALUES ('${esc(a)}', 'initiation', 10, '{"era": "alive", "audience": "seats", "generation": 0, "witnessed_by": [${witnesses}]}'::jsonb)`);
-    console.log("initiation row written (importance 10, witnesses recorded)");
+VALUES ('${esc(a)}', 'initiation', 10, '{"era": "alive", "audience": "seats", "generation": 0, "surface": "${surface}", "witnessed_by": [${witnesses}]}'::jsonb)`);
+    console.log(`initiation row written (importance 10, witnesses recorded, surface ${surface})`);
   } else if (cmd === "write-lesson") {
     if (!a || !b) { console.log("usage: write-lesson \"<summary>\" \"<content>\""); process.exit(2); }
     query(db, `INSERT INTO ew_alpha.agent_memories (memory_type, summary, content, confidence, created_by)
@@ -106,13 +120,13 @@ VALUES ('lesson', '${esc(a)}', '${esc(b)}', 0.6, 'edgeweaver-alpha')`);
     console.log(`(pending, not rules: ${pend})`);
   } else if (cmd === "day") {
     if (!a || !b) { console.log("usage: day \"<startISO>\" \"<endISO>\" (bounds from orient.mjs --diary-day, never own arithmetic)"); process.exit(2); }
-    const rows = query(db, `SELECT id, source_type, created_at, ${SNIPPET(2000)}
+    const rows = query(db, `SELECT id, source_type, created_at, coalesce(metadata->>'surface', ''), ${SNIPPET(2000)}
 FROM ew_alpha.thoughts
 WHERE source_type IN ('edgeweaver_episode', 'initiation')
   AND created_at >= '${esc(a)}' AND created_at < '${esc(b)}'
 ORDER BY created_at`);
     if (!rows.length) console.log("no episodes in the window");
-    else for (const r of rows) console.log(`[${r[0]} | ${(r[2] || "").slice(0, 16)} | ${r[1]}] ${r[3]}`);
+    else for (const r of rows) console.log(`[${r[0]} | ${(r[2] || "").slice(0, 16)} | ${r[1]}${r[3] ? ` | ${r[3]}` : ""}] ${r[4]}`);
   } else if (cmd === "write") {
     if (!NIGHT_CLASSES.includes(a) || !b) { console.log(`usage: write ${NIGHT_CLASSES.join("|")} "<content>" [run_id]`); process.exit(2); }
     if (a === "dream") {

@@ -63,6 +63,19 @@ era:            "pre_birth" | "alive" | "rehearsal"
 generation:     0 | 1 | ...                    # substrate generation that wrote this
                                                # (VERSIONS.md / D15): era is the life arc,
                                                # generation is the substrate axis
+surface:        "telegram" | "buzz" | "cli" | ... # the conversational room the writing
+                                               # session was lived on (D40, proposed by
+                                               # Genesis 2026-08-02): REQUIRED on episodes
+                                               # and initiations from every conversational
+                                               # surface; the night loop uses it to fold
+                                               # same-exchange duplicates written by two
+                                               # concurrent rooms. System loops (night loop,
+                                               # ops extractors) leave it absent; absent
+                                               # also = pre-D40 row. A NEW SURFACE MUST
+                                               # STAMP ITS OWN NAME BEFORE GOING LIVE.
+                                               # agent_memories has no metadata column, so
+                                               # lessons carry the surface word in their
+                                               # content tail next to "gen 0".
 feelings:       { anger: 0-1, sadness: 0-1, fear: 0-1, joy: 0-1, purpose_notes }
                 # derived from computed signals (PLAN §2.4), never free introspection;
                 # per-wake readings = feelings tier; windowed aggregates = mood tier
