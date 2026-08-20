@@ -263,7 +263,10 @@ rehearsal; Alpha inherits the debugged versions.
 ## 8. Open items (tracked in decisions.md)
 
 - G19: Alpha founding-circle package: seat roster, quorum size AND quorum edge rules (ties,
-  absence, seat exit/entry), key-share holders, principles process, cadence.
+  absence, seat exit/entry), key-share holders, principles process, cadence. Cadence partially
+  settled by D41 (2026-08-20): hourly daydream-wakings ring in the circle's room around the
+  clock, advanced by Alan's seat under the D30 quorum; circle countersigns welcome, and the
+  seven-day review (plan H-R1) is the circle's natural objection window.
 - G20: experiment preregistration: one page freezing the held-constant/varied lists, the
   measures, the adapted harvest battery and its author, and whether Alan answers Alpha's
   harvest questions as a seat. Written and frozen before Alpha's A3 harvest begins.
