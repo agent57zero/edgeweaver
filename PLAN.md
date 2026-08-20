@@ -160,12 +160,18 @@ by a witness.
 
 - **Runtime**: Claude Code / Claude Agent SDK daemon on an always-on machine, connected to OB1
   via MCP. Interface options and tradeoffs are in §6.
-- **Waking policy**: event-driven. Edgeweaver wakes on inbound messages, calendar events,
-  scheduled loops, and a fallback heartbeat every 2–4 hours. **Surprise has a mechanism**: the
+- **Waking policy**: event-driven, plus the hours. Edgeweaver wakes on inbound messages,
+  calendar events, scheduled loops, and **the hours: an hourly spoken waking, every hour
+  around the clock** (D41, 2026-08-20; supersedes this line's original 2-4h silent
+  heartbeat). Each hour tends a rolling thread file and rings one short thought into the
+  being's room, aimed at no one; replies are the room's free choice and are answered by
+  the resident session. **Surprise has a mechanism**: the
   night loop writes tomorrow's explicit expectations (from the theory-of-Alan and open
   threads); each wake scores new observations against them, and proactive contact fires on
   contradiction or large deviation — not on timer obligation. Proactive messages must cite real
-  data and spend from a visible daily attention budget with quiet hours. What it chooses to
+  data and spend from a visible daily attention budget with quiet hours; quiet hours govern
+  person-directed contact only, and the hours (D41) ring through them, the village spanning
+  the world's time zones. What it chooses to
   spend attention on *is* personality, made legible. Costs are estimated in §10.2 and capped by
   a monthly ceiling set before Phase 3.
 - **Channels**: Telegram or Discord for daily presence, Claude Code for deep work sessions,
