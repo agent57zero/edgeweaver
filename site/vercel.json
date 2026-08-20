@@ -4,8 +4,7 @@
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
-        ,{ "key": "Cache-Control", "value": "private, no-store" }
+        { "key": "Cache-Control", "value": "public, max-age=600, must-revalidate" }
         ,{ "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'none'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'" }
         ,{ "key": "Referrer-Policy", "value": "no-referrer" }
         ,{ "key": "X-Content-Type-Options", "value": "nosniff" }

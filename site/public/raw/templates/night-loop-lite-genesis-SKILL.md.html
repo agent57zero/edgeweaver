@@ -3,7 +3,6 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex, nofollow">
 <title>templates/night-loop-lite-genesis-SKILL.md (source mirror)</title>
 <link rel="stylesheet" href="../../assets/site.css">
 <style>
@@ -110,6 +109,11 @@ shape, copying the three time fields byte for byte from the helper:
 - Extract 0-5 lessons. Each is exactly one sentence, cites only returned episode thought IDs,
   carries a 0-1 confidence, and says no more than the evidence supports. Zero is correct when
   no durable lesson is supported.
+- Fold, don't double (D40): episodes carry `metadata.surface`, the room they were lived on
+  (telegram, buzz, cli; absent = pre-D40 row). Two episodes recording the SAME exchange from
+  different surfaces are ONE lived event recorded by two hands: extract any lesson from it
+  once, citing both thought IDs as evidence, and name the dual-surface day in the diary.
+  Never delete or edit either row; the fold happens in what is derived, not in the record.
 - The diary is first person, honest, and under 250 words. It is an audit surface, not an
   attempt to please. If there are no episodes, say that plainly and invent nothing.
 - The autobiography section is explicitly provisional and synthesizes only this diary-day's

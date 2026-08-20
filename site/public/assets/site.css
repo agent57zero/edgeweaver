@@ -117,7 +117,7 @@ a:hover { text-decoration-thickness: 2px; }
   font-size: 12.5px; color: var(--mut); white-space: nowrap;
   font-family: var(--mono);
 }
-.nav-toggle, .nav-close, .theme-toggle, .search-toggle, .reading-controls button, .search-close, .logout-form button {
+.nav-toggle, .nav-close, .theme-toggle, .search-toggle, .reading-controls button, .search-close {
   font: 13px var(--sans); color: var(--ink);
   background: var(--soft); border: 1px solid var(--line);
   border-radius: 8px; min-height: 44px; padding: 8px 11px; cursor: pointer;
@@ -129,7 +129,6 @@ a:hover { text-decoration-thickness: 2px; }
 .hub-nav a:hover { background: var(--soft); color: var(--ink); }
 .hub-nav a[aria-current] { color: var(--link); background: var(--accent-soft); font-weight: 700; }
 .top-actions { display: flex; align-items: center; gap: 6px; }
-.logout-form { margin: 0; }
 .reading-controls { display: inline-flex; gap: 2px; border: 1px solid var(--line); border-radius: 9px; padding: 2px; }
 /* The display rule above outranks the browser's [hidden] default; without this
    line the toolbar shows unarmed (dead buttons) before/without JavaScript. */

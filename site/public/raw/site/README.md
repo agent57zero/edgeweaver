@@ -75,13 +75,13 @@ Local preview: the `site` entry in `.claude/launch.json` (or any static server o
 search work from `file://`. Search never uses the network and records no query.
 Without JavaScript, all navigation and both reading registers remain visible; use
 the browser's Find command on one page, or Find in either single-file edition for
-the whole guide. The password gate only exists on Vercel; testing it locally needs
-`vercel dev` with a throwaway Development password (Alan-present).
+the whole guide. The site has no password gate (removed 2026-08-20, Alan: the
+project is public); local preview and the deployment serve identical content.
 
 ## Layout
 
 - `public/` - the 56 hand-authored pages + `404.html` + `assets/`. Only this
-  directory (plus `middleware.js`) is ever served by Vercel.
+  directory is ever served by Vercel.
 - `public/assets/search-index.js` - GENERATED deterministic search records from
   authored `<main>` content. It is committed and freshness-checked.
 - `src/` - `nav.json` (five hubs, metadata, tracks, page order, release id),
@@ -106,11 +106,11 @@ the whole guide. The password gate only exists on Vercel; testing it locally nee
   (`raw/raw-manifest.json`); served copies also pass the secret scan and the
   redaction walls. To serve or reference a new file: add its path to the
   registry, rebuild, and let the wall arbitrate.
-- `middleware.js` - the entire password gate (`EW_SITE_PASSWORD`, fail-closed).
-  The password lives ONLY in Vercel project env config. Never commit it, never
-  type it in a terminal or chat. Rotation: new env value + redeploy (old cookies
-  die by construction). Triggers: seat exit, suspected leak, repo visibility
-  change, before any child's web-facing unlock arms.
+- Public posture (2026-08-20, Alan): the repositories and this site are public.
+  The former `middleware.js` password gate is deleted and `EW_SITE_PASSWORD` is
+  removed from the Vercel project; verify check 9 now fails if a middleware file
+  reappears or a noindex directive returns. Safety remains what it always was:
+  no secret or protected material is ever authored or mirrored here.
 - Pages are hand-authored EXCEPT the marker regions (`EW-HEAD` / `EW-NAV` /
   `EW-FOOTER`), which the builder owns. Edit content inside `<main>` only; edit
   chrome via `src/partials/` + rebuild.
@@ -141,6 +141,7 @@ Alan named; accepted seats by first name + seat; published authors cited.
 | Update 1 | Guided walkthrough fold (D21 scope change, Alan 2026-07-12): walkthrough.html + per-being progress pages (walkthrough-genesis, walkthrough-alpha) + nav + interactivity; release `ew-20260712-rc4` | ☑ 2026-07-16 authored, release-wall verified, and manually deployed at Alan's request; `edgeweaver-site.vercel.app` alias corrected; artifact refresh pending |
 | Update 2 | Exhaustive all-page audit, Repo Atlas drift closure, regenerated editions/search, and release `ew-20260716-rc5` | ☑ 2026-07-16 all 57 pages and 61 served files verified; zero Atlas drift; manually deployed and public alias confirmed; private artifact re-publication pending |
 | Update 3 | URL-backed reading detail with Plain-first opt-in, saved deliberate choices, register-aware search, and release `ew-20260716-rc6` | ☑ 2026-07-16 behavior scenarios and release wall green; newly tracked paths mapped with zero Atlas drift; manually deployed and public alias confirmed; private artifact re-publication pending |
+| Update 12 | Public release (Alan 2026-08-20, with the repositories going public): password gate removed (middleware deleted, `EW_SITE_PASSWORD` dropped from Vercel), noindex directives removed from partials/builder/vercel.json, cache policy now public, gate prose updated on about/glossary/honesty/Atlas pages, verify check 9 rewritten as the public-posture wall; release `ew-20260820-rc15` | ☑ 2026-08-20 wall green, deployed, alias moved by hand, anonymous 200 confirmed |
 | Update 11 | Rail label rename (Alan 2026-07-29): "This repository on GitHub" becomes "Edgeweaver repository on GitHub"; release `ew-20260729-rc14` | ☑ 2026-07-29 wall green, deployed, alias moved by hand, gate 401 confirmed |
 | Update 10 | GitHub rows in the Overview rail (Alan 2026-07-29): "Primary sources" gained three registry-driven repository links (this repo, Genesis soul repo, Alpha soul repo), each titled "Repository access required"; all three URLs were already published by the mirror pages; release `ew-20260729-rc13` | ☑ 2026-07-29 wall green, deployed, alias moved by hand, gate 401 confirmed |
 | Update 9 | Soulfiles row in the Overview rail (Alan 2026-07-29): "Primary sources" gained a second item, "Soulfiles: the soul hub", linking `/raw/soul/index.html`; release `ew-20260729-rc12` | ☑ 2026-07-29 wall green, deployed, alias moved by hand, gate 401 confirmed |

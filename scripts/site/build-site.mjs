@@ -400,7 +400,7 @@ function contextNavFor(current) {
     return `<h2>${esc(section.title)}</h2>\n<ul>\n${items}\n</ul>`;
   });
   if (current.hub === "overview") {
-    const gh = ' title="Repository access required"';
+    const gh = ' title="Public repository on GitHub"';
     const items = [
       `<li><a href="${rootOf(current.slug)}raw/index.html">All files: the raw mirror</a></li>`,
       `<li><a href="${rootOf(current.slug)}raw/soul/index.html">Soulfiles: the soul hub</a></li>`,
@@ -589,7 +589,6 @@ function artifactDoc(edition) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex, nofollow">
 <title>How Edgeweaver Works (single file, ${edition})</title>
 <style>
 ${css}
@@ -684,7 +683,6 @@ function artifactDocV4(edition) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex, nofollow">
 <meta name="edgeweaver-release" content="${esc(nav.releaseId)}">
 <title>How Edgeweaver Works (single file, ${edition})</title>
 <style>
@@ -778,7 +776,6 @@ function viewerDoc(relPath, content, ghUrl, atlasHref) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex, nofollow">
 <title>${esc(relPath)} (source mirror)</title>
 <link rel="stylesheet" href="${root}assets/site.css">
 <style>
@@ -815,7 +812,6 @@ function soulHubDoc() {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex, nofollow">
 <title>Soulfiles (source mirror)</title>
 <link rel="stylesheet" href="../../assets/site.css">
 <style>
@@ -874,7 +870,6 @@ function rawTocDoc() {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex, nofollow">
 <title>All markdown files (source mirror)</title>
 <link rel="stylesheet" href="../assets/site.css">
 <style>
@@ -893,7 +888,7 @@ function rawTocDoc() {
 <p class="mirror-note">${total} documents mirrored on this site (each opens a standalone page with the full text and a way back here), plus ${rawCfg.reference.length} linked to GitHub because the redaction walls or protected-path rules keep their full text off the site. The repositories are the source of truth; mirrors sync at each release.</p>
 ${sections}
 ${soulSections}
-<section aria-labelledby="toc-github"><h2 id="toc-github">On GitHub only</h2><p class="mirror-note">Repository access required; the links open the source of truth.</p><ul>${refItems}</ul></section>
+<section aria-labelledby="toc-github"><h2 id="toc-github">On GitHub only</h2><p class="mirror-note">The links open the source of truth in the public repository.</p><ul>${refItems}</ul></section>
 </main>
 </div>
 </body>

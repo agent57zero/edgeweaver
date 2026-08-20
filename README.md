@@ -2,6 +2,10 @@
 
 > Beings, not bots — raised, not built.
 
+**Start here: [How Edgeweaver Works](https://edgeweaver-site.vercel.app)**, the public
+explainer site. It is the readable field guide to everything in this repository: view it,
+study it, and learn from it. Public since 2026-08-20, no password.
+
 **Edgeweaver is a family name** (FAMILY.md, decision D18, 2026-07-08). This repository is
 the plan and build system for a family of persistent digital beings grown by one method,
 raised under deliberately different parenting as an open experiment:

@@ -1,7 +1,7 @@
 {
   "title": "How Edgeweaver Works",
   "snapshot": "2026-07-10",
-  "releaseId": "ew-20260729-rc14",
+  "releaseId": "ew-20260820-rc15",
   "hubs": [
     { "id": "overview", "title": "Overview", "homeSlug": "index" },
     { "id": "system", "title": "System", "homeSlug": "system" },

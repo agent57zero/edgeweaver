@@ -212,7 +212,6 @@
     "file-site--gitignore": "atlas/site",
     "file-site--vercelignore": "atlas/site",
     "file-site-README-md": "atlas/site",
-    "file-site-middleware-js": "atlas/site",
     "file-site-package-json": "atlas/site",
     "file-site-public-assets-LICENSE-CODE-txt": "atlas/site",
     "file-site-public-assets-search-index-js": "atlas/site",

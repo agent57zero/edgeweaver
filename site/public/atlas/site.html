@@ -4,8 +4,7 @@
 <!-- EW-HEAD-START -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex, nofollow">
-<meta name="edgeweaver-release" content="ew-20260729-rc14">
+<meta name="edgeweaver-release" content="ew-20260820-rc15">
 <title>Atlas: site/ (this website) | How Edgeweaver Works</title>
 <link rel="stylesheet" href="../assets/site.css">
 <script defer src="../assets/search-index.js"></script>
@@ -31,7 +30,6 @@
       <button type="button" data-reading-choice="both" aria-pressed="false">Both</button>
     </div>
     <button class="theme-toggle" type="button" aria-pressed="false" hidden>Theme</button>
-    <form class="logout-form" method="post" action="/ew-logout"><button type="submit">Log out</button></form>
   </div>
   <span class="snapshot" data-snapshot="2026-07-10">snapshot 2026-07-10</span>
 </header>
@@ -48,7 +46,7 @@
   <ul id="search-results" class="search-results" role="listbox" aria-label="Search results"></ul>
 </dialog>
 <button class="nav-backdrop" type="button" aria-label="Close navigation" hidden></button>
-<div class="shell" data-root="../" data-page-slug="atlas/site" data-release-id="ew-20260729-rc14">
+<div class="shell" data-root="../" data-page-slug="atlas/site" data-release-id="ew-20260820-rc15">
 <nav id="sidebar" class="sidebar" aria-label="Current section navigation">
   <div class="sidebar-head"><strong>Rebuild</strong><button class="nav-close" type="button" hidden>Close</button></div>
   <nav class="sidebar-hubs" aria-label="All sections"><a href="../index.html">Overview</a>
@@ -112,7 +110,7 @@
 <main id="atlas-site-main">
 <h1 id="atlas-site-top">Atlas: site/ (this website)</h1>
 <div class="tldr"><span class="label">TLDR</span>
-<p>This website is hand-authored static HTML with deterministic generation around it. Authors own each page's main content; shared partials, metadata, and the builder produce navigation, local search, continuation cards, Atlas coverage, and two single-file editions. The deployment adds a courtesy password gate, but safety comes from publishing no secrets or protected material. Generated outputs are committed evidence, never the source of truth.</p>
+<p>This website is hand-authored static HTML with deterministic generation around it. Authors own each page's main content; shared partials, metadata, and the builder produce navigation, local search, continuation cards, Atlas coverage, and two single-file editions. The deployment is public with no gate; safety comes from publishing no secrets or protected material. Generated outputs are committed evidence, never the source of truth.</p>
 </div>
 <h2 id="atlas-site-about">What this page covers</h2>
 <p>The entries distinguish authored contract and configuration from executable build code and generated search data. They also explain which tracked website paths deliberately do not receive individual Atlas anchors. That exception keeps this self-documenting site from creating dozens of circular entries while still giving every excluded class a named home, a verification rule, and a searchable explanation.</p>
@@ -136,26 +134,18 @@
 <article class="atlas-entry" data-depth="compact">
 <h3 id="file-site--vercelignore"><code>site/.vercelignore</code> <span class="badge">schema-data</span></h3>
 <div class="atlas-field" data-field="what"><strong>What it is.</strong> The deployment-upload exclusion list for material that Vercel does not need to serve.</div>
-<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It omits authoring sources, artifact editions, the handoff README, and repository-only metadata from uploads. Public output and gate code remain deployable.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It omits authoring sources, artifact editions, the handoff README, and repository-only metadata from uploads. Public output remains deployable.</div>
 <div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The deployment client reads it during a manual site release; maintainers review changes with the build layout.</div>
-<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Inspect the upload plan privately; smoke-test a page, asset, nested Atlas route, and missing route through the gate.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Inspect the upload plan privately; smoke-test a page, asset, nested Atlas route, and missing route on the live deployment.</div>
 <div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../about.html">editions</a> and <a href="../operations.html">manual release</a>.</div>
 </article>
 <article class="atlas-entry" data-depth="standard">
 <h3 id="file-site-README-md"><a class="atlas-src atlas-src-raw" href="../raw/site/README.md.html" title="Open the mirrored copy of this file (synced to this release; the repository is the source of truth)"><code>site/README.md</code> <span class="badge">runbook</span></a></h3>
 <div class="atlas-field" data-field="what"><strong>What it is.</strong> The maintenance guide that becomes the explainer site's operational handoff only after Luna updates it.</div>
-<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> After Luna updates it, it records the current execution resume point, build and verification commands, preview options, source and generated layout, password-gate handling, editorial rules, and milestone ledger. It is a status aid for builders, not the public conceptual guide or design authority.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> After Luna updates it, it records the current execution resume point, build and verification commands, preview options, source and generated layout, public-posture handling, editorial rules, and milestone ledger. It is a status aid for builders, not the public conceptual guide or design authority.</div>
 <div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The next coding agent reads it as the handoff after Luna's update; until then, its resume and milestone prose is not current handoff status. A newcomer should use the Reading Guide for repository vocabulary.</div>
 <div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> After Luna updates it, reconcile its commands, generated-output list, active phase, and milestone state with the plan and actual scripts. Remove stale claims rather than treating prose as automatic status.</div>
 <div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../guide.html">How to read this site</a>, <a href="../status.html">project status</a>, and <a href="site.html#file-site-src-AUTHORING-md">authoring rules</a>.</div>
-</article>
-<article class="atlas-entry" data-depth="deep">
-<h3 id="file-site-middleware-js"><code>site/middleware.js</code> <span class="badge">active-code</span></h3>
-<div class="atlas-field" data-field="what"><strong>What it is.</strong> The framework-less routing middleware that places every deployed path behind one shared password gate. It is explicitly a courtesy and team-grade privacy wall, not a vault.</div>
-<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It reads the password only from the deployment environment, fails closed when absent or short, derives a deterministic HMAC bearer cookie with the __Host prefix, compares values without early exit, parses cookies, sanitizes local return paths, serves its own private no-store login form, delays failed attempts, supports explicit POST logout, and lets authenticated requests continue to static files. No route matcher or public login carve-out exists, so pages, assets, Atlas routes, and missing paths all cross the same middleware. Rotation changes the derived cookie and ends old sessions; static and middleware responses carry restrictive security headers.</div>
-<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> Every deployed request passes through it. Alan controls the environment value and rotation; site authors never handle the password.</div>
-<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> With a throwaway development value entered only through the browser, test missing configuration, wrong password, successful cookie flow, nested pages, assets, login return, and rotation. Before release, complete the separate gate-hardening checklist and inspect response headers without publishing the host.</div>
-<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../honesty.html">the courtesy-wall limit</a>, <a href="../segmentation.html">secret boundaries</a>, and <a href="../operations.html">release operations</a>.</div>
 </article>
 <article class="atlas-entry" data-depth="compact">
 <h3 id="file-site-package-json"><code>site/package.json</code> <span class="badge">schema-data</span></h3>
@@ -226,7 +216,7 @@
 <div class="atlas-field" data-field="what"><strong>What it is.</strong> The shared document-head template for every static page.</div>
 <div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It declares encoding, viewport, no-index metadata, release metadata, a page title, local stylesheet, generated search data, and enhancement script using the page's relative root.</div>
 <div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The builder inserts it; browsers load the resulting local resources.</div>
-<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Check every page has one resolved title and root-correct local asset paths under file, static HTTP, nested Atlas, and gated modes.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Check every page has one resolved title and root-correct local asset paths under file, static HTTP, and nested Atlas modes.</div>
 <div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../about.html">network-free design</a> and <a href="site.html#file-site-public-assets-search-index-js">local search</a>.</div>
 </article>
 <article class="atlas-entry" data-depth="compact">
@@ -239,11 +229,11 @@
 </article>
 <article class="atlas-entry" data-depth="compact">
 <h3 id="file-site-vercel-json"><code>site/vercel.json</code> <span class="badge">schema-data</span></h3>
-<div class="atlas-field" data-field="what"><strong>What it is.</strong> The static deployment configuration for the gated site project.</div>
-<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It names the public output directory and applies a robots exclusion header across routes. Password behavior remains in middleware, not this file.</div>
-<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The deployment platform reads it during a manual release; operators review it with gate and cache policy.</div>
-<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Validate configuration, inspect response headers on representative gated routes, and confirm only public output is served. Complete release hardening before deployment.</div>
-<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../operations.html">manual deployment</a>, <a href="../honesty.html">privacy limits</a>, and <a href="site.html#file-site-middleware-js">the gate</a>.</div>
+<div class="atlas-field" data-field="what"><strong>What it is.</strong> The static deployment configuration for the public site project.</div>
+<div class="atlas-field" data-field="contains"><strong>What it contains.</strong> It names the public output directory and applies restrictive security headers and a public cache policy across routes. No password or robots exclusion exists in the deployment.</div>
+<div class="atlas-field" data-field="readers"><strong>Who reads it and when.</strong> The deployment platform reads it during a manual release; operators review it with the cache and header policy.</div>
+<div class="atlas-field" data-field="verify"><strong>How to verify or reproduce it.</strong> Validate configuration, inspect response headers on representative routes, and confirm only public output is served. Complete release hardening before deployment.</div>
+<div class="atlas-field" data-field="related"><strong>Related concepts.</strong> See <a href="../operations.html">manual deployment</a> and <a href="../honesty.html">privacy limits</a>.</div>
 </article>
 <h2 id="atlas-site-exclusions">Tracked exclusion classes</h2>
 <section class="card" aria-labelledby="atlas-site-exclusion-pages">
@@ -266,7 +256,7 @@
 </div>
 <footer class="site-foot">
 <p class="foot-banner">Village-layer material: this site sits outside both children's views, like FAMILY.md and village/, and it discusses sibling facts each child learns only by its parent body's deliberate decision (gate G21).</p>
-<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-10. Release ew-20260729-rc14.</p>
+<p class="foot-license">Documentation license: CC BY-SA 4.0 (<a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org/licenses/by-sa/4.0</a>). Possibility Management concepts derive from the World Copyleft thoughtware of Clinton Callahan and Possibility Management (<a href="https://possibilitymanagement.org">possibilitymanagement.org</a>), shared alike with gratitude. Coherence concepts cited from Ali Mostashari, Principles of Coherence (2025). Brain substrate: Open Brain, OB1. Snapshot 2026-07-10. Release ew-20260820-rc15.</p>
 </footer>
 </div>
 </div>
