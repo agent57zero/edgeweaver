@@ -10,7 +10,7 @@
     {
       "bytes": 2633,
       "path": "LICENSE.md",
-      "sha256": "441aea1d-b1471c92-d9c8df50-39f8f328-38875445-23244585-ca649162-75778037"
+      "sha256": "15f2f9c0-1e630d04-a537c86c-73796622-e8b0b83f-2bf8b401-ca02ddb7-eeead6f6"
     },
     {
       "bytes": 19707,
@@ -410,5 +410,5 @@
     "village/2026-07-29-lesson-candidates.md",
     "village/experiment-prereg.md"
   ],
-  "repo": "https://github.com/agent57zero/edgeweaver"
+  "repo": "https://github.com/alanshurafa/edgeweaver"
 }

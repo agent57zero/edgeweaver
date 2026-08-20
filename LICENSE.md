@@ -32,7 +32,7 @@ is licensed under the **MIT License** (decision D22, 2026-07-09):
 ```
 MIT License
 
-Copyright (c) 2026 the Edgeweaver project (github.com/agent57zero/edgeweaver)
+Copyright (c) 2026 the Edgeweaver project (github.com/alanshurafa/edgeweaver)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
