@@ -37,6 +37,45 @@ if ($found) {
     Start-Sleep -Seconds 5
   }
 }
+# MUTE DETECTION (added 2026-08-02, mirrored from the Genesis watchdog after an 11-hour
+# dark window there). A session can come up with EVERY existing health signal green -
+# process alive, poller alive, window titled, plugin loaded - and still never submit its
+# own wake prompt, writing NO TRANSCRIPT AT ALL while this watchdog logs "ok" every 15
+# minutes. Proven cause on the Genesis side: launched by Start-Process from inside a
+# Claude Code session, so it inherited CLAUDECODE / CLAUDE_CODE_SESSION_ID and came up
+# nested and mute. A healthy launch creates its transcript within seconds. Nothing is lost
+# by killing it: a session with no transcript has held no conversation.
+# TWO BOUNDS, both learned while writing this check on the Genesis side: the head match is
+# on <command-name>/wake-edgeweaver-alpha and NOT on the bare skill name (a bare match
+# counts the night-loop transcripts, which mention the wake skill in their injected
+# context, and silently passes a mute session); and the window is the STARTUP window only,
+# skipped past a day, so the ~30-day transcript purge can never turn a long-lived healthy
+# session into a false MUTE and kill it.
+$projDir = 'C:\Users\agent\.claude\projects\C--Users-agent-Project-Edgeweaver'
+if ($found) {
+  $ageMin = (New-TimeSpan -Start $found[0].CreationDate -End (Get-Date)).TotalMinutes
+  if ($ageMin -gt 5 -and $ageMin -lt 1440) {
+    $winStart = $found[0].CreationDate.AddMinutes(-1)
+    $winEnd = $found[0].CreationDate.AddMinutes(5)
+    $mine = @(Get-ChildItem "$projDir\*.jsonl" -ErrorAction SilentlyContinue |
+      Where-Object { $_.CreationTime -ge $winStart -and $_.CreationTime -le $winEnd } |
+      Where-Object { ((Get-Content $_.FullName -TotalCount 40 -ErrorAction SilentlyContinue) -join "`n") -like '*<command-name>/wake-edgeweaver-alpha*' })
+    if ($mine.Count -eq 0) {
+      foreach ($p in @($found) + @($wrapper)) { Stop-Process -Id $p.ProcessId -Force -ErrorAction SilentlyContinue }
+      Remove-Item $pidFile -ErrorAction SilentlyContinue
+      # Stamp the window as an outage: the existing stamp is heartbeat-based and only fires
+      # when the MACHINE was dark, but a mute session is the same loss from the being's
+      # side (the poller consumed inbound messages no mind ever saw) and leaves the
+      # watchdog ticking happily. Without this the successor wakes reporting "no outage
+      # stamp, nothing died in the dark", which is what Genesis did after 11 hours mute.
+      '{"from":"' + $found[0].CreationDate.ToString('s') + '","to":"' + (Get-Date -Format s) + '","cause":"mute session, no transcript"}' |
+        Set-Content "$repo\state\channel-outage-alpha.json" -Encoding Ascii
+      Add-Content -Path "$repo\logs\alpha-channel-watchdog.log" -Value "$(Get-Date -Format s) MUTE session killed (alive $([math]::Round($ageMin,1))m, never wrote a transcript); outage window stamped"
+      $found = $null; $wrapper = $null
+      Start-Sleep -Seconds 5
+    }
+  }
+}
 # STALL DETECTION (added 2026-07-18 after Ali's first message sat unanswered ~40 min):
 # a session can be alive AND polling but frozen mid-turn on a permission prompt, which
 # both process and poller checks read as healthy. channel-notify-hook.mjs writes a stall
@@ -152,5 +191,37 @@ if (-not $found -and -not $wrapper) {
 } else {
   Add-Content -Path "$repo\logs\alpha-channel-watchdog.log" -Value "$(Get-Date -Format s) ok"
 }
+# MODEL-FALLBACK SAFETY NET (added 2026-08-01, mirrored from the Genesis watchdog after
+# Genesis ran two days on claude-opus-4-8 instead of claude-fable-5): the Stop hook
+# catches a fallback within one turn, but a session that dies mid-turn never fires Stop.
+# Detect-and-alert only: the repair ends a live session and stays Alan's hand
+# (scripts\ops\restore-channel-model.ps1). Fail-open; the detector always exits 0.
+try {
+  $mf = (& node "$repo\scripts\ops\model-fallback-watch.mjs" alpha) -join ' '
+  if ($mf -notlike '*no new fallback*') {
+    Add-Content -Path "$repo\logs\alpha-channel-watchdog.log" -Value "$(Get-Date -Format s) $mf"
+  }
+} catch {}
+# PULSE FRESHNESS (added 2026-08-20, D41 the hours): a dead hourly-waking task fails
+# SILENT by construction (no launcher ever runs), so this watchdog is the alert. If the
+# task exists and is not disabled but the stamp is older than 3h, notify Alan once per
+# gap (the seen-file rate limit resets when a fresh stamp lands). Ops alert to the Alan
+# DM on purpose: machinery news is the operator's, not the circle's. Fail-open.
+try {
+  $pt = Get-ScheduledTask -TaskPath '\Edgeweaver\' -TaskName 'EdgeweaverAlphaHourlyWake' -ErrorAction SilentlyContinue
+  $pf = "$repo\state\pulse-lastok-alpha.txt"
+  if ($pt -and $pt.State -ne 'Disabled' -and (Test-Path $pf)) {
+    $ageH = (New-TimeSpan -Start (Get-Item $pf).LastWriteTime -End (Get-Date)).TotalHours
+    if ($ageH -gt 3) {
+      $seen = "$repo\state\pulse-alert-alpha.txt"
+      $already = (Test-Path $seen) -and ((Get-Item $seen).LastWriteTime -gt (Get-Item $pf).LastWriteTime)
+      if (-not $already) {
+        & node "$repo\scripts\ops\send-telegram.mjs" "Ops notice: Alpha's hourly waking has not stamped for $([math]::Round($ageH,1))h; the hours may have stopped. Check logs\alpha-hourly.log and the EdgeweaverAlphaHourlyWake task. (Automated ops notice.)"
+        Get-Date -Format s | Set-Content $seen -Encoding Ascii
+        Add-Content -Path "$repo\logs\alpha-channel-watchdog.log" -Value "$(Get-Date -Format s) PULSE STALE alert sent (age $([math]::Round($ageH,1))h)"
+      }
+    }
+  }
+} catch {}
 # Heartbeat: written every run; its age is the outage detector above.
 Get-Date -Format s | Set-Content $lastOkFile -Encoding Ascii

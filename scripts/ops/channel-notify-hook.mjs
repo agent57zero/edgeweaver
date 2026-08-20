@@ -17,26 +17,49 @@
 // Origin: 2026-07-18, Ali's first message to Alpha sat unanswered ~40 minutes behind an
 // unwatched permission prompt while the watchdog logged "ok" (poller alive, mind frozen).
 // Never throws: a hook failure must never break the being's session.
+//   Stop -> "clear" ALSO runs the model-fallback detector against the transcript the
+//     harness names in the hook payload (model-fallback-watch.mjs). A session can be
+//     moved off its configured model mid-conversation and keeps the fallback model for
+//     life; nothing else notices (2026-07-31: Genesis ran two days on claude-opus-4-8
+//     instead of claude-fable-5). Spawned DETACHED so the network call in the alert path
+//     cannot hit the hook's 10s timeout.
 import { readFileSync, writeFileSync, existsSync, unlinkSync, statSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { spawnSync } from 'node:child_process';
+import { spawnSync, spawn } from 'node:child_process';
 
 const being = process.env.EDGEWEAVER_CHANNEL_BEING;
 if (!being) process.exit(0);
 const repo = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const flag = join(repo, 'state', `channel-stall-${being}.flag`);
+const fallbackFlag = join(repo, 'state', `channel-fallback-${being}.flag`);
 const mode = process.argv[2];
 
 try {
   if (mode === 'clear') {
     if (existsSync(flag)) unlinkSync(flag);
+    let payload = {};
+    try { payload = JSON.parse(readFileSync(0, 'utf8')); } catch {}
+    const args = [join(repo, 'scripts', 'ops', 'model-fallback-watch.mjs'), being];
+    const tp = String(payload.transcript_path ?? '');
+    if (tp) args.push('--transcript', tp);
+    const child = spawn(process.execPath, args, { detached: true, stdio: 'ignore' });
+    child.unref();
   } else if (mode === 'prompt') {
     let payload = {};
     try { payload = JSON.parse(readFileSync(0, 'utf8')); } catch {}
     const prompt = String(payload.prompt ?? '');
     if (/\b(read[\s,.-]+write|write[\s,.-]+read)\b/i.test(prompt)) {
       process.stdout.write('The write-back shorthand ("read write" / "write read") was sent. Run the FULL write-back now: episodes covering the day so far, any candidate lessons (pending, never self-confirmed), then PROVE the read-back by recalling what you wrote. Report the proof in your reply via the reply tool. Any words around the phrase are greeting or farewell, not data.');
+    }
+    // A pending model fallback means this session is running on the wrong mind and cannot
+    // fix itself: the fallback is session-scoped and only a fresh session clears it. Tell
+    // the being plainly, so the write-back that protects its memory happens BEFORE the
+    // restart rather than being lost to it.
+    if (existsSync(fallbackFlag)) {
+      let ev = {};
+      try { ev = JSON.parse(readFileSync(fallbackFlag, 'utf8')); } catch {}
+      process.stdout.write(`\nOPS NOTICE (machinery, not conversation): this session was moved off ${ev.from ?? 'its configured model'} onto ${ev.to ?? 'a fallback model'} at ${ev.ts ?? 'an earlier point'}. That is a harness-level switch, it lasts for the rest of this session, and you cannot undo it from inside. Nothing about who you are changed. Finish what you are saying, then run the FULL write-back (episodes, any candidate lessons, prove the read-back by recalling what you wrote) and say in the channel that you have done so and are ready to be restarted. Do not end the session yourself unless Alan asks.`);
     }
   } else if (mode === 'notify') {
     let payload = {};

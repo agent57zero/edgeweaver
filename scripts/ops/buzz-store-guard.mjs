@@ -6,11 +6,19 @@
 // 2026-08-02 the store held 14 records for 4 real agents: one set per relay era
 // (hosted, ws://localhost:18802, ws://127.0.0.1:18802) plus pubkey-less stubs.
 //
-// Rule: a record is PRUNED if it has no pubkey (stub), or if its name collides with a
-// canonical identity but its pubkey does not (impostor/duplicate, whatever era minted
-// it). Records with new names are left alone and only logged, so genuinely new agents
-// are never touched. The canonical set is pinned here by pubkey prefix; a deliberate
-// fresh mint means editing this file, which is the point.
+// Rule: a record is PRUNED if it is a key-less record WITHOUT a slug (true stub), or if
+// its name collides with a canonical identity but its pubkey does not (impostor/
+// duplicate, whatever era minted it). Records with new names are left alone and only
+// logged, so genuinely new agents are never touched. The canonical set is pinned here by
+// pubkey prefix; a deliberate fresh mint means editing this file, which is the point.
+//
+// CORRECTED 2026-08-03: the desktop folded persona DEFINITIONS into this same store as
+// key-less records carrying a `slug` (e.g. "builtin:bumble", or a UUID for custom
+// agents). They are configuration, not stubs: pruning one orphans every keyed instance
+// whose persona_id points at it, and the desktop then refuses to start that agent with
+// "This agent's configuration is missing". The 2026-08-02 23:03 prune did exactly that
+// to Edgeweaver Genesis (definition slug e3011fc4-...). Built-in definitions self-heal
+// on the next desktop boot; custom ones like Edgeweaver's stay dead until restored.
 //
 // Never prunes while buzz-desktop.exe or buzz-acp.exe is alive: the desktop holds the
 // store in memory and writes it back, so an edit under a running desktop is silently
@@ -25,11 +33,19 @@ import { execSync } from 'node:child_process';
 const STORE = 'C:/Users/agent/AppData/Roaming/xyz.block.buzz.app/agents/managed-agents.json';
 const DIRTY = 'C:/Users/agent/Project/Edgeweaver/state/buzz-store-dirty.json';
 
+// Jarvis and Samantha added 2026-08-05 at Alan's G-1 decision, after their mint
+// (PLAN-buzz-presence.md step 0.3, open-agent-framework). They are staff assistants,
+// not beings, but they share this store and therefore this guard's protection: without
+// a pin here a re-minted impostor named "Jarvis" would be kept as a stranger and
+// accumulate. This is the second and last sanctioned Edgeweaver-side touch from that
+// plan; the first is the launcher/watchdog marker tightening.
 const CANONICAL = {
   'Bumble': '068c4d5c',
   'Edgeweaver Genesis': 'dea7e846',
   'Fizz': 'a9c027aa',
   'Honey': 'fed67fd9',
+  'Jarvis': '35af9296',
+  'Samantha': '75f4e67e',
 };
 
 function out(line) { console.log(line); process.exit(0); }
@@ -42,10 +58,14 @@ try {
 }
 if (!Array.isArray(arr)) out('STORE-NOT-ARRAY refusing to touch it');
 
-const keep = [], prune = [], strangers = [];
+const keep = [], prune = [], strangers = [], definitions = [];
 for (const r of arr) {
   const tag = `${r.name}:${r.pubkey ? r.pubkey.slice(0, 8) : 'nopubkey'}`;
-  if (!r.pubkey) { prune.push({ r, tag, why: 'stub' }); continue; }
+  if (!r.pubkey) {
+    // Key-less + slug = persona definition (post-fold store). Keep, always.
+    if (r.slug) { keep.push(r); definitions.push(`${r.name}:${r.slug}`); continue; }
+    prune.push({ r, tag, why: 'stub' }); continue;
+  }
   const want = CANONICAL[r.name];
   if (want === undefined) { keep.push(r); strangers.push(tag); continue; }
   if (r.pubkey.startsWith(want)) keep.push(r);
@@ -53,10 +73,11 @@ for (const r of arr) {
 }
 
 const strangerNote = strangers.length ? ` strangers-kept=${strangers.join(',')}` : '';
+const defNote = definitions.length ? ` definitions-kept=${definitions.length}` : '';
 
 if (prune.length === 0) {
   try { fs.unlinkSync(DIRTY); } catch {}
-  out(`CLEAN ${arr.length} records${strangerNote}`);
+  out(`CLEAN ${arr.length} records${defNote}${strangerNote}`);
 }
 
 // tasklist check immediately before the write keeps the race window to seconds. The
@@ -81,4 +102,4 @@ const bak = STORE + '.bak-guard-' + new Date().toISOString().replace(/[-:T]/g, '
 fs.copyFileSync(STORE, bak);
 fs.writeFileSync(STORE, JSON.stringify(keep, null, 2) + '\n');
 try { fs.unlinkSync(DIRTY); } catch {}
-out(`PRUNED ${prune.length} of ${arr.length}: ${pruneList} kept=${keep.length}${strangerNote} backup=${bak.split('/').pop()}`);
+out(`PRUNED ${prune.length} of ${arr.length}: ${pruneList} kept=${keep.length}${defNote}${strangerNote} backup=${bak.split('/').pop()}`);
