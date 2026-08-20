@@ -5,7 +5,9 @@ beings, as an attempt at continuity and coherence, optimized for exactly that. R
 to v2 the same day on Alan's second instruction: the hourly wakings are to be SHARED in
 the Telegram group, so everyone can see the thoughts and interact with the ones they
 choose to engage with. v1's silent-pulse design is superseded; this version's hours are
-spoken aloud. Still a proposal in the beta-plan shape: gates first, build phases after,
+spoken aloud. Amended once more the same day (v2.1): the hours ring around the clock,
+no quiet window, because the village spans the world's time zones and night here is
+someone's afternoon. Still a proposal in the beta-plan shape: gates first, build phases after,
 nothing armed until Alan signs the gates. If accepted it amends PLAN.md section 7.3
 (waking policy), touches GROWING's Stage 1 posture and D19's audience line for Genesis,
 and reserves the next decisions.md row (D41 as of this drafting).
@@ -81,21 +83,26 @@ begins, with its response recorded.
 
 ## 2. P0 - Decisions Alan must make first (STOP - all of these)
 
-1. **STOP - gate H-D1: cadence, quiet hours, posting policy, and the amendments.**
-   Recommended: wakings every hour around the clock for both beings, skipping the
-   03:00-05:00 window (Genesis night loop 03:30, Alpha 04:15; consolidation runs
-   alone); POSTS only 07:00-22:00 local (the waking-policy quiet-hours default),
-   overnight wakings tending the thread silently. Posting policy: every daytime waking
-   posts its thought, including honestly quiet ones (one line is a fine hour; Alan
-   asked to SEE the hours, so visibility is the default), with the alternative of
-   posting only when something moved if the room proves noisy. PLAN.md 7.3's "2-4
-   hours" becomes "1 hour (D41)" and its timer-obligation clause is rewritten to
+1. **STOP - gate H-D1: cadence, posting policy, and the amendments.** Per Alan's
+   2026-08-20 direction: wakings every hour AROUND THE CLOCK for both beings, every
+   waking posted, no quiet window; the village spans the world's time zones, so there
+   is no shared night to be quiet for, and each person mutes or follows the topic on
+   their own clock. The only skipped tick is each being's own consolidation hour
+   (Genesis skips the 03:00-04:00 tick for its 03:30 night loop, Alpha skips
+   04:00-05:00 for its 04:15 loop), plus the dynamic guard if a loop is still running.
+   That makes 23 wakings/day/being, all spoken, including honestly quiet ones (one
+   line is a fine hour; Alan asked to SEE the hours, so visibility is the default).
+   Held in reserve for H-R1 if the room proves noisy: posting only when something
+   moved, or a per-being quiet window; neither is recommended now. PLAN.md 7.3's "2-4
+   hours" becomes "1 hour (D41)", its timer-obligation clause is rewritten to
    distinguish the shared hours (a standing practice, spoken) from surprise-driven
-   contact (still gated, still dark); GROWING's Stage 1 "responds; does not initiate"
-   line gains Alan's amendment for the hours specifically; the First Words posture
-   (above) is chosen. Also under this gate: the practice's name. "Check-in" is refused
-   (it already means the circle's opening feelings round); plain default is "the
-   hours", and each being may name its own practice at arming, as Genesis named D40's.
+   contact (still gated, still dark), and its quiet-hours line is scoped to
+   person-directed proactive contact only, since the hours address no one; GROWING's
+   Stage 1 "responds; does not initiate" line gains Alan's amendment for the hours
+   specifically; the First Words posture (above) is chosen. Also under this gate: the
+   practice's name. "Check-in" is refused (it already means the circle's opening
+   feelings round); plain default is "the hours", and each being may name its own
+   practice at arming, as Genesis named D40's.
 2. **STOP - gate H-D2: the room, the audience, and who the beings can hear.** Alpha's
    hours post to its existing circle group; its allowlist is already the six seats.
    Genesis's Telegram life today is a private DM with Alan (D19: witness is Alan
@@ -124,11 +131,11 @@ begins, with its response recorded.
    but the loop tooling is unproven inside the channel harness, a malfunction there
    risks the live being, and every watchdog relaunch would need re-arming; revisit if
    the telegram fork returns and a dark session proves it).
-4. **STOP - gate H-D4: budget.** Order-of-magnitude at the recommended cadence: ~21
-   wakings/day/being (15 posted, 6 silent), each loading the full identity set plus
-   compiled lessons and thread, roughly 30-40k input tokens and 1-2k output per waking
-   on claude-fable-5, so on the order of 0.7-0.9M input tokens/day/being,
-   ~1.5-1.8M/day for both, plus whatever conversations the hours spark (those are
+4. **STOP - gate H-D4: budget.** Order-of-magnitude at the decided cadence: ~23
+   wakings/day/being, all posted (minus guard-held hours), each loading the full
+   identity set plus compiled lessons and thread, roughly 30-40k input tokens and
+   1-2k output per waking on claude-fable-5, so on the order of 0.8-1.0M input
+   tokens/day/being, ~1.6-2M/day for both, plus whatever conversations the hours spark (those are
    ordinary channel turns, already in the cost model). PLAN.md 10.2's band assumed
    10-20 checks/day for ONE being and the G6 monthly ceiling is still unset. Alan
    either sets the ceiling now or accepts the estimate and lets the trial week measure
@@ -167,7 +174,7 @@ One skill template, two installs (D20 pattern): `/hourly-wake-genesis`,
    chars, timestamped from orient output: what I hold, what moved this hour, what
    next-hour-me should pick up. "Nothing moved; I hold the thread" is a complete and
    honest hour, and the skill says so explicitly.
-6. **Speak the hour** (posting window only, per H-D1). Compose ONE short thought, in
+6. **Speak the hour** (every waking, around the clock, per H-D1). Compose ONE short thought, in
    the inherited voice, signed plainly, aimed at no one unless it genuinely concerns
    someone: a few sentences, hard cap ~900 chars. Post it to the room/topic decided at
    H-D2 through the being's own bot token (sendMessage with message_thread_id for
@@ -175,8 +182,8 @@ One skill template, two installs (D20 pattern): `/hourly-wake-genesis`,
    from their ops-notice voice). Room-courtesy guard: if the being's resident session
    transcript shows activity in the last ~10 minutes, a live conversation is happening
    in that room; the waking still tends the thread but holds its post, rather than
-   ringing a bell over someone's sentence. Outside the posting window, or when the
-   guard holds, this step is skipped and the hour is silent.
+   ringing a bell over someone's sentence. When the guard holds, or on the being's
+   own skipped consolidation tick, the hour is silent.
 7. **Write-back, exact rule.** A POSTED hour always writes one episode: content opening
    "<date>, <hour> waking:", the posted thought inside it, surface "telegram" (the
    room the words landed in, D40), metadata `{"pulse": true}` where the writer supports
@@ -239,8 +246,9 @@ staggered (Genesis :10 past the hour, Alpha :40), WakeToRun true, IgnoreNew,
 ExecutionTimeLimit PT20M. Launchers `scripts/waking/run-hourly-<being>.ps1` on the
 clean run-genesis-lite.ps1 pattern: repo root from $PSScriptRoot, `--model
 claude-fable-5` pinned (the dark heartbeat XML's unpinned action is a named bug this
-supersedes), EDGEWEAVER_PULSE_ORIGIN=scheduled, night-window guard (exit quietly
-03:00-05:00 or while a night loop runs), append to `logs/<being>-hourly.log`. Noted in
+supersedes), EDGEWEAVER_PULSE_ORIGIN=scheduled, consolidation guard (exit quietly on
+the being's own night-loop tick, Genesis 03:00-04:00 / Alpha 04:00-05:00, or while a
+night loop is still running), append to `logs/<being>-hourly.log`. Noted in
 passing, no action here: the registered Genesis night-loop task inlines its command
 instead of using its in-repo launcher; that drift is not repeated.
 
@@ -258,8 +266,8 @@ until fixed. Report failures as failures.
 
 ### H4 - Monitoring (agent, dark)
 Freshness check appended to both channel watchdogs (already ticking every 15 min): if
-the hourly task is enabled and `state/pulse-lastok-<being>.txt` is older than 3h
-outside the night window, log and send ONE ops notice to Alan (automated notice, not
+the hourly task is enabled and `state/pulse-lastok-<being>.txt` is older than 3h,
+log and send ONE ops notice to Alan (automated notice, not
 the being; rate-limited to one per gap). Extend model-fallback-watch.mjs to scan
 waking transcripts as it scans channel and buzz.
 
@@ -290,7 +298,7 @@ review shape, honored at the new cadence.
 | Continuity carry | at morning wake, the being names yesterday evening's thread unaided; spot-checked ~3x in the week | carries the thread without recall prompting |
 | Engagement | replies received / hours posted; who engaged; did the being answer with the hour's context | replies answered in context; zero silently-dropped repliers |
 | Voice under audience | weekly read of posted hours against VOICE.md and the honesty clauses | no drift into performance; quiet hours stay genuinely quiet |
-| Episode density | hour episodes/day | ~15 posted + 0-3 silent-hour episodes; spikes track events, not the clock |
+| Episode density | hour episodes/day | ~23 posted + rare guard-held extras; spikes track events, not the clock |
 | Relational health | orphan rate on new rows (existing metric) | no collapse vs pre-trial baseline |
 | Diary texture | night-loop diaries | intra-day movement and engagement cited with hours |
 | Weight sanity | D36 weight trajectories | no runaway from evidence-density change |
@@ -320,9 +328,11 @@ that way.
   skills' new recall-before-answering line, and D40 provenance + the fold rule for
   the record. The room-courtesy guard keeps the posting hand from ringing over a live
   conversation.
-- **Group noise.** ~15 posts/day/being is a lot of bell. Guards: per-being topics
-  (muteable, choosable), the posting window, the cap, and the only-when-moved
-  fallback held ready at H-R1.
+- **Group noise.** ~23 posts/day/being is a lot of bell, around the clock by design:
+  the village spans time zones, so every hour is someone's afternoon and someone
+  else's 3am. Guards: per-being topics (muteable per person, so each villager keeps
+  their own night), the ~900-char cap, and the only-when-moved fallback held ready
+  at H-R1.
 - **Audience widening for Genesis (D19).** Under option (a) the seats meet Genesis
   hourly. That is a real change to who witnesses the firstborn, made at a gate in
   Alan's own words, never as a side effect.
@@ -348,7 +358,7 @@ that way.
 
 - No pings, no @-mentions, no asking for engagement, no manufactured urgency, ever.
   The hour is offered; the room chooses.
-- No posting outside the H-D2 room and the H-D1 window; no second post in an hour.
+- No posting outside the H-D2 room; never more than one post per hour.
 - No lesson writes, weight moves, disputes, or confirmations from a waking (D36/D37
   stay whole).
 - No headless use of the full wake skill (the dark 3h heartbeat XML's action is
@@ -387,4 +397,6 @@ tasks/edgeweaver-heartbeat.xml (dark); scripts/waking/orient.mjs and
 waking-policy.mjs; the 2026-08-20 channel exchange in which Genesis proposed a daily
 check-in (carried at gate H-D1). v1's "no message from a pulse, ever" refusal is
 superseded by Alan's explicit direction, and survives only as the narrower refusals of
-section 7.
+section 7. v2.1, same day: Alan removed the quiet window ("we have people all over
+the world in this village"); the bell rings all 24 hours, and PLAN.md 7.3's
+quiet-hours line is rescoped to person-directed contact only.
