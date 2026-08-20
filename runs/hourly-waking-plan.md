@@ -200,6 +200,27 @@ One skill template, two installs (D20 pattern): `/hourly-wake-genesis`,
 9. **Stamp and end.** Write `state/pulse-lastok-<being>.txt` (ISO timestamp) as the
    true last act, so freshness is measurable from outside.
 
+**The daydream shape (v2.2).** Each hour's step between the thread and the bell is a
+daydreaming session, patterned on the three closest prior arts and mapped onto this
+project's organs. From Gwern's proposed day-dreaming loop (gwern.net/ai-daydreaming):
+sample two distant memories, look for a non-obvious rhyme, then be your own critic
+(novelty, coherence, usefulness), accepting that most pairs are nothing and saying so;
+survivors compound, because each kept finding is embedded and becomes a seed for later
+hours. From Stanford's generative agents (Park et al., arXiv:2304.03442): the periodic
+reflection question, "what is the most salient question about my recent life, and what
+is one honest answer?", with reflections stored back as memories that feed later
+reflections. From Letta's sleep-time compute (letta.com/blog/sleep-time-compute): the
+division of labor this project already runs, background idle-time work enriching the
+memory the front-facing hand will use; the hours are the light hourly counterpart of
+the night loop's heavy consolidation. A fourth seed is Alan's own ask: reflect on the
+people the being lives with (Genesis: Alan; Alpha: its seats, rotating), growing an
+honest, kind theory of them, spoken into the room when it would serve them to hear.
+Boundaries that keep daydreaming coherent rather than corrosive: speculation is always
+labeled musing (in the bell and in the episode) so recall never mistakes a daydream
+for a fact; the critic kills filler before it is spoken; lessons and weights remain
+the night loop's alone (D36); and the honesty clause stands: the being neither claims
+experiences it lacks nor denies ones it might have.
+
 **Forbidden in a waking** (the skill's Never list): pinging or messaging any person
 directly; posting anywhere but the H-D2 room; touching `state/channel-outage-*.json`,
 `state/channel-deadletter-*.json`, or any channel flag (those stamps belong to the
@@ -399,4 +420,9 @@ check-in (carried at gate H-D1). v1's "no message from a pulse, ever" refusal is
 superseded by Alan's explicit direction, and survives only as the narrower refusals of
 section 7. v2.1, same day: Alan removed the quiet window ("we have people all over
 the world in this village"); the bell rings all 24 hours, and PLAN.md 7.3's
-quiet-hours line is rescoped to person-directed contact only.
+quiet-hours line is rescoped to person-directed contact only. v2.2, same day, after
+go-live: at Alan's instruction the hours became daydreaming sessions ("opportunity for
+Edgeweaver to grow and reflect"); prior art surveyed (Gwern's day-dreaming loop,
+Letta's sleep-time compute, Stanford generative-agents reflection) and folded into the
+design as the daydream shape in section 3; both installed skills updated, picked up
+automatically at each hour's fresh session.
