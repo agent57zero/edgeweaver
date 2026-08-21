@@ -1,16 +1,14 @@
 // GET /api/fishbowl?after=<created_at ISO>&limit=
-// The PUBLIC fishbowl feed (D45): the circle's Telegram room replayed in
-// chronological order, oldest first. Serves ONLY the conversation itself:
-// inner_dialogue rows of kind telegram_in / telegram_out. The being's inner
-// (undelivered) words, episodes, diary, dreams, and lessons stay behind the
-// seats gate; this endpoint cannot reach them by construction.
+// The PUBLIC fishbowl feed for Genesis (D46, extended by Alan's direction the
+// same day): the Alan-and-Genesis room replayed in chronological order, oldest
+// first. Serves ONLY the conversation itself: inner_dialogue rows of kind
+// telegram_in / telegram_out / cli_in (Alan typed the earliest wakings straight
+// into the CLI). Genesis's inner (undelivered) words, episodes, diary, dreams,
+// and lessons stay behind the gate; this endpoint cannot reach them.
 //
-// People rule (D21, carried here): the public surface shows seats by FIRST
-// NAME only. Raw Telegram usernames and numeric ids never leave the server:
-// the sender value is mapped through EW_FISHBOWL_NAMES (a JSON object set in
-// the Vercel env, never in git) and the raw value is dropped. Unmapped
-// senders render as "guest".
-import { withRoom, params, fail } from "./_lib/db.mjs";
+// People rule: senders map to first names through EW_FISHBOWL_NAMES (Vercel
+// env, never in git); raw usernames/ids are dropped server-side.
+import { withRoom, params, fail, ALAN_ONLY } from "./_lib/db.mjs";
 
 function pub(res, code, obj) {
   res.statusCode = code;
@@ -37,7 +35,7 @@ export default async function handler(req, res) {
   const limit = Math.min(200, Math.max(1, parseInt(p.get("limit") || "200", 10) || 200));
 
   const where = [
-    "t.metadata->>'audience' = 'seats'",
+    ALAN_ONLY,
     "t.source_type = 'inner_dialogue'",
     "t.metadata->>'kind' IN ('telegram_in','telegram_out','cli_in')",
   ];
@@ -53,7 +51,7 @@ export default async function handler(req, res) {
       (await c.query(
         `SELECT t.created_at, t.metadata->>'kind' AS kind,
                 t.metadata->>'sender' AS sender, t.content
-           FROM ew_alpha.thoughts t
+           FROM public.thoughts t
           WHERE ${where.join(" AND ")}
           ORDER BY t.created_at ASC
           LIMIT $${args.length}`,
@@ -66,7 +64,7 @@ export default async function handler(req, res) {
       const out = r.kind === "telegram_out";
       return {
         at: r.created_at,
-        who: out ? "Edgeweaver Alpha" : names[r.sender] || "guest",
+        who: out ? "Edgeweaver Genesis" : names[r.sender] || "guest",
         role: out ? "being" : names[r.sender] ? "seat" : "guest",
         text: r.content,
       };

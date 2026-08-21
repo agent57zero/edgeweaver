@@ -29,6 +29,10 @@ const MIME = {
   ".js": "text/javascript; charset=utf-8",
   ".svg": "image/svg+xml",
   ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".m4a": "audio/mp4",
+  ".json": "application/json",
 };
 if (env.EW_FISHBOWL_NAMES) process.env.EW_FISHBOWL_NAMES = env.EW_FISHBOWL_NAMES;
 const handlers = {

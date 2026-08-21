@@ -21,7 +21,7 @@ const MAX_AGE = 60 * 60 * 24 * 30; // 30 days
 const MIN_PASSWORD_LENGTH = 20;
 const SECURITY_HEADERS = {
   "cache-control": "private, no-store",
-  "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'none'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'",
+  "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'",
   "referrer-policy": "no-referrer",
   "x-content-type-options": "nosniff",
   "x-frame-options": "DENY",
@@ -108,7 +108,26 @@ ${err}
   });
 }
 
+// D46 (2026-08-21, circle unanimous, extended to Genesis's room by Alan's own
+// direction): the fishbowl is the ONE public carve-out. Exact paths only,
+// GET/HEAD only; everything else stays behind the gate.
+const PUBLIC_PATHS = new Set([
+  "/fishbowl",
+  "/fishbowl.html",
+  "/api/fishbowl",
+  "/assets/fishbowl.css",
+  "/assets/fishbowl.js",
+]);
+const PUBLIC_PREFIX = "/media/";
+
 export default async function middleware(request) {
+  const publicUrl = new URL(request.url);
+  const isPublic = PUBLIC_PATHS.has(publicUrl.pathname) ||
+    (publicUrl.pathname.startsWith(PUBLIC_PREFIX) && !publicUrl.pathname.includes(".."));
+  if (isPublic && (request.method === "GET" || request.method === "HEAD")) {
+    return undefined; // public fishbowl: continue to the static file or api function
+  }
+
   const password = process.env.GENESIS_DASH_PASSWORD;
   if (!password || password.length < MIN_PASSWORD_LENGTH) {
     return new Response("Dashboard gate not configured (GENESIS_DASH_PASSWORD unset). Failing closed.", {

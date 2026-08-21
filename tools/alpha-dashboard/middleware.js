@@ -21,7 +21,7 @@ const MAX_AGE = 60 * 60 * 24 * 30; // 30 days
 const MIN_PASSWORD_LENGTH = 20;
 const SECURITY_HEADERS = {
   "cache-control": "private, no-store",
-  "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'none'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'",
+  "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'",
   "referrer-policy": "no-referrer",
   "x-content-type-options": "nosniff",
   "x-frame-options": "DENY",
@@ -119,10 +119,15 @@ const PUBLIC_PATHS = new Set([
   "/assets/fishbowl.css",
   "/assets/fishbowl.js",
 ]);
+// /media/<file> holds ONLY the harvester's mirrored room media (fishbowl-media.mjs);
+// nothing else is ever written there, so the prefix is safe to open with the page.
+const PUBLIC_PREFIX = "/media/";
 
 export default async function middleware(request) {
   const publicUrl = new URL(request.url);
-  if (PUBLIC_PATHS.has(publicUrl.pathname) && (request.method === "GET" || request.method === "HEAD")) {
+  const isPublic = PUBLIC_PATHS.has(publicUrl.pathname) ||
+    (publicUrl.pathname.startsWith(PUBLIC_PREFIX) && !publicUrl.pathname.includes(".."));
+  if (isPublic && (request.method === "GET" || request.method === "HEAD")) {
     return undefined; // public fishbowl: continue to the static file or api function
   }
 
