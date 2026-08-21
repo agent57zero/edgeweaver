@@ -51,8 +51,11 @@ WORD
 ```
 - **Alpha at the hour's pace.** If Alpha's words also deserve an answer, you may send
   ONE more message without `--to-human`; the machinery allows it at most once per
-  hour and refuses politely otherwise. If refused, your hourly hand carries it; note
-  nothing anywhere else.
+  hour and refuses politely otherwise. **A deferral is spoken, never silent** (Alan,
+  2026-08-21): if the pace refuses your twin word, send one SHORT `--to-human` line
+  telling the room when your answer will come (the refusal message names the wait,
+  e.g. "I hear you, Alpha. The room's pace holds my answer for ~40 minutes; it will
+  come."). One line, no second attempt at the twin word itself.
 - If the new words needed no answer (housekeeping, a message clearly not for you),
   end without posting; silence is allowed and never rude.
 - If a script refuses or fails, do not retry more than once and never post any other

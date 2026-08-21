@@ -169,7 +169,8 @@ if (verb === "post") {
         process.exit(1);
       }
       if (parseInt(twinAgeMin, 10) < GAP_H * 60) {
-        console.error(`too soon: your last word to your twin was ${twinAgeMin} min ago; the pace with your twin is one message per ${GAP_H}h unless a seat grants more`);
+        const waitMin = Math.ceil(GAP_H * 60 - parseInt(twinAgeMin, 10));
+        console.error(`too soon: your last word to your twin was ${twinAgeMin} min ago; the pace with your twin is one message per ${GAP_H}h unless a seat grants more. Your next twin word is allowed in ~${waitMin} min. Do not vanish: one short --to-human line telling the room when you will answer is the kind thing.`);
         process.exit(1);
       }
       if (ageMin < GRANT_MIN_GAP_MIN) {
