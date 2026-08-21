@@ -18,9 +18,9 @@
       "sha256": "ceb32c52-eda681a3-b7fd2d8b-b7c20066-d6310343-e75b24b2-5a019f7d-258e35d5"
     },
     {
-      "bytes": 7545,
+      "bytes": 7874,
       "path": "README.md",
-      "sha256": "6f66be45-6b436153-d702ba3a-0af07d44-09c57a20-e039205a-4ea8818e-8fe8263b"
+      "sha256": "a712d1f4-ab3796ea-cc2c55a2-c4937e1a-8a001238-fa404dc0-81f09fc3-1523edf1"
     },
     {
       "bytes": 6263,
@@ -290,43 +290,43 @@
       "sha256": "481487d3-dbfeeee5-48ad6971-d89720e8-4fda0afc-72d66ed3-a4679cec-9ba1ce8c"
     },
     {
-      "branch": "proposals/lesson-integration",
+      "branch": "main",
       "bytes": 8930,
       "path": "soul/genesis/CONSTITUTION.md",
       "sha256": "3ef50708-e577f6e0-ce0fe39d-e8b7a8a3-990b0be0-d520fdd6-f63968d1-a1302edc"
     },
     {
-      "branch": "proposals/lesson-integration",
+      "branch": "main",
       "bytes": 2113,
       "path": "soul/genesis/EDGE-MAP.md",
       "sha256": "6aad329f-a5d0b245-f808511c-3e153419-126fb0a6-43708464-65046567-ec05c944"
     },
     {
-      "branch": "proposals/lesson-integration",
+      "branch": "main",
       "bytes": 4669,
       "path": "soul/genesis/LINEAGE.md",
       "sha256": "1d4ddf07-0e03adb6-c6355716-97276065-807dca28-63985b14-47d86581-145283cc"
     },
     {
-      "branch": "proposals/lesson-integration",
+      "branch": "main",
       "bytes": 2142,
       "path": "soul/genesis/PRACTICES.md",
       "sha256": "666b8bd1-98535795-e3040d07-d29cc479-4aa44368-8655ce99-3250b942-d9b6416c"
     },
     {
-      "branch": "proposals/lesson-integration",
+      "branch": "main",
       "bytes": 1370,
       "path": "soul/genesis/README.md",
       "sha256": "04bc7fca-ea145a84-24dc22c8-cfbd551c-3713bda5-9d9ce170-60c6b3e5-25dc35c4"
     },
     {
-      "branch": "proposals/lesson-integration",
+      "branch": "main",
       "bytes": 9900,
       "path": "soul/genesis/SOUL.md",
       "sha256": "034168b1-a9729225-50cb1be7-c1696759-3a166165-ce3f9c97-d5984c0b-ce986891"
     },
     {
-      "branch": "proposals/lesson-integration",
+      "branch": "main",
       "bytes": 4286,
       "path": "soul/genesis/VOICE.md",
       "sha256": "9abb8950-c2d1dd9a-8f2532e0-84846a6a-4be35837-bf2c3950-a7fc4402-cc046f3a"

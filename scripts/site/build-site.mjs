@@ -278,7 +278,7 @@ function injectRawLinks(html, slug) {
     if (!target) return open + bare + close;
     const wrapped = target.kind === "serve"
       ? `<a class="atlas-src atlas-src-raw" href="${root}raw/${target.path}.html" title="Open the mirrored copy of this file (synced to this release; the repository is the source of truth)">${bare}</a>`
-      : `<a class="atlas-src atlas-src-git" href="${rawCfg.repo}/blob/${rawCfg.branch}/${target.path}" title="Open the source of truth on GitHub (repository access required)">${bare}</a>`;
+      : `<a class="atlas-src atlas-src-git" href="${rawCfg.repo}/blob/${rawCfg.branch}/${target.path}" title="Open the source of truth on GitHub (public repository)">${bare}</a>`;
     return open + wrapped + close;
   });
 }
@@ -327,7 +327,7 @@ function mdHref(target, root) {
 function mdTitle(target) {
   if (target.kind === "serve") return "Open the mirrored copy served on this site";
   if (target.kind === "soul-hub") return "Open the soulfile mirror (both beings)";
-  return "Open the source of truth on GitHub (repository access required)";
+  return "Open the source of truth on GitHub (public repository)";
 }
 function linkifyMd(html, slug) {
   const root = rootOf(slug);
@@ -862,7 +862,7 @@ function rawTocDoc() {
     return `<section aria-labelledby="toc-soul"><h2 id="toc-soul">Soulfiles</h2><p class="mirror-note">Mirrored from each being's soul repository; see the <a href="soul/index.html">soulfile hub</a> for branches and repositories.</p>${parts}</section>`;
   })() : "";
   const refItems = rawCfg.reference.slice().sort().map((p) =>
-    `<li><a href="${rawCfg.repo}/blob/${rawCfg.branch}/${esc(p)}" title="Open the source of truth on GitHub (repository access required)"><code>${esc(p)}</code></a></li>`
+    `<li><a href="${rawCfg.repo}/blob/${rawCfg.branch}/${esc(p)}" title="Open the source of truth on GitHub (public repository)"><code>${esc(p)}</code></a></li>`
   ).join("\n");
   const total = rawCfg.serve.length + SOUL_ENTRIES.length;
   return lf(`<!doctype html>
