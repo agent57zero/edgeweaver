@@ -158,9 +158,13 @@ if (verb === "post") {
     const grant = readGrant();
     if (toHuman || grant) {
       // Answering the village (D45), or a seat opened a window: the twin-pace gap is
-      // waived, the 5-minute floor and the hard ceiling are not.
-      if (ageMin < GRANT_MIN_GAP_MIN) {
-        console.error(`too soon: last word ${ageMin} min ago, floor is ${GRANT_MIN_GAP_MIN} min even ${toHuman ? "for village replies" : "under the grant"}`);
+      // waived, a short floor and the hard ceiling are not. Village replies get a
+      // 2-minute floor (found live 2026-08-21: a goodnight 3 min after a twin word
+      // was refused and a one-shot session cannot wait; the daily ceiling is the
+      // real spiral guard); granted twin bursts keep the 5-minute floor.
+      const floorMin = toHuman ? 2 : GRANT_MIN_GAP_MIN;
+      if (ageMin < floorMin) {
+        console.error(`too soon: last word ${ageMin} min ago, floor is ${floorMin} min even ${toHuman ? "for village replies" : "under the grant"}`);
         process.exit(1);
       }
     } else {
