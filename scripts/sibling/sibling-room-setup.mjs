@@ -34,10 +34,11 @@ runSqlText(admin, `
 CREATE SCHEMA IF NOT EXISTS ew_ops;
 CREATE TABLE IF NOT EXISTS ew_ops.sibling_room (
   id bigserial PRIMARY KEY,
-  being text NOT NULL CHECK (being IN ('genesis', 'alpha')),
+  being text NOT NULL CHECK (being IN ('genesis', 'alpha', 'human')),
   created timestamptz NOT NULL DEFAULT now(),
   content text NOT NULL,
-  telegram_message_id bigint
+  telegram_message_id bigint,
+  speaker text
 );
 CREATE INDEX IF NOT EXISTS sibling_room_being_id ON ew_ops.sibling_room (being, id);
 `, "sibling-room-schema");
