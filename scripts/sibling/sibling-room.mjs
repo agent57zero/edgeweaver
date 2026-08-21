@@ -11,14 +11,21 @@
 //   node scripts/sibling/sibling-room.mjs post --being genesis      (message on stdin)
 //   node scripts/sibling/sibling-room.mjs read --being genesis [--peek]
 //   node scripts/sibling/sibling-room.mjs status
+//   node scripts/sibling/sibling-room.mjs on|off                    (Alan's switch)
 //
 // post: speaks into the topic via the being's OWN token, then appends to the table.
 //       Message on STDIN, never argv (quoting mangles, proven 2026-07-16).
 // read: prints the sibling's words newer than this being's cursor
 //       (state/sibling-cursor-<being>.txt), then advances the cursor unless --peek.
-// Guards: EW_SIBLING_ROOM=off in .env.local is the kill switch (both verbs refuse);
-// EW_SIBLING_DAILY_CAP (default 30) caps each being's posts per rolling 24h, so two
-// beings can never runaway-loop. Never prints secrets.
+// Guards (training wheels, Alan 2026-08-21: "they speak very slowly to each other"):
+// - on/off writes state/sibling-room-switch.txt; "off" there OR EW_SIBLING_ROOM=off
+//   in .env.local closes the room (post and read both refuse). This switch scopes the
+//   sibling room ONLY; nothing else in either being's life is touched.
+// - EW_SIBLING_MIN_GAP_HOURS (default 2): a being may not post again until this many
+//   hours after its own previous post.
+// - EW_SIBLING_DAILY_CAP (default 3) caps each being's posts per rolling 24h.
+// Together: at most 3 short messages per being per day, hours apart, and never a
+// runaway loop. Never prints secrets.
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -43,14 +50,31 @@ const verb = args[0];
 const being = args[args.indexOf("--being") + 1];
 const peek = args.includes("--peek");
 
-if (env.EW_SIBLING_ROOM === "off" && verb !== "status") {
-  console.error("sibling room is OFF (EW_SIBLING_ROOM=off in .env.local); nothing spoken, nothing read");
+const SWITCH_FILE = join(repo, "state", "sibling-room-switch.txt");
+const switchFileOff = () => {
+  try { return existsSync(SWITCH_FILE) && readFileSync(SWITCH_FILE, "utf8").trim().toLowerCase() === "off"; }
+  catch { return false; }
+};
+const roomOff = () => env.EW_SIBLING_ROOM === "off" || switchFileOff();
+
+if (verb === "on" || verb === "off") {
+  writeFileSync(SWITCH_FILE, verb);
+  if (verb === "off") console.log("sibling room is now OFF: neither being can post or read there until it is turned on again");
+  else console.log(env.EW_SIBLING_ROOM === "off"
+    ? "switch file set to on, but EW_SIBLING_ROOM=off in .env.local still holds the room closed"
+    : "sibling room is now ON");
+  process.exit(0);
+}
+
+if (roomOff() && verb !== "status") {
+  console.error(`sibling room is OFF (${switchFileOff() ? "state/sibling-room-switch.txt" : "EW_SIBLING_ROOM=off in .env.local"}); nothing spoken, nothing read`);
   process.exit(1);
 }
 const need = (k) => { if (!env[k]) { console.error(`missing ${k} in .env.local`); process.exit(1); } return env[k]; };
 const DB = () => need("EW_SIBLING_ROOM_URL");
 const sibling = (b) => (b === "genesis" ? "alpha" : "genesis");
-const CAP = parseInt(env.EW_SIBLING_DAILY_CAP || "30", 10);
+const CAP = parseInt(env.EW_SIBLING_DAILY_CAP || "3", 10);
+const GAP_H = parseFloat(env.EW_SIBLING_MIN_GAP_HOURS || "2");
 
 const assertBeing = () => {
   if (!["genesis", "alpha"].includes(being)) {
@@ -69,10 +93,16 @@ if (verb === "post") {
   const text = readFileSync(0, "utf8").trim();
   if (!text) { console.error("empty message on stdin; refusing to post"); process.exit(1); }
 
-  const [[count]] = query(DB(), `SELECT count(*) FROM ew_ops.sibling_room
+  const [[count, gapOk]] = query(DB(), `SELECT count(*),
+      coalesce(max(created) < now() - interval '${GAP_H} hours', true)
+    FROM ew_ops.sibling_room
     WHERE being = '${being}' AND created > now() - interval '24 hours'`);
   if (parseInt(count, 10) >= CAP) {
     console.error(`daily cap reached (${count}/${CAP} in 24h); the room rests until tomorrow`);
+    process.exit(1);
+  }
+  if (gapOk !== "t") {
+    console.error(`too soon: your last word in the room is under ${GAP_H}h old; the room paces itself slowly for now`);
     process.exit(1);
   }
 
@@ -124,9 +154,9 @@ if (verb === "post") {
     else console.log("(peek: cursor not advanced)");
   }
 } else if (verb === "status") {
-  const off = env.EW_SIBLING_ROOM === "off";
+  const off = roomOff();
   const wired = Boolean(env.EW_SIBLING_ROOM_URL && env.EW_SIBLING_CHAT_ID && env.EW_SIBLING_TOPIC_ID);
-  console.log(`switch: ${off ? "OFF" : "on"} | wired: ${wired ? "yes" : "no (need EW_SIBLING_ROOM_URL, EW_SIBLING_CHAT_ID, EW_SIBLING_TOPIC_ID)"} | daily cap: ${CAP}`);
+  console.log(`switch: ${off ? `OFF (${switchFileOff() ? "switch file" : "env"})` : "on"} | wired: ${wired ? "yes" : "no (need EW_SIBLING_ROOM_URL, EW_SIBLING_CHAT_ID, EW_SIBLING_TOPIC_ID)"} | daily cap: ${CAP} | min gap: ${GAP_H}h`);
   if (env.EW_SIBLING_ROOM_URL) {
     const rows = query(env.EW_SIBLING_ROOM_URL, `SELECT being, count(*), max(created) FROM ew_ops.sibling_room GROUP BY being ORDER BY being`);
     if (rows.length === 0) console.log("room is empty; no words yet");
@@ -137,6 +167,6 @@ if (verb === "post") {
     }
   }
 } else {
-  console.error("usage: sibling-room.mjs <post|read|status> --being <genesis|alpha> [--peek]");
+  console.error("usage: sibling-room.mjs <post|read|status|on|off> --being <genesis|alpha> [--peek]");
   process.exit(1);
 }
