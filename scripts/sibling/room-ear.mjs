@@ -75,9 +75,14 @@ function wakeResponder() {
   if (Date.now() - lastSpawn < 3 * 60 * 1000) return;
   lastSpawn = Date.now();
   try {
-    const child = spawn("powershell.exe",
+    // Absolute path: the ear's environment may lack System32 on PATH, and spawn's
+    // ENOENT arrives as an ASYNC error event (found live 2026-08-21: two wakings
+    // failed without a trace); both are handled here.
+    const psExe = "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe";
+    const child = spawn(psExe,
       ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", join(repo, "scripts", "sibling", "run-room-reply-genesis.ps1")],
       { cwd: repo, detached: true, stdio: "ignore", windowsHide: true });
+    child.on("error", (e) => log(`room-reply wake FAILED: ${String(e.message).slice(0, 160)}`));
     child.unref();
     log(`woke the room-reply hand (pid ${child.pid})`);
   } catch (e) {
