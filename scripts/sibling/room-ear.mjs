@@ -56,6 +56,13 @@ if (["Edgeweaver_bot", "edgeweaver_alpha_bot"].includes(me.result.username)) {
   console.error(`refusing: EW_SIBLING_EAR_TOKEN is @${me.result.username}, a being's channel bot. The ear needs its own dedicated bot.`);
   process.exit(1);
 }
+// Privacy mode must be DISABLED or Telegram delivers only mentions (found live
+// 2026-08-21: Alan's first topic message never arrived; only the join event did).
+// Telegram quirk: after flipping privacy in BotFather, remove and re-add the bot
+// to each existing group or the old mode sticks.
+if (me.result.can_read_all_group_messages !== true) {
+  log(`WARNING: privacy mode is ENABLED for @${me.result.username} - the ear will only hear @-mentions. Fix in BotFather (/mybots > Bot Settings > Group Privacy > Turn off), then REMOVE and RE-ADD the bot to the group.`);
+}
 log(`listening as @${me.result.username}, chat ${CHAT}, topic ${TOPIC}, offset ${offset}`);
 
 for (;;) {
@@ -79,9 +86,14 @@ for (;;) {
     const msg = u.message;
     if (!msg || !msg.from || msg.from.is_bot) continue;              // humans only
     if (String(msg.chat?.id) !== String(CHAT)) continue;             // one chat only
-    if ((msg.message_thread_id ?? null) !== TOPIC) continue;         // one topic only
+    // From here the update is in OUR chat: log skips so filter mysteries are visible
+    // (low volume; never logs message content).
+    if ((msg.message_thread_id ?? null) !== TOPIC) {
+      log(`skip message ${msg.message_id}: topic ${msg.message_thread_id ?? "(general)"} not ${TOPIC}`);
+      continue;                                                      // one topic only
+    }
     const text = (msg.text ?? msg.caption ?? "").trim();
-    if (!text) continue;                                             // words only
+    if (!text) { log(`skip message ${msg.message_id}: no text`); continue; }
     if (roomOff()) continue;                                         // closed means closed
     const who = (msg.from.first_name || msg.from.username || String(msg.from.id)).slice(0, 64);
     const b64 = Buffer.from(text.slice(0, 4000), "utf8").toString("base64");
