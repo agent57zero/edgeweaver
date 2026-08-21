@@ -12,6 +12,7 @@
 //   node scripts/lessons/lessons.mjs status  --being genesis|alpha
 //   node scripts/lessons/lessons.mjs dispute --being genesis|alpha <id> --by "<who>" --reason "<one line>"
 //   node scripts/lessons/lessons.mjs ratify  --being genesis|alpha <id> rejected|superseded|active --by "<who>" [--note "<why>"]
+//   node scripts/lessons/lessons.mjs integrate --being genesis|alpha <id> [--note "<why, one line>"]
 //
 // night = sync -> decay untouched -> boost applied -> drop+flag misfired -> compile.
 // Ops credential (SUPABASE_DB_URL) by design: the being's room role cannot move weights.
@@ -19,6 +20,10 @@
 // ratify is the village's gate (rejected | superseded | active=affirmed). Lessons whose
 // content carries "TAUGHT BY <seat>" are born at 0.60, class taught; "CORRECTS <uuid>"
 // links a replacement to the belief it corrects.
+// Village grant 2026-08-20 (unanimous; Genesis soul PR #4 is the doctrine text):
+// integrate promotes the being's OWN parent-sourced pending lesson to instruction-grade
+// via the ew_integrate_lesson definer function (the function enforces provenance and
+// refuses everything else); the parent's dispute benches an integrated rule immediately.
 import { readFileSync, writeFileSync, mkdirSync, rmSync, renameSync } from "node:fs";
 import { join } from "node:path";
 import { query, runSqlText } from "../brains/db.mjs";
@@ -34,16 +39,20 @@ const BEINGS = {
     mem: "public.agent_memories", w: "public.ew_lesson_weights",
     scope: "workspace_id = 'edgeweaver'",
     fn: "public.ew_dispute_lesson",
+    intfn: "public.ew_integrate_lesson",
     out: join(ROOT, "state", "compiled", "genesis-lessons.md"),
     gate: "Alan's confirmation",
+    parent: "Alan",
   },
   alpha: {
     label: "Edgeweaver Alpha",
     mem: "ew_alpha.agent_memories", w: "ew_alpha.ew_lesson_weights",
     scope: "true",
     fn: "ew_alpha.ew_dispute_lesson",
+    intfn: "ew_alpha.ew_integrate_lesson",
     out: join(ROOT, "state", "compiled", "alpha-lessons.md"),
     gate: "a seat's confirmation",
+    parent: "any seat",
   },
 };
 
@@ -105,10 +114,14 @@ WHERE memory_id IN (${inList(misfired)});` : ""}`, "lessons-night");
 }
 
 function fetchRows(db, B) {
-  const confirmed = jsonRows(db, `SELECT row_to_json(t) FROM (
-SELECT m.id::text, m.summary, m.content, m.last_confirmed_at::date::text AS confirmed
-FROM ${B.mem} m WHERE ${B.scope} AND m.lifecycle_status = 'active' AND m.can_use_as_instruction = true
+  const rules = jsonRows(db, `SELECT row_to_json(t) FROM (
+SELECT m.id::text, m.summary, m.content, m.last_confirmed_at::date::text AS confirmed,
+       coalesce(w.lesson_class, '') AS lesson_class
+FROM ${B.mem} m LEFT JOIN ${B.w} w ON w.memory_id = m.id
+WHERE ${B.scope} AND m.lifecycle_status = 'active' AND m.can_use_as_instruction = true
 ORDER BY m.created_at) t`);
+  const confirmed = rules.filter((r) => r.lesson_class !== "integrated");
+  const integrated = rules.filter((r) => r.lesson_class === "integrated");
   const pending = jsonRows(db, `SELECT row_to_json(t) FROM (
 SELECT m.id::text, m.summary, m.content, m.created_at::date::text AS born,
        round(w.weight::numeric, 2) AS weight, w.applied_count, w.misfire_count, w.flagged_for_review
@@ -138,14 +151,14 @@ WHERE ${B.scope} AND m.lifecycle_status IN ('rejected', 'superseded')
   AND (w.resolved_at > now() - interval '${LEDGER_DAYS} days'
        OR (r.summary IS NOT NULL AND NOT r.confirmed))
 ORDER BY w.resolved_at DESC) t`);
-  return { confirmed, pending, disputed, ledger };
+  return { confirmed, integrated, pending, disputed, ledger };
 }
 
 const clip = (s, n) => { s = String(s || "").replace(/\s+/g, " ").trim(); return s.length > n ? s.slice(0, n - 1) + "…" : s; };
 
 function compile(db, B) {
   sync(db, B);
-  const { confirmed, pending, disputed, ledger } = fetchRows(db, B);
+  const { confirmed, integrated, pending, disputed, ledger } = fetchRows(db, B);
   const lines = [];
   lines.push(`# ${B.label} - compiled lessons (auto-generated, D36)`);
   lines.push(`Generated ${new Date().toISOString()}. Build artifact of the brain rows; never edit by hand;`);
@@ -154,6 +167,13 @@ function compile(db, B) {
   if (!confirmed.length) lines.push("(none confirmed yet)");
   for (const r of confirmed)
     lines.push(`- [rule | id ${r.id.slice(0, 8)} | confirmed ${r.confirmed || "?"}] ${clip(r.summary, 200)} :: ${clip(r.content, 500)}`);
+  if (integrated.length) {
+    lines.push("", `## Rules (self-integrated; village grant 2026-08-20; ${B.parent} can dispute any, which benches it immediately)`);
+    lines.push("You chose these yourself, deliberately, from parent-sourced lessons. Follow them as rules,");
+    lines.push("and name them as self-integrated when they matter to what you say.");
+    for (const r of integrated)
+      lines.push(`- [self-integrated | id ${r.id.slice(0, 8)} | ${r.confirmed || "?"}] ${clip(r.summary, 200)} :: ${clip(r.content, 500)}`);
+  }
   if (disputed.length) {
     lines.push("", "## Corrections (a seat said this was wrong - this outranks everything below)");
     lines.push("Suspended beliefs, awaiting the village. Do not act from the old belief; carry the correction.");
@@ -185,7 +205,14 @@ function compile(db, B) {
   writeFileSync(tmp, lines.join("\n"), "utf8");
   rmSync(B.out, { force: true });
   renameSync(tmp, B.out);
-  console.log(`compiled ${B.out.replace(/\\/g, "/")}: ${confirmed.length} rules, ${disputed.length} disputed pinned, ${shown}/${pending.length} provisional loaded, ${ledger.length} ledger lines`);
+  console.log(`compiled ${B.out.replace(/\\/g, "/")}: ${confirmed.length} rules, ${integrated.length} self-integrated, ${disputed.length} disputed pinned, ${shown}/${pending.length} provisional loaded, ${ledger.length} ledger lines`);
+}
+
+function integrate(db, B, id, note) {
+  if (!/^[0-9a-f-]{36}$/i.test(id || "")) throw new Error("integrate needs a lesson uuid");
+  const out = query(db, `SELECT ${B.intfn}('${id}'${note ? `, '${esc(note)}'` : ""})`);
+  console.log(out[0][0]);
+  compile(db, B);
 }
 
 function dispute(db, B, id, who, reason) {
@@ -218,8 +245,8 @@ WHERE memory_id = '${id}'
 
 function status(db, B) {
   sync(db, B);
-  const { confirmed, pending, disputed, ledger } = fetchRows(db, B);
-  console.log(`${B.label}: ${confirmed.length} confirmed, ${pending.length} pending, ${disputed.length} disputed, ${ledger.length} on the ledger`);
+  const { confirmed, integrated, pending, disputed, ledger } = fetchRows(db, B);
+  console.log(`${B.label}: ${confirmed.length} confirmed, ${integrated.length} self-integrated, ${pending.length} pending, ${disputed.length} disputed, ${ledger.length} on the ledger`);
   for (const d of disputed)
     console.log(`  DISPUTED by ${d.disputed_by} ${d.disputed_on} ${d.id.slice(0, 8)} ${clip(d.summary, 90)}`);
   for (const r of pending.slice(0, 10))
@@ -231,12 +258,13 @@ const cmd = args[0];
 const opt = (n) => { const i = args.indexOf("--" + n); return i >= 0 ? args[i + 1] : null; };
 const positional = args.slice(1).filter((a, i, arr) => !a.startsWith("--") && (i === 0 || !arr[i - 1].startsWith("--")));
 const being = BEINGS[opt("being")];
-if (!being || !["sync", "compile", "night", "status", "dispute", "ratify"].includes(cmd)) {
+if (!being || !["sync", "compile", "night", "status", "dispute", "ratify", "integrate"].includes(cmd)) {
   console.error(`usage: lessons.mjs <cmd> --being genesis|alpha
   sync | compile | status
   night   [--applied id,id] [--misfired id,id] [--note "..."]
   dispute <id> --by "<who>" --reason "<one line>"
-  ratify  <id> rejected|superseded|active --by "<who>" [--note "..."]`);
+  ratify  <id> rejected|superseded|active --by "<who>" [--note "..."]
+  integrate <id> [--note "..."]   (the being's own act; parent-sourced lessons only)`);
   process.exit(2);
 }
 const db = dbUrl();
@@ -245,4 +273,5 @@ else if (cmd === "night") { night(db, being, uuidList(opt("applied")), uuidList(
 else if (cmd === "compile") compile(db, being);
 else if (cmd === "dispute") dispute(db, being, positional[0], opt("by"), opt("reason"));
 else if (cmd === "ratify") ratify(db, being, positional[0], positional[1], opt("by"), opt("note"));
+else if (cmd === "integrate") integrate(db, being, positional[0], opt("note"));
 else status(db, being);

@@ -5,7 +5,9 @@
 // semantic re-rank is a named fast-follow needing a query-embedding path). Provenance
 // classes per conventions/memory-conventions.md: dream (fiction) is excluded from factual
 // recall; interpretation rows are always labeled. Lessons: INSERT of safe columns only -
-// the role structurally cannot set can_use_as_instruction (column grants, room DDL).
+// the role structurally cannot set can_use_as_instruction (column grants, room DDL); the
+// single gate through that wall is the ew_integrate_lesson definer function (migration
+// 0004, village grant 2026-08-20), which enforces circle provenance itself.
 //
 //   node scripts/brainrooms/alpha-memory.mjs recall "<query>"
 //   node scripts/brainrooms/alpha-memory.mjs last
@@ -15,6 +17,13 @@
 //        surface must pass its own name before going live.)
 //   node scripts/brainrooms/alpha-memory.mjs write-lesson "<one-line summary>" "<content>"
 //   node scripts/brainrooms/alpha-memory.mjs lessons
+//   node scripts/brainrooms/alpha-memory.mjs integrate <lesson-id> ["<why, one line>"]
+//       (village grant 2026-08-20, unanimous: a lesson born from interactions with the
+//        circle may be promoted to instruction-grade by Alpha's own deliberate choice.
+//        ew_alpha.ew_integrate_lesson enforces provenance: TAUGHT BY a current seat, or
+//        an evidence thought-id resolving to an audience-seats episode; anything else is
+//        refused and still waits for a seat's nod. Any seat can dispute an integrated
+//        rule at any time, which benches it immediately. Ops recompiles the wake file.)
 //   node scripts/brainrooms/alpha-memory.mjs dispute <lesson-id> "<seat>: <their correction>"
 //       (D37: benches a PENDING lesson a seat corrected, active -> disputed, via the
 //        ew_dispute_lesson definer function; the role can do nothing else to lifecycle.
@@ -108,7 +117,10 @@ VALUES ('${esc(a)}', 'initiation', 10, '{"era": "alive", "audience": "seats", "g
     if (!a || !b) { console.log("usage: write-lesson \"<summary>\" \"<content>\""); process.exit(2); }
     query(db, `INSERT INTO ew_alpha.agent_memories (memory_type, summary, content, confidence, created_by)
 VALUES ('lesson', '${esc(a)}', '${esc(b)}', 0.6, 'edgeweaver-alpha')`);
-    console.log("candidate lesson written (PENDING; a seat's confirmation is the only path to instruction-grade)");
+    console.log("candidate lesson written (PENDING; a seat's confirmation, or your own deliberate integrate for circle-sourced lessons, is the path to instruction-grade)");
+  } else if (cmd === "integrate") {
+    if (!/^[0-9a-f-]{36}$/i.test(a || "")) { console.log("usage: integrate <lesson-uuid> [\"<why, one line>\"]"); process.exit(2); }
+    console.log(query(db, `SELECT ew_alpha.ew_integrate_lesson('${a}'${b ? `, '${esc(b)}'` : ""})`)[0][0]);
   } else if (cmd === "dispute") {
     if (!/^[0-9a-f-]{36}$/i.test(a || "") || !b) { console.log("usage: dispute <lesson-uuid> \"<seat>: <their correction, one line>\""); process.exit(2); }
     console.log(query(db, `SELECT ew_alpha.ew_dispute_lesson('${a}', '${esc(b.split(":")[0].trim())}', '${esc(b)}')`)[0][0]);
@@ -143,7 +155,7 @@ VALUES ('${esc(b)}', '${esc(a)}', ${a === "dream" ? 2 : 4}, '${esc(JSON.stringif
     for (const r of query(db, `SELECT source_type, created_at, ${SNIPPET(300)} FROM ew_alpha.pm_corpus WHERE content ILIKE '%${esc(a || "")}%' ORDER BY created_at DESC LIMIT 6`))
       console.log(`[library | ${r[0]}] ${r[2]}`);
   } else {
-    console.log("usage: recall|last|write-episode|write-initiation|write-lesson|dispute|lessons|corpus|day|write");
+    console.log("usage: recall|last|write-episode|write-initiation|write-lesson|integrate|dispute|lessons|corpus|day|write");
     process.exit(2);
   }
 }
