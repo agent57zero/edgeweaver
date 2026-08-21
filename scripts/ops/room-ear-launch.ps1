@@ -2,9 +2,12 @@
 # human messages from the one shared topic into ew_ops.sibling_room (room-ear.mjs;
 # token EW_SIBLING_EAR_TOKEN in repo .env.local, never here). Self-healing loop: if
 # the ear exits (network blip, node crash), wait 30s and start it again. Safe to run
-# at logon via Task Scheduler. Two ears on one token would fight over getUpdates
-# (one-poller-per-token, proven 2026-07-16), so do not start this by hand if the
-# EdgeweaverRoomEar task or window is already running.
+# at logon (HKCU Run key, armed by Alan 2026-08-21). Two ears on one token would
+# fight over getUpdates (one-poller-per-token, proven 2026-07-16), so exit if an
+# ear is already running.
+$dup = Get-CimInstance Win32_Process -Filter "Name='node.exe'" |
+  Where-Object { $_.CommandLine -like '*room-ear.mjs*' }
+if ($dup) { exit 0 }
 $host.UI.RawUI.WindowTitle = 'EdgeweaverRoomEar'
 Set-Location 'C:\Users\agent\Project\Edgeweaver'
 while ($true) {
