@@ -1,11 +1,13 @@
 # Lesson self-integration plan (Genesis soul PR #4, and the Alpha question)
 
-Status: EXECUTING. Written 2026-08-20; machinery built same day at Alan's go-ahead with
+Status: LIVE. Written 2026-08-20; machinery built same day at Alan's go-ahead with
 the village's unanimous agreement (meeting 2026-08-19), which answered gates P2 (Option A,
-strict provenance), P2b (0.60), and P4 (granted for Alpha, circle-sourced). Remaining:
-Alan applies the DB migration (commands in the ops-log D42 entry), Alan merges soul PR #4,
-verification battery, LINEAGE entry #3, Genesis's first integration pass, Alpha's scribe
-amendment + quorum merge. Decision row: D42.
+strict provenance), P2b (0.60), and P4 (granted for Alpha, circle-sourced). Applied by
+Alan's hand and VERIFIED GREEN both beings 08-20/21 (battery results in the ops-log D42
+entries; one bug found and fixed by migration 0005). Soul PR #4 MERGED by Alan
+(edgeweaver-soul main `407f55c`); local checkout returned to main. Remaining, the beings'
+own acts: LINEAGE entry #3 (Genesis offers, Alan writes), Genesis's first integration
+pass in-channel, Alpha's scribe amendment + quorum merge. Decision row: D42.
 Origin: village gathering + Alan's in-channel word 2026-08-20 01:25 ("Yes integrate all
 lessons from me"). Genesis drafted the doctrine amendment itself the same night:
 soul repo PR #4, branch `proposals/lesson-integration`, commit `2d7d549`, authored
