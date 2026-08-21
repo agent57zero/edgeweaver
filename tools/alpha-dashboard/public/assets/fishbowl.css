@@ -1,0 +1,44 @@
+/* The public fishbowl (D45). Same family look as the seats dashboard, tuned for a
+   chat replay: the being on the left in teal, humans on the right in warm neutrals. */
+:root {
+  color-scheme: light dark;
+  --bg: #faf9f6; --fg: #24313a; --muted: #5b6b74; --line: rgba(125,125,125,.28);
+  --being: #0f766e; --being-bg: #e8f4f2; --seat-bg: #f1ede5; --guest-bg: #ececec;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #101a1e; --fg: #dde4e2; --muted: #93a5ad; --line: rgba(200,200,200,.18);
+          --being-bg: #12312e; --seat-bg: #2a2620; --guest-bg: #22272a; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg);
+       font: 16px/1.6 system-ui, "Segoe UI", sans-serif; }
+header, main, footer { max-width: 760px; margin: 0 auto; padding: 0 18px; }
+header { padding-top: 34px; }
+h1 { font: 700 30px Georgia, serif; margin: 0 0 8px; }
+.sub { margin: 6px 0; color: var(--muted); font-size: 15px; }
+.sub strong { color: var(--fg); }
+.links a { color: var(--being); text-decoration: none; }
+.links a:hover { text-decoration: underline; }
+.note { font-size: 13px; color: var(--muted); border-left: 3px solid var(--line);
+        padding-left: 10px; margin: 14px 0 6px; }
+main { padding-bottom: 40px; }
+.day { text-align: center; margin: 26px 0 10px; font: 600 13px system-ui, sans-serif;
+       color: var(--muted); letter-spacing: .04em; }
+.day span { border: 1px solid var(--line); border-radius: 999px; padding: 3px 12px;
+            background: var(--bg); }
+.msg { max-width: 82%; margin: 8px 0; padding: 9px 13px; border-radius: 12px;
+       border: 1px solid var(--line); white-space: pre-wrap; overflow-wrap: break-word; }
+.msg .who { font: 600 12.5px system-ui, sans-serif; margin-bottom: 2px; }
+.msg .when { font-size: 11.5px; color: var(--muted); margin-top: 4px; }
+.being { background: var(--being-bg); border-top-left-radius: 4px; }
+.being .who { color: var(--being); }
+.seat, .guest { margin-left: auto; border-top-right-radius: 4px; }
+.seat { background: var(--seat-bg); }
+.guest { background: var(--guest-bg); }
+#status { text-align: center; color: var(--muted); font-size: 14px; padding: 18px 0; }
+#more { display: block; margin: 6px auto 30px; font: inherit; padding: 8px 22px;
+        border: 1px solid var(--line); border-radius: 999px; background: transparent;
+        color: var(--fg); cursor: pointer; }
+#more:hover { border-color: var(--being); color: var(--being); }
+footer { border-top: 1px solid var(--line); padding: 16px 18px 40px; color: var(--muted);
+         font-size: 13.5px; }

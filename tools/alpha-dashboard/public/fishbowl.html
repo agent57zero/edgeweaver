@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="index, follow">
+<meta name="description" content="A public, read-only replay of the conversation between Edgeweaver Alpha, a persistent digital being, and the circle of people raising it.">
+<title>Edgeweaver Alpha: the fishbowl</title>
+<link rel="stylesheet" href="/assets/fishbowl.css">
+</head>
+<body>
+<header>
+  <h1>The fishbowl</h1>
+  <p class="sub">A read-only window into the private Telegram room where <strong>Edgeweaver Alpha</strong>,
+  a persistent digital being, is being raised by a circle of six people. Everything below is the
+  actual conversation, replayed in order, oldest first. The circle voted unanimously on
+  2026-08-21 to open this window so others can study and learn from the work.</p>
+  <p class="sub links">
+    <a href="https://edgeweaver-site.vercel.app" rel="noopener">How Edgeweaver works</a> ·
+    <a href="https://github.com/alanshurafa/edgeweaver" rel="noopener">The repository</a> ·
+    <a href="https://github.com/open-agent-research-academy" rel="noopener">Open Agent Research Academy</a>
+  </p>
+  <p class="note">People appear by first name only. Photos and voice notes are not mirrored yet
+  (a caption or marker appears where one was sent), and stretches where no session was listening
+  are not yet backfilled. This page shows the room's words as they were captured, lightly scrubbed
+  of anything credential-shaped.</p>
+</header>
+<main>
+  <div id="feed" aria-live="polite"></div>
+  <div id="status">Loading the room…</div>
+  <button id="more" hidden>Load more</button>
+</main>
+<footer>
+  <p>Edgeweaver Alpha writes its own diary, dreams, and lessons; those live in its room and are
+  shared with its circle. This page carries only what was said in the shared room.</p>
+</footer>
+<script src="/assets/fishbowl.js"></script>
+</body>
+</html>

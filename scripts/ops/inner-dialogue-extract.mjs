@@ -34,6 +34,10 @@ const LIVE_DIR = "C:\\Users\\agent\\.claude\\projects\\C--Users-agent-Project-Ed
 const ARCHIVE_DIR = join(repo, "state", "transcripts");
 const ACTIVE_WINDOW_MS = 30 * 60 * 1000; // mtime younger than this = probably live, skip in --scan
 const REPLY_TOOL = /plugin_telegram.*(reply|send)/i; // react/download carry no words
+// The hours (D41) post through post-hour.mjs with the message on stdin via a heredoc in
+// the Bash command; the delivered words are recoverable from the tool input. The capture
+// is anchored to the heredoc the hourly skills use (<<'HOUR').
+const POST_HOUR_RE = /post-hour\.mjs\s+--being\s+(\w+)[^\n]*<<'HOUR'\n([\s\S]*?)\nHOUR/;
 
 const BEINGS = {
   alpha: {
@@ -85,7 +89,7 @@ function makeScrubber() {
 }
 
 // Parse one transcript into ordered beats: {kind, ts, text, sender?}
-function parseBeats(path) {
+function parseBeats(path, being) {
   const lines = readFileSync(path, "utf8").split(/\r?\n/).filter(Boolean);
   const beats = [];
   const tagRe = /<channel\s+([^>]*?)>([\s\S]*?)<\/channel>/g;
@@ -104,6 +108,10 @@ function parseBeats(path) {
         if (c.type === "text" && c.text && c.text.trim().length > 1) texts.push(c.text.trim());
         if (c.type === "tool_use" && REPLY_TOOL.test(c.name || "") && typeof c.input?.text === "string" && c.input.text.trim()) {
           beats.push({ kind: "telegram_out", ts, text: c.input.text.trim() });
+        }
+        if (c.type === "tool_use" && /bash/i.test(c.name || "") && typeof c.input?.command === "string") {
+          const m = c.input.command.match(POST_HOUR_RE);
+          if (m && m[1] === being && m[2].trim()) beats.push({ kind: "telegram_out", ts, text: m[2].trim() });
         }
       }
       if (texts.length) beats.push({ kind: "inner", ts, text: texts.join("\n\n") });
@@ -158,8 +166,11 @@ function writeBeats(being, cfg, dbUrl, sessionId, beats, scrubber, dry) {
 }
 
 function findCandidates(being, done) {
-  const marker = `wake-edgeweaver-${being}`;
-  const sibling = `wake-edgeweaver-${being === "alpha" ? "genesis" : "alpha"}`;
+  const other = being === "alpha" ? "genesis" : "alpha";
+  // A transcript belongs to this being when its head names one of the being's session
+  // skills (wake or hourly, D41) and not the sibling's.
+  const markers = [`wake-edgeweaver-${being}`, `hourly-wake-${being}`];
+  const siblings = [`wake-edgeweaver-${other}`, `hourly-wake-${other}`];
   const seen = new Set();
   const cands = [];
   for (const dir of [LIVE_DIR, ARCHIVE_DIR]) {
@@ -173,7 +184,7 @@ function findCandidates(being, done) {
       if (dir === LIVE_DIR && Date.now() - st.mtimeMs < ACTIVE_WINDOW_MS) continue; // probably live
       let head = "";
       try { head = readFileSync(full, "utf8").slice(0, 8000); } catch { continue; }
-      if (head.includes(marker) && !head.includes(sibling)) { seen.add(id); cands.push(full); }
+      if (markers.some((m) => head.includes(m)) && !siblings.some((s) => head.includes(s))) { seen.add(id); cands.push(full); }
     }
   }
   return cands;
@@ -209,7 +220,7 @@ try {
   for (const t of targets) {
     const sessionId = basename(t, ".jsonl");
     const scrubber = makeScrubber();
-    const beats = parseBeats(t);
+    const beats = parseBeats(t, being);
     if (!beats.length) { out(`${sessionId}: no beats found, skipping`); if (!dry) appendFileSync(donePath, sessionId + "\n"); continue; }
     const n = { inner: 0, telegram_out: 0, telegram_in: 0, cli_in: 0 };
     for (const b of beats) n[b.kind]++;

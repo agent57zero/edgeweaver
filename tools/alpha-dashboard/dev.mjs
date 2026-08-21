@@ -30,11 +30,13 @@ const MIME = {
   ".svg": "image/svg+xml",
   ".png": "image/png",
 };
+if (env.EW_FISHBOWL_NAMES) process.env.EW_FISHBOWL_NAMES = env.EW_FISHBOWL_NAMES;
 const handlers = {
   "/api/thoughts": (await import("./api/thoughts.mjs")).default,
   "/api/lessons": (await import("./api/lessons.mjs")).default,
   "/api/summary": (await import("./api/summary.mjs")).default,
   "/api/days": (await import("./api/days.mjs")).default,
+  "/api/fishbowl": (await import("./api/fishbowl.mjs")).default,
 };
 const PUB = join(ROOT, "public");
 
@@ -55,7 +57,8 @@ createServer(async (req, res) => {
       res.end(Buffer.from(await verdict.arrayBuffer()));
       return;
     }
-    const path = new URL(url).pathname;
+    let path = new URL(url).pathname;
+    if (path === "/fishbowl") path = "/fishbowl.html"; // mirrors the vercel.json rewrite
     if (handlers[path]) return handlers[path](req, res);
     const file = normalize(join(PUB, path === "/" ? "index.html" : path.slice(1)));
     if (!file.startsWith(PUB)) { res.statusCode = 403; return res.end(); }

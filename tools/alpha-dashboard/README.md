@@ -25,6 +25,22 @@ spoken-but-undelivered words; the model's thinking text is stripped at the
 source and does not exist on disk. The Everything tab and the headline count
 exclude the stream so the curated record stays curated.
 
+## The fishbowl (D46, public)
+
+`/fishbowl` is the ONE unauthenticated surface (circle unanimous vote,
+2026-08-21): a chronological, read-only replay of the room's actual
+conversation, oldest first, built from the `inner_dialogue` rows of kind
+`telegram_in` / `telegram_out` only. The being's inner (undelivered) words and
+every curated tab stay behind the gate; the carve-out in `middleware.js` is an
+exact-path allowlist (page, its two assets, `/api/fishbowl`), GET/HEAD only.
+People rule on the public surface: seats appear by first name only, mapped
+server-side through `EW_FISHBOWL_NAMES` (Vercel env, Sensitive, never in git;
+same JSON kept in `avatars/alpha/.env.local` for the dev runner); raw Telegram
+usernames and ids never reach the browser. The fishbowl routes flip robots to
+index in `vercel.json`; everything gated stays noindex. Not yet mirrored,
+stated on the page itself: photos and voice notes, dead-window messages, and
+Telegram reactions.
+
 ## Deep links (shareable URLs)
 
 Query parameters, not `#fragments`, because the gate's login redirect carries

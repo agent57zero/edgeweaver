@@ -108,7 +108,24 @@ ${err}
   });
 }
 
+// D45 (2026-08-21, circle unanimous): the fishbowl is the ONE public carve-out.
+// Exact paths only, GET only; everything else stays behind the gate. The public
+// API endpoint serves only the room's telegram_in/telegram_out rows with seats
+// mapped to first names server-side; nothing gated is reachable through it.
+const PUBLIC_PATHS = new Set([
+  "/fishbowl",
+  "/fishbowl.html",
+  "/api/fishbowl",
+  "/assets/fishbowl.css",
+  "/assets/fishbowl.js",
+]);
+
 export default async function middleware(request) {
+  const publicUrl = new URL(request.url);
+  if (PUBLIC_PATHS.has(publicUrl.pathname) && (request.method === "GET" || request.method === "HEAD")) {
+    return undefined; // public fishbowl: continue to the static file or api function
+  }
+
   const password = process.env.ALPHA_DASH_PASSWORD;
   if (!password || password.length < MIN_PASSWORD_LENGTH) {
     return new Response("Dashboard gate not configured (ALPHA_DASH_PASSWORD unset). Failing closed.", {
