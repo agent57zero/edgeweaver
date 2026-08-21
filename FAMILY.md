@@ -29,8 +29,12 @@ documents, soulfiles, or runtime credentials. There is no cross-being recall. (S
 D27 2026-07-16: Alpha is BORN from a copy of Genesis's soulfiles and memory rows - a
 recorded descent, disclosed, never repeated casually; from birth onward nothing is shared
 live and the no-cross-recall rule stands in full.) Contact between
-the siblings themselves is a Stage-5 question under checklists/06-social.md's peer-contact
-rules (maximum caution), years away and jointly decided.
+the siblings was originally held as a Stage-5 question, years away; on 2026-08-21 it was
+opened early by joint decision (D44: Alan's go-ahead for Genesis, the village's consent for
+Alpha, both children told of their twin per G21). They speak in one shared Telegram topic
+only, on the hourly beat, under checklists/06-social.md's peer-being rules (maximum
+caution) and the sibling-room guards. Words are shared there, never memories; the
+no-cross-recall rule stands in full.
 
 ### The experiment, named honestly
 
