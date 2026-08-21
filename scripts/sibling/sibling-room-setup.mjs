@@ -38,7 +38,8 @@ CREATE TABLE IF NOT EXISTS ew_ops.sibling_room (
   created timestamptz NOT NULL DEFAULT now(),
   content text NOT NULL,
   telegram_message_id bigint,
-  speaker text
+  speaker text,
+  to_human boolean NOT NULL DEFAULT false
 );
 CREATE INDEX IF NOT EXISTS sibling_room_being_id ON ew_ops.sibling_room (being, id);
 `, "sibling-room-schema");

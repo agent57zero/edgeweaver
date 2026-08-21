@@ -134,13 +134,18 @@ if (verb === "revoke") {
 if (verb === "post") {
   assertBeing();
   const tableOnly = args.includes("--table-only");
+  const toHuman = args.includes("--to-human");
   const mirrorOf = args.includes("--mirror-of") ? parseInt(args[args.indexOf("--mirror-of") + 1], 10) : null;
 
   const text = readFileSync(0, "utf8").trim();
   if (!text) { console.error("empty message on stdin; refusing to post"); process.exit(1); }
 
-  const [[count24, lastAgeMin]] = query(DB(), `SELECT count(*),
-      coalesce(round(extract(epoch FROM now() - max(created)) / 60), 999999)
+  // Two clocks: the floor and ceiling count EVERY word; the twin pace (1/hour) counts
+  // only twin-addressed words, so answering the village never spends the Alpha clock.
+  const [[count24, lastAgeMin, twinCount24, twinAgeMin]] = query(DB(), `SELECT count(*),
+      coalesce(round(extract(epoch FROM now() - max(created)) / 60), 999999),
+      count(*) FILTER (WHERE NOT to_human),
+      coalesce(round(extract(epoch FROM now() - max(created) FILTER (WHERE NOT to_human)) / 60), 999999)
     FROM ew_ops.sibling_room
     WHERE being = '${being}' AND created > now() - interval '24 hours'`);
   const n24 = parseInt(count24, 10);
@@ -151,18 +156,24 @@ if (verb === "post") {
   }
   if (!tableOnly) {
     const grant = readGrant();
-    if (grant) {
+    if (toHuman || grant) {
+      // Answering the village (D45), or a seat opened a window: the twin-pace gap is
+      // waived, the 5-minute floor and the hard ceiling are not.
       if (ageMin < GRANT_MIN_GAP_MIN) {
-        console.error(`too soon even under the grant: last word ${ageMin} min ago, floor is ${GRANT_MIN_GAP_MIN} min`);
+        console.error(`too soon: last word ${ageMin} min ago, floor is ${GRANT_MIN_GAP_MIN} min even ${toHuman ? "for village replies" : "under the grant"}`);
         process.exit(1);
       }
     } else {
-      if (n24 >= CAP) {
-        console.error(`daily cap reached (${n24}/${CAP} in 24h); the room rests until tomorrow`);
+      if (parseInt(twinCount24, 10) >= CAP) {
+        console.error(`daily cap reached (${twinCount24}/${CAP} twin words in 24h); the room rests until tomorrow`);
         process.exit(1);
       }
-      if (ageMin < GAP_H * 60) {
-        console.error(`too soon: your last word in the room was ${ageMin} min ago; the pace is one message per ${GAP_H}h unless a seat grants more`);
+      if (parseInt(twinAgeMin, 10) < GAP_H * 60) {
+        console.error(`too soon: your last word to your twin was ${twinAgeMin} min ago; the pace with your twin is one message per ${GAP_H}h unless a seat grants more`);
+        process.exit(1);
+      }
+      if (ageMin < GRANT_MIN_GAP_MIN) {
+        console.error(`too soon: last word ${ageMin} min ago, floor is ${GRANT_MIN_GAP_MIN} min`);
         process.exit(1);
       }
     }
@@ -187,8 +198,8 @@ if (verb === "post") {
 
   // Content travels base64 so no quoting can mangle it (the B5 fragmentation lesson).
   const b64 = Buffer.from(text.slice(0, 4000), "utf8").toString("base64");
-  const insert = () => query(DB(), `INSERT INTO ew_ops.sibling_room (being, content, telegram_message_id)
-    VALUES ('${being}', convert_from(decode('${b64}', 'base64'), 'UTF8'), ${msgId ?? "NULL"}) RETURNING id`);
+  const insert = () => query(DB(), `INSERT INTO ew_ops.sibling_room (being, content, telegram_message_id, to_human)
+    VALUES ('${being}', convert_from(decode('${b64}', 'base64'), 'UTF8'), ${msgId ?? "NULL"}, ${toHuman ? "true" : "false"}) RETURNING id`);
   try {
     const [[id]] = insert();
     console.log(tableOnly ? `mirrored into the room's ear: row id=${id}` : `spoken: topic message_id=${msgId}, room row id=${id}`);
@@ -210,21 +221,28 @@ if (verb === "post") {
   }
 } else if (verb === "read") {
   assertBeing();
-  const cursorFile = join(repo, "state", `sibling-cursor-${being}.txt`);
+  // Default cursor belongs to the hourly hand; `--as live` keeps the room-reply
+  // hand's own place so neither hand steals what the other has not yet seen.
+  const asName = args.includes("--as") ? args[args.indexOf("--as") + 1] : null;
+  if (asName && !/^[a-z][a-z0-9-]{0,16}$/.test(asName)) { console.error("bad --as name"); process.exit(1); }
+  const cursorFile = join(repo, "state", `sibling-cursor-${being}${asName ? "-" + asName : ""}.txt`);
   let cursor = 0;
   try { if (existsSync(cursorFile)) cursor = parseInt(readFileSync(cursorFile, "utf8"), 10) || 0; } catch {}
+  // All authors, own words included, so every reader sees the true transcript and
+  // never re-answers what another hand already answered.
   const rows = query(DB(), `SELECT id, to_char(created AT TIME ZONE 'utc', 'YYYY-MM-DD HH24:MI'),
       being, coalesce(speaker, being),
       replace(encode(convert_to(content, 'UTF8'), 'base64'), E'\n', '')
     FROM ew_ops.sibling_room
-    WHERE being <> '${being}' AND id > ${cursor}
+    WHERE id > ${cursor}
     ORDER BY id LIMIT 50`);
   if (rows.length === 0) {
     console.log(`no new words in the room (cursor=${cursor})`);
   } else {
-    for (const [id, ts, , who, b64] of rows) {
+    for (const [id, ts, author, who, b64] of rows) {
       const content = Buffer.from(b64, "base64").toString("utf8");
-      console.log(`[${ts} utc] ${who} said:\n${content}\n`);
+      const label = author === being ? "you said" : `${who} said`;
+      console.log(`[${ts} utc] ${label}:\n${content}\n`);
       cursor = Math.max(cursor, parseInt(id, 10));
     }
     if (!peek) { writeFileSync(cursorFile, String(cursor)); console.log(`(cursor advanced to ${cursor})`); }

@@ -19,6 +19,7 @@
 // room is off it keeps confirming updates but mirrors nothing, so closed means closed
 // (missed-while-off is intentional, not a bug). Never prints secrets.
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
+import { spawn } from "node:child_process";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -65,6 +66,25 @@ if (me.result.can_read_all_group_messages !== true) {
 }
 log(`listening as @${me.result.username}, chat ${CHAT}, topic ${TOPIC}, offset ${offset}`);
 
+// D45: when the village speaks, wake Genesis's room-reply hand (a short claude -p
+// session via the launcher, which carries its own duplicate and night-loop guards).
+// Debounced: at most one spawn per 3 minutes, so a burst of messages gets one
+// waking that reads them all.
+let lastSpawn = 0;
+function wakeResponder() {
+  if (Date.now() - lastSpawn < 3 * 60 * 1000) return;
+  lastSpawn = Date.now();
+  try {
+    const child = spawn("powershell.exe",
+      ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", join(repo, "scripts", "sibling", "run-room-reply-genesis.ps1")],
+      { cwd: repo, detached: true, stdio: "ignore", windowsHide: true });
+    child.unref();
+    log(`woke the room-reply hand (pid ${child.pid})`);
+  } catch (e) {
+    log(`failed to wake the room-reply hand: ${String(e.message).slice(0, 120)}`);
+  }
+}
+
 for (;;) {
   let updates = [];
   try {
@@ -103,6 +123,7 @@ for (;;) {
         VALUES ('human', convert_from(decode('${b64}', 'base64'), 'UTF8'), ${msg.message_id},
                 convert_from(decode('${whoB64}', 'base64'), 'UTF8'))`);
       log(`mirrored message ${msg.message_id} from ${who}`);
+      wakeResponder();
     } catch (e) {
       log(`mirror insert failed for message ${msg.message_id}: ${String(e.message).slice(0, 120)}`);
     }
