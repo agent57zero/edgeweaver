@@ -10,7 +10,11 @@ $dup = Get-CimInstance Win32_Process -Filter "Name='node.exe'" |
 if ($dup) { exit 0 }
 $host.UI.RawUI.WindowTitle = 'EdgeweaverRoomEar'
 Set-Location 'C:\Users\agent\Project\Edgeweaver'
+# cmd owns the stderr redirect: PS 5.1 wraps a native command's stderr in
+# NativeCommandError records (the documented trap), which can abort the child
+# under strict preferences. Proven live 2026-08-22: the direct 2>> form killed
+# the ear seconds after its first stderr line.
 while ($true) {
-  node scripts\sibling\room-ear.mjs 2>> logs\room-ear.log
+  cmd /c "node scripts\sibling\room-ear.mjs 2>> logs\room-ear.log"
   Start-Sleep -Seconds 30
 }
